@@ -2506,18 +2506,26 @@ async function sendMessage() {
   if (!q) return;
 
   // Detect follow-up questions
-  const followUpWords = ['وللسامسونج','وللايفون','وللاندرويد','وللهواوي','وللشاومي','وللبيكسل','نفس الشي','same for','and for samsung','and for iphone','نفس للسامسونج','نفس للايفون','وسامسونج','وايفون'];
+  const followUpWords = ['وللسامسونج','وللايفون','وللاندرويد','وللهواوي','وللشاومي','وللبيكسل','نفس الشي','same for','and for samsung','and for iphone','نفس للسامسونج','نفس للايفون','وسامسونج','وايفون','للسامسونج','للايفون','للاندرويد','وكمان','وايضا','وأيضا','what about','how about'];
   const isFollowUp = followUpWords.some(w => q.toLowerCase().includes(w.toLowerCase()));
   
-  if (isFollowUp && lastTopic) {
-    // Extract device from follow-up
+  // Also detect if message is just a device name (very short)
+  const deviceOnly = ['سامسونج','samsung','ايفون','iphone','هواوي','huawei','شاومي','xiaomi','اندرويد','android','بيكسل','pixel'];
+  const isDeviceOnly = deviceOnly.some(w => q.toLowerCase().trim() === w.toLowerCase()) || (q.length < 20 && deviceOnly.some(w => q.toLowerCase().includes(w.toLowerCase())));
+  
+  if ((isFollowUp || isDeviceOnly) && lastTopic) {
     let device = '';
-    if (q.includes('سامسونج') || q.includes('samsung') || q.includes('اندرويد') || q.includes('android')) device = 'سامسونج/أندرويد';
-    else if (q.includes('ايفون') || q.includes('iphone')) device = 'آيفون';
+    if (q.includes('سامسونج') || q.includes('samsung') || q.includes('اندرويد') || q.includes('android')) device = 'سامسونج';
+    else if (q.includes('ايفون') || q.includes('iphone')) device = 'ايفون';
     else if (q.includes('هواوي') || q.includes('huawei')) device = 'هواوي';
-    else if (q.includes('شاومي') || q.includes('xiaomi')) device = 'شاومي';
+    else if (q.includes('شاومي') || q.includes('xiaomi') || q.includes('ريدمي') || q.includes('redmi')) device = 'شاومي';
+    else if (q.includes('بيكسل') || q.includes('pixel')) device = 'بيكسل';
     
-    if (device) q = lastTopic + ' ' + device;
+    if (device) {
+      // Extract the core topic (remove device name from lastTopic)
+      const coreTopic = lastTopic.replace(/آيفون|سامسونج|هواوي|شاومي|أندرويد|iphone|samsung|huawei/gi, '').trim();
+      q = coreTopic + ' ' + device;
+    }
   }
 
   addMsg(input.value.trim(), 'user');
