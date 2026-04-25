@@ -1478,27 +1478,8 @@ const KB = [
 
 
 
-  {
-    keywords: ["huawei","هواوي","honor","هونر","apn","اعداد هواوي"],
-    category: "إعدادات APN - هواوي",
-    priority: "medium",
-    solution: `1. روح الإعدادات (Settings)
-2. اضغط "الشبكة اللاسلكية والشبكات" أو "Wireless & Networks"
-3. اضغط "شبكات الجوال" (Mobile Network)
-4. اضغط "أسماء نقاط الوصول" (APN)
-5. أضف APN جديد: stc.bh
-6. احفظ وأعد التشغيل ✅`
-  },
-  {
-    keywords: ["huawei","هواوي","reset network","اعاده ضبط","اعادة ضبط الشبكة"],
-    category: "إعادة ضبط الشبكة - هواوي",
-    priority: "medium",
-    solution: `1. روح الإعدادات (Settings)
-2. اضغط "النظام" (System)
-3. اضغط "إعادة الضبط" (Reset)
-4. اختار "إعادة ضبط إعدادات الشبكة"
-5. أكد وانتظر إعادة التشغيل ✅`
-  },
+
+
   {
     keywords: ["airplane","طيران","وضع الطيران","flight mode","airplane mode","تشغيل وضع الطيران"],
     category: "وضع الطيران",
@@ -1523,22 +1504,7 @@ const KB = [
    • إذا اشتغلت في جوال ثاني → المشكلة في الجوال
    • إذا ما اشتغلت → المشكلة في الشريحة، راجع أقرب فرع STC`
   },
-  {
-    keywords: ["network mode","نوع الشبكة","5g only","4g only","lte only","preferred network","الشبكة المفضلة","تغيير الشبكة"],
-    category: "تغيير نوع الشبكة (5G/4G/3G)",
-    priority: "medium",
-    solution: `آيفون:
-1. الإعدادات ← بيانات الجوال ← خيارات بيانات الجوال ← صوت وبيانات
-2. اختار: 5G Auto أو LTE
 
-سامسونج/أندرويد:
-1. الإعدادات ← الاتصالات ← شبكات الجوال ← وضع الشبكة
-2. اختار: 5G/LTE/3G/2G (تلقائي) أو LTE فقط
-
-هواوي:
-1. الإعدادات ← شبكات الجوال ← وضع الشبكة المفضل
-2. اختار الوضع المناسب`
-  },
   {
     keywords: ["wifi","واي فاي","wifi calling","مكالمات واي فاي","wifi call"],
     category: "تفعيل مكالمات Wi-Fi",
@@ -1553,24 +1519,7 @@ const KB = [
 
 ملاحظة: يجب أن تكون الخدمة مفعّلة على خطك من STC`
   },
-  {
-    keywords: ["roaming setting","اعداد تجوال","data roaming","تفعيل تجوال","تجوال بيانات","roaming on"],
-    category: "تفعيل التجوال في إعدادات الجهاز",
-    priority: "medium",
-    solution: `آيفون:
-1. الإعدادات ← بيانات الجوال ← خيارات بيانات الجوال
-2. فعّل "تجوال البيانات" (Data Roaming)
 
-سامسونج/أندرويد:
-1. الإعدادات ← الاتصالات ← شبكات الجوال
-2. فعّل "تجوال البيانات" (Data Roaming)
-
-هواوي:
-1. الإعدادات ← شبكات الجوال
-2. فعّل "تجوال البيانات"
-
-⚠️ تأكد إن خدمة التجوال مفعّلة من STC أيضاً`
-  },
 
   // ========== VPN ==========
   {
@@ -2052,6 +2001,7 @@ Settings → SIM Cards & Mobile Networks → Preferred Network Type
 // ========== STATE ==========
 let currentUser = null;
 let logs = JSON.parse(localStorage.getItem('stc_logs') || '[]');
+let lastTopic = ''; // Track last topic for follow-up questions
 
 // ========== LOGIN ==========
 function login() {
@@ -2278,16 +2228,32 @@ function removeTyping() {
 
 async function sendMessage() {
   const input = document.getElementById('chatInput');
-  const q = input.value.trim();
+  let q = input.value.trim();
   if (!q) return;
 
-  addMsg(q, 'user');
+  // Detect follow-up questions
+  const followUpWords = ['وللسامسونج','وللايفون','وللاندرويد','وللهواوي','وللشاومي','وللبيكسل','نفس الشي','same for','and for samsung','and for iphone','نفس للسامسونج','نفس للايفون','وسامسونج','وايفون'];
+  const isFollowUp = followUpWords.some(w => q.toLowerCase().includes(w.toLowerCase()));
+  
+  if (isFollowUp && lastTopic) {
+    // Extract device from follow-up
+    let device = '';
+    if (q.includes('سامسونج') || q.includes('samsung') || q.includes('اندرويد') || q.includes('android')) device = 'سامسونج/أندرويد';
+    else if (q.includes('ايفون') || q.includes('iphone')) device = 'آيفون';
+    else if (q.includes('هواوي') || q.includes('huawei')) device = 'هواوي';
+    else if (q.includes('شاومي') || q.includes('xiaomi')) device = 'شاومي';
+    
+    if (device) q = lastTopic + ' ' + device;
+  }
+
+  addMsg(input.value.trim(), 'user');
   input.value = '';
   input.style.height = 'auto';
   document.querySelector('.btn-send').disabled = true;
   showTyping();
 
   const kbResult = findAnswer(q);
+  if (kbResult) lastTopic = kbResult.category.replace(/[-–—].*$/, '').trim();
   let kbContext = '';
   if (kbResult) {
     kbContext = "الفئة: " + kbResult.category + "\nالحل:\n" + kbResult.solution;
