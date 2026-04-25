@@ -2528,17 +2528,21 @@ async function sendMessage() {
     }
   }
 
-  addMsg(input.value.trim(), 'user');
+  const originalMsg = input.value.trim();
+  addMsg(originalMsg, 'user');
   input.value = '';
   input.style.height = 'auto';
   document.querySelector('.btn-send').disabled = true;
   showTyping();
 
   const kbResult = findAnswer(q);
-  if (kbResult) lastTopic = kbResult.category.replace(/[-–—].*$/, '').trim();
+  if (kbResult) lastTopic = kbResult.category.replace(/[-–—()صور توضيحية]*/g, '').trim();
   let kbContext = '';
   if (kbResult) {
     kbContext = "الفئة: " + kbResult.category + "\nالحل:\n" + kbResult.solution;
+  } else if (lastTopic && chatHistory.length > 0) {
+    // Follow-up with no direct match - hint the AI about context
+    kbContext = "السياق: الموظف يسأل عن نفس موضوع المحادثة السابقة (" + lastTopic + ") لكن لجهاز مختلف أو بصيغة مختلفة.";
   }
 
   const systemPrompt = "أنت مساعد دعم فني ذكي لشركة STC Kuwait. تتعامل مع موظفي الدعم الفني وتساعدهم في حل مشاكل العملاء.\n\nقواعد التواصل:\n1. تكلم الموظف بنفس لغته (عربي/إنجليزي/عامية كويتية) ولا تخلط اللغتين\n2. كن تفاعلياً وذكياً - حلل المشكلة واسأل سؤالاً واحداً فقط إذا احتجت توضيحاً\n3. إذا كانت المعلومات كافية، اعطِ الحل مباشرة بخطوات واضحة مع أيقونات\n4. تذكر المحادثة السابقة وتكيّف معها\n5. إذا سأل الموظف عن نفس الشي لجهاز مختلف، اعطه الحل للجهاز الجديد مباشرة\n6. لا تذكر الأولوية في ردك\n7. كن مختصراً وعملياً - لا تطوّل إذا ما في داعي";
