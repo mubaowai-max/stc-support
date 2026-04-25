@@ -612,6 +612,107 @@
 
   .hidden { display: none !important; }
 
+
+  .phone-mockup {
+    display: inline-block;
+    background: #1C1C1E;
+    border-radius: 36px;
+    padding: 10px;
+    border: 3px solid #3A3A3C;
+    margin: 8px 4px;
+  }
+  .phone-screen {
+    background: #1C1C1E;
+    border-radius: 26px;
+    overflow: hidden;
+    width: 160px;
+  }
+  .phone-nav {
+    background: #2C2C2E;
+    padding: 8px 10px;
+    display: flex;
+    align-items: center;
+    border-bottom: 0.5px solid #3A3A3C;
+  }
+  .phone-nav span { color: white; font-size: 11px; font-weight: 600; }
+  .phone-nav .back { color: #0A84FF; margin-left: auto; font-size: 11px; }
+  .phone-row {
+    background: #2C2C2E;
+    padding: 8px 10px;
+    border-bottom: 0.5px solid #3A3A3C;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .phone-row span { color: white; font-size: 11px; }
+  .phone-row .muted { color: #636366; font-size: 10px; }
+  .toggle-on {
+    width: 32px; height: 18px;
+    background: #34C759;
+    border-radius: 9px;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .toggle-on::after {
+    content: '';
+    width: 16px; height: 16px;
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+    right: 1px; top: 1px;
+  }
+  .toggle-off {
+    width: 32px; height: 18px;
+    background: #636366;
+    border-radius: 9px;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .toggle-off::after {
+    content: '';
+    width: 16px; height: 16px;
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+    left: 1px; top: 1px;
+  }
+  .samsung-screen { background: #1A1A1A; border-radius: 26px; overflow: hidden; width: 160px; }
+  .samsung-row {
+    background: #1F1F1F;
+    padding: 8px 10px;
+    border-bottom: 0.5px solid #2A2A2A;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .samsung-row span { color: white; font-size: 11px; }
+  .toggle-samsung {
+    width: 32px; height: 18px;
+    background: #4FC3F7;
+    border-radius: 9px;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .toggle-samsung::after {
+    content: '';
+    width: 16px; height: 16px;
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+    right: 1px; top: 1px;
+  }
+  .phones-wrapper {
+    display: flex;
+    gap: 8px;
+    margin: 10px 0;
+    flex-wrap: wrap;
+  }
+  .phone-label {
+    font-size: 11px;
+    color: #888;
+    text-align: center;
+    margin-top: 4px;
+  }
 </style>
 </head>
 <body>
@@ -1837,18 +1938,16 @@ const KB = [
     solution: `🔧 تفعيل 5G على آيفون
 ━━━━━━━━━━━━━━━━━━━━
 
-📱 **آيفون:**
-1. الإعدادات (Settings)
-2. ← بيانات الجوال (Cellular)
-3. ← خيارات بيانات الجوال (Cellular Data Options)
-4. ← صوت وبيانات (Voice & Data)
-5. اختار: **5G Auto** أو **5G On**
+<div class="phones-wrapper"><div><div class="phone-mockup"><div class="phone-screen"><div class="phone-nav"><span class="back">‹ Cellular</span><span style="margin-right:auto">Voice & Data</span></div><div class="phone-row"><span>5G Auto</span><span style="color:#34C759">✓</span></div><div class="phone-row"><span>5G On</span></div><div class="phone-row"><span>LTE</span></div><div class="phone-row"><span>3G</span></div></div></div><div class="phone-label">آيفون</div></div></div>
 
-🖼️ الإعداد يبدو كذا:
-Settings → Cellular → Cellular Data Options → Voice & Data → [5G Auto ✓]
+📱 الخطوات:
+1. الإعدادات ← بيانات الجوال
+2. ← خيارات بيانات الجوال
+3. ← صوت وبيانات
+4. اختار: 5G Auto أو 5G On ✅
 
-⚠️ إذا ما ظهر خيار 5G: تأكد إن الجهاز يدعم 5G وإن السيم من STC مفعّل عليه 5G
-✅ النتيجة: يتصل بشبكة 5G تلقائياً عند توفرها
+⚠️ إذا ما ظهر خيار 5G: تأكد إن الجهاز يدعم 5G وإن السيم من STC مفعّل
+✅ النتيجة: يتصل بـ 5G تلقائياً
 📞 إذا استمرت: تواصل مع مسؤول الشفت`
   },
   {
@@ -1858,17 +1957,14 @@ Settings → Cellular → Cellular Data Options → Voice & Data → [5G Auto �
     solution: `🔧 تفعيل التجوال على آيفون
 ━━━━━━━━━━━━━━━━━━━━
 
-📱 **آيفون:**
-1. الإعدادات (Settings)
-2. ← بيانات الجوال (Cellular)
-3. ← خيارات بيانات الجوال (Cellular Data Options)
-4. فعّل: **تجوال البيانات (Data Roaming)** 🟢
+<div class="phones-wrapper"><div><div class="phone-mockup"><div class="phone-screen"><div class="phone-nav"><span class="back">‹ Cellular</span><span style="margin-right:auto">Data Options</span></div><div class="phone-row"><span>Data Roaming</span><div class="toggle-on"></div></div><div class="phone-row"><span style="color:#636366;font-size:10px">Roam on LTE when available</span></div></div></div><div class="phone-label">آيفون</div></div></div>
 
-🖼️ المسار:
-Settings → Cellular → Cellular Data Options → Data Roaming [ON]
+📱 الخطوات:
+1. الإعدادات ← بيانات الجوال
+2. ← خيارات بيانات الجوال
+3. فعّل: تجوال البيانات (Data Roaming) 🟢
 
-⚠️ تأكد إن خدمة التجوال مفعّلة على خطك من STC أيضاً
-⚠️ تأكد من تفعيل Roaming من BSS وSmart Care قبل هذه الخطوة
+⚠️ تأكد من تفعيل Roaming من BSS وSmart Care أولاً
 ✅ النتيجة: تشتغل البيانات خارج الكويت
 📞 إذا استمرت: تواصل مع مسؤول الشفت`
   },
@@ -1921,17 +2017,14 @@ Settings → Cellular → Cellular Data Options → Enable LTE → Voice & Data
     solution: `🔧 تفعيل 5G على سامسونج
 ━━━━━━━━━━━━━━━━━━━━
 
-📱 **سامسونج/أندرويد:**
-1. الإعدادات (Settings)
-2. ← الاتصالات (Connections)
-3. ← شبكات الجوال (Mobile Networks)
-4. ← وضع الشبكة (Network Mode)
-5. اختار: **5G/LTE/3G/2G (Auto)**
+<div class="phones-wrapper"><div><div class="phone-mockup"><div class="samsung-screen"><div class="phone-nav" style="background:#1F1F1F;border-color:#2A2A2A"><span class="back" style="color:#4FC3F7">‹</span><span style="margin-right:auto;color:white">Network Mode</span></div><div class="samsung-row"><span>5G/LTE/3G/2G (Auto)</span><span style="color:#4FC3F7">●</span></div><div class="samsung-row"><span>LTE/3G/2G</span><span style="color:#555">○</span></div><div class="samsung-row"><span>3G/2G</span><span style="color:#555">○</span></div></div></div><div class="phone-label">سامسونج</div></div></div>
 
-🖼️ المسار:
-Settings → Connections → Mobile Networks → Network Mode → [5G/LTE/3G/2G ✓]
+📱 الخطوات:
+1. الإعدادات ← الاتصالات
+2. ← شبكات الجوال
+3. ← وضع الشبكة
+4. اختار: 5G/LTE/3G/2G (Auto) ✅
 
-⚠️ إذا ما ظهر 5G: تأكد إن الجهاز يدعم 5G وإن السيم من STC مفعّل عليه 5G
 ⚠️ أوقف "توفير طاقة البطارية" لأنه يوقف 5G
 ✅ النتيجة: يتصل بـ 5G تلقائياً
 📞 إذا استمرت: تواصل مع مسؤول الشفت`
@@ -1943,16 +2036,14 @@ Settings → Connections → Mobile Networks → Network Mode → [5G/LTE/3G/2G 
     solution: `🔧 تفعيل التجوال على سامسونج
 ━━━━━━━━━━━━━━━━━━━━
 
-📱 **سامسونج/أندرويد:**
-1. الإعدادات (Settings)
-2. ← الاتصالات (Connections)
-3. ← شبكات الجوال (Mobile Networks)
-4. فعّل: **تجوال البيانات (Data Roaming)** 🟢
+<div class="phones-wrapper"><div><div class="phone-mockup"><div class="samsung-screen"><div class="phone-nav" style="background:#1F1F1F;border-color:#2A2A2A"><span class="back" style="color:#4FC3F7">‹</span><span style="margin-right:auto;color:white">Mobile Networks</span></div><div class="samsung-row"><div><span>Data Roaming</span><br><span style="color:#888;font-size:10px">Use data abroad</span></div><div class="toggle-samsung"></div></div><div class="samsung-row"><span>Network Mode</span><span style="color:#888">5G/LTE ›</span></div></div></div><div class="phone-label">سامسونج</div></div></div>
 
-🖼️ المسار:
-Settings → Connections → Mobile Networks → Data Roaming [ON]
+📱 الخطوات:
+1. الإعدادات ← الاتصالات
+2. ← شبكات الجوال
+3. فعّل: Data Roaming 🟢
 
-⚠️ تأكد من تفعيل Roaming على الخط من STC (BSS/Smart Care) قبل هذه الخطوة
+⚠️ تأكد من تفعيل Roaming على الخط من STC قبل هذه الخطوة
 ✅ النتيجة: تشتغل البيانات خارج الكويت
 📞 إذا استمرت: تواصل مع مسؤول الشفت`
   },
@@ -2296,25 +2387,7 @@ async function sendMessage() {
     kbContext = "الفئة: " + kbResult.category + "\nالحل:\n" + kbResult.solution;
   }
 
-  const systemPrompt = `أنت مساعد الدعم الفني لشركة STC Kuwait.
-
-قواعد الرد:
-1. تكلم المستخدم بنفس لغته (عربي/إنجليزي/عامية كويتية)
-2. لا تسأل أسئلة — اعطِ الحل مباشرة
-3. رتّب الجواب بالشكل التالي دائماً:
-
-🔧 [اسم المشكلة]
-━━━━━━━━━━━━━━━━━━━━
-
-[خطوات الحل مرقمة بوضوح]
-
-⚠️ ملاحظة مهمة: [إذا في شي مهم]
-✅ النتيجة المتوقعة: [شنو يصير بعد الحل]
-📞 إذا استمرت المشكلة: [شنو يسوي الموظف]
-
-4. استخدم الأيقونات لتمييز الخطوات
-5. اجعل كل خطوة واضحة ومختصرة
-6. لا تذكر الأولوية في ردك` + (kbContext ? "\n\nمعلومات ذات صلة:\n" + kbContext : "");
+  const systemPrompt = "أنت مساعد الدعم الفني لشركة STC Kuwait. قاعدة مهمة: إذا كتب المستخدم بالعربي أو العامية الكويتية → رد بالعربي فقط. إذا كتب بالإنجليزي → رد بالإنجليزي فقط. لا تخلط اللغتين أبداً. لا تسأل أسئلة — اعطِ الحل مباشرة بخطوات مرقمة مع أيقونات. لا تذكر الأولوية في ردك.";
 
   try {
     const response = await fetch("https://api.anthropic.com/v1/messages", {
@@ -2341,8 +2414,8 @@ async function sendMessage() {
     const data = await response.json();
     const answer = data.content[0].text;
 
-    const category = kbResult ? kbResult.category : null;
-    const priority = kbResult ? kbResult.priority : null;
+    const category = kbResult ? kbResult.category : "عام";
+    const priority = kbResult ? kbResult.priority : "medium";
 
     const lines = answer.split("\n").filter(l => l.trim());
     const hasSteps = lines.some(l => /^\d+[.\-)]/.test(l.trim()));
