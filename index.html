@@ -871,6 +871,8 @@ const USERS = {
 
 // ========== KNOWLEDGE BASE ==========
 const KB = [
+
+
   {
     keywords: ["staff","f&f","موظف","friends","family","أصدقاء","عائلة"],
     category: "الموظفين وF&F",
@@ -1785,9 +1787,273 @@ const KB = [
 📞 إذا استمرت: تواصل مع مسؤول الشفت`
   },
 
+  // ========== VPN ==========
+  {
+    keywords: ["vpn","في بي ان","شبكة خاصة","اتصال vpn","vpn مو يشتغل"],
+    category: "مشاكل VPN",
+    priority: "medium",
+    solution: `1. تأكد إن الإنترنت يشتغل أولاً بدون VPN
+2. جرب قطع الاتصال وإعادة الاتصال بالـ VPN
+3. جرب سيرفر VPN مختلف
+4. تحقق إن الـ VPN مسموح به على الشبكة
+5. أوقف وشغّل وضع الطيران
+6. أعد تثبيت تطبيق VPN
+7. تأكد من تحديث التطبيق لآخر إصدار
+8. إذا استمرت → تواصل مع مزود خدمة VPN`
+  },
+  {
+    keywords: ["visual voicemail","بريد صوتي مرئي","voicemail","رسائل صوتية","voicemail مو يشتغل"],
+    category: "Visual Voicemail",
+    priority: "low",
+    solution: `1. تأكد إن خدمة البريد الصوتي مفعّلة على الخط من STC
+2. آيفون: الإعدادات ← الهاتف ← بريد صوتي
+3. اضغط "إعداد الآن" وأدخل كلمة مرور
+4. إذا ما ظهر → أعد تشغيل الجوال
+5. إذا استمرت → تحقق من BSS إن خدمة Voicemail مفعّلة
+6. صعّد لـ IT NOC إذا لزم`
+  },
+  {
+    keywords: ["my stc","mystc","تطبيق stc","stc app","تطبيق مو يشتغل","تطبيق ما يفتح","تطبيق خطأ"],
+    category: "تطبيق My STC - مشاكل",
+    priority: "medium",
+    solution: `1. تأكد من آخر إصدار للتطبيق (App Store / Google Play)
+2. أوقف التطبيق كلياً وأعد تشغيله
+3. امسح cache التطبيق:
+   - أندرويد: الإعدادات ← التطبيقات ← My STC ← مسح البيانات المؤقتة
+   - آيفون: احذف وأعد تثبيت التطبيق
+4. تأكد من اتصال الإنترنت
+5. جرب تسجيل الخروج وإعادة الدخول
+6. إذا استمرت → أرسل رسالة الخطأ لـ IT`
+  },
+  {
+    keywords: ["ipad","ايباد","tablet","تابلت","ipad cellular","ايباد خلوي"],
+    category: "iPad / Tablet - إعدادات الشبكة",
+    priority: "medium",
+    solution: `1. الإعدادات ← خلوي أو بيانات الجوال
+2. تأكد إن بيانات الجوال مفعّلة
+3. تحقق من APN: stc.bh
+4. إذا eSIM → تحقق من Profile الصحيح
+5. أعد ضبط إعدادات الشبكة:
+   الإعدادات ← عام ← إعادة الضبط ← إعادة ضبط إعدادات الشبكة
+6. إذا استمرت → تحقق من BSS إن الخط مفعّل للـ Data`
+  },
+  {
+    keywords: ["mifi","مايفاي","mobile wifi","واي فاي متنقل","راوتر متنقل","pocket wifi","بوكت واي فاي"],
+    category: "Mobile WiFi / MiFi",
+    priority: "medium",
+    solution: `1. تأكد من شحن الجهاز (بطارية فوق 20%)
+2. أعد تشغيل الجهاز
+3. تحقق من الشريحة - أخرجها وأعد إدراجها
+4. تحقق من إعدادات APN: stc.bh
+5. تأكد إن الباقة نشطة وفيها رصيد بيانات
+6. تحقق من عدد الأجهزة المتصلة (حد أقصى عادةً 10)
+7. إذا استمرت → تحقق من BSS وتواصل مع الدعم التقني`
+  },
+  {
+    keywords: ["dongle","دونجل","usb internet","انترنت usb","usb modem","مودم usb"],
+    category: "USB Dongle",
+    priority: "medium",
+    solution: `1. جرب USB منفذ آخر
+2. أعد تشغيل الكمبيوتر
+3. تحقق من تثبيت الـ Driver الصحيح
+4. تحقق من الشريحة داخل الـ Dongle
+5. تحقق من إعدادات APN في برنامج الـ Dongle: stc.bh
+6. تأكد إن الباقة نشطة
+7. إذا استمرت → حدّث firmware الجهاز من موقع المصنّع`
+  },
+  {
+    keywords: ["stc tv","stctv","تلفزيون stc","بث stc","stc streaming","قنوات stc"],
+    category: "STC TV - مشاكل",
+    priority: "medium",
+    solution: `1. تأكد من اتصال الإنترنت (سرعة لا تقل عن 10 Mbps للـ HD)
+2. أعد تشغيل التطبيق أو الجهاز
+3. امسح cache التطبيق
+4. تحقق من صلاحية الاشتراك
+5. جرب تسجيل الخروج وإعادة الدخول
+6. إذا تقطّع البث → اخفض جودة الصورة مؤقتاً
+7. إذا استمرت → تواصل مع فريق STC TV الداخلي`
+  },
+  {
+    keywords: ["stc pay","stcpay","دفع stc","محفظة stc","stc wallet"],
+    category: "STC Pay - مشاكل",
+    priority: "medium",
+    solution: `1. تأكد من آخر إصدار للتطبيق
+2. تأكد من اتصال الإنترنت
+3. أعد تشغيل التطبيق
+4. إذا مشكلة تحقق هوية → تواصل مع فريق STC Pay مباشرة
+5. إذا مشكلة معاملة → احتفظ برقم المعاملة وتواصل مع الدعم
+6. إذا حساب مجمّد → يجب التواصل مع فريق STC Pay
+7. للدعم المباشر: تواصل مع فريق STC Pay الداخلي`
+  },
+  {
+    keywords: ["fiber","فايبر","ftth","الياف","انترنت منزلي","home internet","فايبر مو يشتغل"],
+    category: "مشاكل الفايبر (FTTH)",
+    priority: "high",
+    solution: `1. تحقق من إضاءة الـ ONT (الجهاز الأبيض):
+   - PON يضيء أخضر ثابت ✅
+   - LOS يضيء أحمر = مشكلة في الكابل ❌
+2. أعد تشغيل الـ ONT والراوتر (30 ثانية)
+3. تحقق من كابل الألياف - لا يجب أن يكون منثني أو مكسور
+4. تحقق من BSS إن الخط مفعّل
+5. إذا LOS أحمر → مشكلة في الكابل الخارجي، ارفع تيكت للصيانة
+6. إذا استمرت → صعّد لـ HUW مع العنوان وتفاصيل المشكلة`
+  },
+  // ========== ESCALATION INFO ==========
+  {
+    keywords: ["تصعيد","escalate","صعّد","escalation","فريق","team","وين ارسل","مين ارسل","ايميل","email support"],
+    category: "معلومات التصعيد والفرق",
+    priority: "medium",
+    solution: `فرق التصعيد في STC Kuwait:
+
+🔧 VFO Team
+→ مشاكل المكالمات والتجوال والـ SMS
+→ يحتاج: A-party, B-party, تاريخ ووقت المشكلة
+
+📡 HUW Team  
+→ مشاكل التغطية والسرعة والـ 5G
+→ يحتاج: العنوان/PACI، نتائج Speedtest، النطاق المتصل
+
+💻 IT NOC Team
+→ المشاكل التقنية المعقدة وأعطال الأنظمة
+→ يحتاج: وصف تفصيلي ورقم الخط والخطوات المجربة
+
+📱 CMS Team
+→ مشاكل العروض الخاصة وإشكاليات الباقات
+
+💳 Credit Control Team
+→ تغيير الحد الائتماني والمشاكل المالية
+
+🔄 Sequence Team
+→ مشاكل الـ SMS الدولية`
+  },
+  {
+    keywords: ["ticket","تيكت","كيف ارفع","رفع تيكت","how to ticket","new ticket","تيكت جديد"],
+    category: "كيفية رفع تيكت",
+    priority: "low",
+    solution: `خطوات رفع تيكت صحيح:
+
+1. حدد نوع المشكلة والفريق المختص
+2. اجمع المعلومات المطلوبة:
+   - رقم الخط المتضرر
+   - وصف تفصيلي للمشكلة
+   - وقت وتاريخ بدء المشكلة
+   - الخطوات التي تم تجربها
+   - رسائل الخطأ إن وجدت
+3. ارفع التيكت عبر النظام الداخلي
+4. احتفظ برقم التيكت للمتابعة
+5. تابع التيكت خلال SLA المحدد:
+   - عالي الأولوية: 4 ساعات
+   - متوسط: 8 ساعات  
+   - منخفض: 24 ساعة`
+  },
+  {
+    keywords: ["identity","هوية","تحقق هوية","verify","verification","civil id","بطاقة مدنية","customer verification"],
+    category: "التحقق من هوية العميل",
+    priority: "high",
+    solution: `خطوات التحقق من هوية العميل:
+
+1. اطلب رقم الخط والاسم الكامل
+2. تحقق من رقم البطاقة المدنية في النظام
+3. اطلب سؤال التحقق الأمني إذا متوفر
+4. للتغييرات الحساسة (نقل ملكية، تغيير SIM):
+   - يجب حضور شخصي في الفرع
+   - أو توكيل رسمي موثق
+5. لا تجري أي تغييرات حساسة بدون تحقق كامل
+⚠️ لا تشارك معلومات العميل مع أي طرف ثالث`
+  },
+
+  // ========== ROUTERS ==========
+  {
+    keywords: ["راوتر","router","رواتر","واي فاي","wifi","انترنت منزلي","home wifi","راوتر ثابت","fixed router","zte","هواوي راوتر","huawei router","tp-link","tplink","archer","نت الدار"],
+    category: "راوتر STC الثابت - إعادة تشغيل",
+    priority: "high",
+    solution: `🔧 راوتر STC الثابت - إعادة التشغيل
+━━━━━━━━━━━━━━━━━━━━
+
+1. أوقف الراوتر من زر التشغيل الخلفي
+2. انتظر 30 ثانية كاملة
+3. شغّله مرة ثانية
+4. انتظر دقيقتين حتى يكتمل الاتصال
+5. تحقق من إضاءة الـ Internet/WAN:
+   🟢 أخضر ثابت = متصل ✅
+   🔴 أحمر أو يومض = مشكلة في الاتصال
+
+✅ النتيجة المتوقعة: يعود الإنترنت خلال دقيقتين
+📞 إذا استمرت: تواصل مع مسؤول الشفت`
+  },
+  {
+    keywords: ["راوتر","router","zt","zte","baity","بيتي","5g router","راوتر 5g","cpe","h122","h138","mc801","mc889","zyxel","نت 5g"],
+    category: "راوتر STC 5G (Baity/CPE) - إعادة تشغيل",
+    priority: "high",
+    solution: `🔧 راوتر STC 5G (Baity/CPE) - إعادة التشغيل
+━━━━━━━━━━━━━━━━━━━━
+
+الأجهزة المدعومة: ZTE MC801 / MC889 / H122 / H138 | Huawei CPE Pro | Zyxel NR5101
+
+1. أوقف الجهاز من زر التشغيل
+2. انتظر 30 ثانية
+3. أعد التشغيل وانتظر 3 دقائق
+4. تحقق من الإضاءة:
+   🟢 أخضر = متصل بـ 5G ✅
+   🟡 أصفر = متصل بـ 4G
+   🔴 أحمر = لا يوجد إشارة
+
+⚠️ إذا استمر الأحمر: تحقق من Smart Care إن الخط نشط
+✅ النتيجة: يتصل بأقوى إشارة متاحة (5G/4G)
+📞 إذا استمرت: تواصل مع مسؤول الشفت`
+  },
+  {
+    keywords: ["راوتر متنقل","mobile router","mifi","مايفاي","pocket router","pocket wifi","بوكت","راوتر جيب","zte mf","huawei e5","alcatel","vodafone r","فودافون راوتر"],
+    category: "راوتر STC المتنقل (MiFi) - إعدادات وإعادة تشغيل",
+    priority: "medium",
+    solution: `🔧 راوتر STC المتنقل (MiFi)
+━━━━━━━━━━━━━━━━━━━━
+
+الأجهزة الشائعة: ZTE MF910 / MF920 | Huawei E5788 / E5576 | Alcatel MW40
+
+إعادة التشغيل:
+1. اضغط زر التشغيل 3 ثوانٍ لإيقافه
+2. انتظر 15 ثانية
+3. اضغط مرة ثانية لتشغيله
+
+إعداد APN يدوياً:
+1. اتصل بـ WiFi الجهاز
+2. افتح المتصفح وادخل: 192.168.8.1 أو 192.168.0.1
+3. اسم المستخدم: admin | كلمة المرور: admin (أو مكتوبة على الجهاز)
+4. اذهب لـ Settings ← Dial-up ← APN
+5. اكتب APN: stc.bh
+6. احفظ وأعد التشغيل
+
+⚠️ تأكد من شحن الجهاز فوق 20%
+✅ النتيجة: يتصل ويوزع WiFi على الأجهزة
+📞 إذا استمرت: تواصل مع مسؤول الشفت`
+  },
+  {
+    keywords: ["mesh","ميش","wifi mesh","نظام ميش","orbi","eero","deco","tp link deco","راوتر ميش","تغطية واي فاي"],
+    category: "نظام Mesh WiFi - إعدادات",
+    priority: "medium",
+    solution: `🔧 نظام Mesh WiFi
+━━━━━━━━━━━━━━━━━━━━
+
+1. تأكد إن الـ Main Router (الرئيسي) متصل بالإنترنت
+2. تأكد إن جميع نقاط الـ Mesh مضاءة
+3. إذا نقطة Mesh لا تعمل:
+   • أعد تشغيلها
+   • قرّبها من الرئيسي مؤقتاً
+   • تحقق من كابل Ethernet إذا موجود
+4. للـ Baity Mesh (STC):
+   • ادخل: 192.168.3.1
+   • اختر DHCP
+   • أدخل اسم WiFi وكلمة المرور
+   • كلمة مرور Router: admin123
+5. انتظر حتى يتحول المؤشر للأزرق ✅
+
+📞 إذا استمرت: تواصل مع مسؤول الشفت`
+  },
+
   // ========== IPHONE VISUAL SETTINGS ==========
   {
-    keywords: ["تفعيل 5g","5g advanced","5g auto","تشغيل 5g","5g ايفون","iphone 5g","enable 5g","فعّل 5g","تغيير الشبكه lte 5g"],
+    keywords: ["تفعيل 5g","5g ايفون","5g للايفون","تشغيل 5g ايفون","iphone 5g","enable 5g iphone","5g advanced","5g auto","فعّل 5g ايفون","تغيير الشبكه lte 5g","5g على ايفون"],
     category: "تفعيل 5G - آيفون (صور توضيحية)",
     priority: "medium",
     solution: `🔧 تفعيل 5G على آيفون
@@ -1806,7 +2072,7 @@ const KB = [
 📞 إذا استمرت: تواصل مع مسؤول الشفت`
   },
   {
-    keywords: ["تفعيل تجوال ايفون","data roaming iphone","تجوال ايفون","roaming iphone","تشغيل تجوال","enable roaming iphone"],
+    keywords: ["تفعيل تجوال ايفون","تجوال للايفون","تجوال ايفون","تفعيل التجوال ايفون","data roaming iphone","roaming iphone","تشغيل تجوال ايفون","enable roaming iphone","iphone roaming","تجوال على ايفون","تشغيل تجوال على ايفون"],
     category: "تفعيل التجوال - آيفون (صور توضيحية)",
     priority: "medium",
     solution: `🔧 تفعيل التجوال على آيفون
@@ -1866,7 +2132,7 @@ Settings → Cellular → Cellular Data Options → Enable LTE → Voice & Data
 
   // ========== SAMSUNG VISUAL SETTINGS ==========
   {
-    keywords: ["تفعيل 5g سامسونج","5g samsung","تشغيل 5g سامسونج","enable 5g samsung","سامسونج 5g","samsung 5g settings"],
+    keywords: ["تفعيل 5g سامسونج","5g سامسونج","5g للسامسونج","وللسامسونج 5g","سامسونج 5g","samsung 5g","enable 5g samsung","تشغيل 5g سامسونج","5g على سامسونج","5g اندرويد"],
     category: "تفعيل 5G - سامسونج (صور توضيحية)",
     priority: "medium",
     solution: `🔧 تفعيل 5G على سامسونج
@@ -1885,7 +2151,7 @@ Settings → Cellular → Cellular Data Options → Enable LTE → Voice & Data
 📞 إذا استمرت: تواصل مع مسؤول الشفت`
   },
   {
-    keywords: ["تفعيل تجوال سامسونج","data roaming samsung","تجوال سامسونج","roaming samsung","enable roaming android"],
+    keywords: ["تفعيل تجوال سامسونج","تجوال للسامسونج","تجوال سامسونج","وللسامسونج","للسامسونج","تفعيل التجوال سامسونج","data roaming samsung","roaming samsung","enable roaming android","samsung roaming","تجوال على سامسونج","تشغيل تجوال سامسونج","تجوال اندرويد","وللاندرويد","للاندرويد"],
     category: "تفعيل التجوال - سامسونج (صور توضيحية)",
     priority: "medium",
     solution: `🔧 تفعيل التجوال على سامسونج
@@ -2002,6 +2268,7 @@ Settings → SIM Cards & Mobile Networks → Preferred Network Type
 let currentUser = null;
 let logs = JSON.parse(localStorage.getItem('stc_logs') || '[]');
 let lastTopic = ''; // Track last topic for follow-up questions
+let chatHistory = []; // Full conversation history for AI context
 
 // ========== LOGIN ==========
 function login() {
@@ -2032,6 +2299,7 @@ document.getElementById('passInput').addEventListener('keydown', e => {
 
 function logout() {
   currentUser = null;
+  chatHistory = [];
   document.getElementById('mainApp').style.display = 'none';
   document.getElementById('loginPage').style.display = 'flex';
   document.getElementById('emailInput').value = '';
@@ -2071,6 +2339,12 @@ function normalizeArabic(text) {
 
 // Kuwaiti dialect mappings
 const DIALECT_MAP = {
+  'وللسامسونق': 'تجوال سامسونج وللسامسونج',
+  'للسامسونق': 'سامسونج للسامسونج',
+  'وللسامسونج': 'تجوال سامسونج وللسامسونج',
+  'للسامسونج': 'سامسونج للسامسونج',
+  'وللايفون': 'تجوال ايفون وللايفون',
+  'للايفون': 'ايفون للايفون',
   'ماقدر': 'ما اقدر',
   'مايشتغل': 'ما يشتغل',
   'مايجاوب': 'ما يجاوب',
@@ -2259,9 +2533,14 @@ async function sendMessage() {
     kbContext = "الفئة: " + kbResult.category + "\nالحل:\n" + kbResult.solution;
   }
 
-  const systemPrompt = "أنت مساعد الدعم الفني لشركة STC Kuwait. قاعدة مهمة: إذا كتب المستخدم بالعربي أو العامية الكويتية → رد بالعربي فقط. إذا كتب بالإنجليزي → رد بالإنجليزي فقط. لا تخلط اللغتين أبداً. لا تسأل أسئلة — اعطِ الحل مباشرة بخطوات مرقمة مع أيقونات. لا تذكر الأولوية في ردك.";
+  const systemPrompt = "أنت مساعد دعم فني ذكي لشركة STC Kuwait. تتعامل مع موظفي الدعم الفني وتساعدهم في حل مشاكل العملاء.\n\nقواعد التواصل:\n1. تكلم الموظف بنفس لغته (عربي/إنجليزي/عامية كويتية) ولا تخلط اللغتين\n2. كن تفاعلياً وذكياً - حلل المشكلة واسأل سؤالاً واحداً فقط إذا احتجت توضيحاً\n3. إذا كانت المعلومات كافية، اعطِ الحل مباشرة بخطوات واضحة مع أيقونات\n4. تذكر المحادثة السابقة وتكيّف معها\n5. إذا سأل الموظف عن نفس الشي لجهاز مختلف، اعطه الحل للجهاز الجديد مباشرة\n6. لا تذكر الأولوية في ردك\n7. كن مختصراً وعملياً - لا تطوّل إذا ما في داعي";
 
   try {
+    // Add user message to history
+    chatHistory.push({ role: "user", content: q });
+    // Keep only last 10 messages to avoid token limits
+    if (chatHistory.length > 10) chatHistory = chatHistory.slice(-10);
+
     const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: {
@@ -2272,9 +2551,9 @@ async function sendMessage() {
       },
       body: JSON.stringify({
         model: "claude-haiku-4-5-20251001",
-        max_tokens: 800,
+        max_tokens: 1000,
         system: systemPrompt,
-        messages: [{ role: "user", content: q }]
+        messages: chatHistory
       })
     });
 
@@ -2285,6 +2564,9 @@ async function sendMessage() {
 
     const data = await response.json();
     const answer = data.content[0].text;
+    
+    // Add AI response to history
+    chatHistory.push({ role: "assistant", content: answer });
 
     const category = kbResult ? kbResult.category : "عام";
     const priority = kbResult ? kbResult.priority : "medium";
