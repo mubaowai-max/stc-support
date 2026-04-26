@@ -2291,6 +2291,16 @@ Settings → SIM Cards & Mobile Networks → Preferred Network Type
 📞 إذا استمرت: تواصل مع Team Leader Resolutions`
   },
   {
+    keywords: ["السلام عليكم","مرحبا","هلو","hello","hi","اهلا","أهلاً","صباح","مساء","كيف","شلونك","وعليكم","hey","good morning","good afternoon"],
+    category: "تحية",
+    priority: "low",
+    solution: `وعليكم السلام! 👋 أهلاً بك في مساعد Resolutions.
+
+اكتب لي مشكلة العميل وسأساعدك في حلها فوراً.
+
+مثال: "عميل عنده نت بطي" أو "ما يقدر يتصل برا الكويت"`
+  },
+  {
     keywords: ["general","عامة","general issue","مشكلة عامة","all customers","جميع العملاء"],
     category: "مشكلة عامة",
     priority: "low",
@@ -2415,6 +2425,8 @@ function login() {
   if (USERS[email] && USERS[email].pass === pass) {
     currentUser = { email, ...USERS[email] };
     errEl.style.display = 'none';
+    // Save session
+    localStorage.setItem('stc_session', JSON.stringify({email, ...USERS[email]}));
     document.getElementById('loginPage').style.display = 'none';
     document.getElementById('mainApp').style.display = 'flex';
     document.getElementById('headerEmail').textContent = email;
@@ -2443,6 +2455,7 @@ function logout() {
   }
   currentUser = null;
   chatHistory = [];
+  localStorage.removeItem('stc_session');
   document.getElementById('mainApp').style.display = 'none';
   document.getElementById('loginPage').style.display = 'flex';
   document.getElementById('emailInput').value = '';
@@ -2765,7 +2778,7 @@ async function sendMessage() {
       addMsg("خطوات الحل:", "bot", stepsHtml, result.priority, result.category);
       savLog(q, result.category, result.priority);
     } else {
-      addMsg("لم أفهم المشكلة. حاول تكتب بشكل أوضح مثل: انترنت ما يشتغل، مشكلة تجوال، سرعة بطيئة.<br><br>📞 إذا استمرت المشكلة: تواصل مع Team Leader Resolutions أو اتصل على <b>102</b>", "bot");
+      addMsg("لم أفهم المشكلة. حاول تكتب بشكل أوضح مثل: انترنت ما يشتغل، مشكلة تجوال، سرعة بطيئة.<br><br>📞 إذا استمرت المشكلة: تواصل مع Team Leader Resolutions ", "bot");
       savLog(q, "غير محدد", "unknown");
     }
   }
@@ -2917,6 +2930,37 @@ async function toggleEmp(email, disabled) {
   await toggleEmployeeDisabled(email, disabled);
   renderAdmin();
 }
+
+// Restore session on reload
+window.addEventListener('load', function() {
+  const saved = localStorage.getItem('stc_session');
+  if (saved) {
+    try {
+      const session = JSON.parse(saved);
+      currentUser = session;
+      document.getElementById('loginPage').style.display = 'none';
+      document.getElementById('mainApp').style.display = 'flex';
+      document.getElementById('headerEmail').textContent = session.email;
+      const roleEl = document.getElementById('headerRole');
+      roleEl.textContent = session.role === 'admin' ? 'مدير' : 'موظف';
+      roleEl.className = 'role-tag ' + session.role;
+      if (session.role === 'admin') {
+        document.getElementById('tabAdmin').classList.remove('hidden');
+      }
+      upsertEmployee(session.email, session.name, session.role);
+      startIdleTimer();
+    } catch(e) {
+      localStorage.removeItem('stc_session');
+    }
+  }
+});
+
+// Auto-refresh admin every 30 seconds
+setInterval(() => {
+  if (currentUser && currentUser.role === 'admin' && document.getElementById('adminPanel').style.display !== 'none') {
+    renderAdmin();
+  }
+}, 30000);
 
 function filterLogs(val) {
   const v = val.toLowerCase();
