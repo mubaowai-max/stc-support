@@ -834,7 +834,7 @@
         </div>
         <!-- Add Employee Form -->
         <div id="addEmpForm" style="display:none;padding:16px;background:var(--surface2);border-bottom:1px solid var(--border)">
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:10px;align-items:end">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr auto;gap:10px;align-items:end">
             <div>
               <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:4px">الإيميل</label>
               <input id="newEmpEmail" type="email" placeholder="name@stc.com.kw" style="width:100%;background:var(--surface3);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-size:13px;font-family:inherit;outline:none;direction:ltr">
@@ -842,6 +842,10 @@
             <div>
               <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:4px">الاسم</label>
               <input id="newEmpName" type="text" placeholder="اسم الموظف" style="width:100%;background:var(--surface3);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-size:13px;font-family:inherit;outline:none">
+            </div>
+            <div>
+              <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:4px">الباسورد</label>
+              <input id="newEmpPass" type="text" placeholder="stc2024" style="width:100%;background:var(--surface3);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-size:13px;font-family:inherit;outline:none;direction:ltr">
             </div>
             <div>
               <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:4px">الدور</label>
@@ -2462,11 +2466,12 @@ function startIdleTimer() {
 document.addEventListener('click', () => { if (currentUser) startIdleTimer(); });
 document.addEventListener('keypress', () => { if (currentUser) startIdleTimer(); });
 
-function login() {
+async function login() {
   const email = document.getElementById('emailInput').value.trim().toLowerCase();
   const pass = document.getElementById('passInput').value;
   const errEl = document.getElementById('loginError');
 
+  // First check local USERS (admin)
   if (USERS[email] && USERS[email].pass === pass) {
     currentUser = { email, ...USERS[email] };
     errEl.style.display = 'none';
@@ -2487,7 +2492,40 @@ function login() {
     // Set idle after 10 minutes of inactivity
     startIdleTimer();
   } else {
-    errEl.style.display = 'block';
+    // Check Supabase employees table
+    try {
+      const res = await fetch(SUPABASE_URL + "/rest/v1/employees?email=eq." + encodeURIComponent(email) + "&select=*", {
+        headers: { "apikey": SUPABASE_KEY, "Authorization": "Bearer " + SUPABASE_KEY }
+      });
+      const data = await res.json();
+      if (data.length > 0 && data[0].password === pass && !data[0].disabled) {
+        const emp = data[0];
+        currentUser = { email, name: emp.name, role: emp.role || 'employee', pass };
+        errEl.style.display = 'none';
+        localStorage.setItem('stc_session', JSON.stringify(currentUser));
+        document.getElementById('loginPage').style.display = 'none';
+        document.getElementById('mainApp').style.display = 'flex';
+        document.getElementById('headerEmail').textContent = email;
+        const roleEl = document.getElementById('headerRole');
+        roleEl.textContent = emp.role === 'admin' ? 'مدير' : emp.role === 'L1' ? 'L1' : 'موظف';
+        roleEl.className = 'role-tag ' + (emp.role || 'employee');
+        if (emp.role === 'admin') {
+          document.getElementById('tabAdmin').classList.remove('hidden');
+          document.getElementById('roleSwitcher').style.display = 'flex';
+        }
+        upsertEmployee(email, emp.name, emp.role);
+        startIdleTimer();
+      } else if (data.length > 0 && data[0].disabled) {
+        errEl.textContent = 'حسابك موقوف. تواصل مع المدير.';
+        errEl.style.display = 'block';
+      } else {
+        errEl.textContent = 'البريد الإلكتروني أو كلمة المرور غير صحيحة';
+        errEl.style.display = 'block';
+      }
+    } catch(e) {
+      errEl.textContent = 'البريد الإلكتروني أو كلمة المرور غير صحيحة';
+      errEl.style.display = 'block';
+    }
   }
 }
 
@@ -3044,7 +3082,7 @@ async function addEmployee() {
         "Authorization": "Bearer " + SUPABASE_KEY,
         "Prefer": "return=minimal"
       },
-      body: JSON.stringify({ email, name, role, status: "idle", disabled: false })
+      body: JSON.stringify({ email, name, role, password: document.getElementById('newEmpPass').value.trim() || 'stc2024', status: "idle", disabled: false })
     });
 
     if (res.ok) {
@@ -3053,6 +3091,7 @@ async function addEmployee() {
       msg.style.display = 'block';
       document.getElementById('newEmpEmail').value = '';
       document.getElementById('newEmpName').value = '';
+      document.getElementById('newEmpPass').value = '';
       setTimeout(() => { hideAddEmployee(); renderAdmin(); }, 1500);
     } else {
       msg.style.color = '#E74C3C';
