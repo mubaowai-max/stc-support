@@ -803,6 +803,29 @@
           <div class="stat-num" id="statToday" style="color:#2ECC71">0</div>
           <div class="stat-label">أسئلة اليوم</div>
         </div>
+        <div class="stat-card">
+          <div class="stat-num" id="statActive" style="color:#2ECC71">0</div>
+          <div class="stat-label">🟢 متصل الحين</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="statIdle" style="color:#FFD93D">0</div>
+          <div class="stat-label">🟡 Idle</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="statDisabled" style="color:#FF6B6B">0</div>
+          <div class="stat-label">🔴 Disabled</div>
+        </div>
+      </div>
+
+      <!-- EMPLOYEES TABLE -->
+      <div class="logs-table-wrap" style="margin-bottom:20px">
+        <div class="logs-header">
+          <h3>👥 الموظفين</h3>
+          <button onclick="renderAdmin()" style="background:var(--surface3);border:1px solid var(--border);border-radius:8px;padding:6px 14px;color:var(--text);font-size:13px;font-family:inherit;cursor:pointer">🔄 تحديث</button>
+        </div>
+        <div id="employeesBody">
+          <div class="no-data">جاري التحميل...</div>
+        </div>
       </div>
 
       <div class="logs-table-wrap">
@@ -2293,6 +2316,72 @@ Settings → SIM Cards & Mobile Networks → Preferred Network Type
   }
 ];
 
+// ========== SUPABASE EMPLOYEES ==========
+async function upsertEmployee(email, name, role) {
+  try {
+    await fetch(SUPABASE_URL + "/rest/v1/employees", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_KEY,
+        "Authorization": "Bearer " + SUPABASE_KEY,
+        "Prefer": "resolution=merge-duplicates"
+      },
+      body: JSON.stringify({
+        email: email,
+        name: name,
+        role: role,
+        status: "active",
+        last_seen: new Date().toISOString(),
+        disabled: false
+      })
+    });
+  } catch(e) { console.error("upsertEmployee error:", e); }
+}
+
+async function updateEmployeeStatus(email, status) {
+  try {
+    await fetch(SUPABASE_URL + "/rest/v1/employees?email=eq." + encodeURIComponent(email), {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_KEY,
+        "Authorization": "Bearer " + SUPABASE_KEY
+      },
+      body: JSON.stringify({
+        status: status,
+        last_seen: new Date().toISOString()
+      })
+    });
+  } catch(e) { console.error("updateStatus error:", e); }
+}
+
+async function getEmployees() {
+  try {
+    const res = await fetch(SUPABASE_URL + "/rest/v1/employees?order=last_seen.desc", {
+      headers: {
+        "apikey": SUPABASE_KEY,
+        "Authorization": "Bearer " + SUPABASE_KEY
+      }
+    });
+    return await res.json();
+  } catch(e) { return []; }
+}
+
+async function toggleEmployeeDisabled(email, disabled) {
+  try {
+    await fetch(SUPABASE_URL + "/rest/v1/employees?email=eq." + encodeURIComponent(email), {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_KEY,
+        "Authorization": "Bearer " + SUPABASE_KEY
+      },
+      body: JSON.stringify({ disabled: disabled, status: disabled ? "disabled" : "idle" })
+    });
+  } catch(e) { console.error("toggleDisabled error:", e); }
+}
+
 // ========== STATE ==========
 let currentUser = null;
 let logs = JSON.parse(localStorage.getItem('stc_logs') || '[]');
@@ -2300,6 +2389,24 @@ let lastTopic = ''; // Track last topic for follow-up questions
 let chatHistory = []; // Full conversation history for AI context
 
 // ========== LOGIN ==========
+let idleTimer = null;
+let activityTimer = null;
+
+function startIdleTimer() {
+  clearTimeout(idleTimer);
+  clearTimeout(activityTimer);
+  // Set active
+  if (currentUser) updateEmployeeStatus(currentUser.email, 'active');
+  // After 10 min of no activity → set idle
+  idleTimer = setTimeout(() => {
+    if (currentUser) updateEmployeeStatus(currentUser.email, 'idle');
+  }, 10 * 60 * 1000);
+}
+
+// Reset timer on any activity
+document.addEventListener('click', () => { if (currentUser) startIdleTimer(); });
+document.addEventListener('keypress', () => { if (currentUser) startIdleTimer(); });
+
 function login() {
   const email = document.getElementById('emailInput').value.trim().toLowerCase();
   const pass = document.getElementById('passInput').value;
@@ -2317,6 +2424,10 @@ function login() {
     if (currentUser.role === 'admin') {
       document.getElementById('tabAdmin').classList.remove('hidden');
     }
+    // Update employee status in Supabase
+    upsertEmployee(email, currentUser.name, currentUser.role);
+    // Set idle after 10 minutes of inactivity
+    startIdleTimer();
   } else {
     errEl.style.display = 'block';
   }
@@ -2327,6 +2438,9 @@ document.getElementById('passInput').addEventListener('keydown', e => {
 });
 
 function logout() {
+  if (currentUser) {
+    updateEmployeeStatus(currentUser.email, 'idle');
+  }
   currentUser = null;
   chatHistory = [];
   document.getElementById('mainApp').style.display = 'none';
@@ -2705,6 +2819,19 @@ function savLog(question, category, priority) {
 }
 
 async function renderAdmin() {
+  // Fetch employees
+  const employees = await getEmployees();
+  const active = employees.filter(e => e.status === 'active' && !e.disabled);
+  const idle = employees.filter(e => e.status === 'idle' && !e.disabled);
+  const disabled = employees.filter(e => e.disabled || e.status === 'disabled');
+
+  document.getElementById('statActive').textContent = active.length;
+  document.getElementById('statIdle').textContent = idle.length;
+  document.getElementById('statDisabled').textContent = disabled.length;
+
+  // Render employees table
+  renderEmployeesTable(employees);
+
   // Fetch from Supabase for admin
   const supaLogs = await getLogsFromSupabase();
   const allLogs = supaLogs.length > 0 ? supaLogs.map(l => ({
@@ -2755,6 +2882,40 @@ function renderLogsTable(data) {
     </tr></thead>
     <tbody>${rows}</tbody>
   </table>`;
+}
+
+function renderEmployeesTable(employees) {
+  const body = document.getElementById('employeesBody');
+  if (!employees.length) {
+    body.innerHTML = '<div class="no-data">لا يوجد موظفين بعد</div>';
+    return;
+  }
+
+  const rows = employees.map(e => {
+    const statusBadge = e.disabled
+      ? '<span style="color:#FF6B6B;font-weight:600">🔴 Disabled</span>'
+      : e.status === 'active'
+      ? '<span style="color:#2ECC71;font-weight:600">🟢 Active</span>'
+      : '<span style="color:#FFD93D;font-weight:600">🟡 Idle</span>';
+
+    const lastSeen = e.last_seen
+      ? new Date(e.last_seen).toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'}) + ' ' + new Date(e.last_seen).toLocaleDateString('en-GB')
+      : '-';
+
+    const safeEmail = e.email.replace(/'/g, "\'");
+    const toggleBtn = e.disabled
+      ? "<button onclick=\"toggleEmp('" + safeEmail + "', false)\" style=\"background:#2ECC71;border:none;border-radius:6px;padding:4px 10px;color:white;font-size:11px;cursor:pointer;font-family:inherit\">تفعيل</button>"
+      : "<button onclick=\"toggleEmp('" + safeEmail + "', true)\" style=\"background:#E74C3C;border:none;border-radius:6px;padding:4px 10px;color:white;font-size:11px;cursor:pointer;font-family:inherit\">إيقاف</button>";
+
+    return '<tr><td class="td-email">' + e.email + '</td><td>' + (e.name||'-') + '</td><td><span style="color:#C77DFF">' + (e.role||'-') + '</span></td><td>' + statusBadge + '</td><td class="td-time">' + lastSeen + '</td><td>' + toggleBtn + '</td></tr>';
+  }).join('');
+
+  body.innerHTML = '<table><thead><tr><th>الإيميل</th><th>الاسم</th><th>الدور</th><th>الحالة</th><th>آخر دخول</th><th>إجراء</th></tr></thead><tbody>' + rows + '</tbody></table>';
+}
+
+async function toggleEmp(email, disabled) {
+  await toggleEmployeeDisabled(email, disabled);
+  renderAdmin();
 }
 
 function filterLogs(val) {
