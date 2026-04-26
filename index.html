@@ -750,6 +750,12 @@
         <span id="headerEmail"></span>
         <span class="role-tag" id="headerRole"></span>
       </div>
+      <!-- Role switcher for admin only -->
+      <div id="roleSwitcher" style="display:none;gap:6px;align-items:center" class="header-right">
+        <span style="font-size:12px;color:var(--text-muted)">تجربة:</span>
+        <button onclick="switchPreview('L2')" id="btnL2" style="background:var(--primary);border:none;border-radius:6px;padding:5px 12px;color:white;font-size:12px;font-family:inherit;cursor:pointer">L2</button>
+        <button onclick="switchPreview('L1')" id="btnL1" style="background:var(--surface3);border:1px solid var(--border);border-radius:6px;padding:5px 12px;color:var(--text);font-size:12px;font-family:inherit;cursor:pointer">L1</button>
+      </div>
       <button class="btn-logout" onclick="logout()">خروج</button>
     </div>
   </div>
@@ -2474,6 +2480,7 @@ function login() {
     roleEl.className = 'role-tag ' + currentUser.role;
     if (currentUser.role === 'admin') {
       document.getElementById('tabAdmin').classList.remove('hidden');
+      document.getElementById('roleSwitcher').style.display = 'flex';
     }
     // Update employee status in Supabase
     upsertEmployee(email, currentUser.name, currentUser.role);
@@ -2970,6 +2977,42 @@ async function toggleEmp(email, disabled) {
   renderAdmin();
 }
 
+let previewMode = 'L2'; // Default for admin
+
+function switchPreview(mode) {
+  previewMode = mode;
+  
+  // Update buttons
+  document.getElementById('btnL2').style.background = mode === 'L2' ? 'var(--primary)' : 'var(--surface3)';
+  document.getElementById('btnL2').style.border = mode === 'L2' ? 'none' : '1px solid var(--border)';
+  document.getElementById('btnL2').style.color = mode === 'L2' ? 'white' : 'var(--text)';
+  
+  document.getElementById('btnL1').style.background = mode === 'L1' ? 'var(--primary)' : 'var(--surface3)';
+  document.getElementById('btnL1').style.border = mode === 'L1' ? 'none' : '1px solid var(--border)';
+  document.getElementById('btnL1').style.color = mode === 'L1' ? 'white' : 'var(--text)';
+  
+  // Update chat header based on mode
+  if (mode === 'L1') {
+    document.querySelector('.chat-header h3').textContent = 'مساعد Call Center (L1)';
+    document.querySelector('.chat-header p').textContent = 'اكتب مشكلة العميل وسأساعدك في التصعيد';
+  } else {
+    document.querySelector('.chat-header h3').textContent = 'مساعد Resolutions';
+    document.querySelector('.chat-header p').textContent = 'مساعد موظفي الدعم الفني — اكتب مشكلة العميل وسأساعدك';
+  }
+  
+  // Clear chat
+  document.getElementById('chatMessages').innerHTML = `
+    <div class="msg bot">
+      <div class="msg-avatar">🤖</div>
+      <div class="msg-bubble">
+        ${mode === 'L1' 
+          ? 'أهلاً! أنا مساعد Call Center 👋<br><br>اكتب مشكلة العميل وسأعطيك خطوات الحل أو أساعدك في رفع طلب لـ Resolutions.'
+          : 'أهلاً! أنا مساعد Resolutions 👋<br><br>اكتب مشكلة العميل وسأساعدك في حلها.'}
+      </div>
+    </div>`;
+  chatHistory = [];
+}
+
 function showAddEmployee() {
   document.getElementById('addEmpForm').style.display = 'block';
 }
@@ -3038,6 +3081,7 @@ window.addEventListener('load', function() {
       roleEl.className = 'role-tag ' + session.role;
       if (session.role === 'admin') {
         document.getElementById('tabAdmin').classList.remove('hidden');
+        document.getElementById('roleSwitcher').style.display = 'flex';
       }
       upsertEmployee(session.email, session.name, session.role);
       startIdleTimer();
