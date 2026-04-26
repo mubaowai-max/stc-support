@@ -2329,25 +2329,13 @@ Settings → SIM Cards & Mobile Networks → Preferred Network Type
 ⚠️ أرسل تيكت لـ HUW مع: العنوان/PACI والسرعة والنطاق
 📞 إذا استمرت: تواصل مع Team Leader Resolutions`
   },
+
+
   {
-    keywords: ["السلام عليكم","مرحبا","هلو","اهلا","أهلاً","صباح","مساء","كيف","شلونك","وعليكم"],
-    category: "تحية-عربي",
+    keywords: ["شسمك","ايش اسمك","اسمك شنو","اسمك","what is your name","what's your name","whats your name","your name","من انت","مين انت"],
+    category: "هوية-المساعد",
     priority: "low",
-    solution: `وعليكم السلام! 👋 أهلاً بك في مساعد Resolutions.
-
-اكتب لي مشكلة العميل وسأساعدك في حلها فوراً.
-
-مثال: "عميل عنده نت بطي" أو "ما يقدر يتصل برا الكويت"`
-  },
-  {
-    keywords: ["hello","hi","hey","good morning","good afternoon","good evening","howdy","greetings"],
-    category: "تحية-انجليزي",
-    priority: "low",
-    solution: `Hello! 👋 Welcome to Resolutions Assistant.
-
-Tell me the customer's issue and I'll help you resolve it right away.
-
-Example: "Customer has slow internet" or "Can't make international calls"`
+    solution: `__NAME_QUERY__`
   },
   {
     keywords: ["general","عامة","general issue","مشكلة عامة","all customers","جميع العملاء"],
@@ -2777,6 +2765,21 @@ async function sendMessage() {
 
   const kbResult = findAnswer(q);
   if (kbResult) lastTopic = kbResult.category.replace(/[-–—()صور توضيحية]*/g, '').trim();
+
+  const isL1Mode = (typeof previewMode !== 'undefined' && previewMode === 'L1') || (currentUser && currentUser.role === 'L1');
+
+  // Handle name query directly without AI
+  if (kbResult && kbResult.solution === '__NAME_QUERY__') {
+    removeTyping();
+    document.querySelector('.btn-send').disabled = false;
+    const nameReply = isL1Mode ? 'أنا مساعد Call Center 👋' : 'أنا مساعد Resolutions 👋';
+    appendMsg('bot', nameReply);
+    chatHistory.push({ role: "user", content: q });
+    chatHistory.push({ role: "assistant", content: nameReply });
+    savLog(q, 'هوية-المساعد', 'low');
+    return;
+  }
+
   let kbContext = '';
   if (kbResult) {
     kbContext = "الفئة: " + kbResult.category + "\nالحل:\n" + kbResult.solution;
@@ -2784,8 +2787,6 @@ async function sendMessage() {
     // Follow-up with no direct match - hint the AI about context
     kbContext = "السياق: الموظف يسأل عن نفس موضوع المحادثة السابقة (" + lastTopic + ") لكن لجهاز مختلف أو بصيغة مختلفة.";
   }
-
-  const isL1Mode = (typeof previewMode !== 'undefined' && previewMode === 'L1') || (currentUser && currentUser.role === 'L1');
   const systemPrompt = isL1Mode
     ? `أنت مساعد Call Center 👋 — مساعد ذكي لموظفي الـ L1 في STC Kuwait.
 
