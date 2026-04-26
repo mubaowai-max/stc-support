@@ -2332,6 +2332,18 @@ Settings → SIM Cards & Mobile Networks → Preferred Network Type
 
 
   {
+    keywords: ["السلام عليكم","مرحبا","هلا","هلو","اهلا","أهلاً","صباح","مساء","كيف","شلونك","وعليكم","شخبارك","شلونج","هاي","هي"],
+    category: "تحية-عربي",
+    priority: "low",
+    solution: `__GREETING_AR__`
+  },
+  {
+    keywords: ["hello","hi","hey","good morning","good afternoon","good evening","howdy","greetings","how are you","whats up"],
+    category: "تحية-انجليزي",
+    priority: "low",
+    solution: `__GREETING_EN__`
+  },
+  {
     keywords: ["شسمك","ايش اسمك","اسمك شنو","اسمك","what is your name","what's your name","whats your name","your name","من انت","مين انت"],
     category: "هوية-المساعد",
     priority: "low",
@@ -2773,10 +2785,25 @@ async function sendMessage() {
     removeTyping();
     document.querySelector('.btn-send').disabled = false;
     const nameReply = isL1Mode ? 'أنا مساعد Call Center 👋' : 'أنا مساعد Resolutions 👋';
-    appendMsg('bot', nameReply);
+    addMsg(nameReply, 'bot', null, 'low', 'هوية-المساعد');
     chatHistory.push({ role: "user", content: q });
     chatHistory.push({ role: "assistant", content: nameReply });
     savLog(q, 'هوية-المساعد', 'low');
+    return;
+  }
+
+  // Handle greetings directly without AI
+  if (kbResult && (kbResult.solution === '__GREETING_AR__' || kbResult.solution === '__GREETING_EN__')) {
+    removeTyping();
+    document.querySelector('.btn-send').disabled = false;
+    const greetings_ar = ['وعليكم السلام! 😊 كيف أقدر أساعدك؟', 'هلا! 👋 اكتب مشكلة العميل وأساعدك.', 'أهلاً! شكيف؟ اكتب المشكلة وأساعدك.'];
+    const greetings_en = ['Hello! 👋 What can I help you with?', 'Hi there! Tell me the customer's issue.', 'Hey! What's the problem you're dealing with?'];
+    const pool = kbResult.solution === '__GREETING_AR__' ? greetings_ar : greetings_en;
+    const greetReply = pool[Math.floor(Math.random() * pool.length)];
+    addMsg(greetReply, 'bot', null, 'low', kbResult.category);
+    chatHistory.push({ role: "user", content: q });
+    chatHistory.push({ role: "assistant", content: greetReply });
+    savLog(q, kbResult.category, 'low');
     return;
   }
 
