@@ -2919,6 +2919,14 @@ async function sendMessage() {
   } catch (err) {
     removeTyping();
     document.querySelector('.btn-send').disabled = false;
+    console.error("API Error:", err);
+    // Show specific error message
+    const errMsg = err.message && err.message.includes('401') 
+      ? '⚠️ خطأ في مفتاح الـ API — تواصل مع المدير'
+      : err.message && err.message.includes('Failed to fetch')
+      ? '⚠️ خطأ في الاتصال بالـ AI — تحقق من الإنترنت'
+      : '⚠️ خطأ مؤقت: ' + (err.message || 'unknown');
+    
     const result = findAnswer(q);
     if (result) {
       const steps = result.solution.split("\n").filter(s => s.trim());
@@ -2931,7 +2939,7 @@ async function sendMessage() {
       addMsg("خطوات الحل:", "bot", stepsHtml, result.priority, result.category);
       savLog(q, result.category, result.priority);
     } else {
-      addMsg("لم أفهم المشكلة. حاول تكتب بشكل أوضح مثل: انترنت ما يشتغل، مشكلة تجوال، سرعة بطيئة.", "bot");
+      addMsg(errMsg, "bot");
       savLog(q, "غير محدد", "unknown");
     }
   }
