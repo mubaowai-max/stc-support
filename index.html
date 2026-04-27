@@ -870,8 +870,12 @@
       <div class="logs-table-wrap">
         <div class="logs-header">
           <h3>سجل الأسئلة</h3>
-          <div style="display:flex;gap:10px;align-items:center">
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
             <input class="filter-input" placeholder="بحث..." oninput="filterLogs(this.value)" id="filterInput">
+            <input type="date" id="dateFrom" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 10px;color:var(--text);font-size:13px;font-family:inherit" onchange="applyDateFilter()">
+            <span style="color:var(--text-muted);font-size:13px">—</span>
+            <input type="date" id="dateTo" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 10px;color:var(--text);font-size:13px;font-family:inherit" onchange="applyDateFilter()">
+            <button onclick="clearDateFilter()" style="background:var(--surface3);border:1px solid var(--border);border-radius:8px;padding:7px 10px;color:var(--text);font-size:12px;font-family:inherit;cursor:pointer">مسح</button>
             <button onclick="exportExcel()" style="background:linear-gradient(135deg,#2ECC71,#27AE60);border:none;border-radius:8px;padding:8px 16px;color:white;font-size:13px;font-family:inherit;cursor:pointer;white-space:nowrap">⬇️ تنزيل Excel</button>
           </div>
         </div>
@@ -908,15 +912,16 @@ async function saveLogToSupabase(email, question, category, priority) {
   }
 }
 
-async function getLogsFromSupabase() {
+async function getLogsFromSupabase(fromDate, toDate) {
   try {
-    const res = await fetch(SUPABASE_URL + "/rest/v1/logs?order=created_at.desc&limit=500", {
-      headers: {
-        "apikey": SUPABASE_KEY,
-        "Authorization": "Bearer " + SUPABASE_KEY
-      }
+    let url = SUPABASE_URL + "/rest/v1/logs?order=created_at.desc&limit=1000";
+    if (fromDate) url += "&created_at=gte." + fromDate + "T00:00:00";
+    if (toDate) url += "&created_at=lte." + toDate + "T23:59:59";
+    const res = await fetch(url, {
+      headers: { "apikey": SUPABASE_KEY, "Authorization": "Bearer " + SUPABASE_KEY }
     });
-    return await res.json();
+    const data = await res.json();
+    return Array.isArray(data) ? data : [];
   } catch(e) {
     console.error("Supabase fetch error:", e);
     return [];
@@ -2978,6 +2983,10 @@ function savLog(question, category, priority) {
   saveLogToSupabase(currentUser.email, question, category || 'عام', priority || 'medium');
 }
 
+let allLogsCache = [];
+let currentLogsPage = 1;
+const LOGS_PER_PAGE = 10;
+
 async function renderAdmin() {
   // Fetch employees
   const employees = await getEmployees();
@@ -2993,8 +3002,10 @@ async function renderAdmin() {
   renderEmployeesTable(employees);
 
   // Fetch from Supabase for admin
-  const supaLogs = await getLogsFromSupabase();
-  const allLogs = supaLogs.length > 0 ? supaLogs.map(l => ({
+  const fromDate = document.getElementById('dateFrom') ? document.getElementById('dateFrom').value : '';
+  const toDate = document.getElementById('dateTo') ? document.getElementById('dateTo').value : '';
+  const supaLogs = await getLogsFromSupabase(fromDate, toDate);
+  allLogsCache = supaLogs.length > 0 ? supaLogs.map(l => ({
     email: l.email,
     question: l.question,
     category: l.category,
@@ -3003,24 +3014,39 @@ async function renderAdmin() {
   })) : logs;
 
   const today = new Date().toDateString();
-  const todayLogs = allLogs.filter(l => new Date(l.time).toDateString() === today);
-  const uniqueUsers = [...new Set(allLogs.map(l => l.email))];
+  const todayLogs = allLogsCache.filter(l => new Date(l.time).toDateString() === today);
+  const uniqueUsers = [...new Set(allLogsCache.map(l => l.email))];
 
-  document.getElementById('statTotal').textContent = allLogs.length;
+  document.getElementById('statTotal').textContent = allLogsCache.length;
   document.getElementById('statUsers').textContent = uniqueUsers.length;
   document.getElementById('statToday').textContent = todayLogs.length;
 
-  renderLogsTable(allLogs);
+  currentLogsPage = 1;
+  renderLogsTable(allLogsCache);
+}
+
+async function applyDateFilter() {
+  await renderAdmin();
+}
+
+function clearDateFilter() {
+  document.getElementById('dateFrom').value = '';
+  document.getElementById('dateTo').value = '';
+  renderAdmin();
 }
 
 function renderLogsTable(data) {
   const body = document.getElementById('logsBody');
-  if (!data.length) {
+  if (!data || !data.length) {
     body.innerHTML = '<div class="no-data">📭 لا توجد بيانات بعد</div>';
     return;
   }
 
-  const rows = data.map(l => {
+  const totalPages = Math.ceil(data.length / LOGS_PER_PAGE);
+  const start = (currentLogsPage - 1) * LOGS_PER_PAGE;
+  const pageData = data.slice(start, start + LOGS_PER_PAGE);
+
+  const rows = pageData.map(l => {
     const d = new Date(l.time);
     const dateStr = d.toLocaleDateString('en-GB');
     const timeStr = d.toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
@@ -3036,12 +3062,36 @@ function renderLogsTable(data) {
     </tr>`;
   }).join('');
 
+  // Pagination controls
+  let pagination = '';
+  if (totalPages > 1) {
+    const prevDisabled = currentLogsPage === 1 ? 'opacity:0.4;cursor:default' : 'cursor:pointer';
+    const nextDisabled = currentLogsPage === totalPages ? 'opacity:0.4;cursor:default' : 'cursor:pointer';
+    pagination = `<div style="display:flex;justify-content:center;align-items:center;gap:12px;padding:14px;border-top:1px solid var(--border)">
+      <button onclick="goLogsPage(${currentLogsPage-1})" style="background:var(--surface3);border:1px solid var(--border);border-radius:8px;padding:6px 14px;color:var(--text);font-size:13px;font-family:inherit;${prevDisabled}">◀ السابق</button>
+      <span style="color:var(--text-muted);font-size:13px">صفحة ${currentLogsPage} من ${totalPages} (${data.length} سجل)</span>
+      <button onclick="goLogsPage(${currentLogsPage+1})" style="background:var(--surface3);border:1px solid var(--border);border-radius:8px;padding:6px 14px;color:var(--text);font-size:13px;font-family:inherit;${nextDisabled}">التالي ▶</button>
+    </div>`;
+  }
+
   body.innerHTML = `<table>
     <thead><tr>
       <th>الموظف</th><th>السؤال</th><th>الفئة</th><th>الأولوية</th><th>التاريخ</th><th>الوقت</th>
     </tr></thead>
     <tbody>${rows}</tbody>
-  </table>`;
+  </table>${pagination}`;
+}
+
+function goLogsPage(page) {
+  const totalPages = Math.ceil(allLogsCache.length / LOGS_PER_PAGE);
+  if (page < 1 || page > totalPages) return;
+  currentLogsPage = page;
+  const searchVal = document.getElementById('filterInput') ? document.getElementById('filterInput').value : '';
+  if (searchVal) {
+    filterLogs(searchVal);
+  } else {
+    renderLogsTable(allLogsCache);
+  }
 }
 
 function renderEmployeesTable(employees) {
@@ -3202,9 +3252,13 @@ setInterval(() => {
 
 function filterLogs(val) {
   const v = val.toLowerCase();
-  const filtered = logs.filter(l =>
-    l.email.includes(v) || l.question.includes(v) || l.category.includes(v)
+  const source = allLogsCache.length > 0 ? allLogsCache : logs;
+  const filtered = source.filter(l =>
+    (l.email||'').toLowerCase().includes(v) ||
+    (l.question||'').toLowerCase().includes(v) ||
+    (l.category||'').toLowerCase().includes(v)
   );
+  currentLogsPage = 1;
   renderLogsTable(filtered);
 }
 
