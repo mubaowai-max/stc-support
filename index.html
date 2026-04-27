@@ -2642,8 +2642,8 @@ function findAnswer(query) {
     for (const kw of item.keywords) {
       const normKw = normalizeArabic(kw);
       if (q.includes(normKw)) score += 2;
-      // partial match
-      else if (normKw.length > 3 && q.split(' ').some(word => word.includes(normKw) || normKw.includes(word))) score += 1;
+      // partial match - stricter: keyword must be at least 5 chars and word must START with keyword
+      else if (normKw.length > 4 && q.split(' ').some(word => word.length > 3 && word.startsWith(normKw))) score += 1;
     }
     if (item.subKeywords) {
       for (const kw of item.subKeywords) {
@@ -2817,8 +2817,9 @@ async function sendMessage() {
   if (kbResult) {
     kbContext = "الفئة: " + kbResult.category + "\nالحل:\n" + kbResult.solution;
   } else if (lastTopic && chatHistory.length > 0) {
-    // Follow-up with no direct match - hint the AI about context
     kbContext = "السياق: الموظف يسأل عن نفس موضوع المحادثة السابقة (" + lastTopic + ") لكن لجهاز مختلف أو بصيغة مختلفة.";
+  } else {
+    kbContext = "السياق: سؤال مباشر من الموظف — أجب بشكل طبيعي ومفيد.";
   }
   const systemPrompt = isL1Mode
     ? `أنت مساعد Call Center 👋 — مساعد ذكي لموظفي الـ L1 في STC Kuwait.
@@ -2872,7 +2873,7 @@ async function sendMessage() {
       body: JSON.stringify({
         model: "claude-haiku-4-5-20251001",
         max_tokens: 1000,
-        system: systemPrompt,
+        system: systemPrompt + (kbContext ? "\n\nمعلومات ذات صلة من قاعدة المعرفة:\n" + kbContext : ""),
         messages: chatHistory
       })
     });
@@ -2930,7 +2931,7 @@ async function sendMessage() {
       addMsg("خطوات الحل:", "bot", stepsHtml, result.priority, result.category);
       savLog(q, result.category, result.priority);
     } else {
-      addMsg("لم أفهم المشكلة. حاول تكتب بشكل أوضح مثل: انترنت ما يشتغل، مشكلة تجوال، سرعة بطيئة.<br><br>📞 إذا استمرت المشكلة: تواصل مع Team Leader Resolutions ", "bot");
+      addMsg("لم أفهم المشكلة. حاول تكتب بشكل أوضح مثل: انترنت ما يشتغل، مشكلة تجوال، سرعة بطيئة.", "bot");
       savLog(q, "غير محدد", "unknown");
     }
   }
