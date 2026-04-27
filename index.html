@@ -2798,7 +2798,7 @@ async function sendMessage() {
     removeTyping();
     document.querySelector('.btn-send').disabled = false;
     const greetings_ar = ['وعليكم السلام! 😊 كيف أقدر أساعدك؟', 'هلا! 👋 اكتب مشكلة العميل وأساعدك.', 'أهلاً! شكيف؟ اكتب المشكلة وأساعدك.'];
-    const greetings_en = ['Hello! 👋 What can I help you with?', 'Hi there! Tell me the customer's issue.', 'Hey! What's the problem you're dealing with?'];
+    const greetings_en = ["Hello! 👋 What can I help you with?", "Hi there! Tell me the customer's issue.", "Hey! What's the problem you're dealing with?"];
     const pool = kbResult.solution === '__GREETING_AR__' ? greetings_ar : greetings_en;
     const greetReply = pool[Math.floor(Math.random() * pool.length)];
     addMsg(greetReply, 'bot', null, 'low', kbResult.category);
