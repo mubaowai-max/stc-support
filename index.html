@@ -2920,28 +2920,13 @@ async function sendMessage() {
     removeTyping();
     document.querySelector('.btn-send').disabled = false;
     console.error("API Error:", err);
-    // Show specific error message
     const errMsg = err.message && err.message.includes('401') 
       ? '⚠️ خطأ في مفتاح الـ API — تواصل مع المدير'
       : err.message && err.message.includes('Failed to fetch')
       ? '⚠️ خطأ في الاتصال بالـ AI — تحقق من الإنترنت'
-      : '⚠️ خطأ مؤقت: ' + (err.message || 'unknown');
-    
-    const result = findAnswer(q);
-    if (result) {
-      const steps = result.solution.split("\n").filter(s => s.trim());
-      let stepsHtml = "<div class=\"msg-steps\">";
-      steps.forEach((s, i) => {
-        const clean = s.replace(/^\d+\.\s*/, "").trim();
-        if (clean) stepsHtml += "<div class=\"msg-step\"><div class=\"step-num\">" + (i+1) + "</div><span>" + clean + "</span></div>";
-      });
-      stepsHtml += "</div>";
-      addMsg("خطوات الحل:", "bot", stepsHtml, result.priority, result.category);
-      savLog(q, result.category, result.priority);
-    } else {
-      addMsg(errMsg, "bot");
-      savLog(q, "غير محدد", "unknown");
-    }
+      : '⚠️ خطأ مؤقت، حاول مرة ثانية';
+    addMsg(errMsg, "bot");
+    savLog(q, "خطأ", "unknown");
   }
 }
 
