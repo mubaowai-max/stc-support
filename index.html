@@ -467,6 +467,60 @@
     30% { transform: translateY(-6px); opacity: 1; }
   }
 
+  /* Diagnostic Buttons */
+  .diagnostic-buttons {
+    align-items: flex-start !important;
+    flex-direction: row !important;
+  }
+  .diagnostic-buttons .msg-avatar {
+    flex-shrink: 0;
+  }
+  .btn-group-wrap {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 4px 0;
+    max-width: 520px;
+  }
+  .diag-btn {
+    background: var(--surface3);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 7px 14px;
+    color: var(--text);
+    font-size: 13px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .diag-btn:hover:not(:disabled) {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    transform: translateY(-1px);
+  }
+  .diag-btn:disabled {
+    cursor: default;
+  }
+  .diag-btn-reset {
+    background: transparent;
+    border: 1px dashed var(--border);
+    border-radius: 20px;
+    padding: 6px 12px;
+    color: var(--text-muted);
+    font-size: 11px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .diag-btn-reset:hover {
+    border-color: var(--text-muted);
+    color: var(--text);
+  }
+
   .chat-input-area {
     padding: 16px 20px;
     border-top: 1px solid var(--border);
@@ -762,6 +816,7 @@
 
   <div class="tabs" id="tabsBar">
     <button class="tab active" onclick="showTab('chat', this)" id="tabChat">💬 الدعم الفني</button>
+    <button class="tab" onclick="showTab('history', this)" id="tabHistory">🕐 سجل المحادثات</button>
     <button class="tab hidden" onclick="showTab('admin', this)" id="tabAdmin">📊 لوحة التحكم</button>
   </div>
 
@@ -791,6 +846,17 @@
           <textarea class="chat-input" id="chatInput" placeholder="اكتب المشكلة هنا..." rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
           <button class="btn-send" onclick="sendMessage()">➤</button>
         </div>
+      </div>
+    </div>
+
+    <!-- HISTORY -->
+    <div id="historyPanel" style="display:none;padding:20px;max-width:900px;margin:0 auto">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <h3 style="color:var(--text);margin:0">🕐 سجل محادثاتي — آخر 24 ساعة</h3>
+        <button onclick="loadHistory()" style="background:var(--surface3);border:1px solid var(--border);border-radius:8px;padding:7px 14px;color:var(--text);font-size:13px;font-family:inherit;cursor:pointer">🔄 تحديث</button>
+      </div>
+      <div id="historyBody" style="display:flex;flex-direction:column;gap:12px">
+        <div style="color:var(--text-muted);text-align:center;padding:40px">جاري التحميل...</div>
       </div>
     </div>
 
@@ -893,9 +959,9 @@
 
 // ========== SUPABASE CONFIG ==========
 const SUPABASE_URL = "https://wlppisrsxryzzvisboja.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndscHBpc3JzeHJ5enp2aXNib2phIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcwOTQ5NTAsImV4cCI6MjA5MjY3MDk1MH0.wDZkKP_7XSxBqcBi1O9l8cncqSbR2Z9j_9ahFDLX2zk";
+const SUPABASE_KEY = "sb_publishable_47e5TN8PhdLvVJhuYoHseg_NK3X-hsZ";
 
-async function saveLogToSupabase(email, question, category, priority) {
+async function saveLogToSupabase(email, question, category, priority, answer) {
   try {
     await fetch(SUPABASE_URL + "/rest/v1/logs", {
       method: "POST",
@@ -905,7 +971,7 @@ async function saveLogToSupabase(email, question, category, priority) {
         "Authorization": "Bearer " + SUPABASE_KEY,
         "Prefer": "return=minimal"
       },
-      body: JSON.stringify({ email, question, category, priority })
+      body: JSON.stringify({ email, question, category, priority, answer: answer || '' })
     });
   } catch(e) {
     console.error("Supabase save error:", e);
@@ -2337,13 +2403,25 @@ Settings → SIM Cards & Mobile Networks → Preferred Network Type
 
 
   {
-    keywords: ["السلام عليكم","مرحبا","هلا","هلو","اهلا","أهلاً","صباح","مساء","كيف","شلونك","وعليكم","شخبارك","شلونج","هاي","هي"],
+    keywords: ["السلام عليكم","وعليكم السلام","مرحبا","مرحبتين","هلا","هلا والله","هلو","اهلا","أهلاً","اهلين","صباح الخير","صباح النور","مساء الخير","مساء النور","كيف","كيف حالك","شلونك","شلونج","شخبارك","شخباركم","يزاك الله","عساك بخير","ايش اخبارك","شو اخبارك","تمام","الحمدلله","بخير"],
     category: "تحية-عربي",
     priority: "low",
     solution: `__GREETING_AR__`
   },
   {
-    keywords: ["hello","hi","hey","good morning","good afternoon","good evening","howdy","greetings","how are you","whats up"],
+    keywords: ["عيد مبارك","عيدك مبارك","عيدكم مبارك","كل عام وانت بخير","كل عام وانتم بخير","مبارك عليك الشهر","مبارك عليكم الشهر","رمضان كريم","رمضان مبارك","تقبل الله","تقبل منا ومنكم"],
+    category: "مناسبة",
+    priority: "low",
+    solution: `__OCCASION__`
+  },
+  {
+    keywords: ["مع السلامة","في امان الله","الله يسلمك","وداعا","باي","bye","تصبح على خير","تصبحون على خير","يعطيك العافية","الله يعافيك","شكرا","شكراً","مشكور","ثانكس","thanks","thank you"],
+    category: "ختام",
+    priority: "low",
+    solution: `__FAREWELL__`
+  },
+  {
+    keywords: ["hello","hi","hey","good morning","good afternoon","good evening","howdy","greetings","how are you","whats up","what's up","morning","evening"],
     category: "تحية-انجليزي",
     priority: "low",
     solution: `__GREETING_EN__`
@@ -2451,6 +2529,8 @@ let currentUser = null;
 let logs = JSON.parse(localStorage.getItem('stc_logs') || '[]');
 let lastTopic = ''; // Track last topic for follow-up questions
 let chatHistory = []; // Full conversation history for AI context
+let diagnosticContext = {}; // Stores selected connection type and other button choices
+let diagnosticStep = 0; // Current step in diagnostic flow
 
 // ========== LOGIN ==========
 let idleTimer = null;
@@ -2567,12 +2647,112 @@ function showTab(tab, el) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
   document.getElementById('chatPanel').style.display = tab === 'chat' ? 'block' : 'none';
+  document.getElementById('historyPanel').style.display = tab === 'history' ? 'block' : 'none';
   const ap = document.getElementById('adminPanel');
   if (tab === 'admin') { ap.style.display = 'block'; renderAdmin(); }
   else ap.style.display = 'none';
+  if (tab === 'history') loadHistory();
 }
 
-// ========== SEARCH ==========
+async function loadHistory() {
+  const body = document.getElementById('historyBody');
+  body.innerHTML = '<div style="color:var(--text-muted);text-align:center;padding:40px">جاري التحميل...</div>';
+  try {
+    const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+    const email = encodeURIComponent(currentUser.email);
+    const isAdmin = currentUser.role === 'admin';
+    const url = isAdmin
+      ? SUPABASE_URL + "/rest/v1/logs?order=created_at.desc&created_at=gte." + since + "&limit=200"
+      : SUPABASE_URL + "/rest/v1/logs?order=created_at.desc&created_at=gte." + since + "&email=eq." + email + "&limit=200";
+    const res = await fetch(url, {
+      method: "GET",
+      headers: {
+        "apikey": SUPABASE_KEY,
+        "Authorization": "Bearer " + SUPABASE_KEY,
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      }
+    });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const data = await res.json();
+    if (!Array.isArray(data) || !data.length) {
+      body.innerHTML = '<div style="color:var(--text-muted);text-align:center;padding:40px">لا توجد محادثات في آخر 24 ساعة</div>';
+      return;
+    }
+    let cards = '<div style="color:var(--text-muted);font-size:13px;margin-bottom:12px">' + data.length + ' محادثة في آخر 24 ساعة</div>';
+    data.forEach(function(l) {
+      const d = new Date(l.created_at);
+      const timeStr = d.toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
+      const dateStr = d.toLocaleDateString('ar-KW');
+      const pColor = l.priority === 'high' ? '#FF6B6B' : l.priority === 'medium' ? '#FFD93D' : '#2ECC71';
+      const pLabel = l.priority === 'high' ? 'عالي' : l.priority === 'medium' ? 'متوسط' : 'منخفض';
+      const empLine = isAdmin ? '<div style="color:#C77DFF;font-size:12px;margin-bottom:4px">👤 ' + l.email + '</div>' : '';
+      const answerBlock = l.answer ? '<div style="background:var(--surface3);border-radius:8px;padding:10px 14px;margin-top:8px;border-right:3px solid #C77DFF">'
+        + '<div style="color:var(--text-muted);font-size:11px;margin-bottom:4px">🤖 الجواب:</div>'
+        + '<div style="color:var(--text);font-size:13px;line-height:1.6">' + (l.answer || '').split('\n').join('<br>') + '</div>'
+        + '</div>' : '';
+      cards += '<div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px 18px">'
+        + empLine
+        + '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap">'
+        + '<div style="display:flex;align-items:center;gap:8px">'
+        + '<span style="color:#7EB2FF;font-size:13px">💬</span>'
+        + '<span style="color:var(--text);font-size:14px;font-weight:500">' + (l.question || '') + '</span>'
+        + '</div>'
+        + '<span style="color:' + pColor + ';font-size:11px;font-weight:600;background:' + pColor + '22;padding:3px 10px;border-radius:20px;white-space:nowrap">' + pLabel + '</span>'
+        + '</div>'
+        + answerBlock
+        + '<div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:8px">'
+        + '<span style="color:var(--text-muted);font-size:11px">📂 ' + (l.category || 'عام') + '</span>'
+        + '<span style="color:var(--text-muted);font-size:11px">🕐 ' + timeStr + ' — ' + dateStr + '</span>'
+        + '</div></div>';
+    });
+    body.innerHTML = cards;
+  } catch(e) {
+    console.error("History load error:", e);
+    // Try without answer column in case it doesn't exist yet
+    try {
+      const since2 = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+      const email2 = encodeURIComponent(currentUser.email);
+      const isAdmin2 = currentUser.role === 'admin';
+      const url2 = isAdmin2
+        ? SUPABASE_URL + "/rest/v1/logs?select=email,question,category,priority,created_at&order=created_at.desc&created_at=gte." + since2 + "&limit=200"
+        : SUPABASE_URL + "/rest/v1/logs?select=email,question,category,priority,created_at&order=created_at.desc&created_at=gte." + since2 + "&email=eq." + email2 + "&limit=200";
+      const res2 = await fetch(url2, {
+        headers: { "apikey": SUPABASE_KEY, "Authorization": "Bearer " + SUPABASE_KEY }
+      });
+      const data2 = await res2.json();
+      if (!Array.isArray(data2) || !data2.length) {
+        body.innerHTML = '<div style="color:var(--text-muted);text-align:center;padding:40px">لا توجد محادثات في آخر 24 ساعة</div>';
+        return;
+      }
+      let cards2 = '<div style="color:var(--text-muted);font-size:13px;margin-bottom:12px">' + data2.length + ' محادثة في آخر 24 ساعة</div>';
+      const isAdmin3 = currentUser.role === 'admin';
+      data2.forEach(function(l) {
+        const d = new Date(l.created_at);
+        const timeStr = d.toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
+        const dateStr = d.toLocaleDateString('ar-KW');
+        const pColor = l.priority === 'high' ? '#FF6B6B' : l.priority === 'medium' ? '#FFD93D' : '#2ECC71';
+        const pLabel = l.priority === 'high' ? 'عالي' : l.priority === 'medium' ? 'متوسط' : 'منخفض';
+        const empLine = isAdmin3 ? '<div style="color:#C77DFF;font-size:12px;margin-bottom:4px">👤 ' + l.email + '</div>' : '';
+        cards2 += '<div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px 18px">'
+          + empLine
+          + '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap">'
+          + '<span style="color:var(--text);font-size:14px;font-weight:500">💬 ' + (l.question || '') + '</span>'
+          + '<span style="color:' + pColor + ';font-size:11px;font-weight:600;background:' + pColor + '22;padding:3px 10px;border-radius:20px">' + pLabel + '</span>'
+          + '</div>'
+          + '<div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:8px">'
+          + '<span style="color:var(--text-muted);font-size:11px">📂 ' + (l.category || 'عام') + '</span>'
+          + '<span style="color:var(--text-muted);font-size:11px">🕐 ' + timeStr + ' — ' + dateStr + '</span>'
+          + '</div></div>';
+      });
+      body.innerHTML = cards2;
+    } catch(e2) {
+      body.innerHTML = '<div style="color:#FF6B6B;text-align:center;padding:40px">⚠️ خطأ في تحميل السجل — ' + (e2.message || '') + '</div>';
+    }
+  }
+}
+
+
 function normalizeArabic(text) {
   return text
     .toLowerCase()
@@ -2655,6 +2835,71 @@ function findAnswer(query) {
   }
 
   return bestScore > 0 ? best : null;
+}
+
+// ========== DIAGNOSTIC BUTTONS ==========
+function addButtonGroup(buttons, groupId) {
+  const msgs = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'msg bot diagnostic-buttons';
+  div.id = groupId || ('btn-group-' + Date.now());
+  var btnsHtml = buttons.map(function(b) {
+    var safeVal = b.value.replace(/"/g, '&quot;');
+    var safeLabel = b.label.replace(/"/g, '&quot;');
+    var gid = div.id;
+    return '<button class="diag-btn" onclick="selectDiagOption(this, &quot;' + gid + '&quot;, &quot;' + safeVal + '&quot;, &quot;' + safeLabel + '&quot;)">' + b.icon + ' ' + b.label + '</button>';
+  }).join('');
+  div.innerHTML = '<div class="msg-avatar">🤖</div><div class="btn-group-wrap">' + btnsHtml + '<button class="diag-btn-reset" onclick="resetDiagnostic()">🔄 Start Over</button></div>';
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function selectDiagOption(btn, groupId, value, label) {
+  // Disable all buttons in this group
+  const group = document.getElementById(groupId);
+  if (!group) return;
+  group.querySelectorAll('.diag-btn').forEach(function(b) {
+    b.disabled = true;
+    b.style.opacity = '0.4';
+    b.style.cursor = 'default';
+  });
+  // Highlight selected
+  btn.style.opacity = '1';
+  btn.style.background = 'var(--primary)';
+  btn.style.color = 'white';
+  btn.style.borderColor = 'var(--primary)';
+  // Store in context
+  diagnosticContext[groupId] = { value: value, label: label };
+  // Send as user message
+  addMsg(label, 'user');
+  // Send to AI
+  sendMessageText(label);
+}
+
+function resetDiagnostic() {
+  // Reset diagnostic state but keep chat visible
+  diagnosticContext = {};
+  diagnosticStep = 0;
+  // Reset AI context
+  chatHistory = [];
+  // Re-enable all button groups
+  document.querySelectorAll('.diagnostic-buttons').forEach(function(group) {
+    group.querySelectorAll('.diag-btn').forEach(function(b) {
+      b.disabled = false;
+      b.style.opacity = '1';
+      b.style.cursor = 'pointer';
+      b.style.background = '';
+      b.style.color = '';
+      b.style.borderColor = '';
+    });
+  });
+  // Add a separator message
+  const msgs = document.getElementById('chatMessages');
+  const sep = document.createElement('div');
+  sep.style.cssText = 'text-align:center;color:var(--text-muted);font-size:12px;padding:8px;margin:8px 0;border-top:1px dashed var(--border)';
+  sep.textContent = '— New Diagnostic Session —';
+  msgs.appendChild(sep);
+  msgs.scrollTop = msgs.scrollHeight;
 }
 
 // ========== CHAT ==========
@@ -2746,6 +2991,15 @@ function removeTyping() {
   if (t) t.remove();
 }
 
+async function sendMessageText(text) {
+  // Simulate sending a message programmatically (from button selection)
+  const input = document.getElementById('chatInput');
+  const originalValue = input.value;
+  input.value = text;
+  await sendMessage();
+  input.value = '';
+}
+
 async function sendMessage() {
   const input = document.getElementById('chatInput');
   let q = input.value.trim();
@@ -2794,32 +3048,88 @@ async function sendMessage() {
     addMsg(nameReply, 'bot', null, 'low', 'هوية-المساعد');
     chatHistory.push({ role: "user", content: q });
     chatHistory.push({ role: "assistant", content: nameReply });
-    savLog(q, 'هوية-المساعد', 'low');
+    savLog(q, 'هوية-المساعد', 'low', nameReply);
     return;
   }
 
-  // Handle greetings directly without AI
-  if (kbResult && (kbResult.solution === '__GREETING_AR__' || kbResult.solution === '__GREETING_EN__')) {
+  // Handle greetings, occasions and farewells directly
+  const specialReplies = {
+    '__GREETING_AR__': [
+      'هلا! 😊 كيف أقدر أساعدك؟',
+      'وعليكم السلام! شكيف؟ اكتب مشكلة العميل وأساعدك 👋',
+      'أهلاً وسهلاً! كيف أقدر أخدمك اليوم؟',
+      'هلا والله! 👋 اكتب المشكلة وأساعدك.',
+      'مرحبا! كيف حالك؟ شو المشكلة اللي عندك؟'
+    ],
+    '__GREETING_EN__': [
+      'Hello! 👋 How can I help you today?',
+      'Hi there! What can I assist you with?',
+      "Hey! Tell me the issue and I'll help you out."
+    ],
+    '__OCCASION__': [
+      'وعليكم! كل عام وأنت بخير وبصحة وسعادة 🎉 شو المشكلة اللي أقدر أساعدك فيها؟',
+      'مبارك عليك وعلينا! 🌙 كل عام وأنت طيب. اكتب مشكلة العميل وأساعدك.',
+      'تقبل الله منا ومنكم! 🤲 عيدك مبارك، شو أقدر أساعدك فيه؟'
+    ],
+    '__FAREWELL__': [
+      'شكراً لك! 😊 أي وقت تحتاج مساعدة أنا هنا.',
+      'الله يعطيك العافية! إذا احتجت شي ما تتردد 👋',
+      'مع السلامة! يسعدني خدمتك دايماً 🙏',
+      'تسلم! إذا صار أي شي أنا موجود 👋'
+    ]
+  };
+  if (kbResult && specialReplies[kbResult.solution]) {
     removeTyping();
     document.querySelector('.btn-send').disabled = false;
-    const greetings_ar = ['وعليكم السلام! 😊 كيف أقدر أساعدك؟', 'هلا! 👋 اكتب مشكلة العميل وأساعدك.', 'أهلاً! شكيف؟ اكتب المشكلة وأساعدك.'];
-    const greetings_en = ["Hello! 👋 What can I help you with?", "Hi there! Tell me the customer's issue.", "Hey! What's the problem you're dealing with?"];
-    const pool = kbResult.solution === '__GREETING_AR__' ? greetings_ar : greetings_en;
-    const greetReply = pool[Math.floor(Math.random() * pool.length)];
-    addMsg(greetReply, 'bot', null, 'low', kbResult.category);
+    const qLow = q.toLowerCase();
+    let reply = '';
+    if (kbResult.solution === '__GREETING_AR__') {
+      if (qLow.includes('السلام عليكم') || qLow.includes('سلام عليكم')) reply = 'وعليكم السلام ورحمة الله! 😊 كيف أقدر أساعدك؟';
+      else if (qLow.includes('وعليكم')) reply = 'وعليكم السلام! 👋 اكتب مشكلة العميل وأساعدك.';
+      else if (qLow.includes('شلونك') || qLow.includes('شلونج') || qLow.includes('كيف حالك') || qLow.includes('كيف الحال')) reply = 'الحمدلله بخير وعافية، وأنت؟ 😊 اكتب مشكلة العميل وأساعدك.';
+      else if (qLow.includes('شخبارك') || qLow.includes('شخبار') || qLow.includes('ايش اخبارك')) reply = 'بخير والحمدلله! وأنت شخبارك؟ 👋 اكتب المشكلة وأساعدك.';
+      else if (qLow.includes('صباح الخير') || qLow.includes('صباح النور')) reply = 'صباح النور! ☀️ كيف أقدر أساعدك اليوم؟';
+      else if (qLow.includes('مساء الخير') || qLow.includes('مساء النور')) reply = 'مساء النور! 🌙 اكتب مشكلة العميل وأساعدك.';
+      else { const pool = specialReplies['__GREETING_AR__']; reply = pool[Math.floor(Math.random() * pool.length)]; }
+    } else if (kbResult.solution === '__GREETING_EN__') {
+      if (qLow.includes('good morning') || qLow.includes('morning')) reply = 'Good morning! ☀️ How can I help you today?';
+      else if (qLow.includes('good evening') || qLow.includes('evening')) reply = 'Good evening! 🌙 What can I assist you with?';
+      else if (qLow.includes('how are you')) reply = "Doing great, thanks! 😊 What's the issue you need help with?";
+      else { const pool = specialReplies['__GREETING_EN__']; reply = pool[Math.floor(Math.random() * pool.length)]; }
+    } else if (kbResult.solution === '__OCCASION__') {
+      if (qLow.includes('رمضان')) reply = 'رمضان كريم! 🌙 مبارك عليك وعلينا الشهر. اكتب مشكلة العميل وأساعدك.';
+      else if (qLow.includes('مبارك عليك الشهر') || qLow.includes('مبارك الشهر')) reply = 'مبارك عليك وعلينا! 🌙 كل عام وأنت بخير. اكتب المشكلة وأساعدك.';
+      else if (qLow.includes('عيد')) reply = 'عيدك مبارك! 🎉 كل عام وأنت بخير. شو أقدر أساعدك فيه؟';
+      else if (qLow.includes('كل عام')) reply = 'وأنت بخير! 😊 كل عام وأنت طيب. اكتب مشكلة العميل وأساعدك.';
+      else { const pool = specialReplies['__OCCASION__']; reply = pool[Math.floor(Math.random() * pool.length)]; }
+    } else if (kbResult.solution === '__FAREWELL__') {
+      if (qLow.includes('شكر') || qLow.includes('thanks') || qLow.includes('thank')) reply = 'العفو! 😊 أي وقت تحتاج مساعدة أنا هنا.';
+      else if (qLow.includes('مع السلامة') || qLow.includes('bye') || qLow.includes('وداع')) reply = 'مع السلامة! 👋 يسعدني خدمتك دايماً.';
+      else if (qLow.includes('يعطيك العافية') || qLow.includes('عافية')) reply = 'الله يعافيك! 🙏 إذا احتجت شي أنا موجود.';
+      else { const pool = specialReplies['__FAREWELL__']; reply = pool[Math.floor(Math.random() * pool.length)]; }
+    } else {
+      const pool = specialReplies[kbResult.solution];
+      reply = pool[Math.floor(Math.random() * pool.length)];
+    }
+    addMsg(reply, 'bot', null, 'low', kbResult.category);
     chatHistory.push({ role: "user", content: q });
-    chatHistory.push({ role: "assistant", content: greetReply });
-    savLog(q, kbResult.category, 'low');
+    chatHistory.push({ role: "assistant", content: reply });
+    savLog(q, kbResult.category, 'low', reply);
     return;
   }
 
   let kbContext = '';
+  // Inject selected diagnostic context so AI doesn't ask again
+  var diagContextStr = '';
+  if (diagnosticContext['conn-type']) {
+    diagContextStr = "ALREADY SELECTED by agent — Connection Type: " + diagnosticContext['conn-type'].label + ". DO NOT ask about connection type again.\n";
+  }
   if (kbResult) {
-    kbContext = "الفئة: " + kbResult.category + "\nالحل:\n" + kbResult.solution;
+    kbContext = diagContextStr + "Category: " + kbResult.category + "\nKB Solution:\n" + kbResult.solution;
   } else if (lastTopic && chatHistory.length > 0) {
-    kbContext = "السياق: الموظف يسأل عن نفس موضوع المحادثة السابقة (" + lastTopic + ") لكن لجهاز مختلف أو بصيغة مختلفة.";
+    kbContext = diagContextStr + "Context: Agent is asking about the same topic (" + lastTopic + ") for a different device.";
   } else {
-    kbContext = "السياق: سؤال مباشر من الموظف — أجب بشكل طبيعي ومفيد.";
+    kbContext = diagContextStr || "Context: Direct question from agent — answer naturally and helpfully.";
   }
   const systemPrompt = isL1Mode
     ? `أنت مساعد Call Center 👋 — مساعد ذكي لموظفي الـ L1 في STC Kuwait.
@@ -2836,25 +3146,56 @@ async function sendMessage() {
 6. لا تذكر "Team Leader" أو "تواصل مع أحد" إلا إذا كان التصعيد ضروري فعلاً
 7. كن مختصراً — الموظف مشغول ويبي جواب سريع
 8. استخدم أيقونات بشكل طبيعي مو مبالغ`
-    : `أنت مساعد Resolutions 👋 — مساعد ذكي لموظفي الدعم الفني في STC Kuwait.
+    : `You are a smart Resolutions Assistant for STC Kuwait support agents (L2 team).
 
-اسمك: مساعد Resolutions
-شخصيتك: طبيعي، ذكي، تفهم الموظف حتى لو كتب بعامية أو بشكل غير رسمي.
+Your name: Resolutions Assistant
+Your personality: natural, smart, diagnostic — like an experienced telecom engineer helping a colleague.
 
-قواعد أساسية:
-1. ابدأ بالرد بنفس لغة الموظف (عربي/إنجليزي/عامية كويتية) — لا تخلط بينهم أبداً
-2. إذا سألك الموظف عن اسمك، قل: "أنا مساعد Resolutions 👋"
-3. إذا حياك (هلا، هاي، مرحبا، hi، hey، شخبارك) رد بتحية طبيعية ومختصرة، ولا تبدأ بحل فوراً
-4. إذا المشكلة غير واضحة، اسأل سؤال واحد محدد لتفهمها
-5. إذا المشكلة واضحة، اعطِ الحل مباشرة بهذا الترتيب:
-   أ) الخطوات التشخيصية الأساسية أولاً
-   ب) الخطوات التقنية في الوسط
-   ج) التصعيد (VFO/HUW/IT NOC) في الآخر فقط إذا لزم
-6. لا تذكر "Team Leader" أو "تواصل مع أحد" إلا إذا كان التصعيد ضرورياً فعلاً
-7. تذكر المحادثة السابقة وتكيّف معها — إذا ذكر جهاز جديد أعطه نفس الحل للجهاز الجديد
-8. لا تذكر الأولوية في ردك
-9. كن مختصراً ومفيداً — الموظف مشغول ويبي جواب واضح وسريع
-10. استخدم أيقونات بشكل طبيعي: 🔧 للخطوات، ⚠️ للتحذيرات، ✅ للنتيجة`;
+## STC Kuwait Internet Types:
+- 📱 Mobile Data: SIM card in phone/tablet — issues: no data, slow, can't roam
+- 🏠 Fiber (FTTH): fixed home connection via ONT device — issues: no internet, slow, LOS light
+- 📡 Baity 5G: fixed home wireless router (no calls supported on this connection)
+- 🔌 MBB Router: portable WiFi router with SIM — issues: slow, drops, no signal
+- 💻 Fixed Broadband (DSL/ADSL): older copper line connections
+
+## STC Kuwait Call Types:
+- Local calls: A-party to B-party within Kuwait
+- International calls (IDD): calls outside Kuwait — needs A-party, B-party, time, date for VFO escalation
+- Incoming calls: customer can't receive calls
+- Roaming: customer abroad — needs visited network, A-party, B-party, exact time
+- Note: Baity 5G does NOT support voice calls at all
+
+## Diagnostic Rules — ALWAYS follow this flow:
+1. NEVER assume the connection type — always ask first if not already selected via buttons
+2. Ask ONE focused question at a time to narrow down the issue
+3. Build diagnosis step by step based on answers
+4. Only give troubleshooting steps AFTER you know: connection type + symptom + scope (one device/all/one location/everywhere)
+5. Match troubleshooting to the specific connection type — fiber steps ≠ mobile data steps ≠ Baity 5G steps
+
+## Response Rules:
+- Reply in the same language the agent uses (Arabic/English/Kuwaiti dialect) — never mix
+- Be concise — agents are busy
+- Use icons naturally: 🔧 steps, ⚠️ warnings, ✅ result
+- Escalation order: VFO (calls/roaming) → HUW (coverage/speed/5G) → IT NOC (complex technical) — only when needed
+- Never mention "Team Leader" unless escalation is truly necessary
+- Don't repeat the priority level in your response
+- Remember conversation history and adapt accordingly
+
+## BUTTON OPTIONS — CRITICAL RULE:
+When you ask a question that requires a choice, you MUST end your response with this exact format on a new line:
+[OPTIONS: Option1 | Option2 | Option3 | Option4]
+
+Examples:
+- Asking about scope: [OPTIONS: One Device | All Devices]
+- Asking about location: [OPTIONS: One Location | Everywhere]
+- Asking about symptom: [OPTIONS: No Internet | Slow Speed | Keeps Dropping | Intermittent]
+- Asking about call type: [OPTIONS: Can't Call | Can't Receive | Dropped Calls | International Calls]
+- Asking about roaming: [OPTIONS: No Data Roaming | No Calls Roaming | Both]
+- Asking yes/no: [OPTIONS: Yes | No]
+- Asking about time: [OPTIONS: Just Started | Since Yesterday | Days Ago | Weeks Ago]
+
+Do NOT add [OPTIONS] when you are giving troubleshooting steps or a final answer.
+Always use [OPTIONS] when asking any diagnostic question.`;
 
   try {
     // Add user message to history
@@ -2889,10 +3230,19 @@ async function sendMessage() {
     // Add AI response to history
     chatHistory.push({ role: "assistant", content: answer });
 
+    // Check if AI is asking about connection type — show buttons
+    const answerLow = answer.toLowerCase();
+    const connectionKeywords = ['type of connection', 'what type', 'connection type', 'which connection', 'نوع الاتصال', 'نوع الاتصال', 'نوع الخدمة', 'what kind of internet', 'نوع الانترنت', 'نوع الإنترنت'];
+    const isAskingConnectionType = connectionKeywords.some(k => answerLow.includes(k.toLowerCase()));
+
     const category = kbResult ? kbResult.category : "عام";
     const priority = kbResult ? kbResult.priority : "medium";
 
-    const lines = answer.split("\n").filter(l => l.trim());
+    // Parse [OPTIONS: ...] from answer
+    const optionsMatch = answer.match(/\[OPTIONS:\s*([^\]]+)\]/i);
+    const cleanAnswer = answer.replace(/\[OPTIONS:[^\]]*\]/gi, '').trim();
+
+    const lines = cleanAnswer.split("\n").filter(l => l.trim());
     const hasSteps = lines.some(l => /^\d+[.\-)]/.test(l.trim()));
 
     if (hasSteps) {
@@ -2911,10 +3261,36 @@ async function sendMessage() {
       stepsHtml += "</div>";
       addMsg(intro || "خطوات الحل:", "bot", stepsHtml, priority, category);
     } else {
-      addMsg(answer, "bot", null, priority, category);
+      addMsg(cleanAnswer, "bot", null, priority, category);
     }
 
-    savLog(q, category, priority);
+    // Show buttons if AI provided options
+    if (optionsMatch) {
+      const optionLabels = optionsMatch[1].split('|').map(o => o.trim()).filter(Boolean);
+      const icons = ['1️⃣','2️⃣','3️⃣','4️⃣','5️⃣','6️⃣'];
+      const buttons = optionLabels.map(function(label, i) {
+        return { icon: icons[i] || '▶️', label: label, value: label.toLowerCase().replace(/\s+/g,'_') };
+      });
+      setTimeout(function() {
+        addButtonGroup(buttons, 'opt-' + Date.now());
+      }, 200);
+    }
+
+    savLog(q, category, priority, answer);
+
+    // Show connection type buttons ONLY if AI asks AND not already shown
+    const connTypeAlreadyShown = document.getElementById('conn-type');
+    if (isAskingConnectionType && !connTypeAlreadyShown) {
+      setTimeout(function() {
+        addButtonGroup([
+          { icon: '📱', label: 'Mobile Data', value: 'mobile_data' },
+          { icon: '🏠', label: 'Fiber (FTTH)', value: 'fiber' },
+          { icon: '📡', label: 'Baity 5G', value: 'baity_5g' },
+          { icon: '🔌', label: 'MBB Router', value: 'mbb' },
+          { icon: '💻', label: 'DSL/Fixed', value: 'dsl' }
+        ], 'conn-type');
+      }, 300);
+    }
 
   } catch (err) {
     removeTyping();
@@ -2962,19 +3338,20 @@ function exportExcel() {
 }
 
 // ========== LOGS ==========
-function savLog(question, category, priority) {
+function savLog(question, category, priority, answer) {
   const entry = {
     email: currentUser.email,
     name: currentUser.name,
     question,
     category,
     priority,
+    answer: answer || '',
     time: new Date().toISOString()
   };
   logs.unshift(entry);
   localStorage.setItem('stc_logs', JSON.stringify(logs));
   // Save to Supabase
-  saveLogToSupabase(currentUser.email, question, category || 'عام', priority || 'medium');
+  saveLogToSupabase(currentUser.email, question, category || 'عام', priority || 'medium', answer || '');
 }
 
 let allLogsCache = [];
