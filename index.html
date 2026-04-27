@@ -2488,7 +2488,7 @@ async function login() {
       document.getElementById('roleSwitcher').style.display = 'flex';
     }
     // Update employee status in Supabase
-    upsertEmployee(email, currentUser.name, currentUser.role);
+    try { upsertEmployee(email, currentUser.name, currentUser.role); } catch(e) {}
     // Set idle after 10 minutes of inactivity
     startIdleTimer();
   } else {
@@ -2513,7 +2513,7 @@ async function login() {
           document.getElementById('tabAdmin').classList.remove('hidden');
           document.getElementById('roleSwitcher').style.display = 'flex';
         }
-        upsertEmployee(email, emp.name, emp.role);
+        try { upsertEmployee(email, emp.name, emp.role); } catch(e) {}
         startIdleTimer();
       } else if (data.length > 0 && data[0].disabled) {
         errEl.textContent = 'حسابك موقوف. تواصل مع المدير.';
@@ -2523,8 +2523,9 @@ async function login() {
         errEl.style.display = 'block';
       }
     } catch(e) {
-      errEl.textContent = 'البريد الإلكتروني أو كلمة المرور غير صحيحة';
+      errEl.textContent = '⚠️ خطأ في الاتصال بالسيرفر — تحقق من الإنترنت';
       errEl.style.display = 'block';
+      console.error('Login error:', e);
     }
   }
 }
