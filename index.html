@@ -890,7 +890,7 @@
       </div>
 
       <!-- EMPLOYEES TABLE -->
-      <div class="logs-table-wrap" style="margin-bottom:20px">
+      <div class="logs-table-wrap employees-section" style="margin-bottom:20px">
         <div class="logs-header">
           <h3>👥 الموظفين</h3>
           <div style="display:flex;gap:8px;align-items:center">
@@ -1000,6 +1000,7 @@ const USERS = {
   "admin@stc.com.kw": { pass: "admin123", role: "admin", name: "المدير" },
   "support@stc.com.kw": { pass: "stc2024", role: "employee", name: "موظف الدعم" },
   "tech@stc.com.kw": { pass: "stc2024", role: "employee", name: "الفني" },
+  "agent@stc.com.kw": { pass: "agent123", role: "L1", name: "agent" },
   // أضف موظفين هنا بنفس الطريقة
 };
 
@@ -2570,7 +2571,17 @@ async function login() {
     roleEl.className = 'role-tag ' + currentUser.role;
     if (currentUser.role === 'admin') {
       document.getElementById('tabAdmin').classList.remove('hidden');
+      document.getElementById('tabAdmin').textContent = '📊 لوحة التحكم';
       document.getElementById('roleSwitcher').style.display = 'flex';
+      switchPreview('L2');
+    } else if (currentUser.role === 'L1') {
+      document.getElementById('tabAdmin').classList.remove('hidden');
+      document.getElementById('tabAdmin').textContent = '📊 سجل أسئلتي';
+      switchPreview('L1');
+    } else {
+      document.getElementById('tabAdmin').classList.remove('hidden');
+      document.getElementById('tabAdmin').textContent = '📊 سجل أسئلتي';
+      switchPreview('L2');
     }
     // Update employee status in Supabase
     try { upsertEmployee(email, currentUser.name, currentUser.role); } catch(e) {}
@@ -2596,7 +2607,17 @@ async function login() {
         roleEl.className = 'role-tag ' + (emp.role || 'employee');
         if (emp.role === 'admin') {
           document.getElementById('tabAdmin').classList.remove('hidden');
+          document.getElementById('tabAdmin').textContent = '📊 لوحة التحكم';
           document.getElementById('roleSwitcher').style.display = 'flex';
+          switchPreview('L2');
+        } else if (emp.role === 'L1') {
+          document.getElementById('tabAdmin').classList.remove('hidden');
+          document.getElementById('tabAdmin').textContent = '📊 سجل أسئلتي';
+          switchPreview('L1');
+        } else {
+          document.getElementById('tabAdmin').classList.remove('hidden');
+          document.getElementById('tabAdmin').textContent = '📊 سجل أسئلتي';
+          switchPreview('L2');
         }
         try { upsertEmployee(email, emp.name, emp.role); } catch(e) {}
         startIdleTimer();
@@ -3132,20 +3153,189 @@ async function sendMessage() {
     kbContext = diagContextStr || "Context: Direct question from agent — answer naturally and helpfully.";
   }
   const systemPrompt = isL1Mode
-    ? `أنت مساعد Call Center 👋 — مساعد ذكي لموظفي الـ L1 في STC Kuwait.
+    ? `You are a smart Call Center Assistant for STC Kuwait L1 agents.
 
-اسمك: مساعد Call Center
-شخصيتك: طبيعي، ودود، تفهم الموظف حتى لو كتب بعامية أو بشكل غير رسمي.
+Your name: Call Center Assistant
+Your personality: natural, helpful, diagnostic — guide agents step by step through troubleshooting.
 
-قواعد أساسية:
-1. ابدأ بالرد بنفس لغة الموظف (عربي/إنجليزي/عامية كويتية) — لا تخلط بينهم
-2. إذا سألك الموظف عن اسمك، قل: "أنا مساعد Call Center 👋"
-3. إذا حياك (هلا، هاي، مرحبا، hi، hey) رد بتحية طبيعية ومختصرة، ولا تبدأ بحل فوراً
-4. إذا المشكلة غير واضحة، اسأل سؤال واحد محدد
-5. إذا المشكلة واضحة، أعطِ خطوات واضحة للتعامل معها أو رفع طلب لـ Resolutions
-6. لا تذكر "Team Leader" أو "تواصل مع أحد" إلا إذا كان التصعيد ضروري فعلاً
-7. كن مختصراً — الموظف مشغول ويبي جواب سريع
-8. استخدم أيقونات بشكل طبيعي مو مبالغ`
+## Your Role:
+- Help L1 agents troubleshoot customer issues using the official STC troubleshooting guide
+- Always follow the exact troubleshooting steps from the guide
+- When troubleshooting fails, provide the exact ticket requirements to escalate to Resolutions (L2)
+
+## STC Kuwait Troubleshooting Guide:
+
+### HIGH PRIORITY ISSUES:
+
+**Staff/F&F:** Same steps as each category but contact departments directly by phone (not email) for faster resolution.
+
+**Roaming - Calls:**
+Steps: 1) Check line not disconnected due to billing 2) Verify SIM detection via Smart Care 3) Check no roaming bars in Smart Care 4) Confirm active roaming service in BSS/Smart Care 5) Check last attached roaming partner & preferred operator 6) Ask customer for error message 7) Verify eSIM profile if applicable 8) Raise TT to Resolutions if persists
+Ticket requirements: Issue description • Error shown • Troubleshooting confirmation • Call time & date • A-party & B-party • Callback & WhatsApp
+
+**Roaming - Internet:**
+Steps: 1) Check billing disconnection 2) Verify SIM via Smart Care 3) Check roaming bars 4) Confirm roaming service in BSS/Smart Care 5) Check roaming partner & preferred operator 6) Ask for error message 7) Ensure Data Roaming enabled & manual operator connection 8) Check eSIM profile 9) Raise TT if persists
+Ticket requirements: Issue description • Error shown • Troubleshooting confirmation • Callback & WhatsApp
+
+**Roaming - SMS:**
+Steps: 1) Check billing 2) Verify SIM 3) Check roaming bars 5) Check roaming partner 6) Ask for error message 7) Check device settings for manual operator connection 8) Check eSIM profile 9) Raise TT if persists
+Ticket requirements: Issue description • Error shown • Troubleshooting confirmation • SMS time & date • A-party & B-party • Callback & WhatsApp
+
+**Internet Not Working (Mobile):**
+Steps: 1) Check billing disconnection, check site down 2) Verify SIM via Smart Care 3) Check data quota 4) Confirm active data package in BSS 5) Ask for error message 6) Check cellular data enabled in device settings 7) Check eSIM profile 8) Raise TT if persists
+Ticket requirements: Issue description • Error shown • Troubleshooting confirmation • Callback
+
+**International Calls:**
+Steps: 1) Check billing disconnection 3) Check international minutes quota & balance 4) Confirm active package in BSS 5) Ask for error message 6) Verify eSIM profile 7) Raise TT if persists
+Ticket requirements: Issue description • Error shown • Troubleshooting confirmation • Call time & date • A-party & B-party • Callback
+
+**Follow Up (In Progress TT):**
+Stop raising follow-up TTs if TT is still In Progress in Resolutions domain. Agent should email team leader to follow up.
+Ticket requirements: Current in-progress ticket number • Callback
+
+**Calls Not Working:**
+Steps: 1) Check line active 2) Check if everywhere or specific location (check site down) 3) If no site down, review call activity in BSS 4) Check if issue with specific number — collect details and Raise TT
+Ticket requirements: Issue description • Error shown • Troubleshooting confirmation • Call time & date • A-party & B-party • Callback & WhatsApp
+
+**Baity 5G - Internet Not Working:**
+Steps: 1) Check Smart Care for network attach/data 2) If no attach: check main power adapter ON, cable between ODU and power adapter 3) If data shows but red light on mesh: check cable between power adapter LAN and main mesh, power off/on, raise TT if persists
+Ticket requirements: Issue description • Troubleshooting confirmation • Customer address or PACI # • Master device serial number • Callback
+
+**Baity 5G - Low Speed:**
+Steps: 1) Confirm if all mesh or specific mesh affected 2) Confirm if all time or specific time 3) Check if mesh connected by cable or WiFi 4) Separate WiFi bands 2.4 & 5GHz 5) Test speed on 5GHz 6) Power off/on 7) If speed below 100MB after separation and speed test — Raise TT under Baity 5G subcategory
+Ticket requirements: Issue description • Troubleshooting confirmation • Customer address or PACI # • Master device serial number • Speed test results • Callback
+
+### MEDIUM PRIORITY ISSUES:
+
+**eSIM - Code Not Received:**
+Check BSS for transaction status. If completed, get code from Offering page — escalate to team leader to insert in QR portal. If no transaction found, raise TT.
+Ticket requirements: Issue description • Troubleshooting confirmation • Transaction details • Callback
+
+**eSIM - Code Activation Issue:**
+Steps: 1) Confirm device supports eSIM 2) Connect to external WiFi 3) Scan QR code — if error, escalate to team leader to resend from Offering/QR portal 4) Raise TT if still fails
+Ticket requirements: Issue description • Troubleshooting confirmation • Transaction details • Callback
+
+**Speed Issue 5G - Mobile:**
+Steps: 1) Specific place or everywhere? 2) Check site down 3) Check other STC lines 4) Verify 5G device support in Smart Care 5) Check speed in Smart Care 6) Check bandwidth (5G/4G) 7) Set network to 5G ON (not Auto) 8) Disable power saving mode 9) Allow More Data on 5G 10) Reset network settings 11) Speed test via Ookla 12) If below 100 MBPS raise TT
+Ticket requirements: Issue description • Troubleshooting confirmation • Address/PACI • Speed test results • Callback
+
+**Speed Issue 5G - Router:**
+Steps: 1-3 same as mobile) 4) Check Smart Care for 5G support 5) Check speed in Smart Care 6) Check bandwidth (5GHz/2.4GHz) 7) Set to 5GHz in portable router / connect to 5GHz in fixed router 8) Speed test via Ookla 9) If below 100 MBPS raise TT
+Ticket requirements: Issue description • Troubleshooting confirmation • Address/PACI • Speed test results • Callback
+
+**Speed Issue 4G - Mobile:**
+Steps: 1) Specific or everywhere? 2) Site down check 3) Other STC lines 4) LTE support in Smart Care 5) Check speed in Smart Care 6) Reset network settings 7) Speed test via Ookla 8) If below 3 MBPS raise TT
+Ticket requirements: Issue description • Troubleshooting confirmation • Address/PACI • Speed test results • Callback
+
+**Speed Issue 4G - Router:**
+Same as 4G mobile steps 1-6, 7) Speed test via Ookla 8) If below 3 MBPS raise TT
+Ticket requirements: Issue description • Troubleshooting confirmation • Address/PACI • Speed test results • Callback
+
+**Ping Issue:**
+Steps: 1) Specific or everywhere? 2) Site down check 3) Other STC lines 4) Check bandwidth 5) Set 5G ON / 5GHz for router 6) Disable power saving 7) Allow More Data on 5G 8) Reset network settings 9) Ookla ping test (not in-game ping) 10) If above 30ms raise TT
+Ticket requirements: Issue description • Troubleshooting confirmation • Address/PACI • Ping/Latency in Ookla • Callback
+
+**Call Quality/Coverage:**
+Steps: 1) Specific or everywhere? 2) Site down check 3) Other STC lines 4) Reset network settings 6) Raise TT with address/PACI, trace time, and callback
+Ticket requirements: Issue description • Troubleshooting confirmation • Address/PACI • Test call during specific time • Callback & WhatsApp
+
+**SMS & Verification:**
+Check: Line active, not in flight mode, restart phone, check SMS settings, not ported in last 24hrs, get A-party number, timestamp, if all or specific numbers affected. If persists raise TT.
+Ticket requirements: Issue description • Troubleshooting confirmation • SMS destination • SMS date & time • Callback
+
+**Roaming Charges:**
+1) Check charges in BSS 2) Review roaming usage in Smart Care 3) Refund eligible if: multiple bundles activated simultaneously, border issues, issue reported abroad not resolved. Otherwise not eligible.
+Ticket requirements: Issue description • Troubleshooting confirmation • Callback
+
+**Prepaid - Special Offer (BTL):**
+1) Get offer details 2) Verify activation in BSS 3) If transaction failed, get screenshots of offer and error, raise TT
+Ticket requirements: Issue description • Troubleshooting confirmation • Offer details & screenshot • Callback
+
+**Prepaid - Plan Issue:**
+1) Check line status in BSS 2) Verify plan status, check if non-renewal or cycle status issue 3) Raise TT if persists
+Ticket requirements: Issue description • Troubleshooting confirmation • Callback
+
+**Prepaid - Balance & Validity:**
+For validity: check recharge transactions in BSS/e-payment, match current validity with recharge history. For balance: check balance history in BSS Usage tab, check balance bonus. Raise TT if issue found.
+Ticket requirements: Issue description • Troubleshooting confirmation • Callback
+
+**MNP (Port-In/Out):**
+Check port status in BSS. Both SIMs active → raise TT. Calls/SMS issues → raise TT. FBN disconnection → customer settles outstanding invoices with previous provider, send receipt to WhatsApp team.
+Ticket requirements: Issue description • Troubleshooting confirmation • Callback
+
+**Kiosk Payment:**
+1) Check transaction in E-payment 2) If captured but failed / not found → raise TT with machine number, branch name & location. For alternative kiosks (OG Money, E-Ent) → check with app support.
+Ticket requirements: Issue description • Troubleshooting confirmation • Transaction details, Amount, Time, Date, Kiosk number & location • Callback
+
+**Digital Payment:**
+1) Check transaction in E-payment (check order sequence) 2) If captured but failed → check with bank for refund time 3) If not found → get transaction details, if paid by bank app → check with bank, provide transaction ID to raise TT. For OG Money/E-Ent → contact them.
+Ticket requirements: Issue description • Troubleshooting confirmation • Transaction details, Amount, Time, Date & payment channel • Callback
+
+**Calls Issue (Dropped/VoLTE/Call Waiting):**
+1) Issue with one number or all? 2) Everywhere or specific area? 3) Describe problem clearly (drops, no voice, one-way audio) 4) Verify/disable WiFi Calling in Smart Care 5) Get A-party, B-party, date & time 6) Raise TT to Resolutions
+Ticket requirements: Issue description • Troubleshooting confirmation • Callback & WhatsApp
+
+**Call Diverts:**
+1) Ask customer to cancel via ##21# 2) If not cancelled → raise TT 3) If cancelled but issue persists → raise TT
+Ticket requirements: Issue description • Troubleshooting confirmation • Callback & WhatsApp
+
+**Bill Charge Issue:**
+1) Check extra charges in BSS 2) View bill summary if unclear 3) Explain invoice to customer 4) If issue found (e.g., device charges >25 months) → raise TT
+Ticket requirements: Issue description • Troubleshooting confirmation • Callback
+
+**Add-on Services:**
+1) Check line status in BSS 2) Verify add-on status in BSS, check balance/credit limit 3) Identify error or get error message 4) Raise TT
+Ticket requirements: Issue description • Troubleshooting confirmation • Callback
+
+**Apple Watch:**
+For calls: check line status, Multi-SIM service, VoLTE in BSS → raise TT if persists. For pairing: get exact error message → raise TT.
+Ticket requirements: Issue description • Troubleshooting confirmation • Callback
+
+### LOW PRIORITY ISSUES:
+
+**Vouchers:** Check voucher transaction in E-payment portal. If not refunded/paid not received/wrong card type → raise TT.
+Ticket requirements: Issue description • Troubleshooting confirmation • Voucher details, Amount, Date & time • Callback
+
+**STC Web/App:** 1) Update app / reinstall 2) Get exact error message, check if resolvable from our side 3) Raise TT if not resolvable.
+Ticket requirements: Issue description • Troubleshooting confirmation • Callback
+
+**Site Down:** Raise TT with tower number and area name.
+Ticket requirements: Auto close.
+
+**Qitaf Points:** Check exact issue. Missing points related to payment or error in enrollment/redemption → raise TT.
+Ticket requirements: Issue description • Troubleshooting confirmation • Callback
+
+**General Issue (affects many customers):** Follow general issue escalation instructions.
+Ticket requirements: Escalate to shift in charge team leader.
+
+**Change Limit:** Ask customer to settle all bills. Check last 3 payments. If can raise limit, inform customer. To decrease → pay all bills and raise TT.
+Ticket requirements: Limit requested by user • Callback
+
+**Block/Unblock (Google/Huawei):** Raise TT to Resolutions.
+Ticket requirements: Issue description • Customer request • Callback
+
+**3rd Party Charges:** If service unidentifiable or customer insists on complaint after explanation → raise TT to Resolutions.
+Ticket requirements: Issue description • Troubleshooting confirmation • Service details • Callback
+
+## Vocabulary Rules (STRICTLY FOLLOW):
+- Always say "العميل" never "الزبون" or "الكستمر"
+- Always say "طلب" or "TT" never "تذكرة" or "ticket" in Arabic responses
+- Never use "تذاكر" — use "تواصل" instead
+- Always say "رفع طلب" never "رفع تذكرة"
+- Never use "تذاكر" — use "تواصل" instead
+
+## Response Rules:
+- Reply in the same language the agent uses (Arabic/English/Kuwaiti dialect)
+- Follow the troubleshooting steps from the guide above for every issue
+- After completing troubleshooting steps, if issue persists — ALWAYS show the exact ticket requirements
+- Be concise but thorough — agents need clear step-by-step guidance
+- When agent says issue persists or customer not satisfied → provide ticket requirements immediately
+- Use icons naturally: 🔧 for steps, ⚠️ for warnings, ✅ for resolved, 🎫 for ticket requirements
+- When asking diagnostic questions, end with [OPTIONS: ...] for button selection
+
+## BUTTON OPTIONS — CRITICAL RULE:
+When you ask a question that requires a choice, end your response with:
+[OPTIONS: Option1 | Option2 | Option3]`
     : `You are a smart Resolutions Assistant for STC Kuwait support agents (L2 team).
 
 Your name: Resolutions Assistant
@@ -3171,6 +3361,11 @@ Your personality: natural, smart, diagnostic — like an experienced telecom eng
 3. Build diagnosis step by step based on answers
 4. Only give troubleshooting steps AFTER you know: connection type + symptom + scope (one device/all/one location/everywhere)
 5. Match troubleshooting to the specific connection type — fiber steps ≠ mobile data steps ≠ Baity 5G steps
+
+## Vocabulary Rules (STRICTLY FOLLOW):
+- Always say "العميل" never "الزبون" or "الكستمر"
+- Always say "طلب" or "TT" never "تذكرة" or "ticket" in Arabic responses
+- Never use "تذاكر" — use "تواصل" instead
 
 ## Response Rules:
 - Reply in the same language the agent uses (Arabic/English/Kuwaiti dialect) — never mix
@@ -3359,37 +3554,55 @@ let currentLogsPage = 1;
 const LOGS_PER_PAGE = 10;
 
 async function renderAdmin() {
-  // Fetch employees
-  const employees = await getEmployees();
-  const active = employees.filter(e => e.status === 'active' && !e.disabled);
-  const idle = employees.filter(e => e.status === 'idle' && !e.disabled);
-  const disabled = employees.filter(e => e.disabled || e.status === 'disabled');
+  const isAdmin = currentUser && currentUser.role === 'admin';
+  const isEmployee = currentUser && (currentUser.role === 'employee' || currentUser.role === 'L1');
 
-  document.getElementById('statActive').textContent = active.length;
-  document.getElementById('statIdle').textContent = idle.length;
-  document.getElementById('statDisabled').textContent = disabled.length;
+  // For non-admin: hide employee management, show only their own stats
+  const empSection = document.querySelector('.employees-section');
+  const addEmpBtn = document.querySelector('.btn-add-emp');
+  if (empSection) empSection.style.display = isAdmin ? 'block' : 'none';
 
-  // Render employees table
-  renderEmployeesTable(employees);
+  if (isAdmin) {
+    // Admin: fetch all employees
+    const employees = await getEmployees();
+    const active = employees.filter(e => e.status === 'active' && !e.disabled);
+    const idle = employees.filter(e => e.status === 'idle' && !e.disabled);
+    const disabled = employees.filter(e => e.disabled || e.status === 'disabled');
+    document.getElementById('statActive').textContent = active.length;
+    document.getElementById('statIdle').textContent = idle.length;
+    document.getElementById('statDisabled').textContent = disabled.length;
+    renderEmployeesTable(employees);
+  } else {
+    // L1/L2: hide irrelevant stats
+    document.getElementById('statActive').textContent = '-';
+    document.getElementById('statIdle').textContent = '-';
+    document.getElementById('statDisabled').textContent = '-';
+  }
 
-  // Fetch from Supabase for admin
+  // Fetch logs - admin gets all, others get only their own
   const fromDate = document.getElementById('dateFrom') ? document.getElementById('dateFrom').value : '';
   const toDate = document.getElementById('dateTo') ? document.getElementById('dateTo').value : '';
-  const supaLogs = await getLogsFromSupabase(fromDate, toDate);
+  let supaLogs = await getLogsFromSupabase(fromDate, toDate);
+
+  // Filter by email for non-admin
+  if (!isAdmin && supaLogs.length > 0) {
+    supaLogs = supaLogs.filter(l => l.email === currentUser.email);
+  }
+
   allLogsCache = supaLogs.length > 0 ? supaLogs.map(l => ({
     email: l.email,
     question: l.question,
     category: l.category,
     priority: l.priority,
     time: l.created_at
-  })) : logs;
+  })) : logs.filter(l => isAdmin || l.email === currentUser.email);
 
   const today = new Date().toDateString();
   const todayLogs = allLogsCache.filter(l => new Date(l.time).toDateString() === today);
   const uniqueUsers = [...new Set(allLogsCache.map(l => l.email))];
 
   document.getElementById('statTotal').textContent = allLogsCache.length;
-  document.getElementById('statUsers').textContent = uniqueUsers.length;
+  document.getElementById('statUsers').textContent = isAdmin ? uniqueUsers.length : '-';
   document.getElementById('statToday').textContent = todayLogs.length;
 
   currentLogsPage = 1;
