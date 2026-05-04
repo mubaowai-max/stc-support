@@ -3817,7 +3817,17 @@ window.addEventListener('load', function() {
       roleEl.className = 'role-tag ' + session.role;
       if (session.role === 'admin') {
         document.getElementById('tabAdmin').classList.remove('hidden');
+        document.getElementById('tabAdmin').textContent = '📊 لوحة التحكم';
         document.getElementById('roleSwitcher').style.display = 'flex';
+        switchPreview('L2');
+      } else if (session.role === 'L1') {
+        document.getElementById('tabAdmin').classList.remove('hidden');
+        document.getElementById('tabAdmin').textContent = '📊 سجل أسئلتي';
+        switchPreview('L1');
+      } else {
+        document.getElementById('tabAdmin').classList.remove('hidden');
+        document.getElementById('tabAdmin').textContent = '📊 سجل أسئلتي';
+        switchPreview('L2');
       }
       upsertEmployee(session.email, session.name, session.role);
       startIdleTimer();
