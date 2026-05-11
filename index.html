@@ -27,6 +27,17 @@
     --low: #3498DB;
   }
 
+  body.light {
+    --bg: #F4F4F4;
+    --surface: #FFFFFF;
+    --surface2: #F0F0F0;
+    --surface3: #E8E8E8;
+    --border: #D0D0D0;
+    --text: #1A1A1A;
+    --text-muted: #666;
+    --text-dim: #999;
+  }
+
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
@@ -36,6 +47,64 @@
     min-height: 100vh;
     direction: rtl;
   }
+
+
+  body.theme-blue {
+    --primary:#1A56DB;--primary-light:#3B82F6;
+    --bg:#0A0F1E;--surface:#0F1A30;--surface2:#162240;--surface3:#1E3050;
+    --border:#1e3a5f;--text:#E0E8FF;--text-muted:#7B9ED9;--text-dim:#4A6FA5;
+  }
+  body.theme-green {
+    --primary:#0F7B3E;--primary-light:#16A34A;
+    --bg:#050F0A;--surface:#0A1F12;--surface2:#0F2A18;--surface3:#173520;
+    --border:#1a3a25;--text:#D0F0DE;--text-muted:#5FAF7A;--text-dim:#2E6644;
+  }
+  body.theme-red {
+    --primary:#B91C1C;--primary-light:#DC2626;
+    --bg:#0F0A0A;--surface:#1F0F0F;--surface2:#2A1212;--surface3:#351818;
+    --border:#3a1f1f;--text:#FFE0E0;--text-muted:#D97777;--text-dim:#8B4444;
+  }
+  body.theme-amber {
+    --primary:#B45309;--primary-light:#D97706;
+    --bg:#0F0C00;--surface:#1A1400;--surface2:#241C00;--surface3:#2E2400;
+    --border:#3a2e00;--text:#FDE68A;--text-muted:#CA9A26;--text-dim:#7A5C10;
+  }
+  body.theme-contrast {
+    --primary:#FFFFFF;--primary-light:#CCCCCC;
+    --bg:#000000;--surface:#000;--surface2:#0A0A0A;--surface3:#111;
+    --border:#FFFFFF;--text:#FFFFFF;--text-muted:#CCCCCC;--text-dim:#888;
+  }
+    body.ltr { direction: ltr; }
+
+  /* ── MOBILE ── */
+  @media (max-width: 480px) {
+    .header { padding: 0 12px; height: 52px; }
+    .header-title { display: none; }
+    .user-badge span:first-child { display: none; }
+    .tabs { display: none !important; }
+    .main { padding: 12px; }
+    .mobile-nav { display: flex !important; }
+    .chat-container { height: calc(100vh - 160px); }
+  }
+
+  .mobile-nav {
+    display: none;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    z-index: 200;
+    padding: 6px 0 env(safe-area-inset-bottom, 6px);
+  }
+  .mobile-nav-item {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; gap: 3px; padding: 6px 4px;
+    cursor: pointer; color: var(--text-muted);
+    font-size: 10px; border: none; background: none;
+    font-family: inherit; transition: color 0.2s;
+  }
+  .mobile-nav-item.active { color: var(--primary-light); }
+  .mobile-nav-item i { font-size: 20px; }
 
   /* LOGIN PAGE */
   .login-page {
@@ -336,7 +405,8 @@
   .msg.bot .msg-avatar { background: var(--surface3); }
 
   .msg-bubble {
-    max-width: 75%;
+    width: fit-content;
+    max-width: 100%;
     padding: 12px 16px;
     border-radius: 12px;
     font-size: 14px;
@@ -797,28 +867,87 @@
   <div class="header">
     <div class="header-brand">
       <div class="header-logo">stc</div>
-      <span class="header-title">Troubleshooting Portal</span>
+      <span class="header-title" data-i18n="appTitle">Troubleshooting Portal</span>
     </div>
-    <div class="header-right">
-      <div class="user-badge">
-        <span id="headerEmail"></span>
-        <span class="role-tag" id="headerRole"></span>
+    <div class="header-right" style="gap:8px">
+
+      <!-- Admin: L1/L2 preview switcher -->
+      <div id="roleSwitcher" style="display:none;gap:4px;align-items:center;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:3px" class="header-right">
+        <span style="font-size:11px;color:var(--text-muted);padding:0 6px" data-i18n="preview">تجربة:</span>
+        <button onclick="switchPreview('L2')" id="btnL2" style="background:var(--primary);border:none;border-radius:6px;padding:4px 10px;color:white;font-size:12px;font-family:inherit;cursor:pointer">L2</button>
+        <button onclick="switchPreview('L1')" id="btnL1" style="background:none;border:none;border-radius:6px;padding:4px 10px;color:var(--text-muted);font-size:12px;font-family:inherit;cursor:pointer">L1</button>
       </div>
-      <!-- Role switcher for admin only -->
-      <div id="roleSwitcher" style="display:none;gap:6px;align-items:center" class="header-right">
-        <span style="font-size:12px;color:var(--text-muted)">تجربة:</span>
-        <button onclick="switchPreview('L2')" id="btnL2" style="background:var(--primary);border:none;border-radius:6px;padding:5px 12px;color:white;font-size:12px;font-family:inherit;cursor:pointer">L2</button>
-        <button onclick="switchPreview('L1')" id="btnL1" style="background:var(--surface3);border:1px solid var(--border);border-radius:6px;padding:5px 12px;color:var(--text);font-size:12px;font-family:inherit;cursor:pointer">L1</button>
+
+      <!-- Profile card with dropdown -->
+      <div style="position:relative">
+        <button onclick="toggleProfileMenu()" style="display:flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:6px 10px;cursor:pointer;color:var(--text)" id="profileBtn" aria-haspopup="true" aria-expanded="false">
+          <!-- stc logo avatar -->
+          <div id="headerAvatar" style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--primary),var(--primary-light));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white;flex-shrink:0;letter-spacing:-0.5px">stc</div>
+          <div style="display:flex;flex-direction:column;align-items:flex-start;gap:1px">
+            <span id="headerName" style="font-size:13px;font-weight:600;color:var(--text);line-height:1"></span>
+            <span class="role-tag" id="headerRole" style="font-size:10px;padding:1px 6px"></span>
+          </div>
+          <span style="font-size:10px;color:var(--text-muted);margin-right:2px">▾</span>
+        </button>
+
+        <!-- Dropdown menu -->
+        <div id="profileMenu" style="display:none;position:absolute;top:calc(100% + 6px);left:0;min-width:200px;background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.3);z-index:500;overflow:hidden">
+          <!-- User info -->
+          <div style="padding:12px 14px;border-bottom:1px solid var(--border)">
+            <div style="font-size:13px;font-weight:600;color:var(--text)" id="menuName"></div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:2px" id="headerEmail"></div>
+          </div>
+          <!-- Theme picker -->
+          <div style="padding:10px 14px;border-bottom:1px solid var(--border)">
+            <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px" data-i18n="themeLabel">تغيير المظهر</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center">
+              <button onclick="setTheme('dark')"     id="th-dark"     title="Dark Purple"   aria-label="Dark Purple"   style="width:22px;height:22px;border-radius:50%;background:#6B1E78;border:2px solid transparent;cursor:pointer"></button>
+              <button onclick="setTheme('blue')"     id="th-blue"     title="Dark Blue"     aria-label="Dark Blue"     style="width:22px;height:22px;border-radius:50%;background:#1A56DB;border:2px solid transparent;cursor:pointer"></button>
+              <button onclick="setTheme('green')"    id="th-green"    title="Dark Green"    aria-label="Dark Green"    style="width:22px;height:22px;border-radius:50%;background:#0F7B3E;border:2px solid transparent;cursor:pointer"></button>
+              <button onclick="setTheme('red')"      id="th-red"      title="Dark Red"      aria-label="Dark Red"      style="width:22px;height:22px;border-radius:50%;background:#B91C1C;border:2px solid transparent;cursor:pointer"></button>
+              <button onclick="setTheme('amber')"    id="th-amber"    title="Dark Amber"    aria-label="Dark Amber"    style="width:22px;height:22px;border-radius:50%;background:#B45309;border:2px solid transparent;cursor:pointer"></button>
+              <button onclick="setTheme('light')"    id="th-light"    title="Light"         aria-label="Light"         style="width:22px;height:22px;border-radius:50%;background:#F0F0F0;border:2px solid transparent;cursor:pointer"></button>
+              <button onclick="setTheme('contrast')" id="th-contrast" title="High Contrast" aria-label="High Contrast" style="width:22px;height:22px;border-radius:50%;background:#000;border:2px solid transparent;cursor:pointer;font-size:8px;color:#fff;font-weight:700">HC</button>
+            </div>
+          </div>
+          <!-- Language -->
+          <button onclick="toggleLang()" style="width:100%;display:flex;align-items:center;gap:10px;padding:10px 14px;background:none;border:none;border-bottom:1px solid var(--border);color:var(--text);font-size:13px;font-family:inherit;cursor:pointer;text-align:right">
+            <span style="font-size:16px">🌐</span>
+            <span data-i18n="langLabel">English</span>
+            <span id="langBtn" style="margin-right:auto;font-size:11px;background:var(--surface3);padding:2px 8px;border-radius:4px;color:var(--text-muted)">EN</span>
+          </button>
+          <!-- Logout -->
+          <button onclick="logout()" style="width:100%;display:flex;align-items:center;gap:10px;padding:10px 14px;background:none;border:none;color:#E74C3C;font-size:13px;font-family:inherit;cursor:pointer;text-align:right">
+            <span style="font-size:16px">🚪</span>
+            <span data-i18n="logout">خروج</span>
+          </button>
+        </div>
       </div>
-      <button class="btn-logout" onclick="logout()">خروج</button>
+
     </div>
   </div>
 
   <div class="tabs" id="tabsBar">
-    <button class="tab active" onclick="showTab('chat', this)" id="tabChat">💬 الدعم الفني</button>
-    <button class="tab" onclick="showTab('history', this)" id="tabHistory">🕐 سجل المحادثات</button>
+    <button class="tab active" onclick="showTab('chat', this)" id="tabChat" data-i18n="tabChat">💬 الدعم الفني</button>
+    <button class="tab" onclick="showTab('history', this)" id="tabHistory" data-i18n="tabHistory">🕐 سجل المحادثات</button>
     <button class="tab hidden" onclick="showTab('admin', this)" id="tabAdmin">📊 لوحة التحكم</button>
   </div>
+
+  <!-- Mobile bottom nav -->
+  <nav class="mobile-nav" id="mobileNav" aria-label="التنقل">
+    <button class="mobile-nav-item active" id="mnChat" onclick="showTab('chat', document.getElementById('tabChat'));setMobileNav('mnChat')">
+      <i class="ti ti-message-circle" aria-hidden="true"></i>
+      <span data-i18n="tabChat">شات</span>
+    </button>
+    <button class="mobile-nav-item" id="mnHistory" onclick="showTab('history', document.getElementById('tabHistory'));setMobileNav('mnHistory')">
+      <i class="ti ti-clock" aria-hidden="true"></i>
+      <span data-i18n="tabHistory">سجل</span>
+    </button>
+    <button class="mobile-nav-item hidden" id="mnAdmin" onclick="showTab('admin', document.getElementById('tabAdmin'));setMobileNav('mnAdmin')">
+      <i class="ti ti-chart-bar" aria-hidden="true"></i>
+      <span data-i18n="tabAdmin">لوحة</span>
+    </button>
+  </nav>
 
   <div class="main">
     <!-- CHAT -->
@@ -862,28 +991,108 @@
       <div class="stats-row">
         <div class="stat-card">
           <div class="stat-num" id="statTotal" style="color:#C77DFF">0</div>
-          <div class="stat-label">إجمالي الأسئلة</div>
+          <div class="stat-label" id="lblTotal">إجمالي الأسئلة</div>
         </div>
         <div class="stat-card">
           <div class="stat-num" id="statUsers" style="color:#74B9FF">0</div>
-          <div class="stat-label">موظفين نشطين</div>
+          <div class="stat-label" id="lblUsers">موظفين نشطين</div>
         </div>
         <div class="stat-card">
           <div class="stat-num" id="statToday" style="color:#2ECC71">0</div>
-          <div class="stat-label">أسئلة اليوم</div>
+          <div class="stat-label" id="lblToday">أسئلة اليوم</div>
         </div>
-        <div class="stat-card">
-          <div class="stat-num" id="statActive" style="color:#2ECC71">0</div>
-          <div class="stat-label">🟢 متصل الحين</div>
+        <div class="stat-card" id="cardActive">
+          <div class="stat-num" id="statActive" style="color:#2ECC71;font-size:13px;word-break:break-word">0</div>
+          <div class="stat-label" id="lblActive">🟢 متصل الحين</div>
         </div>
-        <div class="stat-card">
-          <div class="stat-num" id="statIdle" style="color:#FFD93D">0</div>
-          <div class="stat-label">🟡 Idle</div>
+        <div class="stat-card" id="cardIdle">
+          <div class="stat-num" id="statIdle" style="color:#FFD93D;font-size:13px;word-break:break-word">0</div>
+          <div class="stat-label" id="lblIdle">🟡 Idle</div>
         </div>
-        <div class="stat-card">
+        <div class="stat-card" id="cardDisabled">
           <div class="stat-num" id="statDisabled" style="color:#FF6B6B">0</div>
-          <div class="stat-label">🔴 Disabled</div>
+          <div class="stat-label" id="lblDisabled">🔴 Disabled</div>
         </div>
+      </div>
+
+      <!-- ANALYTICS SECTION (admin only) -->
+      <div id="analyticsSection" style="display:none;margin-bottom:20px">
+
+        <!-- Period filter -->
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px;padding:14px 18px;background:var(--surface);border:1px solid var(--border);border-radius:12px">
+          <span style="font-size:13px;color:var(--text-muted);font-weight:500">📅 الفترة:</span>
+          <select id="analyticsPeriod" onchange="renderAnalytics()" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 12px;color:var(--text);font-size:13px;font-family:inherit;outline:none">
+            <option value="7">آخر 7 أيام</option>
+            <option value="30">آخر 30 يوم</option>
+            <option value="90">آخر 3 أشهر</option>
+            <option value="all">الكل</option>
+          </select>
+          <span style="font-size:13px;color:var(--text-muted)">أو تاريخ مخصص:</span>
+          <input type="date" id="analyticsFrom" onchange="renderAnalytics()" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 10px;color:var(--text);font-size:13px;font-family:inherit;outline:none">
+          <span style="color:var(--text-muted)">—</span>
+          <input type="date" id="analyticsTo" onchange="renderAnalytics()" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 10px;color:var(--text);font-size:13px;font-family:inherit;outline:none">
+          <button onclick="renderAnalytics()" style="background:var(--surface3);border:1px solid var(--border);border-radius:8px;padding:6px 14px;color:var(--text);font-size:13px;font-family:inherit;cursor:pointer;margin-right:auto">🔄 تحديث</button>
+        </div>
+
+        <!-- Metric cards -->
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px">
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px">
+            <div id="anTotal" style="font-size:28px;font-weight:700;color:#C77DFF">0</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:4px">إجمالي الأسئلة</div>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px">
+            <div id="anWeek" style="font-size:28px;font-weight:700;color:#2ECC71">0</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:4px">هذا الأسبوع</div>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px">
+            <div id="anToday" style="font-size:28px;font-weight:700;color:#74B9FF">0</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:4px">اليوم</div>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px">
+            <div id="anAgents" style="font-size:28px;font-weight:700;color:#EF9F27">0</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:4px">موظفين نشطين بالفترة</div>
+          </div>
+        </div>
+
+        <!-- Charts row -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px">
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px">
+            <div style="font-size:13px;font-weight:600;margin-bottom:12px;color:var(--text)">📈 أسئلة آخر 7 أيام — L1 / L2</div>
+            <div style="display:flex;gap:14px;margin-bottom:8px;font-size:11px;color:var(--text-muted)">
+              <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#8B2FA0;margin-left:4px"></span>L1</span>
+              <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#2ECC71;margin-left:4px"></span>L2</span>
+            </div>
+            <div style="position:relative;height:180px"><canvas id="anChartDaily" role="img" aria-label="أسئلة آخر 7 أيام L1 وL2">بيانات الأسئلة اليومية.</canvas></div>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px">
+            <div style="font-size:13px;font-weight:600;margin-bottom:12px;color:var(--text)">🏆 أكثر المشاكل تكراراً</div>
+            <div style="position:relative;height:180px"><canvas id="anChartIssues" role="img" aria-label="أكثر المشاكل تكراراً">بيانات أكثر المشاكل.</canvas></div>
+          </div>
+        </div>
+
+        <!-- Sub category doughnut + Agent table -->
+        <div style="display:grid;grid-template-columns:1fr 2fr;gap:14px;margin-bottom:16px">
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px">
+            <div style="font-size:13px;font-weight:600;margin-bottom:12px;color:var(--text)">📂 توزيع Sub Category</div>
+            <div style="position:relative;height:220px"><canvas id="anChartSubcat" role="img" aria-label="توزيع Sub Category">توزيع أنواع المشاكل.</canvas></div>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px">
+            <div style="font-size:13px;font-weight:600;margin-bottom:12px;color:var(--text)">👥 مقارنة الموظفين</div>
+            <div style="overflow-x:auto">
+              <table style="width:100%;font-size:12px;border-collapse:collapse" id="anAgentTable">
+                <thead><tr style="border-bottom:1px solid var(--border)">
+                  <th style="text-align:right;padding:6px 8px;color:var(--text-muted);font-weight:500">الموظف</th>
+                  <th style="text-align:center;padding:6px 8px;color:var(--text-muted);font-weight:500">إجمالي</th>
+                  <th style="text-align:center;padding:6px 8px;color:var(--text-muted);font-weight:500">اليوم</th>
+                  <th style="text-align:center;padding:6px 8px;color:var(--text-muted);font-weight:500">Top Task</th>
+                  <th style="text-align:center;padding:6px 8px;color:var(--text-muted);font-weight:500">نشاط</th>
+                </tr></thead>
+                <tbody id="anAgentBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <!-- EMPLOYEES TABLE -->
@@ -928,6 +1137,15 @@
         <div id="employeesBody">
           <div class="no-data">جاري التحميل...</div>
         </div>
+      </div>
+
+      <!-- AUDIT LOG SECTION -->
+      <div class="logs-table-wrap" id="auditSection" style="margin-bottom:20px">
+        <div class="logs-header">
+          <h3>🔐 سجل تعديلات الأدمن</h3>
+          <button onclick="renderAuditLog()" style="background:var(--surface3);border:1px solid var(--border);border-radius:8px;padding:6px 14px;color:var(--text);font-size:13px;font-family:inherit;cursor:pointer">🔄 تحديث</button>
+        </div>
+        <div id="auditLogBody"><div class="no-data">جاري التحميل...</div></div>
       </div>
 
       <div class="logs-table-wrap">
@@ -1971,9 +2189,8 @@ let activityTimer = null;
 function startIdleTimer() {
   clearTimeout(idleTimer);
   clearTimeout(activityTimer);
-  // Set active
   if (currentUser) updateEmployeeStatus(currentUser.email, 'active');
-  // After 10 min of no activity → set idle
+  // Set idle after 10 min
   idleTimer = setTimeout(() => {
     if (currentUser) updateEmployeeStatus(currentUser.email, 'idle');
   }, 10 * 60 * 1000);
@@ -1982,6 +2199,34 @@ function startIdleTimer() {
 // Reset timer on any activity
 document.addEventListener('click', () => { if (currentUser) startIdleTimer(); });
 document.addEventListener('keypress', () => { if (currentUser) startIdleTimer(); });
+
+// Heartbeat: update last_seen every 60s + check for force_logout
+setInterval(async () => {
+  if (!currentUser) return;
+  try {
+    // Update last_seen
+    await fetch(SUPABASE_URL + "/rest/v1/employees?email=eq." + encodeURIComponent(currentUser.email), {
+      method: "PATCH",
+      headers: {"Content-Type":"application/json","apikey":SUPABASE_KEY,"Authorization":"Bearer "+SUPABASE_KEY},
+      body: JSON.stringify({ last_seen: new Date().toISOString() })
+    });
+    // Check force_logout flag
+    const res = await fetch(SUPABASE_URL + "/rest/v1/employees?email=eq." + encodeURIComponent(currentUser.email) + "&select=force_logout,disabled", {
+      headers: {"apikey":SUPABASE_KEY,"Authorization":"Bearer "+SUPABASE_KEY}
+    });
+    const data = await res.json();
+    if (data && data[0] && (data[0].force_logout || data[0].disabled)) {
+      // Clear force_logout flag then logout
+      await fetch(SUPABASE_URL + "/rest/v1/employees?email=eq." + encodeURIComponent(currentUser.email), {
+        method: "PATCH",
+        headers: {"Content-Type":"application/json","apikey":SUPABASE_KEY,"Authorization":"Bearer "+SUPABASE_KEY},
+        body: JSON.stringify({ force_logout: false })
+      });
+      localStorage.removeItem('stc_session');
+      location.reload();
+    }
+  } catch(e) {}
+}, 60000);
 
 async function login() {
   const email = document.getElementById('emailInput').value.trim().toLowerCase();
@@ -2040,6 +2285,10 @@ async function login() {
         document.getElementById('loginPage').style.display = 'none';
         document.getElementById('mainApp').style.display = 'flex';
         document.getElementById('headerEmail').textContent = email;
+        const _n1 = emp.name || email.split('@')[0];
+        document.getElementById('headerName').textContent = _n1;
+        const mn1 = document.getElementById('menuName'); if(mn1) mn1.textContent = _n1;
+        setHeaderAvatar(_n1);
         const roleEl = document.getElementById('headerRole');
         roleEl.textContent = emp.role === 'admin' ? 'مدير' : emp.role === 'L1' ? 'L1' : 'موظف';
         roleEl.className = 'role-tag ' + (emp.role || 'employee');
@@ -2081,6 +2330,7 @@ document.getElementById('passInput').addEventListener('keydown', e => {
 function logout() {
   if (currentUser) {
     updateEmployeeStatus(currentUser.email, 'idle');
+    saveAuditLog('logout', currentUser.email, 'User logged out');
   }
   currentUser = null;
   chatHistory = [];
@@ -2099,6 +2349,59 @@ function logout() {
         مثال: <em>"الإنترنت لا يعمل"</em> أو <em>"مشكلة في التجوال"</em>
       </div>
     </div>`;
+}
+
+// ── AUDIT LOG ──
+async function saveAuditLog(action, targetEmail, details) {
+  try {
+    await fetch(SUPABASE_URL + "/rest/v1/audit_logs", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_KEY,
+        "Authorization": "Bearer " + SUPABASE_KEY,
+        "Prefer": "return=minimal"
+      },
+      body: JSON.stringify({
+        admin_email: currentUser ? currentUser.email : 'system',
+        action: action,
+        target_email: targetEmail || '',
+        details: details || '',
+        created_at: new Date().toISOString()
+      })
+    });
+  } catch(e) { console.warn('Audit log error:', e); }
+}
+
+async function loadAuditLog() {
+  try {
+    const res = await fetch(SUPABASE_URL + "/rest/v1/audit_logs?order=created_at.desc&limit=100", {
+      headers: { "apikey": SUPABASE_KEY, "Authorization": "Bearer " + SUPABASE_KEY }
+    });
+    return await res.json();
+  } catch(e) { return []; }
+}
+
+async function renderAuditLog() {
+  const body = document.getElementById('auditLogBody');
+  if (!body) return;
+  body.innerHTML = '<div style="color:var(--text-muted);padding:12px">جاري التحميل...</div>';
+  const data = await loadAuditLog();
+  if (!data.length) { body.innerHTML = '<div class="no-data">لا توجد سجلات بعد</div>'; return; }
+  const actionLabels = {
+    'add_employee': '➕ إضافة موظف',
+    'disable_employee': '🔴 إيقاف موظف',
+    'enable_employee': '🟢 تفعيل موظف',
+    'force_logout': '⚡ Force Logout',
+    'logout': '🚪 تسجيل خروج'
+  };
+  const rows = data.map(a => {
+    const d = new Date(a.created_at);
+    const t = d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}) + ' ' + d.toLocaleDateString('en-GB');
+    const label = actionLabels[a.action] || a.action;
+    return '<tr><td class="td-time">' + t + '</td><td class="td-email">' + (a.admin_email||'-') + '</td><td>' + label + '</td><td class="td-email">' + (a.target_email||'-') + '</td><td style="font-size:12px;color:var(--text-muted)">' + (a.details||'-') + '</td></tr>';
+  }).join('');
+  body.innerHTML = '<table><thead><tr><th>الوقت</th><th>الأدمن</th><th>الإجراء</th><th>الموظف</th><th>التفاصيل</th></tr></thead><tbody>' + rows + '</tbody></table>';
 }
 
 // ========== TABS ==========
@@ -2476,14 +2779,47 @@ function addMsg(text, role, stepsHtml, priority, category) {
 
   const now = new Date();
   const timeLabel = now.toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
+  const msgId = 'msg-' + Date.now();
+  const copyBtn = role === 'bot'
+    ? `<button onclick="copyMsg('${msgId}')" style="background:none;border:1px solid var(--border);border-radius:6px;padding:3px 10px;color:var(--text-muted);font-size:11px;font-family:inherit;cursor:pointer;transition:all 0.2s" id="copy-${msgId}">📋 نسخ</button>`
+    : '';
   div.innerHTML = `
-    <div class="msg-avatar">${role === 'user' ? '👤' : '🤖'}</div>
+    <div class="msg-avatar" style="${role === 'user' ? 'font-size:11px;font-weight:700;letter-spacing:-0.5px' : 'font-size:16px'}">${role === 'user' ? 'stc' : '🤖'}</div>
     <div style="display:flex;flex-direction:column;gap:4px;max-width:75%">
-      <div class="msg-bubble">${bubbleContent}</div>
-      <div style="font-size:10px;color:var(--text-dim);${role === 'user' ? 'text-align:left' : 'text-align:right'};padding:0 4px">${timeLabel}</div>
+      <div class="msg-bubble" id="${msgId}">${bubbleContent}</div>
+      <div style="display:flex;align-items:center;gap:8px;padding:0 4px;${role === 'user' ? 'justify-content:flex-start' : 'justify-content:flex-end'}">
+        ${copyBtn}
+        <span style="font-size:10px;color:var(--text-dim)">${timeLabel}</span>
+      </div>
     </div>`;
   msgs.appendChild(div);
   msgs.scrollTop = msgs.scrollHeight;
+}
+
+function copyMsg(id) {
+  const bubble = document.getElementById(id);
+  const btn = document.getElementById('copy-' + id);
+  if (!bubble || !btn) return;
+  const text = bubble.innerText || bubble.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✅ تم النسخ';
+    btn.style.color = '#2ECC71';
+    btn.style.borderColor = '#2ECC71';
+    setTimeout(() => {
+      btn.textContent = '📋 نسخ';
+      btn.style.color = '';
+      btn.style.borderColor = '';
+    }, 2000);
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.textContent = '✅ تم النسخ';
+    btn.style.color = '#2ECC71';
+    setTimeout(() => { btn.textContent = '📋 نسخ'; btn.style.color = ''; }, 2000);
+  });
 }
 
 function showTyping() {
@@ -3129,10 +3465,13 @@ async function renderAdmin() {
     document.getElementById('statDisabled').textContent = disabled.length;
     renderEmployeesTable(employees);
   } else {
-    // L1/L2: hide irrelevant stats
-    document.getElementById('statActive').textContent = '-';
-    document.getElementById('statIdle').textContent = '-';
+    // L1/L2: show agent-specific stats after logs are loaded (done below)
     document.getElementById('statDisabled').textContent = '-';
+    document.getElementById('cardDisabled').style.display = 'none';
+    document.getElementById('lblUsers').textContent = 'أسئلة اليوم';
+    document.getElementById('lblToday').textContent = 'أسئلة هذا الأسبوع';
+    document.getElementById('lblActive').textContent = '📋 Top Task Name';
+    document.getElementById('lblIdle').textContent = '📂 Top Sub Category';
   }
 
   // Fetch logs - admin gets all, others get only their own
@@ -3158,11 +3497,63 @@ async function renderAdmin() {
   const uniqueUsers = [...new Set(allLogsCache.map(l => l.email))];
 
   document.getElementById('statTotal').textContent = allLogsCache.length;
-  document.getElementById('statUsers').textContent = isAdmin ? uniqueUsers.length : '-';
-  document.getElementById('statToday').textContent = todayLogs.length;
+
+  if (isAdmin) {
+    document.getElementById('statUsers').textContent = uniqueUsers.length;
+    document.getElementById('statToday').textContent = todayLogs.length;
+  } else {
+    // Agent view: today's count + week count + top task + top sub cat
+    const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+    const weekLogs = allLogsCache.filter(l => new Date(l.time) >= weekAgo);
+    document.getElementById('statUsers').textContent = todayLogs.length;
+    document.getElementById('statToday').textContent = weekLogs.length;
+
+    // Top Task Name
+    const taskCount = {};
+    allLogsCache.forEach(l => { if (l.category) taskCount[l.category] = (taskCount[l.category]||0)+1; });
+    const topTask = Object.entries(taskCount).sort((a,b)=>b[1]-a[1])[0];
+    document.getElementById('statActive').textContent = topTask ? topTask[0] + ' (' + topTask[1] + ')' : '-';
+
+    // Top Sub Category
+    const subCategoryMap2 = {
+      'CITRA':'Special Resolution request','Staff/Friends & Family':'Special Resolution request',
+      'Follow Up TT':'Special Resolution request','HQ Complaint':'Special Resolution request',
+      'Roaming Techincal- Internet':'Roaming Complaint','Roaming Technical- Calls & SMS':'Roaming Complaint',
+      'Roaming Billing- Charges':'Roaming Complaint','Internet- not working':'Internet issue',
+      'Internet- Ping Issue':'Internet issue','Internet- Site Down':'Internet issue',
+      'Internet- Baity':'Internet issue','Internet- Baity Low Speed':'Internet issue',
+      'Speed Issue – 4G':'Internet issue','Speed Issue – 5G':'Internet issue',
+      'Calls- not working':'Call & SMS issues','Calls- Quality':'Call & SMS issues',
+      'Calls- International':'Call & SMS issues','Calls- Diverts':'Call & SMS issues',
+      'MNP-  Technical Issues':'Call & SMS issues','SMS & Verification- issues':'Call & SMS issues',
+      'App & Web-  Payment issue':'Digital and self service','App & Web- Technical Issues':'Digital and self service',
+      'Apple and google- Charge issues':'Digital and self service','Kiosk- Payment issue':'Digital and self service',
+      'Voucher- issues':'Digital and self service','E-SIM-  issues':'Digital and self service',
+      'E-SIM-  issues (Code activation issues)':'Digital and self service',
+      'Prepaid – Balance & validity':'stc services','Plan/Add on services- Charge issues':'stc services',
+      'Plan/Add on services- Technical issues':'stc services','3rd party- charge issues':'stc services',
+      'Apple Watch':'stc services','Qitaf points':'stc services',
+      'Outage- Global Service/App':'General Issue','Outage- Network':'General Issue'
+    };
+    const subCount = {};
+    allLogsCache.forEach(l => { const s = subCategoryMap2[l.category]||'Other'; subCount[s]=(subCount[s]||0)+1; });
+    const topSub = Object.entries(subCount).sort((a,b)=>b[1]-a[1])[0];
+    document.getElementById('statIdle').textContent = topSub ? topSub[0] + ' (' + topSub[1] + ')' : '-';
+  }
 
   currentLogsPage = 1;
   renderLogsTable(allLogsCache);
+  // Audit log: admin only
+  const auditSec = document.getElementById('auditSection');
+  if (auditSec) {
+    if (isAdmin) { auditSec.style.display='block'; renderAuditLog(); }
+    else auditSec.style.display='none';
+  }
+  const anSec = document.getElementById('analyticsSection');
+  if (anSec) {
+    if (isAdmin) { anSec.style.display='block'; renderAnalytics(); }
+    else anSec.style.display='none';
+  }
 }
 
 async function applyDateFilter() {
@@ -3295,9 +3686,16 @@ function renderEmployeesTable(employees) {
     return;
   }
 
+  const now = Date.now();
   const rows = employees.map(e => {
+    const lastSeenMs = e.last_seen ? new Date(e.last_seen).getTime() : 0;
+    const diffMin = (now - lastSeenMs) / 60000;
+    const isOnlineNow = !e.disabled && diffMin < 5;
+
     const statusBadge = e.disabled
       ? '<span style="color:#FF6B6B;font-weight:600">🔴 Disabled</span>'
+      : isOnlineNow
+      ? '<span style="color:#2ECC71;font-weight:600;animation:pulse 1.5s infinite">🟢 Online Now</span>'
       : e.status === 'active'
       ? '<span style="color:#2ECC71;font-weight:600">🟢 Active</span>'
       : '<span style="color:#FFD93D;font-weight:600">🟡 Idle</span>';
@@ -3311,7 +3709,11 @@ function renderEmployeesTable(employees) {
       ? "<button onclick=\"toggleEmp('" + safeEmail + "', false)\" style=\"background:#2ECC71;border:none;border-radius:6px;padding:4px 10px;color:white;font-size:11px;cursor:pointer;font-family:inherit\">تفعيل</button>"
       : "<button onclick=\"toggleEmp('" + safeEmail + "', true)\" style=\"background:#E74C3C;border:none;border-radius:6px;padding:4px 10px;color:white;font-size:11px;cursor:pointer;font-family:inherit\">إيقاف</button>";
 
-    return '<tr><td class="td-email">' + e.email + '</td><td>' + (e.name||'-') + '</td><td><span style="color:#C77DFF">' + (e.role||'-') + '</span></td><td>' + statusBadge + '</td><td class="td-time">' + lastSeen + '</td><td>' + toggleBtn + '</td></tr>';
+    const forceLogoutBtn = isOnlineNow
+      ? " <button onclick=\"forceLogoutUser('" + safeEmail + "')\" style=\"background:#7F1D1D;border:1px solid #991B1B;border-radius:6px;padding:4px 10px;color:#FCA5A5;font-size:11px;cursor:pointer;font-family:inherit\">Force Logout</button>"
+      : '';
+
+    return '<tr><td class="td-email">' + e.email + '</td><td>' + (e.name||'-') + '</td><td><span style="color:#C77DFF">' + (e.role||'-') + '</span></td><td>' + statusBadge + '</td><td class="td-time">' + lastSeen + '</td><td style="display:flex;gap:4px;flex-wrap:wrap">' + toggleBtn + forceLogoutBtn + '</td></tr>';
   }).join('');
 
   body.innerHTML = '<table><thead><tr><th>الإيميل</th><th>الاسم</th><th>الدور</th><th>الحالة</th><th>آخر دخول</th><th>إجراء</th></tr></thead><tbody>' + rows + '</tbody></table>';
@@ -3319,7 +3721,25 @@ function renderEmployeesTable(employees) {
 
 async function toggleEmp(email, disabled) {
   await toggleEmployeeDisabled(email, disabled);
+  saveAuditLog(disabled ? 'disable_employee' : 'enable_employee', email, disabled ? 'Account disabled by admin' : 'Account re-enabled by admin');
   renderAdmin();
+}
+
+async function forceLogoutUser(email) {
+  if (!confirm('Force logout ' + email + '?')) return;
+  try {
+    await fetch(SUPABASE_URL + "/rest/v1/employees?email=eq." + encodeURIComponent(email), {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_KEY,
+        "Authorization": "Bearer " + SUPABASE_KEY
+      },
+      body: JSON.stringify({ force_logout: true, status: "idle" })
+    });
+    saveAuditLog('force_logout', email, 'Forced logout by admin');
+    renderAdmin();
+  } catch(e) { alert('Error: ' + e.message); }
 }
 
 let previewMode = 'L2'; // Default for admin
@@ -3336,23 +3756,24 @@ function switchPreview(mode) {
   document.getElementById('btnL1').style.border = mode === 'L1' ? 'none' : '1px solid var(--border)';
   document.getElementById('btnL1').style.color = mode === 'L1' ? 'white' : 'var(--text)';
   
-  // Update chat header based on mode
+  // Update chat header based on mode (using translations)
+  const _t = (typeof I18N !== 'undefined' && typeof currentLang !== 'undefined') ? I18N[currentLang] : null;
   if (mode === 'L1') {
-    document.querySelector('.chat-header h3').textContent = 'مساعد Call Center (L1)';
-    document.querySelector('.chat-header p').textContent = 'اكتب مشكلة العميل وسأساعدك في التصعيد';
+    document.querySelector('.chat-header h3').textContent = _t ? _t.chatTitleL1 : 'مساعد Call Center (L1)';
+    document.querySelector('.chat-header p').textContent  = _t ? _t.chatSubL1   : 'اكتب مشكلة العميل وسأساعدك في التصعيد';
   } else {
-    document.querySelector('.chat-header h3').textContent = 'مساعد Resolutions';
-    document.querySelector('.chat-header p').textContent = 'مساعد موظفي الدعم الفني — اكتب مشكلة العميل وسأساعدك';
+    document.querySelector('.chat-header h3').textContent = _t ? _t.chatTitleL2 : 'مساعد Resolutions';
+    document.querySelector('.chat-header p').textContent  = _t ? _t.chatSubL2   : 'مساعد موظفي الدعم الفني — اكتب مشكلة العميل وسأساعدك';
   }
   
   // Clear chat
   document.getElementById('chatMessages').innerHTML = `
     <div class="msg bot">
       <div class="msg-avatar">🤖</div>
-      <div class="msg-bubble">
-        ${mode === 'L1' 
-          ? '🌹 أهلاً فيكم<br><br>مساعدكم الذكي في stc — جاهز لحل المشاكل وخدمة العميل ⚡<br><br>اختر المشكلة أو اكتبها مباشرة 👇'
-          : 'هلا! 👋 أنا مساعد Resolutions.<br>اكتب مشكلة العميل وأساعدك بها.'}
+      <div class="msg-bubble" id="welcomeMsg">
+        ${mode === 'L1'
+          ? (_t ? _t.welcomeL1 : '🌹 أهلاً فيكم<br><br>مساعدكم الذكي في stc — جاهز لحل المشاكل وخدمة العميل ⚡<br><br>اختر المشكلة أو اكتبها مباشرة 👇')
+          : (_t ? _t.welcomeL2 : 'هلا! 👋 أنا مساعد Resolutions.<br>اكتب مشكلة العميل وأساعدك بها.')}
       </div>
     </div>`;
   chatHistory = [];
@@ -3368,13 +3789,14 @@ function switchPreview(mode) {
 let issueContext = {};
 
 function showSymptomPicker() {
+  const _st = (typeof I18N !== 'undefined' && typeof currentLang !== 'undefined') ? I18N[currentLang] : null;
   addButtonGroup([
-    { icon: '🌐', label: 'إنترنت',        value: 'internet' },
-    { icon: '📞', label: 'اتصال / SMS',   value: 'calls' },
-    { icon: '✈️', label: 'تجوال',         value: 'roaming' },
-    { icon: '💳', label: 'دفع / eSIM',    value: 'digital' },
-    { icon: '📦', label: 'خدمات stc',     value: 'services' },
-    { icon: '⚠️', label: 'عطل عام',       value: 'outage' }
+    { icon: '🌐', label: _st ? _st.catInternet  : 'إنترنت',        value: 'internet' },
+    { icon: '📞', label: _st ? _st.catCalls     : 'اتصال / SMS',   value: 'calls' },
+    { icon: '✈️', label: _st ? _st.catRoaming   : 'تجوال',         value: 'roaming' },
+    { icon: '💳', label: _st ? _st.catDigital   : 'دفع / eSIM',    value: 'digital' },
+    { icon: '📦', label: _st ? _st.catServices  : 'خدمات stc',     value: 'services' },
+    { icon: '⚠️', label: _st ? _st.catOutage    : 'عطل عام',       value: 'outage' }
   ], 'cat-main');
 }
 
@@ -3639,6 +4061,10 @@ window.addEventListener('load', function() {
       document.getElementById('loginPage').style.display = 'none';
       document.getElementById('mainApp').style.display = 'flex';
       document.getElementById('headerEmail').textContent = session.email;
+      const _n2 = session.name || session.email.split('@')[0];
+      document.getElementById('headerName').textContent = _n2;
+      const mn2 = document.getElementById('menuName'); if(mn2) mn2.textContent = _n2;
+      setHeaderAvatar(_n2);
       const roleEl = document.getElementById('headerRole');
       roleEl.textContent = session.role === 'admin' ? 'مدير' : 'موظف';
       roleEl.className = 'role-tag ' + session.role;
@@ -3650,6 +4076,7 @@ window.addEventListener('load', function() {
       } else if (session.role === 'L1') {
         document.getElementById('tabAdmin').classList.remove('hidden');
         document.getElementById('tabAdmin').textContent = '📊 سجل أسئلتي';
+        document.getElementById('mnAdmin') && document.getElementById('mnAdmin').classList.remove('hidden');
         switchPreview('L1');
       } else {
         document.getElementById('tabAdmin').classList.remove('hidden');
@@ -3713,6 +4140,430 @@ function showAnswerModal(btn) {
 }
 document.getElementById('answerModal').addEventListener('click', function(e) {
   if (e.target === this) this.style.display = 'none';
+});
+</script>
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+let anChartDailyInst = null, anChartIssuesInst = null, anChartSubcatInst = null;
+
+const AN_SUBCAT_MAP = {
+  'CITRA':'Special Resolution request','Staff/Friends & Family':'Special Resolution request',
+  'Follow Up TT':'Special Resolution request','HQ Complaint':'Special Resolution request',
+  'Roaming Techincal- Internet':'Roaming Complaint','Roaming Technical- Calls & SMS':'Roaming Complaint',
+  'Roaming Billing- Charges':'Roaming Complaint','Internet- not working':'Internet issue',
+  'Internet- Ping Issue':'Internet issue','Internet- Site Down':'Internet issue',
+  'Internet- Baity':'Internet issue','Internet- Baity Low Speed':'Internet issue',
+  'Speed Issue – 4G':'Internet issue','Speed Issue – 5G':'Internet issue',
+  'Calls- not working':'Call & SMS issues','Calls- Quality':'Call & SMS issues',
+  'Calls- International':'Call & SMS issues','Calls- Diverts':'Call & SMS issues',
+  'MNP-  Technical Issues':'Call & SMS issues','SMS & Verification- issues':'Call & SMS issues',
+  'App & Web-  Payment issue':'Digital and self service','App & Web- Technical Issues':'Digital and self service',
+  'Apple and google- Charge issues':'Digital and self service','Kiosk- Payment issue':'Digital and self service',
+  'Voucher- issues':'Digital and self service','E-SIM-  issues':'Digital and self service',
+  'E-SIM-  issues (Code activation issues)':'Digital and self service',
+  'Prepaid – Balance & validity':'stc services','Plan/Add on services- Charge issues':'stc services',
+  'Plan/Add on services- Technical issues':'stc services','3rd party- charge issues':'stc services',
+  'Apple Watch':'stc services','Qitaf points':'stc services',
+  'Outage- Global Service/App':'General Issue','Outage- Network':'General Issue'
+};
+
+function getAnalyticsData() {
+  const periodSel = document.getElementById('analyticsPeriod');
+  const fromEl = document.getElementById('analyticsFrom');
+  const toEl = document.getElementById('analyticsTo');
+  let filtered = allLogsCache || [];
+
+  if (fromEl && fromEl.value && toEl && toEl.value) {
+    const from = new Date(fromEl.value);
+    const to = new Date(toEl.value); to.setHours(23,59,59);
+    filtered = filtered.filter(l => { const d = new Date(l.time); return d >= from && d <= to; });
+  } else if (periodSel && periodSel.value !== 'all') {
+    const days = parseInt(periodSel.value);
+    const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+    filtered = filtered.filter(l => new Date(l.time) >= since);
+  }
+  return filtered;
+}
+
+function renderAnalytics() {
+  if (!currentUser || currentUser.role !== 'admin') return;
+  const data = getAnalyticsData();
+  const today = new Date().toDateString();
+  const weekAgo = new Date(Date.now() - 7*24*60*60*1000);
+
+  // Metric cards
+  document.getElementById('anTotal').textContent = data.length;
+  document.getElementById('anWeek').textContent = data.filter(l => new Date(l.time) >= weekAgo).length;
+  document.getElementById('anToday').textContent = data.filter(l => new Date(l.time).toDateString() === today).length;
+  document.getElementById('anAgents').textContent = [...new Set(data.map(l => l.email))].length;
+
+  // ── Daily chart (last 7 days) ──
+  const last7 = [];
+  const last7Labels = [];
+  const dayNames = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i); d.setHours(0,0,0,0);
+    last7.push(d); last7Labels.push(dayNames[d.getDay()]);
+  }
+  const l1Counts = last7.map(d => data.filter(l => {
+    const ld = new Date(l.time); ld.setHours(0,0,0,0);
+    return ld.getTime() === d.getTime() && (l.email||'').includes('L1') || (ld.getTime() === d.getTime());
+  }).filter(l => { const ld = new Date(l.time); ld.setHours(0,0,0,0); return ld.getTime() === d.getTime(); }).length);
+  // Separate L1/L2 by role — use allLogsCache email matching employees
+  const empRoles = {};
+  (allLogsCache||[]).forEach(l => { if (!empRoles[l.email]) empRoles[l.email] = l.role || 'L1'; });
+  const l1Data = last7.map(d => data.filter(l => { const ld = new Date(l.time); ld.setHours(0,0,0,0); return ld.getTime()===d.getTime(); }).length);
+  const l2Data = last7.map(() => 0);
+
+  if (anChartDailyInst) anChartDailyInst.destroy();
+  anChartDailyInst = new Chart(document.getElementById('anChartDaily'), {
+    type:'bar',
+    data:{ labels:last7Labels, datasets:[
+      {label:'أسئلة',data:l1Data,backgroundColor:'#8B2FA0',borderRadius:4}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        x:{ticks:{font:{size:10},color:'#888'},grid:{display:false}},
+        y:{ticks:{font:{size:10},color:'#888'},grid:{color:'rgba(128,128,128,0.1)'}}
+      }}
+  });
+
+  // ── Top issues chart ──
+  const taskCount = {};
+  data.forEach(l => { if (l.category) taskCount[l.category]=(taskCount[l.category]||0)+1; });
+  const topTasks = Object.entries(taskCount).sort((a,b)=>b[1]-a[1]).slice(0,7);
+  if (anChartIssuesInst) anChartIssuesInst.destroy();
+  anChartIssuesInst = new Chart(document.getElementById('anChartIssues'), {
+    type:'bar',
+    data:{ labels:topTasks.map(t=>t[0].length>20?t[0].substring(0,18)+'...':t[0]), datasets:[
+      {data:topTasks.map(t=>t[1]),backgroundColor:'#6B1E78',borderRadius:4}
+    ]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        x:{ticks:{font:{size:10},color:'#888'},grid:{color:'rgba(128,128,128,0.1)'}},
+        y:{ticks:{font:{size:10},color:'#888'},grid:{display:false}}
+      }}
+  });
+
+  // ── Sub category doughnut ──
+  const subCount = {};
+  data.forEach(l => { const s=AN_SUBCAT_MAP[l.category]||'Other'; subCount[s]=(subCount[s]||0)+1; });
+  const subcatEntries = Object.entries(subCount).sort((a,b)=>b[1]-a[1]);
+  const COLORS = ['#8B2FA0','#2ECC71','#378ADD','#EF9F27','#E74C3C','#888780','#5DCAA5'];
+  if (anChartSubcatInst) anChartSubcatInst.destroy();
+  anChartSubcatInst = new Chart(document.getElementById('anChartSubcat'), {
+    type:'doughnut',
+    data:{ labels:subcatEntries.map(e=>e[0]), datasets:[{
+      data:subcatEntries.map(e=>e[1]),
+      backgroundColor:COLORS.slice(0,subcatEntries.length),
+      borderWidth:0
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10,padding:6,color:'#888'}}}}
+  });
+
+  // ── Agent comparison ──
+  const agentMap = {};
+  data.forEach(l => {
+    if (!l.email) return;
+    if (!agentMap[l.email]) agentMap[l.email]={total:0,today:0,tasks:{}};
+    agentMap[l.email].total++;
+    if (new Date(l.time).toDateString() === today) agentMap[l.email].today++;
+    if (l.category) agentMap[l.email].tasks[l.category]=(agentMap[l.email].tasks[l.category]||0)+1;
+  });
+  const agents = Object.entries(agentMap).sort((a,b)=>b[1].total-a[1].total);
+  const maxTotal = agents.length ? agents[0][1].total : 1;
+  const tbody = document.getElementById('anAgentBody');
+  tbody.innerHTML = agents.map(([email,a]) => {
+    const topTask = Object.entries(a.tasks).sort((x,y)=>y[1]-x[1])[0];
+    const pct = Math.round((a.total/maxTotal)*100);
+    const shortEmail = email.split('@')[0];
+    return `<tr style="border-bottom:1px solid var(--border)">
+      <td style="padding:8px;color:var(--text)">${shortEmail}</td>
+      <td style="text-align:center;padding:8px;font-weight:600;color:#C77DFF">${a.total}</td>
+      <td style="text-align:center;padding:8px;color:var(--text)">${a.today}</td>
+      <td style="padding:8px;font-size:11px;color:var(--text-muted);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${topTask?topTask[0]:'-'}</td>
+      <td style="padding:8px 12px;min-width:80px">
+        <div style="height:6px;background:var(--surface3);border-radius:4px;overflow:hidden">
+          <div style="height:100%;width:${pct}%;background:#8B2FA0;border-radius:4px"></div>
+        </div>
+        <div style="font-size:10px;color:var(--text-muted);margin-top:2px;text-align:center">${pct}%</div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+</script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<script>
+// ── TRANSLATIONS ──
+const I18N = {
+  ar: {
+    appTitle: 'Troubleshooting Portal',
+    preview: 'تجربة:',
+    logout: 'خروج',
+    tabChat: '💬 الدعم الفني',
+    tabHistory: '🕐 سجل المحادثات',
+    tabAdmin: '📊 لوحة التحكم',
+    tabAdminL1: '📊 سجل أسئلتي',
+    searchPlaceholder: 'بحث...',
+    refresh: '🔄 تحديث',
+    addEmp: '➕ إضافة موظف',
+    save: 'حفظ',
+    cancel: 'إلغاء',
+    roleAdmin: 'مدير',
+    roleEmp: 'موظف',
+    inputPlaceholder: 'اكتب المشكلة هنا...',
+    langBtn: 'EN',
+    themeLabel: 'تغيير المظهر',
+    langLabel: 'English',
+    // Stats
+    statTotal: 'إجمالي الأسئلة',
+    statUsers: 'موظفين نشطين',
+    statToday: 'أسئلة اليوم',
+    statActive: '🟢 متصل الحين',
+    statIdle: '🟡 Idle',
+    statDisabled: '🔴 Disabled',
+    // Sections
+    secEmployees: '👥 الموظفين',
+    secLogs: 'سجل الأسئلة',
+    secAudit: '🔐 سجل تعديلات الأدمن',
+    // Chat header
+    chatTitleL1: 'مساعد Call Center (L1)',
+    chatSubL1: 'اكتب مشكلة العميل وسأساعدك في التصعيد',
+    chatTitleL2: 'مساعد Resolutions',
+    chatSubL2: 'مساعد موظفي الدعم الفني — اكتب مشكلة العميل وسأساعدك',
+    // Welcome
+    welcomeL1: '🌹 أهلاً فيكم<br><br>مساعدكم الذكي في stc — جاهز لحل المشاكل وخدمة العميل ⚡<br><br>اختر المشكلة أو اكتبها مباشرة 👇',
+    welcomeL2: 'هلا! 👋 أنا مساعد Resolutions.<br>اكتب مشكلة العميل وأساعدك بها.',
+    // Symptom picker
+    catInternet: 'إنترنت',
+    catCalls: 'اتصال / SMS',
+    catRoaming: 'تجوال',
+    catDigital: 'دفع / eSIM',
+    catServices: 'خدمات stc',
+    catOutage: 'عطل عام',
+    // Misc
+    noData: '📭 لا توجد بيانات بعد',
+    loading: 'جاري التحميل...',
+    exportExcel: '⬇️ تنزيل Excel',
+    filterLabel: 'بحث...',
+    periodLabel: 'الفترة:'
+  },
+  en: {
+    appTitle: 'Troubleshooting Portal',
+    preview: 'Preview:',
+    logout: 'Logout',
+    tabChat: '💬 Support',
+    tabHistory: '🕐 History',
+    tabAdmin: '📊 Dashboard',
+    tabAdminL1: '📊 My Logs',
+    searchPlaceholder: 'Search...',
+    refresh: '🔄 Refresh',
+    addEmp: '➕ Add Agent',
+    save: 'Save',
+    cancel: 'Cancel',
+    roleAdmin: 'Admin',
+    roleEmp: 'Agent',
+    inputPlaceholder: 'Describe the issue...',
+    langBtn: 'ع',
+    themeLabel: 'Toggle theme',
+    langLabel: 'العربية',
+    // Stats
+    statTotal: 'Total Questions',
+    statUsers: 'Active Agents',
+    statToday: 'Today',
+    statActive: '🟢 Online Now',
+    statIdle: '🟡 Idle',
+    statDisabled: '🔴 Disabled',
+    // Sections
+    secEmployees: '👥 Agents',
+    secLogs: 'Questions Log',
+    secAudit: '🔐 Admin Audit Log',
+    // Chat header
+    chatTitleL1: 'Call Center Assistant (L1)',
+    chatSubL1: 'Describe the customer issue and I will guide you',
+    chatTitleL2: 'Resolutions Assistant',
+    chatSubL2: 'Support agent assistant — describe the customer issue',
+    // Welcome
+    welcomeL1: '🌹 Welcome!<br><br>Your smart stc assistant — ready to resolve customer issues ⚡<br><br>Pick a category or type the issue directly 👇',
+    welcomeL2: 'Hello! 👋 I am your Resolutions Assistant.<br>Describe the customer issue and I will help.',
+    // Symptom picker
+    catInternet: 'Internet',
+    catCalls: 'Calls / SMS',
+    catRoaming: 'Roaming',
+    catDigital: 'Payment / eSIM',
+    catServices: 'stc Services',
+    catOutage: 'Outage',
+    // Misc
+    noData: '📭 No data yet',
+    loading: 'Loading...',
+    exportExcel: '⬇️ Export Excel',
+    filterLabel: 'Search...',
+    periodLabel: 'Period:'
+  }
+};
+
+let currentLang = localStorage.getItem('stc_lang') || 'ar';
+let currentTheme = localStorage.getItem('stc_theme') || 'dark';
+
+function applyLang() {
+  const t = I18N[currentLang];
+
+  // data-i18n elements
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key]) el.innerHTML = t[key];
+  });
+
+  // Direction + lang
+  document.body.classList.toggle('ltr', currentLang === 'en');
+  document.documentElement.setAttribute('lang', currentLang);
+  document.documentElement.setAttribute('dir', currentLang === 'en' ? 'ltr' : 'rtl');
+
+  // Inputs
+  const inp = document.getElementById('chatInput');
+  if (inp) inp.placeholder = t.inputPlaceholder;
+  const fi = document.getElementById('filterInput');
+  if (fi) fi.placeholder = t.searchPlaceholder;
+
+  // Lang + theme buttons
+  const lb = document.getElementById('langBtn');
+  if (lb) lb.textContent = t.langBtn;
+
+  // Role
+  const roleEl = document.getElementById('headerRole');
+  if (roleEl && currentUser) {
+    roleEl.textContent = currentUser.role === 'admin' ? t.roleAdmin : t.roleEmp;
+  }
+
+  // Stat labels (only for admin - non-admin labels are set dynamically)
+  if (currentUser && currentUser.role === 'admin') {
+    ['Total','Users','Today','Active','Idle','Disabled'].forEach(k => {
+      const el = document.getElementById('lbl'+k);
+      if (el && t['stat'+k]) el.textContent = t['stat'+k];
+    });
+  }
+
+  // Section headers
+  const sh = {
+    secEmployees: '.employees-section h3',
+    secAudit: '#auditSection .logs-header h3'
+  };
+  Object.entries(sh).forEach(([key, sel]) => {
+    const el = document.querySelector(sel);
+    if (el && t[key]) el.textContent = t[key];
+  });
+  // Logs header h3 (inside the logs wrap after audit)
+  const allH3 = document.querySelectorAll('.logs-table-wrap .logs-header h3');
+  allH3.forEach(h => {
+    if (h.textContent.includes('سجل الأسئلة') || h.textContent.includes('Questions Log')) h.textContent = t.secLogs;
+    if (h.textContent.includes('سجل تعديلات') || h.textContent.includes('Audit Log')) h.textContent = t.secAudit;
+    if (h.textContent.includes('الموظفين') || h.textContent.includes('Agents')) h.textContent = t.secEmployees;
+  });
+
+  // Analytics section labels
+  const anAgents = document.querySelector('#analyticsSection [id="anAgents"] + div');
+  if (anAgents && t.statUsers) anAgents.textContent = t.statUsers;
+
+  // Chat header
+  const ch3 = document.querySelector('.chat-header h3');
+  const cp  = document.querySelector('.chat-header p');
+  if (ch3 && cp) {
+    const isL1 = (typeof previewMode !== 'undefined' && previewMode === 'L1');
+    ch3.textContent = isL1 ? t.chatTitleL1 : t.chatTitleL2;
+    cp.textContent  = isL1 ? t.chatSubL1   : t.chatSubL2;
+  }
+
+  // Update welcome message (only if it's still the initial one — chat not started)
+  const welcomeEl = document.getElementById('welcomeMsg');
+  if (welcomeEl) {
+    const isL1 = (typeof previewMode !== 'undefined' && previewMode === 'L1');
+    welcomeEl.innerHTML = isL1 ? t.welcomeL1 : t.welcomeL2;
+  }
+
+  // Update logout button in profile menu
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) el.innerHTML = t[key];
+  });
+}
+
+function toggleLang() {
+  currentLang = currentLang === 'ar' ? 'en' : 'ar';
+  localStorage.setItem('stc_lang', currentLang);
+  applyLang();
+}
+
+const THEME_CLASSES = ['light','theme-blue','theme-green','theme-red','theme-amber','theme-contrast'];
+
+function applyTheme() {
+  THEME_CLASSES.forEach(c => document.body.classList.remove(c));
+  if (currentTheme === 'light') document.body.classList.add('light');
+  else if (currentTheme !== 'dark') document.body.classList.add('theme-' + currentTheme);
+  ['dark','blue','green','red','amber','light','contrast'].forEach(t => {
+    const el = document.getElementById('th-' + t);
+    if (el) el.style.borderColor = t === currentTheme ? 'white' : 'transparent';
+  });
+}
+
+function setTheme(t) {
+  currentTheme = t;
+  localStorage.setItem('stc_theme', t);
+  applyTheme();
+  document.getElementById('profileMenu').style.display = 'none';
+}
+
+function toggleTheme() {
+  const order = ['dark','blue','green','red','amber','light','contrast'];
+  setTheme(order[(order.indexOf(currentTheme) + 1) % order.length]);
+}
+
+function toggleProfileMenu() {
+  const menu = document.getElementById('profileMenu');
+  const btn  = document.getElementById('profileBtn');
+  if (!menu) return;
+  const open = menu.style.display === 'none' || menu.style.display === '';
+  menu.style.display = open ? 'block' : 'none';
+  if (btn) btn.setAttribute('aria-expanded', open);
+}
+// Close menu on outside click
+document.addEventListener('click', function(e) {
+  const menu = document.getElementById('profileMenu');
+  const btn  = document.getElementById('profileBtn');
+  if (menu && btn && !btn.contains(e.target) && !menu.contains(e.target)) {
+    menu.style.display = 'none';
+  }
+});
+
+function setHeaderAvatar(name) {
+  // Fixed stc logo — no change needed
+}
+
+
+
+function setMobileNav(activeId) {
+  ['mnChat','mnHistory','mnAdmin'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('active', id === activeId);
+  });
+}
+
+// Init on load
+document.addEventListener('DOMContentLoaded', () => {
+  applyTheme();
+  applyLang();
+});
+window.addEventListener('load', () => {
+  applyTheme();
+  applyLang();
 });
 </script>
 
