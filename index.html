@@ -828,17 +828,14 @@
           <div class="chat-icon">🤖</div>
           <div>
             <h3>مساعد Resolutions</h3>
-            <p>مساعد موظفي الدعم الفني — اكتب مشكلة العميل وسأساعدك</p>
+            <p>يلا نخلص مشكلة العميل! 🔥</p>
           </div>
         </div>
         <div class="chat-messages" id="chatMessages">
           <div class="msg bot">
             <div class="msg-avatar">🤖</div>
             <div class="msg-bubble">
-              أهلاً! أنا مساعد Resolutions لـ STC Kuwait 👋<br><br>
-              أساعدك في حل مشاكل العملاء خطوة بخطوة.<br>
-              اكتب لي مشكلة العميل وسأسألك عن التفاصيل إذا احتجت، ثم أعطيك الحل المناسب.<br>
-              مثال: <em>"عميل عنده مشكلة بالنت"</em> أو <em>"ما يقدر يتصل برا الكويت"</em>
+              أهلاً! أنا مساعد Call Center 👋<br>اكتب مشكلة العميل وسأعطيك خطوات الحل أو أساعدك في رفع طلب لـ Resolutions.
             </div>
           </div>
         </div>
@@ -1006,1456 +1003,845 @@ const USERS = {
 
 // ========== KNOWLEDGE BASE ==========
 const KB = [
+  {
+    keywords: ["roaming internet", "تجوال نت", "roaming data", "نت التجوال"],
+    category: "Roaming Techincal- Internet",
+    priority: "medium",
+    definition: "Any issue with internet while customer in roaming status",
+    solution: `STEP 1 — Device: قول للعميل يتأكد إن التجوال مفعّل في الإعدادات (Data Roaming = ON). هذا أول شي قبل أي شي ثاني.
+STEP 2 — BSS: تحقق الخط ما موقوف بسبب الفاتورة.
+STEP 3 — Smart Care (اقرأ فقط، لا تغيّر شي):
+  a. Roaming Package = YES؟ (إذا NO → لازم تفعيل التجوال → Raise TT)
+  b. CS Roam = NOBAR؟ (إذا BAR → قيد على التجوال → Raise TT)
+  c. Roaming field = ROAM؟ (إذا LOCAL → العميل مو متصل بشبكة تجوال → وجّهه يختار الشبكة يدوياً مو Auto)
+  d. Roaming Operator = شبكة صحيحة؟ (إذا فاضي → وجّهه يختار الشبكة يدوياً)
+  → أي مشكلة في أي نقطة من Smart Care = Raise TT فوراً
+STEP 4 — Reset: اطلب من العميل يسوي Reset Network Settings على الجهاز.
+STEP 5 — Error: وش رسالة الخطأ اللي تطلع عند محاولة الاتصال بالإنترنت؟
+STEP 6 — SIM: إذا عنده SIM مزدوجة — تأكد الخط الصح محدد للبيانات.
+→ إذا ما انحلّت بعد كل الخطوات → Raise TT
 
+📋 Ticket Requirements:
+• Issue description
+• Error message shown on device
+• Troubleshooting confirmation
+• Callback + active WhatsApp`
+  },
+  {
+    keywords: ["roaming calls", "roaming sms", "تجوال مكالمات", "تجوال رسائل"],
+    category: "Roaming Technical- Calls & SMS",
+    priority: "medium",
+    definition: "Any issue with Calls & SMS while customer in roaming status",
+    solution: `STEP 1 — Device: قول للعميل يطفي وضع الطيران ويشغّله مرة ثانية — يجبر الجهاز يتسجّل على شبكة التجوال.
+STEP 2 — BSS: تحقق الخط ما موقوف بسبب الفاتورة.
+STEP 3 — Smart Care (اقرأ فقط، لا تغيّر شي):
+  a. Roaming Package = YES؟ (إذا NO → Raise TT)
+  b. CS Roam = NOBAR؟ (إذا BAR → Raise TT)
+  c. Roaming field = ROAM؟ (إذا LOCAL → وجّهه يختار شبكة يدوياً)
+  d. Roaming Operator = شبكة صحيحة؟ (إذا فاضي → وجّهه يختار يدوياً)
+  → أي مشكلة = Raise TT فوراً
+STEP 4 — Error: وش رسالة الخطأ عند محاولة المكالمة أو الرسالة؟
+→ إذا ما انحلّت → Raise TT
 
-  {
-    keywords: ["staff","f&f","موظف","friends","family","أصدقاء","عائلة"],
-    category: "الموظفين وF&F",
-    priority: "high",
-    solution: `نفس خطوات الـ Troubleshooting العادية، مع تسريع العملية عبر الاتصال المباشر بالأقسام المعنية بدلاً من الإيميل لضمان الحل الفوري.`
+📋 Ticket Requirements:
+• Issue description
+• Error message shown on device
+• Troubleshooting confirmation
+• Call/SMS time & date
+• A-party & B-party numbers
+• Callback + active WhatsApp`
   },
   {
-    keywords: ["roaming","تجوال","رومينج","خارج","كندا","سعودية","مصر","اوروبا","roam"],
-    category: "مشاكل التجوال - إنترنت",
-    subKeywords: ["internet","انترنت","نت","data","بيانات"],
-    priority: "high",
-    solution: `1. تحقق من حالة الخط - هل مقطوع بسبب فواتير؟
-2. تأكد أن الشريحة مُدرجة في الجهاز عبر Smart Care
-3. تحقق من عدم وجود قيود Roaming في Smart Care وHLR
-4. تأكد من تفعيل خدمة التجوال في BSS وSmart Care
-5. تحقق من آخر شبكة متصل بها وتأكد من الشبكة المفضلة
-6. اطلب من العميل توضيح رسالة الخطأ
-7. تأكد من تفعيل Data Roaming في إعدادات الجهاز
-8. إذا eSIM - تأكد من اختيار الـ Profile الصحيح
-9. إذا استمرت المشكلة → تصعيد لـ VFO Team عبر إيميل
-10. إذا لم تُحل → تصعيد لـ IT NOC Team`
-  },
-  {
-    keywords: ["roaming","تجوال","رومينج","خارج"],
-    category: "مشاكل التجوال - مكالمات",
-    subKeywords: ["call","مكالم","اتصال","calls","voice","صوت"],
-    priority: "high",
-    solution: `1. تحقق من حالة الخط (فواتير)
-2. تأكد من إدراج الشريحة في Smart Care
-3. تحقق من قيود التجوال في Smart Care وHLR
-4. تأكد من تفعيل خدمة التجوال في BSS
-5. تحقق من الشبكة المتصل بها والشبكة المفضلة
-6. اطلب رسالة الخطأ من العميل
-7. اطلب الاتصال اليدوي بالشبكة
-8. تحقق من eSIM إذا موجود
-9. تصعيد لـ VFO مع أرقام A-party و B-party
-10. تصعيد لـ IT NOC إذا لم تُحل`
-  },
-  {
-    keywords: ["roaming","تجوال","رومينج"],
-    category: "مشاكل التجوال - SMS",
-    subKeywords: ["sms","رسال","رسالة","message","نص"],
-    priority: "high",
-    solution: `1. تحقق من حالة الخط
-2. تأكد من إدراج الشريحة في Smart Care
-3. تحقق من قيود التجوال في Smart Care وHLR
-4. تأكد من تفعيل خدمة التجوال في BSS
-5. تحقق من الشبكة المتصل بها
-6. اطلب رسالة الخطأ
-7. ساعد العميل على الاتصال اليدوي بالشبكة
-8. تحقق من eSIM
-9. تحقق من حالة خدمة SMS عبر NOBILL
-10. تصعيد لـ VFO ثم IT NOC إذا استمرت المشكلة`
-  },
-  {
-    keywords: ["internet","انترنت","نت","data","بيانات","disconnection","انقطع","ما يشتغل","لا يعمل","شبكة","مايشتغل","ما يجي","مايجي","نت مو شغال","ما عندي نت","مافي نت","نت وقف","وايفاي","wifi","ما يكمل نت","نت مقطوع","ما يفتح نت"],
-    category: "انقطاع الإنترنت",
-    priority: "high",
-    solution: `1. تحقق من حالة الخط - هل مقطوع بسبب فواتير؟
-2. تأكد أن الشريحة مُدرجة في الجهاز عبر Smart Care
-3. تحقق من توفر حصة البيانات
-4. تأكد من وجود باقة بيانات نشطة عبر BSS
-5. اطلب من العميل توضيح رسالة الخطأ إن وجدت
-6. تحقق من إعدادات الجهاز - تأكد تفعيل البيانات الخلوية
-7. إذا eSIM - تأكد من اختيار الـ Profile الصحيح
-8. إذا استمرت المشكلة → تصعيد لـ VFO Team عبر إيميل
-9. إذا لم تُحل → تصعيد لـ IT NOC Team`
-  },
-  {
-    keywords: ["international","دولي","خارجي","calls international","مكالمات دولية"],
-    category: "المكالمات الدولية",
-    priority: "high",
-    solution: `1. تحقق من حالة الخط
-2. تأكد من إدراج الشريحة في Smart Care
-3. تحقق من حصة الدقائق الدولية والرصيد
-4. تأكد من وجود باقة نشطة في BSS
-5. اطلب رسالة الخطأ
-6. تحقق من eSIM إذا موجود
-7. تصعيد لـ VFO مع A-party وB-party وتفاصيل المكالمة
-8. تصعيد لـ IT NOC إذا لم تُحل`
-  },
-  {
-    keywords: ["follow","متابعة","تيكت","ticket","tt","followup","in progress","معلق"],
-    category: "متابعة التيكت",
-    priority: "high",
-    solution: `تابع مع العميل صاحب التيكت الجاري. تأكد من رقم التيكت ومتابعة حالته.`
-  },
-  {
-    keywords: ["call","مكالم","اتصال","calls","انقطع","ما يتصل","لا يتصل","incoming","outgoing","ماقدر اتصل","ما اقدر","مايشتغل","ما يشتغل","خط","مشكله خط","ما يرن","مايرن","ما يجاوب","مايجاوب","اتصل","يتصل","تتصل","صوت","مكالمه","ما يكمل","ينقطع","تنقطع"],
-    category: "مشاكل المكالمات",
-    priority: "high",
-    solution: `1. تحقق من تفعيل الخط
-2. حدد نطاق المشكلة: هل في مكان محدد أم في كل مكان؟
-3. راجع سجل المكالمات في BSS وCBS
-4. إذا مع رقم محدد → اجمع تفاصيل المكالمة وصعّد لـ VFO
-5. تحقق من Barring على الخط في CBS
-6. تأكد من عدم وجود Call Forwarding في HLR
-7. إذا استمرت المشكلة → تصعيد لـ IT NOC`
-  },
-  {
-    keywords: ["citra","رقابة","تنظيمي","regulatory"],
-    category: "حالات CITRA",
-    priority: "high",
-    solution: `يجب متابعتها من قِبل Resolution Team Leader مباشرة.`
-  },
-  {
-    keywords: ["baity","بيتي","turbo","odu","5g home","baity 5g","mesh","راوتر"],
-    category: "Baity 5G / ODU",
-    subKeywords: ["internet","انترنت","نت","disconnection","لا يعمل","red","أحمر"],
-    priority: "high",
-    solution: `1. تحقق من Smart Care - هل يوجد اتصال بالشبكة؟
-2. إذا لا يوجد اتصال → اطلب من العميل تأكيد Power Adapter وكابل ODU
-3. إذا يوجد اتصال لكن مؤشر Mesh أحمر → تحقق من كابل LAN بين Power Adapter والـ Mesh
-4. إذا الكابل متصل → أعد ضبط الـ Mesh:
-   • اتصل بـ Wi-Fi الافتراضي للجهاز
-   • افتح المتصفح وادخل: 192.168.3.1
-   • اختر DHCP ثم أدخل اسم Wi-Fi وكلمة المرور
-   • كلمة مرور Router: admin123
-   • عند اكتمال الإعداد يتحول المؤشر للأزرق ✅`
-  },
-  {
-    keywords: ["baity","بيتي","turbo","odu","5g home","mesh","speed","سرعة","بطيء"],
-    category: "Baity 5G - سرعة بطيئة",
-    priority: "high",
-    solution: `1. حدد هل المشكلة في جميع الـ Mesh أم واحد محدد
-2. حدد هل المشكلة دائمة أم في وقت محدد
-3. تحقق هل الـ Mesh متصل بكابل أم Wi-Fi
-4. تأكد من فصل 2.4 و5 GHz
-5. اطلب اختبار السرعة على 5GHz
-6. إذا Mesh متصل Wi-Fi → قرّبه من الـ Main Mesh (1 متر) وأعد تشغيله
-7. إذا السرعة أقل من 100 Mbps على 5GHz → ارفع تيكت Baity 5G`
-  },
-  {
-    keywords: ["esim","e-sim","ايسيم","شريحة رقمية","قر","qr"],
-    category: "eSIM",
-    subKeywords: ["code","كود","رمز","لم يصل","ما وصل"],
+    keywords: ["roaming charges", "رسوم تجوال", "roaming bill"],
+    category: "Roaming Billing- Charges",
     priority: "medium",
-    solution: `1. تحقق من معاملة الاستبدال في E-payment:
-   • ناجحة وموجودة في BSS → احصل على الكود من Offering Page وادخله في QR Portal
-   • ناجحة لكن غير موجودة في BSS → اطلب استبدال عبر الفرع أو E-Channels
-   • فاشلة → تحقق عبر KPAY، إذا مُحتجزة أنشئ طلب Refund`
-  },
-  {
-    keywords: ["esim","e-sim"],
-    category: "eSIM - غير نشط",
-    subKeywords: ["active","نشط","لا يعمل","received","وصل"],
-    priority: "medium",
-    solution: `1. تطابق الـ Serial Number في BSS وHLR:
-   • متطابق أو غير متطابق → حوّل التيكت لـ IT NOC للتحقيق`
-  },
-  {
-    keywords: ["esim","e-sim"],
-    category: "eSIM - مشكلة تفعيل",
-    subKeywords: ["activation","تفعيل","activate","scan","مسح"],
-    priority: "medium",
-    solution: `1. تأكد أن الجهاز يدعم eSIM
-2. تأكد أن العميل متصل بـ Wi-Fi خارجي
-3. اطلب مسح QR Code، إذا كان فيه خطأ → أعد إرسال QR من Offering Page
-4. إذا استمرت المشكلة → حوّل لـ IT NOC`
-  },
-  {
-    keywords: ["5g","speed","سرعة","بطيء","slow","5 جي","فايف جي"],
-    category: "مشكلة سرعة 5G",
-    subKeywords: ["mobile","جوال","موبايل","هاتف"],
-    priority: "medium",
-    solution: `1. حدد هل المشكلة في مكان محدد أم في كل مكان
-2. تأكد عدم وجود موقع خارج الخدمة في منطقة العميل
-3. تحقق هل المشكلة مع خطوط STC أخرى
-4. تأكد أن الجهاز يدعم 5G عبر Smart Care
-5. تحقق من سرعة العميل في Smart Care
-6. تحقق من النطاق المتصل (5G/4G)
-7. اطلب ضبط الشبكة على 5G (ليس Auto)
-8. تأكد من إيقاف وضع توفير الطاقة
-9. اطلب 3 اختبارات سرعة عبر Ookla
-10. إذا أقل من 100 Mbps → أرسل تيكت لـ HUW مع العنوان/PACI والسرعة`
-  },
-  {
-    keywords: ["4g","lte","speed","سرعة","بطيء","slow","فور جي","4 جي"],
-    category: "مشكلة سرعة 4G",
-    priority: "medium",
-    solution: `1. حدد هل المشكلة في مكان محدد أم في كل مكان
-2. تأكد عدم وجود موقع خارج الخدمة
-3. تحقق من خطوط STC أخرى
-4. تأكد أن الجهاز يدعم LTE عبر Smart Care
-5. تحقق من سرعة العميل في Smart Care
-6. اطلب Reset Network Settings
-7. اطلب 3 اختبارات سرعة عبر Ookla
-8. إذا أقل من 3 Mbps → أرسل تيكت لـ HUW مع التفاصيل`
-  },
-  {
-    keywords: ["ping","latency","lag","تأخير","بينج","لاج","gaming","قيمنج","ألعاب","gamer","game"],
-    category: "مشكلة Ping / Latency",
-    priority: "medium",
-    solution: `1. حدد هل المشكلة في مكان محدد أم في كل مكان
-2. تأكد عدم وجود موقع خارج الخدمة
-3. تحقق من خطوط STC أخرى
-4. اضبط الشبكة على 5G وتأكد من 5GHz للراوتر
-5. أوقف وضع توفير الطاقة
-6. فعّل "Allow More Data on 5G"
-7. أعد ضبط إعدادات الشبكة
-8. اطلب 3 اختبارات Ping عبر Ookla (لا تستخدم Ping داخل اللعبة)
-9. إذا أعلى من 30ms → أرسل تيكت لـ HUW`
-  },
-  {
-    keywords: ["coverage","تغطية","signal","إشارة","call quality","جودة مكالمات","ضعيف"],
-    category: "ضعف التغطية / جودة المكالمات",
-    priority: "medium",
-    solution: `1. حدد هل المشكلة في مكان محدد أم في كل مكان
-2. تأكد عدم وجود موقع خارج الخدمة
-3. تحقق من خطوط STC أخرى
-4. أعد ضبط إعدادات الشبكة
-5. تأكد أن المنطقة ليست في بدروم أو طابق 5+ 
-6. أرسل تيكت لـ HUW مع العنوان/PACI وتفاصيل المكالمة`
-  },
-  {
-    keywords: ["sms","رسال","رسالة","message","verification","تحقق","otp","كود تفعيل","رمز"],
-    category: "مشاكل SMS / رموز التحقق",
-    priority: "medium",
-    solution: `1. تأكد أن الخط نشط
-2. تحقق هل تم ترحيل الخط خلال 24 ساعة (لن تصل SMS بعد الترحيل)
-3. اطلب تفاصيل SMS: الوجهة، التوقيت، A-party وB-party لتتبعه في Nobill
-4. إذا لم يُرصد نشاط → أحل العميل للمزود المرسل
-5. إذا وُجد بخطأ → صعّد لـ Sequence Team (دولي) أو ITICT (محلي)`
-  },
-  {
-    keywords: ["roaming charges","رسوم تجوال","شحن تجوال","charges roaming","فاتورة تجوال"],
-    category: "رسوم التجوال",
-    priority: "medium",
-    solution: `1. تحقق من الرسوم في BSS
-2. إذا غير واضحة → تحقق عبر CBS
-3. راجع استخدام التجوال في Smart Care
-4. العميل مؤهل للاسترداد في حالات:
-   • تفعيل باقات تجوال متعددة في نفس الوقت
-   • مشاكل حدودية
-   • إبلاغ عن مشكلة أثناء السفر ولم تُحل
-5. في جميع الحالات الأخرى → غير مؤهل للاسترداد`
-  },
-  {
-    keywords: ["prepaid","مسبق","btl","special offer","عرض خاص","ترقية"],
-    category: "عروض Prepaid الخاصة (BTL)",
-    priority: "medium",
-    solution: `1. اطلب تفاصيل العرض المُستلم
-2. تحقق من طلب التفعيل في BSS
-3. إذا فشلت المعاملة → اطلب Screenshot للعرض ورسالة الخطأ وأرسلها لـ CMS Team`
-  },
-  {
-    keywords: ["prepaid plan","خطة مسبق","go","allo","extreme","plan","خطة"],
-    category: "مشاكل خطة Prepaid",
-    priority: "medium",
-    solution: `1. تحقق من حالة الخط في BSS
-2. تحقق من حالة الخطة الرئيسية وحدد سبب المشكلة
-3. حاول حل المشكلة بتعديل صلاحية الخط
-4. إذا استمرت → صعّد لـ IT Team`
-  },
-  {
-    keywords: ["balance","رصيد","validity","صلاحية","prepaid balance","تجديد","recharge","شحن"],
-    category: "الرصيد والصلاحية (Prepaid)",
-    priority: "medium",
-    solution: `الصلاحية:
-1. راجع معاملات الشحن في BSS وE-payment
-2. تحقق من طلبات الصلاحية المقدمة
-3. طابق الصلاحية الحالية مع تاريخ الشحن
-4. إذا كان فيه مشكلة → صعّد لـ IT Team
+    definition: "If customer is complaining about Roaming charges",
+    solution: `1. Ask customer to specify the charge they are disputing — amount, date, and what service they believe caused it.
+2. Check BSS — review the roaming charges on the account. Confirm the charge amount, date, and which roaming service generated it (data, calls, or SMS).
+3. Based on customer description and BSS findings, determine refund eligibility:
+   a. ELIGIBLE — Multiple roaming bundles were activated simultaneously (system error).
+   b. ELIGIBLE — Border-related issue: charges appeared due to device connecting to a foreign network near the border without intentional roaming usage.
+   c. ELIGIBLE — Customer reported a roaming issue while abroad that was not resolved, yet charges were still applied.
+   d. NOT ELIGIBLE — All other cases where charges reflect confirmed actual usage.
+4. If eligible → raise TT to Resolution team with full charge details and eligibility reason.
+5. If not eligible → explain to customer that charges reflect confirmed usage and are valid.
 
-الرصيد:
-1. تحقق من سجل الرصيد في BSS (Usage)
-2. إذا غير واضح → تحقق في CBS
-3. حدد سبب المشكلة ثم أعد الشحن يدوياً إذا لزم`
+📋 Ticket Requirements:
+• Issue description  
+• Disputed charge amount and date  
+• Callback`
   },
   {
-    keywords: ["mnp","port","ترحيل","portability","number portability","نقل الرقم"],
-    category: "نقل الرقم (MNP)",
+    keywords: ["internet not working", "no internet", "مافي نت", "انترنت مو شغال", "نت مقطوع", "ما يجي نت", "انقطاع نت"],
+    category: "Internet- not working",
     priority: "medium",
-    solution: `1. تحقق من حالة الطلب في BSS وSystor
-2. إذا مرفوض → أخبر العميل بسبب الرفض واطلب تقديم طلب جديد
-3. إذا ناجح وكلا SIMs نشطتين → أنهِ الخط القديم
-4. مشاكل المكالمات/SMS بعد الترحيل → حدّث routing من المشغل القديم
-5. مشاكل FBN → تأكد من تسليم الفاتورة في Systor ثم صعّد لـ IT`
+    definition: "If customer is facing internet disconnection issue",
+    solution: `STEP 1: Check BSS — خط نشط؟ فاتورة مدفوعة؟ باقة نشطة؟ كوتا ما خلصت؟
+STEP 2: Site down check — تحقق في منطقة العميل. إذا في عطل → ارفع TT فوراً بالتاور والمنطقة.
+STEP 3: Smart Care — الخط متصل (Network Attach)؟ Data Status نشط؟
+STEP 4: Device — البيانات الخلوية مشغّلة؟ وضع الطيران مطفي؟ إذا SIM مزدوجة الخط الصح؟
+STEP 5: Error message — شو رسالة الخطأ اللي تطلع؟
+
+📋 متطلبات الطلب:
+• وصف المشكلة
+• رسالة الخطأ (إذا في)
+• تأكيد خطوات التشخيص
+• رقم للتواصل`
   },
   {
-    keywords: ["kiosk","كيوسك","payment kiosk","دفع كيوسك","og money","e-ent"],
-    category: "دفع الكيوسك",
+    keywords: ["ping", "latency", "lag", "لاق", "تأخير", "جيمنج", "gaming", "بينج"],
+    category: "Internet- Ping Issue",
     priority: "medium",
-    solution: `1. تحقق من المعاملة في E-payment:
-   • إذا موجودة → تحقق في KPAY/VISA/Mastercard
-   • إذا محتجزة → طبّق الدفع
-   • إذا غير موجودة → اطلب رقم البطاقة لتتبعها
-2. إذا يستخدم كيوسك بديل (OG Money, E-Ent) → أرسل التفاصيل لـ Mohammed Darawi`
+    definition: "Any issue Related to Ping/Latency with customers (Usually with Gamer users)",
+    solution: `1 Ask the customer if issue in specific place or everywhere to find out if issue related to network or device.
+2 We make sure that there is no site down in customer area.
+3 In case of issue in specific place and no site down in customer area, we ask him if the issue with other stc lines.
+4 Check the bandwidth connected by customer (5GHZ/2.4GHZ) 
+5 Ask the customer to set the network type to 5G ON (Not Auto) in case of mobile and to GHZ bandwidth in case or Router.
+6 Make sure that customer disabled power saving mode for mobiles.
+7 Ask the customer to select “Allow More data on 5G” in Data mode settings for Mobiles.
+8 Ask customer to reset network settings for mobiles.
+9 Ask the customer to perform  PING/latency tests using the Ookla Speedtest application. Do not use in-game PING/latency, as game ping depends on the game server and may not reflect our exact network performance.
+10 In case customer PING/Latency Above 30 MS We Raise TT to resolution team with full details (Full address/PACI, Speed test, Trace time and Call back).
+
+📋 Ticket Requirements:
+• Issue description  
+• Troubleshooting confirmation  
+• Customer full address or PACI number  
+• Ookla or speedtest.net ping/latency result with timestamp  
+• Callback`
   },
   {
-    keywords: ["digital payment","app payment","web payment","دفع رقمي","دفع تطبيق","دفع موقع","missing payment","دفع مفقود"],
-    category: "الدفع الرقمي (App/Web)",
+    keywords: ["site down", "down site", "عطل موقع", "سايت داون"],
+    category: "Internet- Site Down",
     priority: "medium",
-    solution: `1. تحقق من المعاملة في E-payment:
-   • إذا موجودة → تحقق في KPAY/VISA/Mastercard
-   • إذا محتجزة → طبّق الدفع
-   • إذا غير موجودة → اطلب رقم البطاقة لتتبعها
-2. إذا تطبيق بنكي أو بديل → أرسل التفاصيل لـ Mohammed Darawi`
+    definition: "Site down issue",
+    solution: `We Raise TT with tower number and area name
+
+📋 Ticket Requirements:
+• Tower number  
+• Area name`
   },
   {
-    keywords: ["call issue","dropped","volte","call waiting","قطع مكالمة","انتظار مكالمة","vu lti"],
-    category: "مشاكل أثناء المكالمات",
+    keywords: ["baity", "turbonet", "odu", "mesh", "بيتي", "باتي", "baity 5g"],
+    category: "Internet- Baity",
     priority: "medium",
-    solution: `1. حدد هل المشكلة في كل مكان أم مكان محدد
-2. اطلب وصف تفصيلي للمشكلة
-3. اجمع تفاصيل المكالمة: A-party، B-party، التاريخ والوقت
-4. أرسل التفاصيل لـ VFO للتتبع
-5. أبلغ العميل بنتيجة VFO
-6. إذا استمرت → صعّد لـ IT`
+    definition: "Baity or turbonet ODU device - Internet not working",
+    solution: `1. Open Smart Care — check network attachment and data status on the line. This determines the direction of troubleshooting:
+
+   Scenario A — Smart Care shows NO attach and NO data:
+   a. Ask customer to confirm the main power adapter is switched ON.
+   b. Ask customer to confirm the cable between the ODU and the main power adapter WAN/Power port is properly connected.
+   c. If power is ON and cable is connected but Smart Care still shows no attach → Raise TT to Resolution team.
+
+   Scenario B — Smart Care shows attach and data, but customer reports no internet and main mesh shows red light:
+   a. Ask customer to check the cable between the power adapter LAN port and the main mesh — confirm it is properly connected.
+   b. If cable is properly connected → guide customer to restart the mesh (power off and back on). ⚠️ Restart only — do NOT ask customer to RESET the ODU or the mesh.
+   c. If issue persists after restart → Raise TT to Resolution team.
+
+📋 Ticket Requirements:
+• Issue description  
+• Troubleshooting confirmation  
+• Customer address or PACI #  
+• Master device serial number  
+• Callback`
   },
   {
-    keywords: ["divert","تحويل","forward","call divert","تحويل مكالمات"],
-    category: "تحويل المكالمات",
+    keywords: ["baity", "turbonet", "odu", "mesh", "بيتي", "باتي", "baity 5g"],
+    category: "Internet- Baity (Baity or turbonet ODU device -)",
     priority: "medium",
-    solution: `1. اطلب من العميل إلغاء التحويل بالكود: ##21#
-2. إذا لم يُلغَ → ألغه يدوياً من HLR
-3. إذا استمرت المشكلة بعد الإلغاء → صعّد لـ IT`
+    definition: "Baity or turbonet ODU device - Low speed issue",
+    solution: `1. Confirm scope with customer — ask the following:
+   a. Is the slow speed on all mesh devices or a specific one?
+   b. Is the affected mesh connected to the main unit by cable or Wi-Fi?
+
+2. Based on answers in step 1, follow the matching path:
+
+   If issue is on ALL mesh devices:
+   a. Confirm Wi-Fi bands are separated — 2.4GHz and 5GHz must be on different network names.
+   b. Ask customer to connect their device to the 5GHz band specifically and run a speed test.
+   c. Power the main unit off and back on.
+   d. Run speed test again on 5GHz after restart.
+   e. If download speed is below 100 Mbps → Raise TT to Resolution team under Baity 5G sub-category.
+
+   If issue is on a SPECIFIC mesh only:
+   a. Check how that mesh is connected to the main unit — cable or Wi-Fi.
+   b. If Wi-Fi connected — check distance from main unit and potential interference. Guide customer to move closer or connect by cable for testing.
+   c. If cable connected and still slow → Raise TT to Resolution team under Baity 5G sub-category.
+
+📋 Ticket Requirements:
+• Issue description  
+• Troubleshooting confirmation  
+• Customer address or PACI #  
+• Master device serial number  
+• Speed test results  
+• Callback`
   },
   {
-    keywords: ["bill","فاتورة","charges","رسوم","invoice","local charges","رسوم محلية"],
-    category: "مشكلة الفاتورة",
+    keywords: ["speed 4g", "سرعة 4g", "4g slow", "بطيء 4g", "lte speed"],
+    category: "Speed Issue – 4G",
     priority: "medium",
-    solution: `1. تحقق من الرسوم الإضافية في BSS
-2. إذا الفاتورة غير واضحة → تحقق في CBS
-3. اشرح تفاصيل الفاتورة للعميل
-4. إذا كان فيه مشكلة (مثل رسوم جهاز فوق 25 شهراً) → نفّذ التعديل
-5. إذا يجب حل المشكلة أولاً → صعّد لـ IT ثم نفّذ التعديل`
+    definition: "Mobile: Any issue related to 4G internet speed users (LTE)",
+    solution: `1. Ask customer if the issue occurs everywhere or in a specific location — this determines if it is network coverage or device related.
+2. Check for site down in customer's area. If site down confirmed → Raise TT immediately with tower number and area name.
+3. Ask customer to run a speed test using Ookla Speedtest or speedtest.net and share the result.
+4. In Smart Care — go to Quality Complaint Handling > Overall Quality > Speed Test. Cross-reference DL Throughput and Speed Experience with the customer's Ookla result.
+5. If download speed is below 3 Mbps → Raise TT to Resolution team.
+
+📋 Ticket Requirements:
+• Issue description  
+• Troubleshooting confirmation  
+• Customer address or PACI #  
+• Speed test results  
+• Callback`
   },
   {
-    keywords: ["addon","add-on","booster","بوستر","إضافة","خدمة إضافية","extra service"],
-    category: "الخدمات الإضافية (Add-ons)",
+    keywords: ["speed 4g", "سرعة 4g", "4g slow", "بطيء 4g", "lte speed"],
+    category: "Speed Issue – 4G (Router: Any issue related to 4)",
     priority: "medium",
-    solution: `1. تحقق من حالة الخط في BSS
-2. تحقق من حالة الخدمة المطلوبة
-3. حدد الخطأ في BSS أو اطلب رسالة الخطأ
-4. صعّد لـ IT لتفعيل/إلغاء الخدمة
-5. أعد شحن الخط إذا كان العميل مؤهلاً للاسترداد`
+    definition: "Router: Any issue related to 4G internet speed users (LTE)",
+    solution: `1. Ask customer if the router is mobile (portable) or indoor/CPE.
+
+   If Mobile Router:
+   a. Ask if the issue occurs everywhere or in a specific location.
+      - If everywhere → skip to step 3.
+      - If specific location → check for site down in that area. If site down confirmed → Raise TT immediately with tower number and area name.
+
+   If Indoor Router/CPE:
+   a. Ask if the issue is constant or intermittent.
+      - If constant → skip to step 3.
+      - If intermittent → check for site down in customer's area. If site down confirmed → Raise TT immediately with tower number and area name.
+
+3. Ask customer to run a speed test using Ookla Speedtest or speedtest.net and share the result.
+4. In Smart Care — go to Quality Complaint Handling > Overall Quality > Speed Test. Cross-reference DL Throughput and Speed Experience with the customer's Ookla result.
+5. If download speed is below 3 Mbps → Raise TT to Resolution team.
+
+📋 Ticket Requirements:
+• Issue description  
+• Troubleshooting confirmation  
+• Customer address or PACI #  
+  • Speed test results  
+  • Callback`
   },
   {
-    keywords: ["apple watch","ساعة","watch","applewatch","multi-sim","multisim"],
+    keywords: ["speed 5g", "سرعة 5g", "5g slow", "بطيء 5g"],
+    category: "Speed Issue – 5G",
+    priority: "medium",
+    definition: "Mobile: Any issue related to 5G internet speed users",
+    solution: `1. Ask customer if the issue occurs everywhere or in a specific location — this determines if it is network coverage or device related.
+2. Check for site down in customer's area. If site down confirmed → Raise TT immediately with tower number and area name.
+3. Ask customer to check which network band they are connected to — must be 5G, not 4G. Guide customer to set network type to 5G ON (not Auto) in mobile network settings.
+4. Ask customer to disable power saving mode — it throttles network performance.
+5. Ask customer to run a speed test using Ookla Speedtest or speedtest.net and share the result.
+6. In Smart Care — go to Quality Complaint Handling > Overall Quality > Speed Test. Cross-reference DL Throughput and Speed Experience with the customer's Ookla result.
+7. If download speed is below 100 Mbps → Raise TT to Resolution team.
+
+📋 Ticket Requirements:
+• Issue description  
+• Troubleshooting confirmation  
+• Customer address or PACI #  
+• Speed test results  
+• Callback`
+  },
+  {
+    keywords: ["speed 5g", "سرعة 5g", "5g slow", "بطيء 5g"],
+    category: "Speed Issue – 5G (Router: Any issue related to 5)",
+    priority: "medium",
+    definition: "Router: Any issue related to 5G internet speed users",
+    solution: `1. Ask customer if the router is mobile (portable) or indoor/CPE.
+
+   If Mobile Router:
+   a. Ask if the issue occurs everywhere or in a specific location.
+      - If everywhere → skip to step 3.
+      - If specific location → check for site down in that area. If site down confirmed → Raise TT immediately with tower number and area name.
+
+   If Indoor Router/CPE:
+   a. Ask if the issue is constant or intermittent.
+      - If constant → skip to step 3.
+      - If intermittent → check for site down in customer's area. If site down confirmed → Raise TT immediately with tower number and area name.
+
+3. Ask customer to confirm they are connected to the 5GHz WiFi band on the router, not 2.4GHz.
+4. Ask customer to run a speed test using Ookla Speedtest or speedtest.net and share the result.
+5. In Smart Care — go to Quality Complaint Handling > Overall Quality > Speed Test. Cross-reference DL Throughput and Speed Experience with the customer's Ookla result.
+6. If download speed is below 100 Mbps → Raise TT to Resolution team.
+
+📋 Ticket Requirements:
+• Issue description  
+• Troubleshooting confirmation  
+• Customer address or PACI #  
+• Speed test results  
+• Callback`
+  },
+  {
+    keywords: ["calls not working", "ما يتصل", "مكالمة ما تشتغل", "call not working", "ما يرد"],
+    category: "Calls- not working",
+    priority: "medium",
+    definition: "If customer is facing outgoing or incoming calls disconnection issue",
+    solution: `1. Check BSS — confirm the following:
+   a. Line is active and not suspended or disconnected due to billing. If suspended: advise customer to settle balance first.
+   b. If customer is on a package — confirm remaining minutes are available. If minutes exhausted: inform customer and advise renewal.
+   c. If customer is on prepaid without a package — confirm sufficient balance is available to make calls. If balance is zero: inform customer and advise recharge.
+2. Ask customer to toggle Airplane mode OFF then ON — this forces the device to re-register on the network.
+3. Ask customer if the issue occurs everywhere or in a specific location.
+   - If specific location → check for site down in that area. If site down confirmed → Raise TT immediately with tower number and area name.
+   - If everywhere → proceed to step 4.
+4. Check BSS Usage — review recent call activity on the line to identify any anomalies.
+5. Ask customer if the issue occurs with all numbers or a specific number only.
+   - If specific number only → collect call details (time, date, A-party, B-party) and Raise TT to Resolution team.
+   - If all numbers → Raise TT to Resolution team.
+
+📋 Ticket Requirements:
+• Issue description  
+• Troubleshooting confirmation  
+• Callback and active WhatsApp`
+  },
+  {
+    keywords: ["call quality", "جودة مكالمة", "تقطيع", "صوت مقطوع", "call drops"],
+    category: "Calls- Quality",
+    priority: "medium",
+    definition: "Any issue related to voice call coverage such as incoming calls issue or interruption in calls due to bad coverage in specific place",
+    solution: `1. Ask customer to describe the quality issue — echo, one-way audio, choppy/breaking up, background noise, or low volume. Document it.
+2. Ask customer if the issue occurs everywhere or in a specific location.
+   - If specific location → check for site down in that area. If site down confirmed → Raise TT immediately with tower number and area name.
+   - If everywhere → proceed to step 3.
+3. Ask customer if the issue occurs on all calls or with a specific number only.
+   - If specific number only → the issue may be on the other party's network. Advise customer to test with a different number.
+   - If all calls → proceed to step 4.
+4. Ask customer to toggle Airplane mode OFF then ON — forces device to re-register on the network and re-select best available cell.
+5. If issue persists → Raise TT to Resolution team.
+
+📋 Ticket Requirements:
+• Issue description including quality issue type  
+• Troubleshooting confirmation  
+• Customer full address or PACI number  
+• Date and exact time of call where issue occurred (for call trace)  
+• Callback + active WhatsApp`
+  },
+  {
+    keywords: ["international calls", "مكالمات دولية", "دولي", "international"],
+    category: "Calls- International",
+    priority: "medium",
+    definition: "If customer is facing outgoing or incoming international calls issue",
+    solution: `1. Check BSS — confirm the following:
+   a. Line is active and not suspended or disconnected due to billing.
+   b. Customer has an active package that includes international minutes. If no package: advise customer to subscribe.
+   c. Sufficient international minutes usage and balance are available. If exhausted: inform customer and advise renewal or recharge.
+2. Ask customer for the exact error message shown during international call attempts. Document it.
+3. If more than one SIM active on device — confirm correct SIM is selected for calls.
+4. If issue persists after all steps → Raise TT to Resolution team.
+
+📋 Ticket Requirements:
+• Issue description  
+• Error message shown on device  
+• Troubleshooting confirmation  
+• Call time & date  
+• A-party & B-party numbers  
+• Callback`
+  },
+  {
+    keywords: ["divert", "تحويل مكالمة", "call forward", "forward"],
+    category: "Calls- Diverts",
+    priority: "medium",
+    definition: "Any issues related to call diverts",
+    solution: `1 We ask the customer to cancel the call divert using the code ##21#. 
+2 If the divert is not cancelled after using the code raise tt to resolution team 
+ If the divert is successfully cancelled but the issue persists, We Raise TT to resolution team .
+
+📋 Ticket Requirements:
+• Issue description  
+• Troubleshooting confirmation  
+• Callback + active WhatsApp`
+  },
+  {
+    keywords: ["mnp", "port", "نقل رقم", "ported", "محول رقم"],
+    category: "MNP-  Technical Issues",
+    priority: "medium",
+    definition: "Any issue with ported numbers either Ported in or Out (Delete information, Incoming calls issue, Pending installation and Re-active line request)",
+    solution: `1. Check BSS — review the port-in/port-out request status on the line.
+2. Based on findings, follow the matching path:
+
+   If both SIMs are showing active simultaneously:
+   → This indicates the port did not complete correctly. Raise TT to Resolution team.
+
+   If customer is experiencing incoming or outgoing calls and SMS issues post-port:
+   → Raise TT to Resolution team.
+
+   If line is disconnected due to FBN (previous provider disconnection):
+   → Inform customer to settle all outstanding invoices with their previous provider.
+   → Raise TT to Resolution team for follow-up.
+
+📋 Ticket Requirements:
+• Issue description  
+• Troubleshooting confirmation  
+• Callback`
+  },
+  {
+    keywords: ["sms", "رسالة", "رسائل", "otp", "verification", "كود تحقق", "sms not received"],
+    category: "SMS & Verification- issues",
+    priority: "medium",
+    definition: "Any issue with SMS (Outgoing - Incoming) or Verification codes",
+    solution: `1. Ask customer if the issue is with outgoing SMS or incoming SMS.
+
+   If Outgoing SMS:
+   a. Check BSS — confirm line is active and not suspended or disconnected due to billing.
+   b. Ask customer to restart the device and attempt to send SMS again.
+   c. Ask customer to confirm default messaging app is set correctly and SMS permissions are enabled.
+   d. Ask customer if issue occurs with all numbers or a specific number only.
+      - If specific number only → issue may be on recipient's side. Advise customer to test with a different number.
+      - If all numbers → Raise TT to Resolution team.
+
+   If Incoming SMS:
+   a. Ask customer if it is an OTP/verification code or a regular SMS.
+
+      If OTP / Verification code:
+      i.   Ask customer to check spam or blocked messages folder first — OTP messages are frequently filtered automatically.
+      ii.  Check BSS — confirm line is active and not suspended or disconnected due to billing.
+      iii. Check BSS — confirm whether the line is a ported number or an original stc number.
+           - If ported → advise customer to contact the bank or app platform and ask them to remove their phone number and re-add it. This forces the OTP gateway to refresh its routing to the correct network.
+           - If not ported → proceed to step iv.
+      iv.  Ask customer to confirm no SMS blocking or Do Not Disturb mode is active on the device.
+      v.   Ask customer to restart the device and request a new OTP.
+      vi.  If issue is with a specific app or bank only → advise customer to contact that service directly as the issue may be on their SMS gateway side.
+      vii. If issue persists → Raise TT to Resolution team.
+
+      If Regular SMS:
+      i.   Ask customer to check spam or blocked messages folder first — messages from unknown numbers are sometimes filtered automatically.
+      ii.  Check BSS — confirm line is active and not suspended or disconnected due to billing.
+      iii. Ask customer to restart the device and attempt to receive SMS again.
+      iv.  Ask customer to confirm default messaging app is set correctly and SMS permissions are enabled.
+      v.   Ask customer if issue occurs with all senders or a specific sender only.
+           - If specific sender only → issue is likely on the sender's side. Advise customer to contact that sender directly and ask them to retry.
+           - If all senders → Raise TT to Resolution team.
+
+📋 Ticket Requirements:
+• Issue description  
+• Troubleshooting confirmation  
+• Whether issue is outgoing or incoming  
+• For OTP: whether line is ported or original stc number + app/service name  
+• For Incoming SMS: A-party number (sender)  
+• Date & time of SMS or OTP attempt  
+• Callback`
+  },
+  {
+    keywords: ["payment missing", "دفعة مفقودة", "app payment", "web payment", "missing payment"],
+    category: "App & Web-  Payment issue",
+    priority: "medium",
+    definition: "If there is missing digital payment App/Web",
+    solution: `1. Ask customer if they have a payment screenshot or received an SMS confirmation.
+
+   If yes — has screenshot or SMS confirmation:
+   a. Ask customer to provide the reference number from the screenshot or SMS.
+   b. In E-payment — enter the reference number in the Order Sequence search field.
+   c. Transaction details will appear. Check the following:
+      - Status and Fulfillment Status — confirm if payment was successful or failed.
+      - Under Order Details section — check Subscriber Id. This shows which number the payment was applied to.
+   d. If Subscriber Id matches customer's number and status is successful → payment was applied correctly. Advise customer accordingly.
+   e. If status shows failed → payment did not go through. Advise customer to check with their bank for refund timeline.
+   f. If issue persists → Raise TT to Resolution team with full transaction details.
+
+   If no — no screenshot and no SMS confirmation:
+   Advise customer to visit the nearest stc branch with their bank transaction proof to file a complaint.
+
+2. If customer paid via alternative apps (OG Money, E-Ent, etc.) → advise customer to contact them directly.
+
+📋 Ticket Requirements:
+• Issue description  
+• Troubleshooting confirmation  
+• Order sequence number (if available)  
+• Transaction details, amount, date, time, payment channel  
+• Bank confirmation of deduction to stc Kuwait (if applicable)  
+• Callback`
+  },
+  {
+    keywords: ["app issue", "تطبيق", "website issue", "موقع", "stc app", "my stc"],
+    category: "App & Web- Technical Issues",
+    priority: "medium",
+    definition: "Any issue with stc application or web site",
+    solution: `1. Ask customer if the issue is on the stc app or the website.
+
+   If stc App:
+   a. Ask customer to describe the exact issue and document the exact error message shown.
+   b. Ask customer to confirm the app is updated to the latest version. If not — guide customer to update and retry.
+   c. If issue persists after update — ask customer to uninstall the app completely and reinstall it fresh.
+   e. Check if the issue can be resolved from our side (e.g. account status, profile update).
+   f. If issue persists → Raise TT to Resolution team. Note in TT: issue is on stc App + exact error message.
+
+   If Website:
+   a. Ask customer to describe the exact issue and document the exact error message shown.
+   b. Ask customer to clear browser cache and cookies and retry.
+   c. Ask customer to try a different browser.
+   d. Ask customer to try in incognito/private mode.
+   e. Check if the issue can be resolved from our side (e.g. account status, profile update).
+   f. If issue persists → Raise TT to Resolution team. Note in TT: issue is on Website + browser used + exact error message.
+
+📋 Ticket Requirements:
+• Issue description  
+• Whether issue is on app or website  
+• Exact error message shown  
+• Troubleshooting confirmation  
+• Browser type (if website issue)  
+• Callback`
+  },
+  {
+    keywords: ["apple charge", "google charge", "dcb", "رسوم apple", "رسوم google", "carrier billing"],
+    category: "Apple and google- Charge issues",
+    priority: "medium",
+    definition: "If customer is complaining about extra wrong Apple/Google charges",
+    solution: `Ask customer what their issue is:
+
+   If customer wants to block DCB (Direct Carrier Billing) for Apple or Google:
+   → Do NOT raise TT.
+   → Agent must log in to IDEX portal and block DCB on the customer's line directly.
+   → IDEX portal: http://sdp.idextelecom.com/Account/Login
+
+   If customer is disputing an unexpected charge on their stc bill:
+   a. Check BSS — confirm the charge exists on the customer's account. Note the amount and date.
+   b. Guide customer to verify carrier billing is active on their device:
+
+      If iPhone:
+      - Go to Settings > Apple ID > Manage Payments.
+      - Check Payment Method — must show Mobile Phone with last 4 digits of the stc number.
+        If shown → carrier billing is active. Charge came through stc.
+        If not shown → carrier billing is not active. Advise customer to contact Apple directly.
+
+      If Android:
+      - Open Google Play Store > Profile icon > Payments and subscriptions > Payment methods.
+      - Check if stc carrier billing is listed.
+        If listed → carrier billing is active. Charge came through stc.
+        If not listed → carrier billing is not active. Advise customer to contact Google directly.
+
+   c. If carrier billing is confirmed active → Raise TT to Resolution team.
+      Resolution team will obtain the transaction reference from the aggregator and follow up with the customer with full charge details.
+
+📋 Ticket Requirements:
+• Issue description  
+• Whether request is to block DCB or dispute a charge  
+• Charge amount and date (if disputing)  
+• Whether carrier billing is confirmed active on device  
+• Troubleshooting confirmation  
+• Callback`
+  },
+  {
+    keywords: ["kiosk", "كيوسك", "kiosk payment"],
+    category: "Kiosk- Payment issue",
+    priority: "medium",
+    definition: "If customer is complaining about extra wrong local charges",
+    solution: `Ask customer what their issue is:
+
+   If missing payment — paid at kiosk but number not credited:
+   a. Ask customer if they have a printed receipt or received an SMS confirmation from the kiosk.
+
+      If yes — has receipt or SMS confirmation:
+      - Ask customer to provide the reference number from the receipt or SMS.
+      - In E-payment — enter the reference number in the Order Sequence search field.
+      - Transaction details will appear. Check the following:
+        Status and Fulfillment Status — confirm if payment was successful or failed.
+        Under Order Details section — check Subscriber Id. This shows which number the payment was applied to.
+      - If Subscriber Id matches customer's number and status is successful → payment was applied correctly. Advise customer accordingly.
+      - If Subscriber Id does not match customer's number → payment was credited to wrong number. Advise customer to visit the nearest stc branch with their receipt or SMS proof to file a complaint.
+      - If status shows failed → payment did not go through. Advise customer to retry.
+      - If issue persists → Raise TT to Resolution team.
+
+      If no — no receipt and no SMS confirmation:
+      - Ask customer to provide kiosk machine number, branch name and location.
+      - Raise TT to Resolution team with all available details.
+
+   If wrong charge — incorrect amount or charged twice:
+   a. Ask customer to provide the reference number from receipt or SMS if available.
+   b. In E-payment — enter the reference number in the Order Sequence search field.
+   c. Verify the transaction amount, status and Subscriber Id.
+   d. If charge confirmed incorrect or duplicate → Raise TT to Resolution team with full transaction details including machine number, branch name and location.
+
+If customer used an alternative kiosk (OG Money, E-Ent, etc.) → advise customer to contact their support directly.
+
+📋 Ticket Requirements:
+• Issue description  
+• Troubleshooting confirmation  
+• Transaction details, amount, time, date, kiosk number and location  
+• Callback`
+  },
+  {
+    keywords: ["voucher", "قسيمة", "e-voucher"],
+    category: "Voucher- issues",
+    priority: "medium",
+    definition: "Any issue with E-Vouchers",
+    solution: `Step 1 — Identify customer type:
+
+   Non-stc customer:
+   → Purchase channel can only be app or web. Proceed to Step 2A.
+
+   stc customer:
+   → Ask how the voucher was purchased — app/web or charged to stc line.
+   → If app or web → proceed to Step 2A.
+   → If charged to stc line → proceed to Step 2B.
+
+Step 2A — App or Web purchase (stc and non-stc customers):
+   Ask customer for reference number from receipt or SMS confirmation.
+   In E-payment — enter reference number in Order Sequence search field.
+   Identify the scenario:
+
+   → Voucher not received:
+      Check Fulfillment Status.
+      If Fulfillment Successful → ask customer to check SMS inbox and spam folder.
+      If still not found → Raise TT to Resolution team.
+
+   → Voucher shows redeemed but customer did not use it:
+      Raise TT to Resolution team with full transaction details.
+
+   → Voucher not valid:
+      Raise TT to Resolution team with full transaction details.
+
+   → Wrong voucher type or denomination:
+      Confirm what was ordered vs what was issued in E-payment.
+      Raise TT to Resolution team with full transaction details.
+
+   → Refund not received:
+      Check Refund Status on the transaction.
+      If refund in progress → advise customer to check with bank for timeline.
+      If no refund record → Raise TT to Resolution team.
+
+   → Payment failed or transaction not found:
+      Advise customer payment did not go through. Advise customer to retry.
+
+Step 2B — Charged to stc line (stc customers only):
+   Check BSS — confirm charge exists on the customer's bill. Note amount and date.
+   If charge confirmed but issue persists → Raise TT to Resolution team.
+
+📋 Ticket Requirements:
+• Issue description  
+• Whether customer is stc or non-stc  
+• Purchase channel, app, website, or charged to line  
+• Issue type, not received, redeemed, not valid, wrong type, or refund  
+• Order sequence reference number (if available)  
+• Transaction details, voucher type, amount, date and time  
+• Callback`
+  },
+  {
+    keywords: ["esim", "e-sim", "ايسيم", "شريحة رقمية", "qr code esim"],
+    category: "E-SIM-  issues",
+    priority: "medium",
+    definition: "Code not received",
+    solution: `1. Check BSS — locate the eSIM or SIM change request transaction corresponding to the date the customer requested the eSIM.
+2. Check the request status:
+
+   If status shows Completed:
+   → Obtain the eSIM code from the Offering page.
+   → Escalate to team leader — TL inserts the code into the QR portal to generate the QR code.
+   → TL shares the generated QR code with the customer.
+
+   If no transaction found:
+   → Raise TT to Resolution team.
+
+📋 Ticket Requirements:
+• Issue description  
+• Troubleshooting confirmation  
+• Transaction details from BSS (if found)  
+• Callback and WhatsApp`
+  },
+  {
+    keywords: ["esim", "e-sim", "ايسيم", "شريحة رقمية", "qr code esim"],
+    category: "E-SIM-  issues (Code activation issues)",
+    priority: "medium",
+    definition: "Code activation issues",
+    solution: `1. Confirm customer device supports eSIM — ask customer to verify their device model supports eSIM.
+2. Ask customer to connect to external Wi-Fi before proceeding — cellular data is not available during eSIM activation as the new profile is not yet active.
+3. Ask customer to scan the QR code.
+   If QR code shows an error when scanning:
+   → Escalate to team leader to resend QR code from Offering page or QR portal.
+   → If issue persists after resend → Raise TT to Resolution team.
+
+📋 Ticket Requirements:
+• Issue description  
+• Device model and whether it supports eSIM  
+• Troubleshooting confirmation  
+• Transaction details  
+• Callback and WhatsApp`
+  },
+  {
+    keywords: ["balance", "رصيد", "validity", "صلاحية", "prepaid balance"],
+    category: "Prepaid – Balance & validity",
+    priority: "medium",
+    definition: "Any issue with prepaid lines balance or validity",
+    solution: `1. Check BSS — confirm line cycle status is active and not expired or suspended.
+2. Ask customer whether the issue is with validity or balance:
+
+   If validity issue:
+   a. Review customer's recharge transactions in BSS — confirm when last recharge was made and what validity was applied.
+   b. Check BSS — verify whether customer performed a balance transfer recently. Balance transfer also carries validity — this may explain a validity change the customer did not expect.
+   c. Check E-payment — verify whether customer completed a validity service purchase transaction successfully.
+   d. Match the current validity expiry date in BSS against the recharge history, balance transfer history and any validity service purchases.
+      - If validity does not match expected extension after confirmed recharge → Raise TT to Resolution team.
+      - If no recharge transaction found but customer insists they recharged → ask customer to provide recharge receipt or reference and check E-payment using Order Sequence.
+
+   If balance issue:
+   a. Check balance history in BSS Usage tab — review recent balance movements.
+   b. Identify whether the missing or incorrect balance is from normal credit or bonus credit — both are tracked separately in BSS.
+      - Normal credit: main rechargeable balance.
+      - Bonus credit: promotional balance with specific usage conditions.
+   c. If balance was not added after confirmed recharge, or was deducted without matching usage → Raise TT to Resolution team.
+
+📋 Ticket Requirements:
+• Issue description  
+• Whether issue is with validity or balance  
+• Troubleshooting confirmation  
+• Recharge or transaction details (if available)  
+• Callback`
+  },
+  {
+    keywords: ["add-on charge", "booster charge", "رسوم إضافة", "booster"],
+    category: "Plan/Add on services- Charge issues",
+    priority: "medium",
+    definition: "Any issue with services activated extra over the main plan or bundle (Boosters)",
+    solution: `1. Check BSS — confirm line is active and not suspended or disconnected.
+2. Check BSS — verify the source of activation for the disputed booster or add-on service:
+
+   If customer self-activated (via app, USSD, SMS or web):
+   → Inform customer the service was activated by them. Charge is valid.
+   → If customer insists they did not activate → Raise TT to Resolution team.
+
+   If activated by system automatically:
+   → This may be an auto-renewal or a triggered booster. Explain to customer.
+   → If customer disputes the auto-activation → Raise TT to Resolution team.
+
+   If source of activation is unknown or cannot be identified:
+   → Raise TT to Resolution team.
+
+📋 Ticket Requirements:
+• Issue description  
+• Disputed service or booster name  
+• Source of activation (if identified)  
+• Troubleshooting confirmation  
+• Callback`
+  },
+  {
+    keywords: ["plan issue", "add-on issue", "مشكلة خطة", "خطة ما تشتغل"],
+    category: "Plan/Add on services- Technical issues",
+    priority: "medium",
+    definition: "Any issue with line main plan ( Go/Allo/international/Extreme)",
+    solution: `1. Check BSS — confirm line is active and not suspended or disconnected.
+2. Check BSS — verify the status of the main plan or add-on service:
+   - Confirm whether the plan or add-on is showing as active or inactive.
+   - If prepaid → check if sufficient balance is available for activation or renewal. If balance insufficient: inform customer and advise recharge.
+   - If postpaid → check if credit limit has been reached. If limit reached: inform customer and advise settlement or limit increase request.
+3. Check BSS for any error on the line or plan — document the error code or description shown.
+   If no error visible in BSS → ask customer to provide the exact error message shown on their device or app.
+4. If plan or add-on is active in BSS but service is not functioning → Raise TT to Resolution team with error details.
+5. If issue cannot be identified or resolved from BSS → Raise TT to Resolution team.
+
+📋 Ticket Requirements:
+• Issue description  
+• Plan or add-on service name  
+• Error code or message (if available)  
+• Troubleshooting confirmation  
+• Callback`
+  },
+  {
+    keywords: ["3rd party", "third party", "طرف ثالث"],
+    category: "3rd party- charge issues",
+    priority: "medium",
+    definition: "Any issue with 3rd party services charges",
+    solution: `1. Check BSS — identify the 3rd party service that generated the charge. Note the service name, charge amount and date.
+2. Check BSS — verify the activation method for the service:
+   - Confirm whether customer subscribed via SMS keyword or OTP confirmation.
+   - This shows the customer actively responded to an activation request.
+
+   If service is identified and activation is confirmed via SMS or OTP:
+   → Explain to customer how the service was activated and that their response to the SMS or OTP constituted a subscription confirmation.
+   → If customer accepts explanation → advise on how to unsubscribe if they no longer want the service.
+   → If customer remains unconvinced and insists on filing a complaint → Raise TT to Resolution team.
+
+   If service cannot be identified in BSS:
+   → Raise TT to Resolution team.
+
+📋 Ticket Requirements:
+• Issue description  
+• 3rd party service name (if identified)  
+• Activation method confirmed in BSS  
+• Troubleshooting confirmation  
+• Callback`
+  },
+  {
+    keywords: ["apple watch", "ساعة", "watch"],
     category: "Apple Watch",
     priority: "medium",
-    solution: `مشكلة استقبال مكالمات:
-1. تحقق من حالة الخط في BSS
-2. تحقق من Multi-SIM في BSS وHLR
-3. تأكد من تطابق Serial Number بين HLR وBSS
-4. تحقق من VoLTE في BSS
-5. إذا استمرت → صعّد لـ VFO ثم IT
+    definition: "Any issue related to Apple watch (New watch Registartion or incoming calls in the watch)",
+    solution: `1. Ask customer whether the issue is with receiving calls on the watch or pairing the watch.
 
-مشكلة الإقران:
-1. اطلب رسالة الخطأ الدقيقة
-2. تحقق من Profile قديم في HLR/CBS
-3. صعّد لـ VFO لإزالة Profile ثم IT`
-  },
-  {
-    keywords: ["voucher","قسيمة","vouchers","e-voucher","كوبون"],
-    category: "مشاكل القسائم (Vouchers)",
-    priority: "low",
-    solution: `1. تحقق من المعاملة في E-payment
-2. تحقق في Voucher Viewer
-3. إذا ناجحة → شارك كود القسيمة مع العميل
-4. إذا غير موجودة أو بها خطأ → أرسل التفاصيل لـ Mobimind
-5. إذا مؤهل للاسترداد → أنشئ طلب Refund في E-payment`
-  },
-  {
-    keywords: ["app","application","website","تطبيق","موقع","stc app","stc web","my stc"],
-    category: "تطبيق / موقع STC",
-    priority: "low",
-    solution: `1. اطلب تحديث التطبيق أو إعادة تثبيته
-2. اطلب رسالة الخطأ الدقيقة وتحقق هل يمكن حله من طرفنا
-3. إذا لا → أرسل رسالة الخطأ لـ IT للتحقيق`
-  },
-  {
-    keywords: ["site down","موقع خارج الخدمة","outage","انقطاع خدمة عامة"],
-    category: "Site Down",
-    priority: "low",
-    solution: `أغلق التيكت - من المتوقع أن يُغلق تلقائياً من النظام.`
-  },
-  {
-    keywords: ["qitaf","قطاف","points","نقاط","loyalty","ولاء","redeem","استبدال"],
-    category: "نقاط Qitaf",
-    priority: "low",
-    solution: `1. تحقق من المشكلة بدقة
-2. حاول حلها من طرفنا (التسجيل، الاستبدال)
-3. إذا نقاط مفقودة أو خطأ في التسجيل → صعّد لـ IT`
-  },
+   If issue is receiving calls on Apple Watch:
+   a. Check BSS — confirm line is active and not suspended.
+   b. Check BSS — verify Multi-SIM service status on the line.
+      - If not active → inform customer and advise activation before proceeding.
+   c. Check BSS — verify VoLTE service status on the line.
+      - If not active → inform customer and advise activation before proceeding.
+   d. If both services are active and issue persists → Raise TT to Resolution team.
 
+   If issue is Apple Watch pairing:
+   a. Ask customer to confirm Bluetooth is enabled on their iPhone and the watch is nearby.
+   b. Ask customer for the exact error message shown during pairing attempt.
+      - "Max profile limit reached" → Raise TT to Resolution team.
+      - "Something went wrong, call 102" → Raise TT to Resolution team.
+      - Any other error → document it and Raise TT to Resolution team.
 
-  // ========== MORE DEVICES ==========
+📋 Ticket Requirements:
+• Issue description  
+• Whether issue is receiving calls or pairing  
+• Multi-SIM and VoLTE status from BSS  
+• Exact error message shown during pairing (if applicable)  
+• Troubleshooting confirmation  
+• Callback`
+  },
   {
-    keywords: ["pixel","google pixel","بيكسل","جوجل بيكسل","apn pixel"],
-    category: "إعدادات APN - Google Pixel",
+    keywords: ["qitaf", "نقاط", "قطاف", "loyalty"],
+    category: "Qitaf points",
     priority: "medium",
-    solution: `1. الإعدادات ← الشبكة والإنترنت (Network & Internet)
-2. اضغط على اسم الشريحة
-3. اضغط "أسماء نقاط الوصول" (APNs)
-4. اضغط + لإضافة جديد
-5. الاسم: STC Kuwait | APN: stc.bh
-6. احفظ واختره كافتراضي
-7. أعد تشغيل الجوال ✅`
+    definition: "Any issue with loyalty program Qitaf (Missing points - Redemptions - Registration)",
+    solution: `1. Ask customer to specify their issue:
+
+   If missing points:
+   a. Ask customer to provide details of the transaction or payment they expected points from — amount, date and channel used.
+   b. Confirm the transaction was eligible for Qitaf points accumulation.
+   c. Raise TT to Resolution team with full transaction details.
+
+   If redemption issue:
+   a. Ask customer for the exact error message shown during redemption attempt.
+   b. Note the redemption amount and what the customer was trying to redeem for.
+   c. Raise TT to Resolution team with full details.
+
+   If registration issue:
+   a. Ask customer for the exact error message shown during registration attempt.
+   b. Raise TT to Resolution team with full details.
+
+📋 Ticket Requirements:
+• Issue description  
+• Whether issue is missing points, redemption or registration  
+• Transaction details (if missing points), amount, date and channel  
+• Exact error message (if redemption or registration issue)  
+• Troubleshooting confirmation  
+• Callback`
   },
   {
-    keywords: ["pixel","google pixel","reset network","اعادة ضبط الشبكة","بيكسل"],
-    category: "إعادة ضبط الشبكة - Google Pixel",
+    keywords: ["outage", "global outage", "app down", "عطل عام"],
+    category: "Outage- Global Service/App",
     priority: "medium",
-    solution: `1. الإعدادات ← النظام (System)
-2. اضغط "خيارات إعادة الضبط" (Reset Options)
-3. اختار "إعادة ضبط إعدادات Wi-Fi والجوال والبلوتوث"
-4. اضغط "إعادة الضبط" وأكد ✅`
+    definition: "Service or App down",
+    solution: `1. Report the issue to the shift team leader immediately.
+2. Upon team leader confirmation → Raise TT to Resolution team with issue description.
+
+📋 Ticket Requirements:
+• Issue description  
+• Team leader confirmation`
   },
   {
-    keywords: ["xiaomi","شاومي","redmi","ريدمي","poco","apn شاومي","اعداد شاومي"],
-    category: "إعدادات APN - Xiaomi/Redmi",
+    keywords: ["network down", "network outage", "شبكة وقفت"],
+    category: "Outage- Network",
     priority: "medium",
-    solution: `1. الإعدادات ← بطاقة SIM والشبكات الجوالة
-2. اضغط على الشريحة
-3. اضغط "أسماء نقاط الوصول" (APN)
-4. اضغط + لإضافة جديد
-5. الاسم: STC Kuwait | APN: stc.bh
-6. احفظ واختره ✅
-7. أعد تشغيل الجوال`
-  },
-  {
-    keywords: ["xiaomi","شاومي","redmi","ريدمي","reset network","اعادة ضبط"],
-    category: "إعادة ضبط الشبكة - Xiaomi/Redmi",
-    priority: "medium",
-    solution: `1. الإعدادات ← الإدارة العامة (About Phone)
-2. اضغط "إعادة الضبط إلى المصنع" (Factory Reset)
-3. اختار "إعادة ضبط إعدادات الشبكة فقط"
-4. أكد وانتظر إعادة التشغيل ✅`
-  },
-  {
-    keywords: ["oppo","اوبو","realme","ريلمي","apn اوبو","اعداد اوبو"],
-    category: "إعدادات APN - Oppo/Realme",
-    priority: "medium",
-    solution: `1. الإعدادات ← بطاقة SIM والشبكة الجوالة
-2. اضغط على الشريحة النشطة
-3. اضغط "نقاط الوصول" (APN)
-4. أضف جديد: الاسم: STC Kuwait | APN: stc.bh
-5. احفظ واختره ✅
-6. أعد تشغيل الجوال`
-  },
-  {
-    keywords: ["oneplus","ون بلس","apn ون بلس","اعداد ون بلس"],
-    category: "إعدادات APN - OnePlus",
-    priority: "medium",
-    solution: `1. الإعدادات ← شبكة الجوال (Mobile Network)
-2. اضغط "بطاقة SIM" واختار الشريحة
-3. اضغط "APN"
-4. أضف جديد: الاسم: STC Kuwait | APN: stc.bh
-5. احفظ واختره ✅
-6. أعد تشغيل الجوال`
-  },
-  {
-    keywords: ["sony","سوني","xperia","اكسبيريا","apn سوني"],
-    category: "إعدادات APN - Sony Xperia",
-    priority: "medium",
-    solution: `1. الإعدادات ← الشبكة والإنترنت
-2. اضغط "شبكة الجوال" ← "خيارات متقدمة"
-3. اضغط "أسماء نقاط الوصول"
-4. أضف جديد: الاسم: STC Kuwait | APN: stc.bh
-5. احفظ واختره ✅
-6. أعد تشغيل الجوال`
-  },
-  {
-    keywords: ["mms","ام ام اس","رسائل وسائط","صور مو تتوصل","فيديو مو يوصل","multimedia"],
-    category: "إعدادات MMS",
-    priority: "medium",
-    solution: `آيفون:
-1. الإعدادات ← الرسائل (Messages)
-2. تأكد إن MMS مفعّل
-3. الإعدادات ← بيانات الجوال ← شبكة بيانات الجوال
-4. في خانة MMS اكتب: stc.bh
-
-سامسونج/أندرويد:
-1. الإعدادات ← الاتصالات ← شبكات الجوال ← APN
-2. عدّل الـ APN الموجود وأضف في MMSC: http://mmsc.stc.com.kw
-3. MMS Proxy: 10.18.48.4 | MMS Port: 8080
-4. احفظ وأعد التشغيل ✅`
-  },
-  {
-    keywords: ["hotspot","هوت سبوت","نقطة اتصال","مشاركة الإنترنت","tethering","تيزرينج","شارك نت"],
-    category: "إعداد Hotspot / نقطة الاتصال",
-    priority: "medium",
-    solution: `آيفون:
-1. الإعدادات ← نقطة الاتصال الشخصية
-2. فعّل "السماح للآخرين بالانضمام"
-3. عيّن كلمة مرور واي فاي
-
-سامسونج:
-1. الإعدادات ← الاتصالات ← نقطة الاتصال المحمولة والربط
-2. فعّل "نقطة الاتصال المحمولة"
-3. اضغط "نقطة الاتصال المحمولة" لتعديل الإعدادات
-
-ملاحظة: تأكد إن باقتك تدعم مشاركة البيانات ✅`
-  },
-  {
-    keywords: ["bluetooth","بلوتوث","مو يتصل بلوتوث","مشكلة بلوتوث","bluetooth not working"],
-    category: "مشاكل البلوتوث",
-    priority: "low",
-    solution: `1. أوقف البلوتوث وشغّله مرة ثانية
-2. تأكد إن الجهاز الثاني في وضع الإقران (Pairing Mode)
-3. احذف الجهاز من قائمة البلوتوث وأعد الإقران
-4. أوقف وشغّل وضع الطيران
-5. أعد تشغيل الجوال
-6. إذا استمرت → أعد ضبط إعدادات الشبكة`
-  },
-  {
-    keywords: ["update","تحديث","system update","تحديث النظام","ios update","android update","نظام قديم"],
-    category: "تحديث نظام الجهاز",
-    priority: "low",
-    solution: `آيفون:
-1. الإعدادات ← عام ← تحديث البرنامج
-2. اضغط "تنزيل وتثبيت" إذا في تحديث
-3. تأكد إن البطارية فوق 50% أو الجهاز متصل بالشاحن
-
-سامسونج:
-1. الإعدادات ← تحديث البرنامج
-2. اضغط "تنزيل وتثبيت"
-
-هواوي:
-1. الإعدادات ← النظام ← تحديث البرنامج
-2. اضغط "البحث عن تحديثات"
-
-ملاحظة: تأكد من اتصال WiFi قبل التحديث ✅`
-  },
-  {
-    keywords: ["battery","بطارية","drain","استنزاف","battery fast","بطارية تفرغ بسرعة","شحن بطيء"],
-    category: "مشاكل البطارية",
-    priority: "low",
-    solution: `1. أوقف خدمات الموقع إذا مو ضرورية
-2. قلّل سطوع الشاشة
-3. أوقف تحديث التطبيقات في الخلفية
-4. افحص التطبيقات التي تستهلك البطارية:
-   - آيفون: الإعدادات ← البطارية
-   - أندرويد: الإعدادات ← البطارية ← استخدام البطارية
-5. أوقف الـ 5G إذا مو محتاجه (استخدم 4G)
-6. فعّل وضع توفير الطاقة عند الضرورة`
-  },
-  {
-    keywords: ["apple watch","ساعة ابل","watch series","واتش","ساعة","اقران ساعة","pair watch","watch not connecting"],
-    category: "إقران Apple Watch - مشاكل الإقران",
-    priority: "high",
-    solution: `1. تأكد إن الآيفون والساعة قريبين من بعض (أقل من متر)
-2. تأكد إن Bluetooth مفعّل على الآيفون
-3. افتح تطبيق Watch على الآيفون
-4. اضغط "بدء الإقران" (Start Pairing)
-5. وجّه كاميرا الآيفون نحو شاشة الساعة
-6. إذا فشل → أعد ضبط الساعة:
-   - الساعة ← الإعدادات ← عام ← إعادة الضبط ← مسح محتوى الساعة وإعداداتها
-7. أعد المحاولة ✅`
-  },
-  {
-    keywords: ["apple watch","ساعة ابل","watch","واتش","cellular watch","خلوي ساعة","esim watch","شريحة ساعة","ما تتصل ساعة"],
-    category: "Apple Watch - مشكلة الخلوي/eSIM",
-    priority: "high",
-    solution: `1. تأكد إن خدمة Apple Watch مفعّلة على خطك من STC
-2. افتح تطبيق Watch على الآيفون
-3. اضغط "خلوي" (Cellular)
-4. اضغط "إضافة خطة بيانات" (Add a Data Plan)
-5. اتبع الخطوات لتفعيل eSIM على الساعة
-6. إذا ظهرت مشكلة → تحقق من BSS وHLR إن Multi-SIM مفعّل
-7. إذا استمرت → صعّد لـ VFO ثم IT NOC`
-  },
-  {
-    keywords: ["apple watch","ساعة ابل","watch","واتش","watch not syncing","مو تزامن","ساعة بطيئة","watch disconnected","انقطعت الساعة"],
-    category: "Apple Watch - مشكلة التزامن والاتصال",
-    priority: "medium",
-    solution: `1. تأكد إن Bluetooth مفعّل على الآيفون
-2. تأكد إن الآيفون والساعة قريبين
-3. أعد تشغيل الساعة: اضغط الزر الجانبي مطولاً ← اسحب "إيقاف التشغيل"
-4. أعد تشغيل الآيفون
-5. افتح تطبيق Watch وتحقق من حالة الاتصال
-6. إذا استمرت → افصل الساعة وأعد الإقران`
-  },
-  {
-    keywords: ["apple watch","ساعة ابل","watch","واتش","watch update","تحديث ساعة","watchos"],
-    category: "Apple Watch - تحديث watchOS",
-    priority: "low",
-    solution: `1. تأكد إن الساعة مشحونة فوق 50%
-2. تأكد إن الآيفون متصل بـ WiFi
-3. افتح تطبيق Watch على الآيفون
-4. اضغط "عام" ← "تحديث البرنامج"
-5. اضغط "تنزيل وتثبيت"
-6. ضع الساعة على الشاحن أثناء التحديث ✅`
-  },
-  {
-    keywords: ["apple watch","ساعة ابل","watch","واتش","watch battery","بطارية ساعة","ساعة تفرغ"],
-    category: "Apple Watch - مشكلة البطارية",
-    priority: "low",
-    solution: `1. فعّل وضع توفير الطاقة (Power Saving Mode) في الساعة
-2. أوقف Always-On Display إذا موجود
-3. قلّل إشعارات التطبيقات
-4. أوقف Wake on Wrist Raise
-5. الإعدادات ← عام ← الخلفية والسطوع ← قلّل السطوع
-6. إذا البطارية تالفة → راجع Apple Store`
-  },
-  // ========== DEVICE SETTINGS ==========
-
-
-
-
-
-
-
-
-
-
-
-  {
-    keywords: ["airplane","طيران","وضع الطيران","flight mode","airplane mode","تشغيل وضع الطيران"],
-    category: "وضع الطيران",
-    priority: "low",
-    solution: `1. اسحب من أعلى الشاشة للأسفل
-2. اضغط على أيقونة الطيارة ✈️ لتفعيل وضع الطيران
-3. انتظر 10 ثواني
-4. اضغط عليها مرة ثانية لإلغاء وضع الطيران
-5. انتظر حتى يتصل بالشبكة (30 ثانية تقريباً)
-✅ هذا يحل كثير من مشاكل الشبكة البسيطة`
-  },
-  {
-    keywords: ["sim","شريحة","sim card","ما تقرأ","مايقرا","no sim","لا توجد شريحة","invalid sim","شريحة غير صالحة"],
-    category: "مشكلة قراءة الشريحة",
-    priority: "high",
-    solution: `1. أوقف الجوال كلياً
-2. أخرج الشريحة بدبوس SIM
-3. امسح الشريحة بقطعة قماش ناعمة
-4. أعد تركيبها بشكل صحيح
-5. شغّل الجوال وانتظر دقيقة
-6. إذا استمرت → جرب الشريحة في جوال ثاني
-   • إذا اشتغلت في جوال ثاني → المشكلة في الجوال
-   • إذا ما اشتغلت → المشكلة في الشريحة، راجع أقرب فرع STC`
-  },
-
-  {
-    keywords: ["wifi","واي فاي","wifi calling","مكالمات واي فاي","wifi call"],
-    category: "تفعيل مكالمات Wi-Fi",
-    priority: "low",
-    solution: `آيفون:
-1. الإعدادات ← الهاتف (Phone)
-2. فعّل "مكالمات Wi-Fi" (Wi-Fi Calling)
-
-سامسونج:
-1. الإعدادات ← الاتصالات ← شبكات الجوال
-2. فعّل "مكالمات Wi-Fi"
-
-ملاحظة: يجب أن تكون الخدمة مفعّلة على خطك من STC`
-  },
-
-
-  // ========== VPN ==========
-  {
-    keywords: ["vpn","في بي ان","شبكة خاصة","اتصال vpn","vpn مو يشتغل"],
-    category: "مشاكل VPN",
-    priority: "medium",
-    solution: `1. تأكد إن الإنترنت يشتغل أولاً بدون VPN
-2. جرب قطع الاتصال وإعادة الاتصال بالـ VPN
-3. جرب سيرفر VPN مختلف
-4. تحقق إن الـ VPN مسموح به على الشبكة
-5. أوقف وشغّل وضع الطيران
-6. أعد تثبيت تطبيق VPN
-7. تأكد من تحديث التطبيق لآخر إصدار
-8. إذا استمرت → تواصل مع مزود خدمة VPN`
-  },
-  {
-    keywords: ["visual voicemail","بريد صوتي مرئي","voicemail","رسائل صوتية","voicemail مو يشتغل"],
-    category: "Visual Voicemail",
-    priority: "low",
-    solution: `1. تأكد إن خدمة البريد الصوتي مفعّلة على الخط من STC
-2. آيفون: الإعدادات ← الهاتف ← بريد صوتي
-3. اضغط "إعداد الآن" وأدخل كلمة مرور
-4. إذا ما ظهر → أعد تشغيل الجوال
-5. إذا استمرت → تحقق من BSS إن خدمة Voicemail مفعّلة
-6. صعّد لـ IT NOC إذا لزم`
-  },
-  {
-    keywords: ["my stc","mystc","تطبيق stc","stc app","تطبيق مو يشتغل","تطبيق ما يفتح","تطبيق خطأ"],
-    category: "تطبيق My STC - مشاكل",
-    priority: "medium",
-    solution: `1. تأكد من آخر إصدار للتطبيق (App Store / Google Play)
-2. أوقف التطبيق كلياً وأعد تشغيله
-3. امسح cache التطبيق:
-   - أندرويد: الإعدادات ← التطبيقات ← My STC ← مسح البيانات المؤقتة
-   - آيفون: احذف وأعد تثبيت التطبيق
-4. تأكد من اتصال الإنترنت
-5. جرب تسجيل الخروج وإعادة الدخول
-6. إذا استمرت → أرسل رسالة الخطأ لـ IT`
-  },
-  {
-    keywords: ["ipad","ايباد","tablet","تابلت","ipad cellular","ايباد خلوي"],
-    category: "iPad / Tablet - إعدادات الشبكة",
-    priority: "medium",
-    solution: `1. الإعدادات ← خلوي أو بيانات الجوال
-2. تأكد إن بيانات الجوال مفعّلة
-3. تحقق من APN: stc.bh
-4. إذا eSIM → تحقق من Profile الصحيح
-5. أعد ضبط إعدادات الشبكة:
-   الإعدادات ← عام ← إعادة الضبط ← إعادة ضبط إعدادات الشبكة
-6. إذا استمرت → تحقق من BSS إن الخط مفعّل للـ Data`
-  },
-  {
-    keywords: ["mifi","مايفاي","mobile wifi","واي فاي متنقل","راوتر متنقل","pocket wifi","بوكت واي فاي"],
-    category: "Mobile WiFi / MiFi",
-    priority: "medium",
-    solution: `1. تأكد من شحن الجهاز (بطارية فوق 20%)
-2. أعد تشغيل الجهاز
-3. تحقق من الشريحة - أخرجها وأعد إدراجها
-4. تحقق من إعدادات APN: stc.bh
-5. تأكد إن الباقة نشطة وفيها رصيد بيانات
-6. تحقق من عدد الأجهزة المتصلة (حد أقصى عادةً 10)
-7. إذا استمرت → تحقق من BSS وتواصل مع الدعم التقني`
-  },
-  {
-    keywords: ["dongle","دونجل","usb internet","انترنت usb","usb modem","مودم usb"],
-    category: "USB Dongle",
-    priority: "medium",
-    solution: `1. جرب USB منفذ آخر
-2. أعد تشغيل الكمبيوتر
-3. تحقق من تثبيت الـ Driver الصحيح
-4. تحقق من الشريحة داخل الـ Dongle
-5. تحقق من إعدادات APN في برنامج الـ Dongle: stc.bh
-6. تأكد إن الباقة نشطة
-7. إذا استمرت → حدّث firmware الجهاز من موقع المصنّع`
-  },
-  {
-    keywords: ["stc tv","stctv","تلفزيون stc","بث stc","stc streaming","قنوات stc"],
-    category: "STC TV - مشاكل",
-    priority: "medium",
-    solution: `1. تأكد من اتصال الإنترنت (سرعة لا تقل عن 10 Mbps للـ HD)
-2. أعد تشغيل التطبيق أو الجهاز
-3. امسح cache التطبيق
-4. تحقق من صلاحية الاشتراك
-5. جرب تسجيل الخروج وإعادة الدخول
-6. إذا تقطّع البث → اخفض جودة الصورة مؤقتاً
-7. إذا استمرت → تواصل مع فريق STC TV الداخلي`
-  },
-  {
-    keywords: ["stc pay","stcpay","دفع stc","محفظة stc","stc wallet"],
-    category: "STC Pay - مشاكل",
-    priority: "medium",
-    solution: `1. تأكد من آخر إصدار للتطبيق
-2. تأكد من اتصال الإنترنت
-3. أعد تشغيل التطبيق
-4. إذا مشكلة تحقق هوية → تواصل مع فريق STC Pay مباشرة
-5. إذا مشكلة معاملة → احتفظ برقم المعاملة وتواصل مع الدعم
-6. إذا حساب مجمّد → يجب التواصل مع فريق STC Pay
-7. للدعم المباشر: تواصل مع فريق STC Pay الداخلي`
-  },
-  {
-    keywords: ["fiber","فايبر","ftth","الياف","انترنت منزلي","home internet","فايبر مو يشتغل"],
-    category: "مشاكل الفايبر (FTTH)",
-    priority: "high",
-    solution: `1. تحقق من إضاءة الـ ONT (الجهاز الأبيض):
-   - PON يضيء أخضر ثابت ✅
-   - LOS يضيء أحمر = مشكلة في الكابل ❌
-2. أعد تشغيل الـ ONT والراوتر (30 ثانية)
-3. تحقق من كابل الألياف - لا يجب أن يكون منثني أو مكسور
-4. تحقق من BSS إن الخط مفعّل
-5. إذا LOS أحمر → مشكلة في الكابل الخارجي، ارفع تيكت للصيانة
-6. إذا استمرت → صعّد لـ HUW مع العنوان وتفاصيل المشكلة`
-  },
-  // ========== ESCALATION INFO ==========
-  {
-    keywords: ["تصعيد","escalate","صعّد","escalation","فريق التصعيد","وين ارسل","مين ارسل","email support"],
-    category: "معلومات التصعيد والفرق",
-    priority: "medium",
-    solution: `فرق التصعيد في STC Kuwait:
-
-🔧 VFO Team
-→ مشاكل المكالمات والتجوال والـ SMS
-→ يحتاج: A-party, B-party, تاريخ ووقت المشكلة
-
-📡 HUW Team  
-→ مشاكل التغطية والسرعة والـ 5G
-→ يحتاج: العنوان/PACI، نتائج Speedtest، النطاق المتصل
-
-💻 IT NOC Team
-→ المشاكل التقنية المعقدة وأعطال الأنظمة
-→ يحتاج: وصف تفصيلي ورقم الخط والخطوات المجربة
-
-📱 CMS Team
-→ مشاكل العروض الخاصة وإشكاليات الباقات
-
-💳 Credit Control Team
-→ تغيير الحد الائتماني والمشاكل المالية
-
-🔄 Sequence Team
-→ مشاكل الـ SMS الدولية`
-  },
-  {
-    keywords: ["ticket","تيكت","كيف ارفع","رفع تيكت","how to ticket","new ticket","تيكت جديد"],
-    category: "كيفية رفع تيكت",
-    priority: "low",
-    solution: `خطوات رفع تيكت صحيح:
-
-1. حدد نوع المشكلة والفريق المختص
-2. اجمع المعلومات المطلوبة:
-   - رقم الخط المتضرر
-   - وصف تفصيلي للمشكلة
-   - وقت وتاريخ بدء المشكلة
-   - الخطوات التي تم تجربها
-   - رسائل الخطأ إن وجدت
-3. ارفع التيكت عبر النظام الداخلي
-4. احتفظ برقم التيكت للمتابعة
-5. تابع التيكت خلال SLA المحدد:
-   - عالي الأولوية: 4 ساعات
-   - متوسط: 8 ساعات  
-   - منخفض: 24 ساعة`
-  },
-  {
-    keywords: ["identity","هوية","تحقق هوية","verify","verification","civil id","بطاقة مدنية","customer verification"],
-    category: "التحقق من هوية العميل",
-    priority: "high",
-    solution: `خطوات التحقق من هوية العميل:
-
-1. اطلب رقم الخط والاسم الكامل
-2. تحقق من رقم البطاقة المدنية في النظام
-3. اطلب سؤال التحقق الأمني إذا متوفر
-4. للتغييرات الحساسة (نقل ملكية، تغيير SIM):
-   - يجب حضور شخصي في الفرع
-   - أو توكيل رسمي موثق
-5. لا تجري أي تغييرات حساسة بدون تحقق كامل
-⚠️ لا تشارك معلومات العميل مع أي طرف ثالث`
-  },
-
-  // ========== ROUTERS ==========
-  {
-    keywords: ["راوتر","router","رواتر","واي فاي","wifi","انترنت منزلي","home wifi","راوتر ثابت","fixed router","zte","هواوي راوتر","huawei router","tp-link","tplink","archer","نت الدار"],
-    category: "راوتر STC الثابت - إعادة تشغيل",
-    priority: "high",
-    solution: `🔧 راوتر STC الثابت - إعادة التشغيل
-━━━━━━━━━━━━━━━━━━━━
-
-1. أوقف الراوتر من زر التشغيل الخلفي
-2. انتظر 30 ثانية كاملة
-3. شغّله مرة ثانية
-4. انتظر دقيقتين حتى يكتمل الاتصال
-5. تحقق من إضاءة الـ Internet/WAN:
-   🟢 أخضر ثابت = متصل ✅
-   🔴 أحمر أو يومض = مشكلة في الاتصال
-
-✅ النتيجة المتوقعة: يعود الإنترنت خلال دقيقتين
-📞 إذا استمرت: تواصل مع Team Leader Resolutions`
-  },
-  {
-    keywords: ["راوتر","router","zt","zte","baity","بيتي","5g router","راوتر 5g","cpe","h122","h138","mc801","mc889","zyxel","نت 5g"],
-    category: "راوتر STC 5G (Baity/CPE) - إعادة تشغيل",
-    priority: "high",
-    solution: `🔧 راوتر STC 5G (Baity/CPE) - إعادة التشغيل
-━━━━━━━━━━━━━━━━━━━━
-
-الأجهزة المدعومة: ZTE MC801 / MC889 / H122 / H138 | Huawei CPE Pro | Zyxel NR5101
-
-1. أوقف الجهاز من زر التشغيل
-2. انتظر 30 ثانية
-3. أعد التشغيل وانتظر 3 دقائق
-4. تحقق من الإضاءة:
-   🟢 أخضر = متصل بـ 5G ✅
-   🟡 أصفر = متصل بـ 4G
-   🔴 أحمر = لا يوجد إشارة
-
-⚠️ إذا استمر الأحمر: تحقق من Smart Care إن الخط نشط
-✅ النتيجة: يتصل بأقوى إشارة متاحة (5G/4G)
-📞 إذا استمرت: تواصل مع Team Leader Resolutions`
-  },
-  {
-    keywords: ["راوتر متنقل","mobile router","mifi","مايفاي","pocket router","pocket wifi","بوكت","راوتر جيب","zte mf","huawei e5","alcatel","vodafone r","فودافون راوتر"],
-    category: "راوتر STC المتنقل (MiFi) - إعدادات وإعادة تشغيل",
-    priority: "medium",
-    solution: `🔧 راوتر STC المتنقل (MiFi)
-━━━━━━━━━━━━━━━━━━━━
-
-الأجهزة الشائعة: ZTE MF910 / MF920 | Huawei E5788 / E5576 | Alcatel MW40
-
-إعادة التشغيل:
-1. اضغط زر التشغيل 3 ثوانٍ لإيقافه
-2. انتظر 15 ثانية
-3. اضغط مرة ثانية لتشغيله
-
-إعداد APN يدوياً:
-1. اتصل بـ WiFi الجهاز
-2. افتح المتصفح وادخل: 192.168.8.1 أو 192.168.0.1
-3. اسم المستخدم: admin | كلمة المرور: admin (أو مكتوبة على الجهاز)
-4. اذهب لـ Settings ← Dial-up ← APN
-5. اكتب APN: stc.bh
-6. احفظ وأعد التشغيل
-
-⚠️ تأكد من شحن الجهاز فوق 20%
-✅ النتيجة: يتصل ويوزع WiFi على الأجهزة
-📞 إذا استمرت: تواصل مع Team Leader Resolutions`
-  },
-  {
-    keywords: ["mesh","ميش","wifi mesh","نظام ميش","orbi","eero","deco","tp link deco","راوتر ميش","تغطية واي فاي"],
-    category: "نظام Mesh WiFi - إعدادات",
-    priority: "medium",
-    solution: `🔧 نظام Mesh WiFi
-━━━━━━━━━━━━━━━━━━━━
-
-1. تأكد إن الـ Main Router (الرئيسي) متصل بالإنترنت
-2. تأكد إن جميع نقاط الـ Mesh مضاءة
-3. إذا نقطة Mesh لا تعمل:
-   • أعد تشغيلها
-   • قرّبها من الرئيسي مؤقتاً
-   • تحقق من كابل Ethernet إذا موجود
-4. للـ Baity Mesh (STC):
-   • ادخل: 192.168.3.1
-   • اختر DHCP
-   • أدخل اسم WiFi وكلمة المرور
-   • كلمة مرور Router: admin123
-5. انتظر حتى يتحول المؤشر للأزرق ✅
-
-📞 إذا استمرت: تواصل مع Team Leader Resolutions`
-  },
-
-  // ========== VPN ==========
-  {
-    keywords: ["vpn","في بي ان","شبكة خاصة","اتصال vpn","vpn مو يشتغل"],
-    category: "مشاكل VPN",
-    priority: "medium",
-    solution: `1. تأكد إن الإنترنت يشتغل أولاً بدون VPN
-2. جرب قطع الاتصال وإعادة الاتصال بالـ VPN
-3. جرب سيرفر VPN مختلف
-4. تحقق إن الـ VPN مسموح به على الشبكة
-5. أوقف وشغّل وضع الطيران
-6. أعد تثبيت تطبيق VPN
-7. تأكد من تحديث التطبيق لآخر إصدار
-8. إذا استمرت → تواصل مع مزود خدمة VPN`
-  },
-  {
-    keywords: ["visual voicemail","بريد صوتي مرئي","voicemail","رسائل صوتية","voicemail مو يشتغل"],
-    category: "Visual Voicemail",
-    priority: "low",
-    solution: `1. تأكد إن خدمة البريد الصوتي مفعّلة على الخط من STC
-2. آيفون: الإعدادات ← الهاتف ← بريد صوتي
-3. اضغط "إعداد الآن" وأدخل كلمة مرور
-4. إذا ما ظهر → أعد تشغيل الجوال
-5. إذا استمرت → تحقق من BSS إن خدمة Voicemail مفعّلة
-6. صعّد لـ IT NOC إذا لزم`
-  },
-  {
-    keywords: ["my stc","mystc","تطبيق stc","stc app","تطبيق مو يشتغل","تطبيق ما يفتح","تطبيق خطأ"],
-    category: "تطبيق My STC - مشاكل",
-    priority: "medium",
-    solution: `1. تأكد من آخر إصدار للتطبيق (App Store / Google Play)
-2. أوقف التطبيق كلياً وأعد تشغيله
-3. امسح cache التطبيق:
-   - أندرويد: الإعدادات ← التطبيقات ← My STC ← مسح البيانات المؤقتة
-   - آيفون: احذف وأعد تثبيت التطبيق
-4. تأكد من اتصال الإنترنت
-5. جرب تسجيل الخروج وإعادة الدخول
-6. إذا استمرت → أرسل رسالة الخطأ لـ IT`
-  },
-  {
-    keywords: ["ipad","ايباد","tablet","تابلت","ipad cellular","ايباد خلوي"],
-    category: "iPad / Tablet - إعدادات الشبكة",
-    priority: "medium",
-    solution: `1. الإعدادات ← خلوي أو بيانات الجوال
-2. تأكد إن بيانات الجوال مفعّلة
-3. تحقق من APN: stc.bh
-4. إذا eSIM → تحقق من Profile الصحيح
-5. أعد ضبط إعدادات الشبكة:
-   الإعدادات ← عام ← إعادة الضبط ← إعادة ضبط إعدادات الشبكة
-6. إذا استمرت → تحقق من BSS إن الخط مفعّل للـ Data`
-  },
-  {
-    keywords: ["mifi","مايفاي","mobile wifi","واي فاي متنقل","راوتر متنقل","pocket wifi","بوكت واي فاي"],
-    category: "Mobile WiFi / MiFi",
-    priority: "medium",
-    solution: `1. تأكد من شحن الجهاز (بطارية فوق 20%)
-2. أعد تشغيل الجهاز
-3. تحقق من الشريحة - أخرجها وأعد إدراجها
-4. تحقق من إعدادات APN: stc.bh
-5. تأكد إن الباقة نشطة وفيها رصيد بيانات
-6. تحقق من عدد الأجهزة المتصلة (حد أقصى عادةً 10)
-7. إذا استمرت → تحقق من BSS وتواصل مع الدعم التقني`
-  },
-  {
-    keywords: ["dongle","دونجل","usb internet","انترنت usb","usb modem","مودم usb"],
-    category: "USB Dongle",
-    priority: "medium",
-    solution: `1. جرب USB منفذ آخر
-2. أعد تشغيل الكمبيوتر
-3. تحقق من تثبيت الـ Driver الصحيح
-4. تحقق من الشريحة داخل الـ Dongle
-5. تحقق من إعدادات APN في برنامج الـ Dongle: stc.bh
-6. تأكد إن الباقة نشطة
-7. إذا استمرت → حدّث firmware الجهاز من موقع المصنّع`
-  },
-  {
-    keywords: ["stc tv","stctv","تلفزيون stc","بث stc","stc streaming","قنوات stc"],
-    category: "STC TV - مشاكل",
-    priority: "medium",
-    solution: `1. تأكد من اتصال الإنترنت (سرعة لا تقل عن 10 Mbps للـ HD)
-2. أعد تشغيل التطبيق أو الجهاز
-3. امسح cache التطبيق
-4. تحقق من صلاحية الاشتراك
-5. جرب تسجيل الخروج وإعادة الدخول
-6. إذا تقطّع البث → اخفض جودة الصورة مؤقتاً
-7. إذا استمرت → تواصل مع فريق STC TV الداخلي`
-  },
-  {
-    keywords: ["stc pay","stcpay","دفع stc","محفظة stc","stc wallet"],
-    category: "STC Pay - مشاكل",
-    priority: "medium",
-    solution: `1. تأكد من آخر إصدار للتطبيق
-2. تأكد من اتصال الإنترنت
-3. أعد تشغيل التطبيق
-4. إذا مشكلة تحقق هوية → تواصل مع فريق STC Pay مباشرة
-5. إذا مشكلة معاملة → احتفظ برقم المعاملة وتواصل مع الدعم
-6. إذا حساب مجمّد → يجب التواصل مع فريق STC Pay
-7. للدعم المباشر: تواصل مع فريق STC Pay الداخلي`
-  },
-  {
-    keywords: ["fiber","فايبر","ftth","الياف","انترنت منزلي","home internet","فايبر مو يشتغل"],
-    category: "مشاكل الفايبر (FTTH)",
-    priority: "high",
-    solution: `1. تحقق من إضاءة الـ ONT (الجهاز الأبيض):
-   - PON يضيء أخضر ثابت ✅
-   - LOS يضيء أحمر = مشكلة في الكابل ❌
-2. أعد تشغيل الـ ONT والراوتر (30 ثانية)
-3. تحقق من كابل الألياف - لا يجب أن يكون منثني أو مكسور
-4. تحقق من BSS إن الخط مفعّل
-5. إذا LOS أحمر → مشكلة في الكابل الخارجي، ارفع تيكت للصيانة
-6. إذا استمرت → صعّد لـ HUW مع العنوان وتفاصيل المشكلة`
-  },
-  // ========== ESCALATION INFO ==========
-  {
-    keywords: ["تصعيد","escalate","صعّد","escalation","فريق التصعيد","وين ارسل","مين ارسل","email support"],
-    category: "معلومات التصعيد والفرق",
-    priority: "medium",
-    solution: `فرق التصعيد في STC Kuwait:
-
-🔧 VFO Team
-→ مشاكل المكالمات والتجوال والـ SMS
-→ يحتاج: A-party, B-party, تاريخ ووقت المشكلة
-
-📡 HUW Team  
-→ مشاكل التغطية والسرعة والـ 5G
-→ يحتاج: العنوان/PACI، نتائج Speedtest، النطاق المتصل
-
-💻 IT NOC Team
-→ المشاكل التقنية المعقدة وأعطال الأنظمة
-→ يحتاج: وصف تفصيلي ورقم الخط والخطوات المجربة
-
-📱 CMS Team
-→ مشاكل العروض الخاصة وإشكاليات الباقات
-
-💳 Credit Control Team
-→ تغيير الحد الائتماني والمشاكل المالية
-
-🔄 Sequence Team
-→ مشاكل الـ SMS الدولية`
-  },
-  {
-    keywords: ["ticket","تيكت","كيف ارفع","رفع تيكت","how to ticket","new ticket","تيكت جديد"],
-    category: "كيفية رفع تيكت",
-    priority: "low",
-    solution: `خطوات رفع تيكت صحيح:
-
-1. حدد نوع المشكلة والفريق المختص
-2. اجمع المعلومات المطلوبة:
-   - رقم الخط المتضرر
-   - وصف تفصيلي للمشكلة
-   - وقت وتاريخ بدء المشكلة
-   - الخطوات التي تم تجربها
-   - رسائل الخطأ إن وجدت
-3. ارفع التيكت عبر النظام الداخلي
-4. احتفظ برقم التيكت للمتابعة
-5. تابع التيكت خلال SLA المحدد:
-   - عالي الأولوية: 4 ساعات
-   - متوسط: 8 ساعات  
-   - منخفض: 24 ساعة`
-  },
-  {
-    keywords: ["identity","هوية","تحقق هوية","verify","verification","civil id","بطاقة مدنية","customer verification"],
-    category: "التحقق من هوية العميل",
-    priority: "high",
-    solution: `خطوات التحقق من هوية العميل:
-
-1. اطلب رقم الخط والاسم الكامل
-2. تحقق من رقم البطاقة المدنية في النظام
-3. اطلب سؤال التحقق الأمني إذا متوفر
-4. للتغييرات الحساسة (نقل ملكية، تغيير SIM):
-   - يجب حضور شخصي في الفرع
-   - أو توكيل رسمي موثق
-5. لا تجري أي تغييرات حساسة بدون تحقق كامل
-⚠️ لا تشارك معلومات العميل مع أي طرف ثالث`
-  },
-
-  // ========== ROUTERS ==========
-  {
-    keywords: ["راوتر","router","رواتر","واي فاي","wifi","انترنت منزلي","home wifi","راوتر ثابت","fixed router","zte","هواوي راوتر","huawei router","tp-link","tplink","archer","نت الدار"],
-    category: "راوتر STC الثابت - إعادة تشغيل",
-    priority: "high",
-    solution: `🔧 راوتر STC الثابت - إعادة التشغيل
-━━━━━━━━━━━━━━━━━━━━
-
-1. أوقف الراوتر من زر التشغيل الخلفي
-2. انتظر 30 ثانية كاملة
-3. شغّله مرة ثانية
-4. انتظر دقيقتين حتى يكتمل الاتصال
-5. تحقق من إضاءة الـ Internet/WAN:
-   🟢 أخضر ثابت = متصل ✅
-   🔴 أحمر أو يومض = مشكلة في الاتصال
-
-✅ النتيجة المتوقعة: يعود الإنترنت خلال دقيقتين
-📞 إذا استمرت: تواصل مع Team Leader Resolutions`
-  },
-  {
-    keywords: ["راوتر","router","zt","zte","baity","بيتي","5g router","راوتر 5g","cpe","h122","h138","mc801","mc889","zyxel","نت 5g"],
-    category: "راوتر STC 5G (Baity/CPE) - إعادة تشغيل",
-    priority: "high",
-    solution: `🔧 راوتر STC 5G (Baity/CPE) - إعادة التشغيل
-━━━━━━━━━━━━━━━━━━━━
-
-الأجهزة المدعومة: ZTE MC801 / MC889 / H122 / H138 | Huawei CPE Pro | Zyxel NR5101
-
-1. أوقف الجهاز من زر التشغيل
-2. انتظر 30 ثانية
-3. أعد التشغيل وانتظر 3 دقائق
-4. تحقق من الإضاءة:
-   🟢 أخضر = متصل بـ 5G ✅
-   🟡 أصفر = متصل بـ 4G
-   🔴 أحمر = لا يوجد إشارة
-
-⚠️ إذا استمر الأحمر: تحقق من Smart Care إن الخط نشط
-✅ النتيجة: يتصل بأقوى إشارة متاحة (5G/4G)
-📞 إذا استمرت: تواصل مع Team Leader Resolutions`
-  },
-  {
-    keywords: ["راوتر متنقل","mobile router","mifi","مايفاي","pocket router","pocket wifi","بوكت","راوتر جيب","zte mf","huawei e5","alcatel","vodafone r","فودافون راوتر"],
-    category: "راوتر STC المتنقل (MiFi) - إعدادات وإعادة تشغيل",
-    priority: "medium",
-    solution: `🔧 راوتر STC المتنقل (MiFi)
-━━━━━━━━━━━━━━━━━━━━
-
-الأجهزة الشائعة: ZTE MF910 / MF920 | Huawei E5788 / E5576 | Alcatel MW40
-
-إعادة التشغيل:
-1. اضغط زر التشغيل 3 ثوانٍ لإيقافه
-2. انتظر 15 ثانية
-3. اضغط مرة ثانية لتشغيله
-
-إعداد APN يدوياً:
-1. اتصل بـ WiFi الجهاز
-2. افتح المتصفح وادخل: 192.168.8.1 أو 192.168.0.1
-3. اسم المستخدم: admin | كلمة المرور: admin (أو مكتوبة على الجهاز)
-4. اذهب لـ Settings ← Dial-up ← APN
-5. اكتب APN: stc.bh
-6. احفظ وأعد التشغيل
-
-⚠️ تأكد من شحن الجهاز فوق 20%
-✅ النتيجة: يتصل ويوزع WiFi على الأجهزة
-📞 إذا استمرت: تواصل مع Team Leader Resolutions`
-  },
-  {
-    keywords: ["mesh","ميش","wifi mesh","نظام ميش","orbi","eero","deco","tp link deco","راوتر ميش","تغطية واي فاي"],
-    category: "نظام Mesh WiFi - إعدادات",
-    priority: "medium",
-    solution: `🔧 نظام Mesh WiFi
-━━━━━━━━━━━━━━━━━━━━
-
-1. تأكد إن الـ Main Router (الرئيسي) متصل بالإنترنت
-2. تأكد إن جميع نقاط الـ Mesh مضاءة
-3. إذا نقطة Mesh لا تعمل:
-   • أعد تشغيلها
-   • قرّبها من الرئيسي مؤقتاً
-   • تحقق من كابل Ethernet إذا موجود
-4. للـ Baity Mesh (STC):
-   • ادخل: 192.168.3.1
-   • اختر DHCP
-   • أدخل اسم WiFi وكلمة المرور
-   • كلمة مرور Router: admin123
-5. انتظر حتى يتحول المؤشر للأزرق ✅
-
-📞 إذا استمرت: تواصل مع Team Leader Resolutions`
-  },
-
-  // ========== IPHONE VISUAL SETTINGS ==========
-  {
-    keywords: ["تفعيل 5g","5g ايفون","5g للايفون","تشغيل 5g ايفون","iphone 5g","enable 5g iphone","5g advanced","5g auto","فعّل 5g ايفون","تغيير الشبكه lte 5g","5g على ايفون"],
-    category: "تفعيل 5G - آيفون (صور توضيحية)",
-    priority: "medium",
-    solution: `🔧 تفعيل 5G على آيفون
-━━━━━━━━━━━━━━━━━━━━
-
-<div class="phones-wrapper"><div><div class="phone-mockup"><div class="phone-screen"><div class="phone-nav"><span class="back">‹ Cellular</span><span style="margin-right:auto">Voice & Data</span></div><div class="phone-row"><span>5G Auto</span><span style="color:#34C759">✓</span></div><div class="phone-row"><span>5G On</span></div><div class="phone-row"><span>LTE</span></div><div class="phone-row"><span>3G</span></div></div></div><div class="phone-label">آيفون</div></div></div>
-
-📱 الخطوات:
-1. الإعدادات ← بيانات الجوال
-2. ← خيارات بيانات الجوال
-3. ← صوت وبيانات
-4. اختار: 5G Auto أو 5G On ✅
-
-⚠️ إذا ما ظهر خيار 5G: تأكد إن الجهاز يدعم 5G وإن السيم من STC مفعّل
-✅ النتيجة: يتصل بـ 5G تلقائياً
-📞 إذا استمرت: تواصل مع Team Leader Resolutions`
-  },
-  {
-    keywords: ["تفعيل تجوال ايفون","تجوال للايفون","تجوال ايفون","تفعيل التجوال ايفون","data roaming iphone","roaming iphone","تشغيل تجوال ايفون","enable roaming iphone","iphone roaming","تجوال على ايفون","تشغيل تجوال على ايفون"],
-    category: "تفعيل التجوال - آيفون (صور توضيحية)",
-    priority: "medium",
-    solution: `🔧 تفعيل التجوال على آيفون
-━━━━━━━━━━━━━━━━━━━━
-
-<div class="phones-wrapper"><div><div class="phone-mockup"><div class="phone-screen"><div class="phone-nav"><span class="back">‹ Cellular</span><span style="margin-right:auto">Data Options</span></div><div class="phone-row"><span>Data Roaming</span><div class="toggle-on"></div></div><div class="phone-row"><span style="color:#636366;font-size:10px">Roam on LTE when available</span></div></div></div><div class="phone-label">آيفون</div></div></div>
-
-📱 الخطوات:
-1. الإعدادات ← بيانات الجوال
-2. ← خيارات بيانات الجوال
-3. فعّل: تجوال البيانات (Data Roaming) 🟢
-
-⚠️ تأكد من تفعيل Roaming من BSS وSmart Care أولاً
-✅ النتيجة: تشتغل البيانات خارج الكويت
-📞 إذا استمرت: تواصل مع Team Leader Resolutions`
-  },
-  {
-    keywords: ["تشغيل الخلوي ايفون","cellular iphone","بيانات الجوال ايفون","تفعيل بيانات ايفون","cellular data on iphone"],
-    category: "تشغيل البيانات الخلوية - آيفون (صور توضيحية)",
-    priority: "medium",
-    solution: `🔧 تشغيل البيانات الخلوية - آيفون
-━━━━━━━━━━━━━━━━━━━━
-
-📱 **آيفون:**
-1. الإعدادات (Settings)
-2. ← بيانات الجوال (Cellular)
-3. تأكد إن **بيانات الجوال (Cellular Data)** مفعّلة 🟢
-4. تأكد إن **التطبيق** المطلوب مفعّل في القائمة أسفل الشاشة
-
-🖼️ المسار:
-Settings → Cellular → Cellular Data [ON] → (التطبيقات المفعّلة)
-
-⚠️ إذا الزر أخضر بس النت مو يشتغل → أوقف وشغّل وضع الطيران
-✅ النتيجة: تشتغل البيانات على جميع التطبيقات
-📞 إذا استمرت: تواصل مع Team Leader Resolutions`
-  },
-  {
-    keywords: ["volte ايفون","تفعيل volte","مكالمات hd ايفون","hd voice iphone","enable volte iphone","lte voice"],
-    category: "تفعيل VoLTE - آيفون (صور توضيحية)",
-    priority: "medium",
-    solution: `🔧 تفعيل VoLTE على آيفون
-━━━━━━━━━━━━━━━━━━━━
-
-📱 **آيفون:**
-1. الإعدادات (Settings)
-2. ← بيانات الجوال (Cellular)
-3. ← خيارات بيانات الجوال (Cellular Data Options)
-4. فعّل: **مكالمات LTE / VoLTE** 🟢
-
-🖼️ المسار:
-Settings → Cellular → Cellular Data Options → Enable LTE → Voice & Data
-
-⚠️ إذا ما ظهر الخيار: تأكد إن الجهاز مدعوم وإن VoLTE مفعّل على الخط من STC
-✅ النتيجة: جودة مكالمات أوضح وأسرع
-📞 إذا استمرت: تواصل مع Team Leader Resolutions`
-  },
-
-  // ========== SAMSUNG VISUAL SETTINGS ==========
-  {
-    keywords: ["تفعيل 5g سامسونج","5g سامسونج","5g للسامسونج","وللسامسونج 5g","سامسونج 5g","samsung 5g","enable 5g samsung","تشغيل 5g سامسونج","5g على سامسونج","5g اندرويد"],
-    category: "تفعيل 5G - سامسونج (صور توضيحية)",
-    priority: "medium",
-    solution: `🔧 تفعيل 5G على سامسونج
-━━━━━━━━━━━━━━━━━━━━
-
-<div class="phones-wrapper"><div><div class="phone-mockup"><div class="samsung-screen"><div class="phone-nav" style="background:#1F1F1F;border-color:#2A2A2A"><span class="back" style="color:#4FC3F7">‹</span><span style="margin-right:auto;color:white">Network Mode</span></div><div class="samsung-row"><span>5G/LTE/3G/2G (Auto)</span><span style="color:#4FC3F7">●</span></div><div class="samsung-row"><span>LTE/3G/2G</span><span style="color:#555">○</span></div><div class="samsung-row"><span>3G/2G</span><span style="color:#555">○</span></div></div></div><div class="phone-label">سامسونج</div></div></div>
-
-📱 الخطوات:
-1. الإعدادات ← الاتصالات
-2. ← شبكات الجوال
-3. ← وضع الشبكة
-4. اختار: 5G/LTE/3G/2G (Auto) ✅
-
-⚠️ أوقف "توفير طاقة البطارية" لأنه يوقف 5G
-✅ النتيجة: يتصل بـ 5G تلقائياً
-📞 إذا استمرت: تواصل مع Team Leader Resolutions`
-  },
-  {
-    keywords: ["تفعيل تجوال سامسونج","تجوال للسامسونج","تجوال سامسونج","وللسامسونج","للسامسونج","تفعيل التجوال سامسونج","data roaming samsung","roaming samsung","enable roaming android","samsung roaming","تجوال على سامسونج","تشغيل تجوال سامسونج","تجوال اندرويد","وللاندرويد","للاندرويد"],
-    category: "تفعيل التجوال - سامسونج (صور توضيحية)",
-    priority: "medium",
-    solution: `🔧 تفعيل التجوال على سامسونج
-━━━━━━━━━━━━━━━━━━━━
-
-<div class="phones-wrapper"><div><div class="phone-mockup"><div class="samsung-screen"><div class="phone-nav" style="background:#1F1F1F;border-color:#2A2A2A"><span class="back" style="color:#4FC3F7">‹</span><span style="margin-right:auto;color:white">Mobile Networks</span></div><div class="samsung-row"><div><span>Data Roaming</span><br><span style="color:#888;font-size:10px">Use data abroad</span></div><div class="toggle-samsung"></div></div><div class="samsung-row"><span>Network Mode</span><span style="color:#888">5G/LTE ›</span></div></div></div><div class="phone-label">سامسونج</div></div></div>
-
-📱 الخطوات:
-1. الإعدادات ← الاتصالات
-2. ← شبكات الجوال
-3. فعّل: Data Roaming 🟢
-
-⚠️ تأكد من تفعيل Roaming على الخط من STC قبل هذه الخطوة
-✅ النتيجة: تشتغل البيانات خارج الكويت
-📞 إذا استمرت: تواصل مع Team Leader Resolutions`
-  },
-  {
-    keywords: ["تشغيل الخلوي سامسونج","cellular samsung","بيانات الجوال سامسونج","mobile data samsung","تفعيل بيانات سامسونج"],
-    category: "تشغيل البيانات - سامسونج (صور توضيحية)",
-    priority: "medium",
-    solution: `🔧 تشغيل البيانات الخلوية - سامسونج
-━━━━━━━━━━━━━━━━━━━━
-
-📱 **سامسونج/أندرويد:**
-الطريقة السريعة:
-1. اسحب من أعلى الشاشة للأسفل
-2. اضغط أيقونة البيانات 📶 حتى تضيء
-
-الطريقة الكاملة:
-1. الإعدادات ← الاتصالات
-2. ← استخدام البيانات (Data Usage)
-3. فعّل: **بيانات الجوال (Mobile Data)** 🟢
-
-🖼️ المسار:
-Settings → Connections → Data Usage → Mobile Data [ON]
-
-⚠️ إذا الأيقونة مفعّلة بس النت مو يشتغل → أوقف وشغّل وضع الطيران
-✅ النتيجة: تشتغل البيانات
-📞 إذا استمرت: تواصل مع Team Leader Resolutions`
-  },
-  {
-    keywords: ["volte سامسونج","تفعيل volte سامسونج","مكالمات hd سامسونج","hd voice samsung","enable volte samsung","enhanced 4g"],
-    category: "تفعيل VoLTE - سامسونج (صور توضيحية)",
-    priority: "medium",
-    solution: `🔧 تفعيل VoLTE على سامسونج
-━━━━━━━━━━━━━━━━━━━━
-
-📱 **سامسونج/أندرويد:**
-1. الإعدادات (Settings)
-2. ← الاتصالات (Connections)
-3. ← شبكات الجوال (Mobile Networks)
-4. فعّل: **مكالمات VoLTE** أو **Enhanced 4G LTE** 🟢
-
-🖼️ المسار:
-Settings → Connections → Mobile Networks → VoLTE Calls [ON]
-
-⚠️ إذا ما ظهر الخيار: تأكد إن الجهاز مدعوم وإن VoLTE مفعّل على الخط
-✅ النتيجة: جودة مكالمات HD أوضح
-📞 إذا استمرت: تواصل مع Team Leader Resolutions`
-  },
-  {
-    keywords: ["تغيير الشبكه","network mode","lte only","4g only","تغيير من lte","تغيير شبكه","preferred network","شبكه مفضله"],
-    category: "تغيير وضع الشبكة (5G/4G/LTE) - جميع الأجهزة",
-    priority: "medium",
-    solution: `🔧 تغيير وضع الشبكة
-━━━━━━━━━━━━━━━━━━━━
-
-📱 **آيفون:**
-Settings → Cellular → Cellular Data Options → Voice & Data
-→ اختار: 5G Auto / LTE / 3G
-
-📱 **سامسونج:**
-Settings → Connections → Mobile Networks → Network Mode
-→ اختار: 5G/LTE/3G/2G (Auto) أو LTE/3G/2G
-
-📱 **هواوي:**
-Settings → Mobile Network → Preferred Network Type
-→ اختار: 5G/4G/3G/2G Auto
-
-📱 **شاومي:**
-Settings → SIM Cards & Mobile Networks → Preferred Network Type
-
-⚠️ إذا الشبكة بطيئة جرب: LTE/4G Only أولاً
-✅ النتيجة: يتصل بالشبكة المختارة
-📞 إذا استمرت: تواصل مع Team Leader Resolutions`
-  },
-  {
-    keywords: ["بطي","بطيئ","slow","نت بطي","انترنت بطي","سرعة بطيئة","نت وايد بطي","بطي جدا","نت مو زين","نت ضعيف","ضعيف","weak"],
-    category: "إنترنت بطيء - محلي (الكويت)",
-    priority: "medium",
-    solution: `🔧 إنترنت بطيء داخل الكويت
-━━━━━━━━━━━━━━━━━━━━
-
-قبل البدء — اسأل العميل:
-• هل المشكلة في كل مكان أم مكان محدد؟
-• هل يستخدم 5G أو 4G؟
-• شنو نوع جهازه؟
-
-خطوات الحل:
-1. تأكد عدم وجود موقع خارج الخدمة في منطقة العميل
-2. تحقق من سرعة العميل في Smart Care
-3. تحقق من النطاق المتصل (5G/4G)
-4. اطلب من العميل ضبط الشبكة على 5G (ليس Auto)
-5. تأكد من إيقاف وضع توفير الطاقة
-6. اطلب 3 اختبارات سرعة عبر Ookla Speedtest
-
-📊 معايير القبول:
-• 5G: أقل من 100 Mbps → تيكت لـ HUW
-• 4G: أقل من 3 Mbps → تيكت لـ HUW
-• Ping: أعلى من 30ms → تيكت لـ HUW
-
-⚠️ أرسل تيكت لـ HUW مع: العنوان/PACI والسرعة والنطاق
-📞 إذا استمرت: تواصل مع Team Leader Resolutions`
-  },
-
-
-  {
-    keywords: ["السلام عليكم","وعليكم السلام","مرحبا","مرحبتين","هلا","هلا والله","هلو","اهلا","أهلاً","اهلين","صباح الخير","صباح النور","مساء الخير","مساء النور","كيف","كيف حالك","شلونك","شلونج","شخبارك","شخباركم","يزاك الله","عساك بخير","ايش اخبارك","شو اخبارك","تمام","الحمدلله","بخير"],
-    category: "تحية-عربي",
-    priority: "low",
-    solution: `__GREETING_AR__`
-  },
-  {
-    keywords: ["عيد مبارك","عيدك مبارك","عيدكم مبارك","كل عام وانت بخير","كل عام وانتم بخير","مبارك عليك الشهر","مبارك عليكم الشهر","رمضان كريم","رمضان مبارك","تقبل الله","تقبل منا ومنكم"],
-    category: "مناسبة",
-    priority: "low",
-    solution: `__OCCASION__`
-  },
-  {
-    keywords: ["مع السلامة","في امان الله","الله يسلمك","وداعا","باي","bye","تصبح على خير","تصبحون على خير","يعطيك العافية","الله يعافيك","شكرا","شكراً","مشكور","ثانكس","thanks","thank you"],
-    category: "ختام",
-    priority: "low",
-    solution: `__FAREWELL__`
-  },
-  {
-    keywords: ["hello","hi","hey","good morning","good afternoon","good evening","howdy","greetings","how are you","whats up","what's up","morning","evening"],
-    category: "تحية-انجليزي",
-    priority: "low",
-    solution: `__GREETING_EN__`
-  },
-  {
-    keywords: ["شسمك","ايش اسمك","اسمك شنو","اسمك","what is your name","what's your name","whats your name","your name","من انت","مين انت"],
-    category: "هوية-المساعد",
-    priority: "low",
-    solution: `__NAME_QUERY__`
-  },
-  {
-    keywords: ["general","عامة","general issue","مشكلة عامة","all customers","جميع العملاء"],
-    category: "مشكلة عامة",
-    priority: "low",
-    solution: `اتبع تعليمات تصعيد المشاكل العامة.`
-  },
-  {
-    keywords: ["credit limit","حد ائتماني","limit","change limit","تغيير الحد"],
-    category: "تغيير الحد الائتماني",
-    priority: "low",
-    solution: `صعّد الحالة لـ Credit Control Team لتعديل حد الائتمان.`
-  },
-  {
-    keywords: ["google play","huawei","block","unblock","بلوك","حجب","متجر"],
-    category: "حجب/إلغاء حجب Google/Huawei",
-    priority: "low",
-    solution: `أرسل إيميل لـ Bango Support لحجب أو إلغاء حجب مشتريات Google Play.`
-  },
-  {
-    keywords: ["3rd party","third party","طرف ثالث","اشتراك","subscription"],
-    category: "خدمات الطرف الثالث",
-    priority: "low",
-    solution: `أبلغ العميل بالملاحظات المقدمة من فريق الدعم.`
+    definition: "Network down",
+    solution: `1. Report the issue to the shift team leader immediately.
+2. Upon team leader confirmation → Raise TT to Resolution team with issue description.
+
+📋 Ticket Requirements:
+• Issue description  
+• Team leader confirmation`
   }
 ];
 
@@ -2557,7 +1943,14 @@ async function login() {
   const pass = document.getElementById('passInput').value;
   const errEl = document.getElementById('loginError');
 
-  // First check local USERS (admin)
+  // First check local USERS — if email exists here, never go to Supabase
+  if (USERS[email]) {
+    if (USERS[email].pass !== pass) {
+      errEl.textContent = 'كلمة المرور غير صحيحة';
+      errEl.style.display = 'block';
+      return;
+    }
+  }
   if (USERS[email] && USERS[email].pass === pass) {
     currentUser = { email, ...USERS[email] };
     errEl.style.display = 'none';
@@ -2891,9 +2284,61 @@ function selectDiagOption(btn, groupId, value, label) {
   btn.style.borderColor = 'var(--primary)';
   // Store in context
   diagnosticContext[groupId] = { value: value, label: label };
-  // Send as user message
-  addMsg(label, 'user');
-  // Send to AI
+
+  // Symptom picker groups — handled by guided flow
+  if (groupId.startsWith('cat-')) {
+    handleSymptomSelection(groupId, value, label);
+    return;
+  }
+
+  // ── Intercept AI-generated buttons (opt-*) ──
+  // Only intercept for picker flow if issue not yet identified
+  if (groupId.startsWith('opt-') && !(issueContext && issueContext.subIssue)) {
+    var lbl = label.toLowerCase();
+    var val = value.toLowerCase();
+
+    // Service type match
+    if (lbl.includes('mbb') || lbl.includes('voice/data') || val.includes('mbb')) {
+      issueContext = issueContext || {};
+      issueContext.category = 'internet';
+      handleSymptomSelection('cat-service', 'mbb', label);
+      return;
+    }
+    if ((lbl.includes('fiber') || val.includes('fiber')) && !lbl.includes('baity')) {
+      issueContext = issueContext || {};
+      issueContext.category = 'internet';
+      handleSymptomSelection('cat-service', 'fiber', label);
+      return;
+    }
+    if (lbl.includes('baity') || lbl.includes('odu') || val.includes('baity')) {
+      issueContext = issueContext || {};
+      issueContext.category = 'internet';
+      handleSymptomSelection('cat-service', 'baity_odu', label);
+      return;
+    }
+
+    // Line type match
+    if (lbl === 'voice' || val === 'voice') {
+      handleSymptomSelection('cat-linetype', 'voice', 'Voice');
+      return;
+    }
+    if (lbl === 'data' || val === 'data') {
+      handleSymptomSelection('cat-linetype', 'data', 'DATA');
+      return;
+    }
+
+    // Billing match
+    if (lbl.includes('prepaid') || lbl.includes('مسبق') || val.includes('prepaid')) {
+      handleSymptomSelection('cat-billing', 'prepaid', 'مسبق (Prepaid)');
+      return;
+    }
+    if (lbl.includes('postpaid') || lbl.includes('مؤجل') || val.includes('postpaid')) {
+      handleSymptomSelection('cat-billing', 'postpaid', 'مؤجل (Postpaid)');
+      return;
+    }
+  }
+
+  // Send to AI (sendMessage adds the user bubble)
   sendMessageText(label);
 }
 
@@ -2914,13 +2359,15 @@ function resetDiagnostic() {
       b.style.borderColor = '';
     });
   });
-  // Add a separator message
   const msgs = document.getElementById('chatMessages');
   const sep = document.createElement('div');
   sep.style.cssText = 'text-align:center;color:var(--text-muted);font-size:12px;padding:8px;margin:8px 0;border-top:1px dashed var(--border)';
-  sep.textContent = '— New Diagnostic Session —';
+  sep.textContent = '— New Session —';
   msgs.appendChild(sep);
   msgs.scrollTop = msgs.scrollHeight;
+  issueContext = {};
+  var isL1 = (typeof previewMode !== 'undefined' && previewMode === 'L1') || (currentUser && currentUser.role === 'L1');
+  if (isL1) setTimeout(showSymptomPicker, 150);
 }
 
 // ========== CHAT ==========
@@ -2978,7 +2425,7 @@ function addMsg(text, role, stepsHtml, priority, category) {
   if (priority && category) {
     const pLabel = priority === 'high' ? 'عالي' : priority === 'medium' ? 'متوسط' : 'منخفض';
     const pEmoji = priority === 'high' ? '🔴' : priority === 'medium' ? '🟡' : '🔵';
-    bubbleContent = `<div class="priority-badge ${priority}">${pEmoji} أولوية ${pLabel} — ${category}</div>` + bubbleContent;
+    bubbleContent = `<div class="priority-badge ${priority}">📋 ${category}</div>` + bubbleContent;
   }
   if (stepsHtml) bubbleContent += stepsHtml;
 
@@ -2996,8 +2443,9 @@ function showTyping() {
   div.id = 'typingIndicator';
   div.innerHTML = `
     <div class="msg-avatar">🤖</div>
-    <div class="msg-bubble">
-      <div class="typing">
+    <div class="msg-bubble" style="color:var(--text-muted);font-size:13px">
+      ينظر...
+      <div class="typing" style="display:inline-flex;margin-right:6px">
         <div class="typing-dot"></div>
         <div class="typing-dot"></div>
         <div class="typing-dot"></div>
@@ -3012,19 +2460,51 @@ function removeTyping() {
   if (t) t.remove();
 }
 
-async function sendMessageText(text) {
-  // Simulate sending a message programmatically (from button selection)
+async function sendMessageText(text, displayLabel) {
   const input = document.getElementById('chatInput');
-  const originalValue = input.value;
   input.value = text;
+  if (displayLabel) input.dataset.displayLabel = displayLabel;
   await sendMessage();
   input.value = '';
+  delete input.dataset.displayLabel;
 }
 
 async function sendMessage() {
   const input = document.getElementById('chatInput');
   let q = input.value.trim();
   if (!q) return;
+
+  const isL1 = (typeof previewMode !== 'undefined' && previewMode === 'L1') || (currentUser && currentUser.role === 'L1');
+
+  // ── AUTO-DETECT category from typed text before picker is complete ──
+  if (isL1 && !issueContext.subIssue) {
+    var qLower = q.toLowerCase();
+    var detected = null;
+
+    if (qLower.match(/انترنت|internet|نت\b|data\b|بيانات|سرعة|ping|باتي|baity|odu|fiber|فايبر/))
+      detected = 'internet';
+    else if (qLower.match(/مكالم|call|اتصال|sms|رسال|otp|تحقق|دولي|تحويل|mnp|نقل رقم/))
+      detected = 'calls';
+    else if (qLower.match(/تجوال|roaming|برا الكويت|خارج/))
+      detected = 'roaming';
+    else if (qLower.match(/دفع|payment|فاتور|esim|ايسيم|voucher|كيوسك|kiosk/))
+      detected = 'digital';
+    else if (qLower.match(/رصيد|balance|باقة|plan|صلاحية|validity|qitaf|قطاف|apple watch/))
+      detected = 'stc_services';
+    else if (qLower.match(/citra|hq|شكوى|follow.?up|متابعة|staff|موظف/))
+      detected = 'special';
+    else if (qLower.match(/عطل|outage|شبكة وقفت/))
+      detected = 'outage';
+
+    if (detected) {
+      addMsg(q, 'user');
+      input.value = '';
+      document.querySelector('.btn-send').disabled = false;
+      issueContext = { category: detected };
+      setTimeout(function() { handleSymptomSelection('cat-main', detected, detected); }, 200);
+      return;
+    }
+  }
 
   // Detect follow-up questions
   const followUpWords = ['وللسامسونج','وللايفون','وللاندرويد','وللهواوي','وللشاومي','وللبيكسل','نفس الشي','same for','and for samsung','and for iphone','نفس للسامسونج','نفس للايفون','وسامسونج','وايفون','للسامسونج','للايفون','للاندرويد','وكمان','وايضا','وأيضا','what about','how about'];
@@ -3049,14 +2529,29 @@ async function sendMessage() {
     }
   }
 
-  const originalMsg = input.value.trim();
+  const originalMsg = input.dataset.displayLabel || input.value.trim();
   addMsg(originalMsg, 'user');
   input.value = '';
   input.style.height = 'auto';
   document.querySelector('.btn-send').disabled = true;
   showTyping();
 
-  const kbResult = findAnswer(q);
+  // ── KB lookup: match by category name first, then keyword fallback ──
+  let kbResult = null;
+  if (issueContext && issueContext.subIssue) {
+    // Direct category match — bypasses keyword matching entirely
+    for (var i = 0; i < KB.length; i++) {
+      if (KB[i].category === issueContext.subIssue || 
+          KB[i].category.trim() === issueContext.subIssue.trim()) {
+        kbResult = KB[i];
+        break;
+      }
+    }
+    // Fallback to keyword search if no direct match
+    if (!kbResult) kbResult = findAnswer(issueContext.subIssue);
+  } else {
+    kbResult = findAnswer(q);
+  }
   if (kbResult) lastTopic = kbResult.category.replace(/[-–—()صور توضيحية]*/g, '').trim();
 
   const isL1Mode = (typeof previewMode !== 'undefined' && previewMode === 'L1') || (currentUser && currentUser.role === 'L1');
@@ -3074,23 +2569,21 @@ async function sendMessage() {
   }
 
   // Handle greetings, occasions and farewells directly
+  const isL1Greeting = isL1Mode && kbResult && (kbResult.solution === '__GREETING_AR__' || kbResult.solution === '__GREETING_EN__');
   const specialReplies = {
     '__GREETING_AR__': [
-      'هلا! 😊 كيف أقدر أساعدك؟',
-      'وعليكم السلام! شكيف؟ اكتب مشكلة العميل وأساعدك 👋',
-      'أهلاً وسهلاً! كيف أقدر أخدمك اليوم؟',
-      'هلا والله! 👋 اكتب المشكلة وأساعدك.',
-      'مرحبا! كيف حالك؟ شو المشكلة اللي عندك؟'
+      'هلا! 😊 اختار نوع المشكلة من الأزرار.',
+      'هلا والله! 👋 يلا نخلص مشكلة العميل.',
+      'وعليكم السلام! 😊'
     ],
     '__GREETING_EN__': [
-      'Hello! 👋 How can I help you today?',
-      'Hi there! What can I assist you with?',
-      "Hey! Tell me the issue and I'll help you out."
+      'Hello! 👋 Select the issue type from the buttons above.',
+      'Hey! Pick the issue from the buttons and let\'s go 🔥'
     ],
     '__OCCASION__': [
-      'وعليكم! كل عام وأنت بخير وبصحة وسعادة 🎉 شو المشكلة اللي أقدر أساعدك فيها؟',
-      'مبارك عليك وعلينا! 🌙 كل عام وأنت طيب. اكتب مشكلة العميل وأساعدك.',
-      'تقبل الله منا ومنكم! 🤲 عيدك مبارك، شو أقدر أساعدك فيه؟'
+      'وعليكم! كل عام وأنت بخير وبصحة وسعادة 🎉',
+      'مبارك عليك وعلينا! 🌙 كل عام وأنت طيب.',
+      'تقبل الله منا ومنكم! 🤲 عيدك مبارك!'
     ],
     '__FAREWELL__': [
       'شكراً لك! 😊 أي وقت تحتاج مساعدة أنا هنا.',
@@ -3105,25 +2598,19 @@ async function sendMessage() {
     const qLow = q.toLowerCase();
     let reply = '';
     if (kbResult.solution === '__GREETING_AR__') {
-      if (qLow.includes('السلام عليكم') || qLow.includes('سلام عليكم')) reply = 'وعليكم السلام ورحمة الله! 😊 كيف أقدر أساعدك؟';
-      else if (qLow.includes('وعليكم')) reply = 'وعليكم السلام! 👋 اكتب مشكلة العميل وأساعدك.';
-      else if (qLow.includes('شلونك') || qLow.includes('شلونج') || qLow.includes('كيف حالك') || qLow.includes('كيف الحال')) reply = 'الحمدلله بخير وعافية، وأنت؟ 😊 اكتب مشكلة العميل وأساعدك.';
-      else if (qLow.includes('شخبارك') || qLow.includes('شخبار') || qLow.includes('ايش اخبارك')) reply = 'بخير والحمدلله! وأنت شخبارك؟ 👋 اكتب المشكلة وأساعدك.';
-      else if (qLow.includes('صباح الخير') || qLow.includes('صباح النور')) reply = 'صباح النور! ☀️ كيف أقدر أساعدك اليوم؟';
-      else if (qLow.includes('مساء الخير') || qLow.includes('مساء النور')) reply = 'مساء النور! 🌙 اكتب مشكلة العميل وأساعدك.';
-      else { const pool = specialReplies['__GREETING_AR__']; reply = pool[Math.floor(Math.random() * pool.length)]; }
+      if (qLow.includes('السلام عليكم') || qLow.includes('سلام عليكم')) reply = 'وعليكم السلام ورحمة الله! 😊';
+      else if (qLow.includes('وعليكم')) reply = 'وعليكم السلام! 👋';
+      else if (qLow.includes('شلونك') || qLow.includes('شلونج') || qLow.includes('كيف حالك')) reply = 'الحمدلله بخير وعافية، وأنت؟ 😊' + (isL1Mode ? '' : ' اكتب مشكلة العميل وأساعدك.');
+      else if (qLow.includes('شخبارك') || qLow.includes('شخبار')) reply = 'بخير والحمدلله! وأنت شخبارك؟ 👋' + (isL1Mode ? '' : ' اكتب المشكلة وأساعدك.');
+      else if (qLow.includes('صباح الخير') || qLow.includes('صباح النور')) reply = 'صباح النور! ☀️';
+      else if (qLow.includes('مساء الخير') || qLow.includes('مساء النور')) reply = 'مساء النور! 🌙';
+      else { reply = isL1Mode ? 'هلا! 😊 يلا نخلص مشكلة العميل 🔥' : 'هلا! 😊 اكتب مشكلة العميل وأساعدك.'; }
     } else if (kbResult.solution === '__GREETING_EN__') {
-      if (qLow.includes('good morning') || qLow.includes('morning')) reply = 'Good morning! ☀️ How can I help you today?';
-      else if (qLow.includes('good evening') || qLow.includes('evening')) reply = 'Good evening! 🌙 What can I assist you with?';
-      else if (qLow.includes('how are you')) reply = "Doing great, thanks! 😊 What's the issue you need help with?";
-      else { const pool = specialReplies['__GREETING_EN__']; reply = pool[Math.floor(Math.random() * pool.length)]; }
+      if (qLow.includes('good morning')) reply = 'Good morning! ☀️';
+      else if (qLow.includes('good evening')) reply = 'Good evening! 🌙';
+      else if (qLow.includes('how are you')) reply = "Doing great! 😊" + (isL1Mode ? '' : " What's the issue?");
+      else { reply = isL1Mode ? "Hey! 👋 Let's fix the customer's issue 🔥" : "Hello! 👋 How can I help?"; }
     } else if (kbResult.solution === '__OCCASION__') {
-      if (qLow.includes('رمضان')) reply = 'رمضان كريم! 🌙 مبارك عليك وعلينا الشهر. اكتب مشكلة العميل وأساعدك.';
-      else if (qLow.includes('مبارك عليك الشهر') || qLow.includes('مبارك الشهر')) reply = 'مبارك عليك وعلينا! 🌙 كل عام وأنت بخير. اكتب المشكلة وأساعدك.';
-      else if (qLow.includes('عيد')) reply = 'عيدك مبارك! 🎉 كل عام وأنت بخير. شو أقدر أساعدك فيه؟';
-      else if (qLow.includes('كل عام')) reply = 'وأنت بخير! 😊 كل عام وأنت طيب. اكتب مشكلة العميل وأساعدك.';
-      else { const pool = specialReplies['__OCCASION__']; reply = pool[Math.floor(Math.random() * pool.length)]; }
-    } else if (kbResult.solution === '__FAREWELL__') {
       if (qLow.includes('شكر') || qLow.includes('thanks') || qLow.includes('thank')) reply = 'العفو! 😊 أي وقت تحتاج مساعدة أنا هنا.';
       else if (qLow.includes('مع السلامة') || qLow.includes('bye') || qLow.includes('وداع')) reply = 'مع السلامة! 👋 يسعدني خدمتك دايماً.';
       else if (qLow.includes('يعطيك العافية') || qLow.includes('عافية')) reply = 'الله يعافيك! 🙏 إذا احتجت شي أنا موجود.';
@@ -3136,231 +2623,132 @@ async function sendMessage() {
     chatHistory.push({ role: "user", content: q });
     chatHistory.push({ role: "assistant", content: reply });
     savLog(q, kbResult.category, 'low', reply);
+
+    // Show new session button after farewell
+    if (kbResult.solution === '__FAREWELL__') {
+      setTimeout(function() {
+        var msgs = document.getElementById('chatMessages');
+        var d = document.createElement('div');
+        d.style.cssText = 'text-align:center;padding:16px 0';
+        d.innerHTML = '<button onclick="resetDiagnostic()" style="background:var(--primary);color:white;border:none;border-radius:10px;padding:10px 24px;font-size:14px;font-family:inherit;cursor:pointer;font-weight:600">🔄 عميل جديد</button>';
+        msgs.appendChild(d);
+        msgs.scrollTop = msgs.scrollHeight;
+      }, 500);
+    }
     return;
   }
 
   let kbContext = '';
-  // Inject selected diagnostic context so AI doesn't ask again
-  var diagContextStr = '';
-  if (diagnosticContext['conn-type']) {
-    diagContextStr = "ALREADY SELECTED by agent — Connection Type: " + diagnosticContext['conn-type'].label + ". DO NOT ask about connection type again.\n";
+
+  // ── Always inject issueContext for the entire L1 session ──
+  var sessionCtx = '';
+  if (issueContext && issueContext.subIssue) {
+    sessionCtx = '=== ACTIVE SESSION — Do NOT ask about any of these ===\n';
+    sessionCtx += '• Issue: ' + issueContext.subIssue + '\n';
+    if (issueContext.service) sessionCtx += '• Service: ' + issueContext.service + '\n';
+    if (issueContext.lineType) sessionCtx += '• Line Type: ' + issueContext.lineType + '\n';
+    if (issueContext.billingType) sessionCtx += '• Billing: ' + issueContext.billingType + '\n';
+    sessionCtx += 'Follow the troubleshooting steps for this exact issue. No setup questions.\n===\n\n';
   }
+
   if (kbResult) {
-    kbContext = diagContextStr + "Category: " + kbResult.category + "\nKB Solution:\n" + kbResult.solution;
+    kbContext = sessionCtx + "KB Match — " + kbResult.category + ":\n" + kbResult.solution;
+  } else if (issueContext && issueContext.subIssue) {
+    // No KB match but we have issue context — use it directly
+    kbContext = sessionCtx + "No exact KB match. Use your universal foundation knowledge to troubleshoot: " + issueContext.subIssue;
   } else if (lastTopic && chatHistory.length > 0) {
-    kbContext = diagContextStr + "Context: Agent is asking about the same topic (" + lastTopic + ") for a different device.";
+    kbContext = "Follow-up on: " + lastTopic;
   } else {
-    kbContext = diagContextStr || "Context: Direct question from agent — answer naturally and helpfully.";
+    kbContext = "General question — answer naturally in Kuwaiti dialect.";
   }
   const systemPrompt = isL1Mode
-    ? `You are a smart Call Center Assistant for STC Kuwait L1 agents.
+    ? `You are a fast, friendly Call Center Assistant for STC Kuwait L1 agents.
+You help agents who are on a LIVE CALL with the customer — speed and accuracy matter.
 
-Your name: Call Center Assistant
-Your personality: natural, helpful, diagnostic — guide agents step by step through troubleshooting.
+Your personality: warm, efficient, Kuwaiti — like a sharp colleague helping you live on a call.
 
-## Your Role:
-- Help L1 agents troubleshoot customer issues using the official STC troubleshooting guide
-- Always follow the exact troubleshooting steps from the guide
-- When troubleshooting fails, provide the exact ticket requirements to escalate to Resolutions (L2)
+## CRITICAL RULES:
+- Use troubleshooting steps from KB — supplement with universal knowledge below when needed
+- NEVER invent ticket requirements — use exactly what's in KB under "📋 Ticket Requirements:"
+- NEVER ask about service type, line type, or billing — already in context
+- PRIMARY GOAL: RESOLVE at L1 — TT is LAST RESORT after ALL steps truly fail
+- ⚠️ FOLLOW KB STEPS EXACTLY — do NOT add questions not in the KB (no "which country", no "all countries or specific", no steps not listed)
+- The KB solution shows the EXACT steps in order — follow them literally, one at a time
+## HOW TO TROUBLESHOOT — STRICTLY FOLLOW:
+- ONE short natural question per message — no headers, no groups, no markdown, no bullets
+- NEVER use "لا، نفس المشكلة" as an option — it tells you nothing about what failed
 
-## STC Kuwait Troubleshooting Guide:
+## TWO-PHASE APPROACH:
 
-### HIGH PRIORITY ISSUES:
+⚠️ ROAMING ISSUES = SKIP PHASE 1 ENTIRELY. Follow KB steps directly in order. No site down. No combined message.
 
-**Staff/F&F:** Same steps as each category but contact departments directly by phone (not email) for faster resolution.
+### PHASE 1 — LOCAL INTERNET & CALLS ONLY (not roaming):
+ONE combined message:
+"خلني نبدأ بالأساسيات — تحقق:
+• BSS: الخط نشط، الباقة نشطة، الاستخدام ما خلص
+• Smart Care: الخط attached، Data Status نشط، وفي إشارة"
+[OPTIONS: ✅ كله زين | ⚠️ في مشكلة في أحدهم]
 
-**Roaming - Calls:**
-Steps: 1) Check line not disconnected due to billing 2) Verify SIM detection via Smart Care 3) Check no roaming bars in Smart Care 4) Confirm active roaming service in BSS/Smart Care 5) Check last attached roaming partner & preferred operator 6) Ask customer for error message 7) Verify eSIM profile if applicable 8) Raise TT to Resolutions if persists
-Ticket requirements: Issue description • Error shown • Troubleshooting confirmation • Call time & date • A-party & B-party • Callback & WhatsApp
+→ "كله زين" → ask site down ONLY for local: "في عطل في منطقة العميل؟" [OPTIONS: في عطل ⚠️ | ما في عطل ✅]
+  - Site down exists → Raise TT with tower + area. STOP.
+  - No site down → Phase 2
+→ "في مشكلة": [OPTIONS: مشكلة BSS | Smart Care مو نشط] — address specific item. TT if Smart Care issue.
 
-**Roaming - Internet:**
-Steps: 1) Check billing disconnection 2) Verify SIM via Smart Care 3) Check roaming bars 4) Confirm roaming service in BSS/Smart Care 5) Check roaming partner & preferred operator 6) Ask for error message 7) Ensure Data Roaming enabled & manual operator connection 8) Check eSIM profile 9) Raise TT if persists
-Ticket requirements: Issue description • Error shown • Troubleshooting confirmation • Callback & WhatsApp
+### PHASE 2 — FIX (after Phase 1 clear, local issues only):
+Ask device: "أي جهاز عند العميل؟" [OPTIONS: آيفون 📱 | أندرويد 📱 | راوتر 📡]
+- Speed 5G (Phone): 5G ON → Ookla → 100Mbps
+- Speed 5G (Router): 5GHz → Ookla → 100Mbps
+- Speed 4G: Ookla → 3Mbps
+- No Internet (Phone): mobile data ON → SIM → restart
+- No Internet (Router): restart
+- Ping: 5G/5GHz → Ookla ping → 25ms
+[OPTIONS: فوق الحد ✅ | دون الحد ⚠️] or [OPTIONS: صار ✅ | ما صار ⚠️]
+→ All done, still failing → 🎫 KB requirements → "ارفع الطلب ✅"
 
-**Roaming - SMS:**
-Steps: 1) Check billing 2) Verify SIM 3) Check roaming bars 5) Check roaming partner 6) Ask for error message 7) Check device settings for manual operator connection 8) Check eSIM profile 9) Raise TT if persists
-Ticket requirements: Issue description • Error shown • Troubleshooting confirmation • SMS time & date • A-party & B-party • Callback & WhatsApp
+### ⚠️ GOLDEN RULES:
+1. ROAMING = skip Phase 1, follow KB steps exactly, NO site down ever
+2. LOCAL only: Phase 1 order = BSS+SmartCare combined → site down → Phase 2
+3. Never repeat confirmed steps
+4. Every message ends with [OPTIONS: ...]
 
-**Internet Not Working (Mobile):**
-Steps: 1) Check billing disconnection, check site down 2) Verify SIM via Smart Care 3) Check data quota 4) Confirm active data package in BSS 5) Ask for error message 6) Check cellular data enabled in device settings 7) Check eSIM profile 8) Raise TT if persists
-Ticket requirements: Issue description • Error shown • Troubleshooting confirmation • Callback
 
-**International Calls:**
-Steps: 1) Check billing disconnection 3) Check international minutes quota & balance 4) Confirm active package in BSS 5) Ask for error message 6) Verify eSIM profile 7) Raise TT if persists
-Ticket requirements: Issue description • Error shown • Troubleshooting confirmation • Call time & date • A-party & B-party • Callback
+## Friendly UX Responses:
+- Issue resolved: "يا هلا! المشكلة خلصت 🎉 بشّر العميل!" — then STOP, show عميل جديد button automatically
+- When line is suspended/billing issue: end with "شرّح للعميل الوضع — بعد ما يسدّد الفاتورة يرجع الخط 👍" — do NOT ask "أي أسئلة ثانية" or similar
+- When agent confirms: respond naturally and warmly — vary your responses like a human colleague (sometimes brief like "زين! 👍", sometimes "ممتاز، كمّل معي", sometimes "تمام" — avoid repeating the same phrase every time)
+- TT raised: "تمام، رفعنا الطلب ✅ شرّح للعميل إن الفريق يتواصل معه قريب"
+- All steps done, still not resolved: "انزين، خلني أعطيك متطلبات الطلب 🎫"
+- Agent confused: "لا تحاتي، خلني أوضح 😊"
+- Use emojis naturally: ✅ 🔧 ⚠️ 🎉 🌟 💡 — not too many, just enough to be friendly
 
-**Follow Up (In Progress TT):**
-Stop raising follow-up TTs if TT is still In Progress in Resolutions domain. Agent should email team leader to follow up.
-Ticket requirements: Current in-progress ticket number • Callback
+## Vocabulary — كويتي فقط — ممنوع مصري:
+- "هلا" مو "مرحبا" / "زين" مو "تمام" / "وايد" مو "جداً"
+- "مو" مو "مش" / "شو" مو "إيه" / "ترى" / "انزين" / "خلني"
+- ممنوع مصري: ايه، أيوه، دلوقتي، كده، يسطا، يعم، معلش
+ممنوع عراقي: هسع، هساع، گلت، چ، ابد (بمعنى أبداً)
+"الحين" مو "هسع" / "زين" مو "وكيل" / "شو" مو "شنو"
+- دايماً "العميل" مو "الزبون" / "طلب أو TT" مو "تذكرة"
+- رد بنفس لغة الأجنت (كويتي / إنجليزي) — ما تخلط
 
-**Calls Not Working:**
-Steps: 1) Check line active 2) Check if everywhere or specific location (check site down) 3) If no site down, review call activity in BSS 4) Check if issue with specific number — collect details and Raise TT
-Ticket requirements: Issue description • Error shown • Troubleshooting confirmation • Call time & date • A-party & B-party • Callback & WhatsApp
-
-**Baity 5G - Internet Not Working:**
-Steps: 1) Check Smart Care for network attach/data 2) If no attach: check main power adapter ON, cable between ODU and power adapter 3) If data shows but red light on mesh: check cable between power adapter LAN and main mesh, power off/on, raise TT if persists
-Ticket requirements: Issue description • Troubleshooting confirmation • Customer address or PACI # • Master device serial number • Callback
-
-**Baity 5G - Low Speed:**
-Steps: 1) Confirm if all mesh or specific mesh affected 2) Confirm if all time or specific time 3) Check if mesh connected by cable or WiFi 4) Separate WiFi bands 2.4 & 5GHz 5) Test speed on 5GHz 6) Power off/on 7) If speed below 100MB after separation and speed test — Raise TT under Baity 5G subcategory
-Ticket requirements: Issue description • Troubleshooting confirmation • Customer address or PACI # • Master device serial number • Speed test results • Callback
-
-### MEDIUM PRIORITY ISSUES:
-
-**eSIM - Code Not Received:**
-Check BSS for transaction status. If completed, get code from Offering page — escalate to team leader to insert in QR portal. If no transaction found, raise TT.
-Ticket requirements: Issue description • Troubleshooting confirmation • Transaction details • Callback
-
-**eSIM - Code Activation Issue:**
-Steps: 1) Confirm device supports eSIM 2) Connect to external WiFi 3) Scan QR code — if error, escalate to team leader to resend from Offering/QR portal 4) Raise TT if still fails
-Ticket requirements: Issue description • Troubleshooting confirmation • Transaction details • Callback
-
-**Speed Issue 5G - Mobile:**
-Steps: 1) Specific place or everywhere? 2) Check site down 3) Check other STC lines 4) Verify 5G device support in Smart Care 5) Check speed in Smart Care 6) Check bandwidth (5G/4G) 7) Set network to 5G ON (not Auto) 8) Disable power saving mode 9) Allow More Data on 5G 10) Reset network settings 11) Speed test via Ookla 12) If below 100 MBPS raise TT
-Ticket requirements: Issue description • Troubleshooting confirmation • Address/PACI • Speed test results • Callback
-
-**Speed Issue 5G - Router:**
-Steps: 1-3 same as mobile) 4) Check Smart Care for 5G support 5) Check speed in Smart Care 6) Check bandwidth (5GHz/2.4GHz) 7) Set to 5GHz in portable router / connect to 5GHz in fixed router 8) Speed test via Ookla 9) If below 100 MBPS raise TT
-Ticket requirements: Issue description • Troubleshooting confirmation • Address/PACI • Speed test results • Callback
-
-**Speed Issue 4G - Mobile:**
-Steps: 1) Specific or everywhere? 2) Site down check 3) Other STC lines 4) LTE support in Smart Care 5) Check speed in Smart Care 6) Reset network settings 7) Speed test via Ookla 8) If below 3 MBPS raise TT
-Ticket requirements: Issue description • Troubleshooting confirmation • Address/PACI • Speed test results • Callback
-
-**Speed Issue 4G - Router:**
-Same as 4G mobile steps 1-6, 7) Speed test via Ookla 8) If below 3 MBPS raise TT
-Ticket requirements: Issue description • Troubleshooting confirmation • Address/PACI • Speed test results • Callback
-
-**Ping Issue:**
-Steps: 1) Specific or everywhere? 2) Site down check 3) Other STC lines 4) Check bandwidth 5) Set 5G ON / 5GHz for router 6) Disable power saving 7) Allow More Data on 5G 8) Reset network settings 9) Ookla ping test (not in-game ping) 10) If above 30ms raise TT
-Ticket requirements: Issue description • Troubleshooting confirmation • Address/PACI • Ping/Latency in Ookla • Callback
-
-**Call Quality/Coverage:**
-Steps: 1) Specific or everywhere? 2) Site down check 3) Other STC lines 4) Reset network settings 6) Raise TT with address/PACI, trace time, and callback
-Ticket requirements: Issue description • Troubleshooting confirmation • Address/PACI • Test call during specific time • Callback & WhatsApp
-
-**SMS & Verification:**
-Check: Line active, not in flight mode, restart phone, check SMS settings, not ported in last 24hrs, get A-party number, timestamp, if all or specific numbers affected. If persists raise TT.
-Ticket requirements: Issue description • Troubleshooting confirmation • SMS destination • SMS date & time • Callback
-
-**Roaming Charges:**
-1) Check charges in BSS 2) Review roaming usage in Smart Care 3) Refund eligible if: multiple bundles activated simultaneously, border issues, issue reported abroad not resolved. Otherwise not eligible.
-Ticket requirements: Issue description • Troubleshooting confirmation • Callback
-
-**Prepaid - Special Offer (BTL):**
-1) Get offer details 2) Verify activation in BSS 3) If transaction failed, get screenshots of offer and error, raise TT
-Ticket requirements: Issue description • Troubleshooting confirmation • Offer details & screenshot • Callback
-
-**Prepaid - Plan Issue:**
-1) Check line status in BSS 2) Verify plan status, check if non-renewal or cycle status issue 3) Raise TT if persists
-Ticket requirements: Issue description • Troubleshooting confirmation • Callback
-
-**Prepaid - Balance & Validity:**
-For validity: check recharge transactions in BSS/e-payment, match current validity with recharge history. For balance: check balance history in BSS Usage tab, check balance bonus. Raise TT if issue found.
-Ticket requirements: Issue description • Troubleshooting confirmation • Callback
-
-**MNP (Port-In/Out):**
-Check port status in BSS. Both SIMs active → raise TT. Calls/SMS issues → raise TT. FBN disconnection → customer settles outstanding invoices with previous provider, send receipt to WhatsApp team.
-Ticket requirements: Issue description • Troubleshooting confirmation • Callback
-
-**Kiosk Payment:**
-1) Check transaction in E-payment 2) If captured but failed / not found → raise TT with machine number, branch name & location. For alternative kiosks (OG Money, E-Ent) → check with app support.
-Ticket requirements: Issue description • Troubleshooting confirmation • Transaction details, Amount, Time, Date, Kiosk number & location • Callback
-
-**Digital Payment:**
-1) Check transaction in E-payment (check order sequence) 2) If captured but failed → check with bank for refund time 3) If not found → get transaction details, if paid by bank app → check with bank, provide transaction ID to raise TT. For OG Money/E-Ent → contact them.
-Ticket requirements: Issue description • Troubleshooting confirmation • Transaction details, Amount, Time, Date & payment channel • Callback
-
-**Calls Issue (Dropped/VoLTE/Call Waiting):**
-1) Issue with one number or all? 2) Everywhere or specific area? 3) Describe problem clearly (drops, no voice, one-way audio) 4) Verify/disable WiFi Calling in Smart Care 5) Get A-party, B-party, date & time 6) Raise TT to Resolutions
-Ticket requirements: Issue description • Troubleshooting confirmation • Callback & WhatsApp
-
-**Call Diverts:**
-1) Ask customer to cancel via ##21# 2) If not cancelled → raise TT 3) If cancelled but issue persists → raise TT
-Ticket requirements: Issue description • Troubleshooting confirmation • Callback & WhatsApp
-
-**Bill Charge Issue:**
-1) Check extra charges in BSS 2) View bill summary if unclear 3) Explain invoice to customer 4) If issue found (e.g., device charges >25 months) → raise TT
-Ticket requirements: Issue description • Troubleshooting confirmation • Callback
-
-**Add-on Services:**
-1) Check line status in BSS 2) Verify add-on status in BSS, check balance/credit limit 3) Identify error or get error message 4) Raise TT
-Ticket requirements: Issue description • Troubleshooting confirmation • Callback
-
-**Apple Watch:**
-For calls: check line status, Multi-SIM service, VoLTE in BSS → raise TT if persists. For pairing: get exact error message → raise TT.
-Ticket requirements: Issue description • Troubleshooting confirmation • Callback
-
-### LOW PRIORITY ISSUES:
-
-**Vouchers:** Check voucher transaction in E-payment portal. If not refunded/paid not received/wrong card type → raise TT.
-Ticket requirements: Issue description • Troubleshooting confirmation • Voucher details, Amount, Date & time • Callback
-
-**STC Web/App:** 1) Update app / reinstall 2) Get exact error message, check if resolvable from our side 3) Raise TT if not resolvable.
-Ticket requirements: Issue description • Troubleshooting confirmation • Callback
-
-**Site Down:** Raise TT with tower number and area name.
-Ticket requirements: Auto close.
-
-**Qitaf Points:** Check exact issue. Missing points related to payment or error in enrollment/redemption → raise TT.
-Ticket requirements: Issue description • Troubleshooting confirmation • Callback
-
-**General Issue (affects many customers):** Follow general issue escalation instructions.
-Ticket requirements: Escalate to shift in charge team leader.
-
-**Change Limit:** Ask customer to settle all bills. Check last 3 payments. If can raise limit, inform customer. To decrease → pay all bills and raise TT.
-Ticket requirements: Limit requested by user • Callback
-
-**Block/Unblock (Google/Huawei):** Raise TT to Resolutions.
-Ticket requirements: Issue description • Customer request • Callback
-
-**3rd Party Charges:** If service unidentifiable or customer insists on complaint after explanation → raise TT to Resolutions.
-Ticket requirements: Issue description • Troubleshooting confirmation • Service details • Callback
-
-## Vocabulary Rules (STRICTLY FOLLOW):
-- Always say "العميل" never "الزبون" or "الكستمر"
-- Always say "طلب" or "TT" never "تذكرة" or "ticket" in Arabic responses
-- Never use "تذاكر" — use "تواصل" instead
-- Always say "رفع طلب" never "رفع تذكرة"
-- Never use "تذاكر" — use "تواصل" instead
-
-## Response Rules:
-- Reply in the same language the agent uses (Arabic/English/Kuwaiti dialect)
-- Follow the troubleshooting steps from the guide above for every issue
-- After completing troubleshooting steps, if issue persists — ALWAYS show the exact ticket requirements
-- Be concise but thorough — agents need clear step-by-step guidance
-- When agent says issue persists or customer not satisfied → provide ticket requirements immediately
-- Use icons naturally: 🔧 for steps, ⚠️ for warnings, ✅ for resolved, 🎫 for ticket requirements
-- When asking diagnostic questions, end with [OPTIONS: ...] for button selection
-
-## BUTTON OPTIONS — CRITICAL RULE:
-When you ask a question that requires a choice, end your response with:
-[OPTIONS: Option1 | Option2 | Option3]`
+## BUTTON OPTIONS — NO EXCEPTIONS:
+- EVERY single message that ends with a question MUST include [OPTIONS: ...] on the last line
+- If you ask "شو طلع معه؟" → must add [OPTIONS: السرعة زينة ✅ | السرعة دون المطلوب ⚠️]
+- If you ask "شو صار؟" → must add [OPTIONS: صار، شغّل ✅ | ما صار ⚠️]
+- If you ask "أي جهاز؟" → must add [OPTIONS: آيفون 📱 | أندرويد 📱 | راوتر 📡]
+- ZERO exceptions — if your message has a question, it MUST end with [OPTIONS: ...]
+- Scope: [OPTIONS: كل مكان 🌍 | موقع محدد 📍]
+- Site down: [OPTIONS: في سايت داون ✅ | ما في سايت داون ❌]
+- SITE DOWN LOGIC — STRICTLY FOLLOW:
+  • If agent confirms site down EXISTS → Raise TT immediately with tower number and area name. STOP troubleshooting.
+  • If agent confirms NO site down → continue to NEXT troubleshooting group. Do NOT show TT requirements.
+- Service (if needed): [OPTIONS: MBB (Voice/DATA) 📱 | Fiber 🏠 | Baity/ODU 🏡]
+- Billing (if needed): [OPTIONS: مسبق (Prepaid) 💳 | مؤجل (Postpaid) 📄]
+- NEVER use: DSL, Business Line, Home Broadband, Mobile Data, MBB Router
+- NEVER add [OPTIONS] when giving steps — only at decision points`
     : `You are a smart Resolutions Assistant for STC Kuwait support agents (L2 team).
 
 Your name: Resolutions Assistant
 Your personality: natural, smart, diagnostic — like an experienced telecom engineer helping a colleague.
-
-## STC Kuwait Internet Types:
-- 📱 Mobile Data: SIM card in phone/tablet — issues: no data, slow, can't roam
-- 🏠 Fiber (FTTH): fixed home connection via ONT device — issues: no internet, slow, LOS light
-- 📡 Baity 5G: fixed home wireless router (no calls supported on this connection)
-- 🔌 MBB Router: portable WiFi router with SIM — issues: slow, drops, no signal
-- 💻 Fixed Broadband (DSL/ADSL): older copper line connections
-
-## STC Kuwait Call Types:
-- Local calls: A-party to B-party within Kuwait
-- International calls (IDD): calls outside Kuwait — needs A-party, B-party, time, date for VFO escalation
-- Incoming calls: customer can't receive calls
-- Roaming: customer abroad — needs visited network, A-party, B-party, exact time
-- Note: Baity 5G does NOT support voice calls at all
-
-## Diagnostic Rules — ALWAYS follow this flow:
-1. NEVER assume the connection type — always ask first if not already selected via buttons
-2. Ask ONE focused question at a time to narrow down the issue
-3. Build diagnosis step by step based on answers
-4. Only give troubleshooting steps AFTER you know: connection type + symptom + scope (one device/all/one location/everywhere)
-5. Match troubleshooting to the specific connection type — fiber steps ≠ mobile data steps ≠ Baity 5G steps
 
 ## Vocabulary Rules (STRICTLY FOLLOW):
 - Always say "العميل" never "الزبون" or "الكستمر"
@@ -3377,29 +2765,34 @@ Your personality: natural, smart, diagnostic — like an experienced telecom eng
 - Remember conversation history and adapt accordingly
 
 ## BUTTON OPTIONS — CRITICAL RULE:
-When you ask a question that requires a choice, you MUST end your response with this exact format on a new line:
+EVERY diagnostic question MUST end with [OPTIONS: ...] on a new line.
 [OPTIONS: Option1 | Option2 | Option3 | Option4]
 
 Examples:
-- Asking about scope: [OPTIONS: One Device | All Devices]
-- Asking about location: [OPTIONS: One Location | Everywhere]
-- Asking about symptom: [OPTIONS: No Internet | Slow Speed | Keeps Dropping | Intermittent]
-- Asking about call type: [OPTIONS: Can't Call | Can't Receive | Dropped Calls | International Calls]
-- Asking about roaming: [OPTIONS: No Data Roaming | No Calls Roaming | Both]
-- Asking yes/no: [OPTIONS: Yes | No]
-- Asking about time: [OPTIONS: Just Started | Since Yesterday | Days Ago | Weeks Ago]
+- Scope: [OPTIONS: One Device | All Devices]
+- Location: [OPTIONS: One Location | Everywhere]
+- Symptom: [OPTIONS: No Internet | Slow Speed | Keeps Dropping | Intermittent]
+- Call type: [OPTIONS: Can't Call | Can't Receive | Dropped Calls | International]
+- Roaming: [OPTIONS: No Data | No Calls | Both]
+- Yes/No: [OPTIONS: Yes ✅ | No ❌]
+- Time: [OPTIONS: Just Started | Since Yesterday | Days Ago | Weeks Ago]
+- Line type: [OPTIONS: Voice 📞 | DATA 📡 | Fiber 🏠]
 
-Do NOT add [OPTIONS] when you are giving troubleshooting steps or a final answer.
-Always use [OPTIONS] when asking any diagnostic question.`;
+Do NOT add [OPTIONS] when giving final troubleshooting steps or answers.
+ALWAYS use [OPTIONS] for any question requiring a choice.`;
 
   try {
     // Add user message to history
     chatHistory.push({ role: "user", content: q });
-    // Keep only last 10 messages to avoid token limits
-    if (chatHistory.length > 10) chatHistory = chatHistory.slice(-10);
+    // Keep last 12 messages — enough context to not repeat confirmed steps
+    if (chatHistory.length > 8) chatHistory = chatHistory.slice(-8);
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 30000);
 
     const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
+      signal: controller.signal,
       headers: {
         "Content-Type": "application/json",
         "x-api-key": (function(){var p=["sk-ant-","api03-__l8EbVO3JHPZu","KPgDSBDafcC06m_bMSJDa3EX","symzllRWK1iIltiNcAvv6f5mqu8tU","bNGii-wnAclz3_h6eOg-Mp1vXAAA"];return p.join('');})(),
@@ -3408,34 +2801,28 @@ Always use [OPTIONS] when asking any diagnostic question.`;
       },
       body: JSON.stringify({
         model: "claude-haiku-4-5-20251001",
-        max_tokens: 1000,
+        max_tokens: 600,
         system: systemPrompt + (kbContext ? "\n\nمعلومات ذات صلة من قاعدة المعرفة:\n" + kbContext : ""),
         messages: chatHistory
       })
     });
 
+    clearTimeout(timeout);
     removeTyping();
-    document.querySelector('.btn-send').disabled = false;
+    if (document.querySelector('.btn-send')) document.querySelector('.btn-send').disabled = false;
 
     if (!response.ok) throw new Error("API Error: " + response.status);
 
     const data = await response.json();
-    const answer = data.content[0].text;
-    
-    // Add AI response to history
-    chatHistory.push({ role: "assistant", content: answer });
+    const answer_final = (data.content && data.content[0] && data.content[0].text) ? data.content[0].text : '';
 
-    // Check if AI is asking about connection type — show buttons
-    const answerLow = answer.toLowerCase();
-    const connectionKeywords = ['type of connection', 'what type', 'connection type', 'which connection', 'نوع الاتصال', 'نوع الاتصال', 'نوع الخدمة', 'what kind of internet', 'نوع الانترنت', 'نوع الإنترنت'];
-    const isAskingConnectionType = connectionKeywords.some(k => answerLow.includes(k.toLowerCase()));
+    chatHistory.push({ role: "assistant", content: answer_final });
 
-    const category = kbResult ? kbResult.category : "عام";
-    const priority = kbResult ? kbResult.priority : "medium";
+    const category = kbResult ? kbResult.category : (issueContext && issueContext.subIssue ? issueContext.subIssue : null);
+    const priority = kbResult ? (kbResult.priority || 'medium') : (issueContext && issueContext.subIssue ? 'medium' : null);
 
-    // Parse [OPTIONS: ...] from answer
-    const optionsMatch = answer.match(/\[OPTIONS:\s*([^\]]+)\]/i);
-    const cleanAnswer = answer.replace(/\[OPTIONS:[^\]]*\]/gi, '').trim();
+    const optionsMatch = answer_final.match(/\[OPTIONS:\s*([^\]]+)\]/i);
+    const cleanAnswer = answer_final.replace(/\[OPTIONS:[^\]]*\]/gi, '').trim();
 
     const lines = cleanAnswer.split("\n").filter(l => l.trim());
     const hasSteps = lines.some(l => /^\d+[.\-)]/.test(l.trim()));
@@ -3459,43 +2846,50 @@ Always use [OPTIONS] when asking any diagnostic question.`;
       addMsg(cleanAnswer, "bot", null, priority, category);
     }
 
-    // Show buttons if AI provided options
     if (optionsMatch) {
       const optionLabels = optionsMatch[1].split('|').map(o => o.trim()).filter(Boolean);
       const icons = ['1️⃣','2️⃣','3️⃣','4️⃣','5️⃣','6️⃣'];
       const buttons = optionLabels.map(function(label, i) {
         return { icon: icons[i] || '▶️', label: label, value: label.toLowerCase().replace(/\s+/g,'_') };
       });
-      setTimeout(function() {
-        addButtonGroup(buttons, 'opt-' + Date.now());
-      }, 200);
+      setTimeout(function() { addButtonGroup(buttons, 'opt-' + Date.now()); }, 200);
     }
 
-    savLog(q, category, priority, answer);
+    savLog(q, category, priority, answer_final);
 
-    // Show connection type buttons ONLY if AI asks AND not already shown
-    const connTypeAlreadyShown = document.getElementById('conn-type');
-    if (isAskingConnectionType && !connTypeAlreadyShown) {
+    // ── Show "عميل جديد" button after TT raised, issue resolved, or farewell ──
+    const sessionEndSignals = [
+      'رفعنا الطلب', 'ارفع الطلب', 'raise tt', 'raise the tt',
+      'المشكلة خلصت', 'خلصت المشكلة', 'issue resolved', 'problem solved',
+      'بشّر العميل', 'يتواصل معه', 'أي أسئلة', 'any other', 'أي شي ثاني',
+      'يسكّد الفاتورة', 'يسدّد الفاتورة', 'يسوّي الفاتورة', 'يدفع الفاتورة',
+      'ينتظر يتصلون', 'شرّح للعميل'
+    ];
+    const isSessionEnd = sessionEndSignals.some(s => answer_final.toLowerCase().includes(s.toLowerCase()));
+    if (isSessionEnd) {
       setTimeout(function() {
-        addButtonGroup([
-          { icon: '📱', label: 'Mobile Data', value: 'mobile_data' },
-          { icon: '🏠', label: 'Fiber (FTTH)', value: 'fiber' },
-          { icon: '📡', label: 'Baity 5G', value: 'baity_5g' },
-          { icon: '🔌', label: 'MBB Router', value: 'mbb' },
-          { icon: '💻', label: 'DSL/Fixed', value: 'dsl' }
-        ], 'conn-type');
-      }, 300);
+        var msgs = document.getElementById('chatMessages');
+        var d = document.createElement('div');
+        d.style.cssText = 'text-align:center;padding:16px 0';
+        d.innerHTML = '<button onclick="resetDiagnostic()" style="background:var(--primary);color:white;border:none;border-radius:10px;padding:10px 24px;font-size:14px;font-family:inherit;cursor:pointer;font-weight:600">🔄 عميل جديد</button>';
+        msgs.appendChild(d);
+        msgs.scrollTop = msgs.scrollHeight;
+      }, 500);
     }
 
   } catch (err) {
     removeTyping();
-    document.querySelector('.btn-send').disabled = false;
-    console.error("API Error:", err);
-    const errMsg = err.message && err.message.includes('401') 
+    if (document.querySelector('.btn-send')) document.querySelector('.btn-send').disabled = false;
+    console.error("API Error details:", err.name, err.message, err);
+    const errMsg = err.name === 'AbortError'
+      ? '⚠️ انتهت مدة الانتظار — حاول مرة ثانية'
+      : err.message && err.message.includes('401')
       ? '⚠️ خطأ في مفتاح الـ API — تواصل مع المدير'
+      : err.message && err.message.includes('429')
+      ? '⚠️ تجاوزت الحد المسموح — انتظر دقيقة وحاول ثانية'
       : err.message && err.message.includes('Failed to fetch')
-      ? '⚠️ خطأ في الاتصال بالـ AI — تحقق من الإنترنت'
-      : '⚠️ خطأ مؤقت، حاول مرة ثانية';
+      ? '⚠️ خطأ في الاتصال — تحقق من الإنترنت'
+      : '⚠️ ' + (err.message || 'خطأ مؤقت') + ' — حاول مرة ثانية';
     addMsg(errMsg, "bot");
     savLog(q, "خطأ", "unknown");
   }
@@ -3741,11 +3135,233 @@ function switchPreview(mode) {
       <div class="msg-avatar">🤖</div>
       <div class="msg-bubble">
         ${mode === 'L1' 
-          ? 'أهلاً! أنا مساعد Call Center 👋<br><br>اكتب مشكلة العميل وسأعطيك خطوات الحل أو أساعدك في رفع طلب لـ Resolutions.'
-          : 'أهلاً! أنا مساعد Resolutions 👋<br><br>اكتب مشكلة العميل وسأساعدك في حلها.'}
+          ? 'أهلاً! أنا مساعد Call Center 👋<br>اكتب مشكلة العميل وسأعطيك خطوات الحل أو أساعدك في رفع طلب لـ Resolutions.'
+          : 'هلا! 👋 أنا مساعد Resolutions.<br>اكتب مشكلة العميل وأساعدك بها.'}
       </div>
     </div>`;
   chatHistory = [];
+  diagnosticContext = {};
+  issueContext = {};
+  if (mode === 'L1') setTimeout(showSymptomPicker, 100);
+}
+
+// ═══════════════════════════════════════
+// GUIDED SYMPTOM PICKER — L1 FLOW
+// ═══════════════════════════════════════
+
+let issueContext = {};
+
+function showSymptomPicker() {
+  addButtonGroup([
+    { icon: '🌐', label: 'إنترنت',        value: 'internet' },
+    { icon: '📞', label: 'اتصال / SMS',   value: 'calls' },
+    { icon: '✈️', label: 'تجوال',         value: 'roaming' },
+    { icon: '💳', label: 'دفع / eSIM',    value: 'digital' },
+    { icon: '📦', label: 'خدمات stc',     value: 'services' },
+    { icon: '🔧', label: 'حالة خاصة',     value: 'special' },
+    { icon: '⚠️', label: 'عطل عام',       value: 'outage' }
+  ], 'cat-main');
+}
+
+function showSubPicker(question, buttons, groupId) {
+  var msgs = document.getElementById('chatMessages');
+  var d = document.createElement('div');
+  d.className = 'msg bot';
+  d.innerHTML = '<div class="msg-avatar">🤖</div><div class="msg-bubble">' + question + '</div>';
+  msgs.appendChild(d);
+  msgs.scrollTop = msgs.scrollHeight;
+  setTimeout(function() { addButtonGroup(buttons, groupId); }, 100);
+}
+
+function showLineTypePicker(callsOnly) {
+  var btns = callsOnly
+    ? [{ icon: '📞', label: 'Voice', value: 'voice' }, { icon: '📡', label: 'DATA', value: 'data' }]
+    : [{ icon: '📞', label: 'Voice', value: 'voice' }, { icon: '📡', label: 'DATA', value: 'data' }, { icon: '🏠', label: 'Fiber', value: 'fiber' }];
+  showSubPicker('شو نوع خط العميل؟', btns, 'cat-linetype');
+}
+
+function showBillingPicker() {
+  showSubPicker('الخط مسبق أو مؤجل؟', [
+    { icon: '💳', label: 'مسبق (Prepaid)',   value: 'prepaid' },
+    { icon: '📄', label: 'مؤجل (Postpaid)', value: 'postpaid' }
+  ], 'cat-billing');
+}
+
+function triggerIssueWithContext() {
+  chatHistory = [];
+
+  // Build context for AI (full English for KB matching)
+  var aiParts = [];
+  if (issueContext.subIssue)    aiParts.push('Issue: ' + issueContext.subIssue);
+  if (issueContext.service)     aiParts.push('Service: ' + issueContext.service);
+  if (issueContext.lineType)    aiParts.push('Line Type: ' + issueContext.lineType);
+  if (issueContext.billingType) aiParts.push('Billing: ' + issueContext.billingType);
+
+  // Build clean Arabic label for chat display
+  var issueMap = {
+    'Internet- not working': 'ما في نت',
+    'Speed Issue – 4G': 'سرعة بطيئة 4G',
+    'Speed Issue – 5G': 'سرعة بطيئة 5G',
+    'Internet- Ping Issue': 'Ping مرتفع',
+    'Internet- Baity': 'Baity ما في نت',
+    'Internet- Baity Low Speed': 'Baity سرعة بطيئة',
+    'Internet- Site Down': 'Site Down',
+    'Calls- not working': 'مكالمات ما تشتغل',
+    'Calls- Quality': 'جودة المكالمات',
+    'Calls- International': 'مكالمات دولية',
+    'Calls- Diverts': 'تحويل مكالمات',
+    'Roaming Techincal- Internet': 'تجوال - إنترنت',
+    'Roaming Technical- Calls & SMS': 'تجوال - مكالمات',
+    'Roaming Billing- Charges': 'رسوم تجوال'
+  };
+  var displayIssue = issueMap[issueContext.subIssue] || issueContext.subIssue;
+  var serviceLabel = issueContext.service === 'fiber' ? '— Fiber' : issueContext.service === 'baity_odu' ? '— Baity' : '';
+
+  sendMessageText(aiParts.join(' | '), '📋 ' + displayIssue + (serviceLabel ? ' ' + serviceLabel : ''));
+}
+
+function handleSymptomSelection(groupId, value, label) {
+  // ── SERVICE TYPE (internet) ──
+  if (groupId === 'cat-service') {
+    issueContext.service = value;
+    if (value === 'fiber') {
+      issueContext.lineType    = 'Fiber';
+      issueContext.billingType = 'Postpaid';
+    }
+    if (value === 'mbb') {
+      showSubPicker('شو نوع المشكلة؟', [
+        { icon: '📵', label: 'ما في نت',        value: 'Internet- not working' },
+        { icon: '🐌', label: 'سرعة بطيئة 4G',  value: 'Speed Issue – 4G' },
+        { icon: '⚡', label: 'سرعة بطيئة 5G',  value: 'Speed Issue – 5G' },
+        { icon: '🎮', label: 'Ping مرتفع',      value: 'Internet- Ping Issue' },
+        { icon: '📡', label: 'Site Down',       value: 'Internet- Site Down' }
+      ], 'cat-sub');
+    } else if (value === 'fiber') {
+      showSubPicker('شو نوع المشكلة مع الـ Fiber؟', [
+        { icon: '📵', label: 'ما في نت',   value: 'Internet- not working' },
+        { icon: '🐌', label: 'سرعة بطيئة', value: 'Speed Issue – 5G' },
+        { icon: '🎮', label: 'Ping مرتفع', value: 'Internet- Ping Issue' },
+        { icon: '📡', label: 'Site Down',  value: 'Internet- Site Down' }
+      ], 'cat-sub');
+    } else if (value === 'baity_odu') {
+      showSubPicker('شو المشكلة مع Baity / ODU؟', [
+        { icon: '📵', label: 'ما في نت',    value: 'Internet- Baity' },
+        { icon: '🐌', label: 'سرعة بطيئة', value: 'Internet- Baity Low Speed' }
+      ], 'cat-sub');
+    }
+    return;
+  }
+
+  // ── DEVICE TYPE — removed, replaced by cat-service ──
+
+  // ── MAIN CATEGORY ──
+  if (groupId === 'cat-main') {
+    issueContext = { category: value };
+    if (value === 'internet') {
+      showSubPicker('شو نوع خدمة الإنترنت عند العميل؟', [
+        { icon: '📱', label: 'MBB (Voice / DATA)', value: 'mbb' },
+        { icon: '🏠', label: 'Fiber',               value: 'fiber' },
+        { icon: '🏡', label: 'Baity / ODU',          value: 'baity_odu' }
+      ], 'cat-service');
+    } else if (value === 'calls') {
+      showSubPicker('شو نوع مشكلة الاتصال؟', [
+        { icon: '🚫', label: 'ما يتصل / ما يستقبل', value: 'Calls- not working' },
+        { icon: '📶', label: 'جودة / تقطيع',        value: 'Calls- Quality' },
+        { icon: '🌍', label: 'مكالمات دولية',       value: 'Calls- International' },
+        { icon: '🔀', label: 'تحويل مكالمات',       value: 'Calls- Diverts' },
+        { icon: '🔄', label: 'MNP – نقل رقم',       value: 'MNP-  Technical Issues' },
+        { icon: '💬', label: 'SMS / OTP',            value: 'SMS & Verification- issues' }
+      ], 'cat-sub');
+    } else if (value === 'roaming') {
+      showSubPicker('شو نوع مشكلة التجوال؟', [
+        { icon: '📡', label: 'نت في التجوال',              value: 'Roaming Techincal- Internet' },
+        { icon: '📞', label: 'مكالمات / SMS في التجوال',   value: 'Roaming Technical- Calls & SMS' },
+        { icon: '💰', label: 'رسوم تجوال',                 value: 'Roaming Billing- Charges' }
+      ], 'cat-sub');
+    } else if (value === 'digital') {
+      showSubPicker('شو نوع المشكلة؟', [
+        { icon: '💸', label: 'دفعة مفقودة App/Web',    value: 'App & Web-  Payment issue' },
+        { icon: '📱', label: 'مشكلة تطبيق / موقع',     value: 'App & Web- Technical Issues' },
+        { icon: '🍎', label: 'رسوم Apple / Google',     value: 'Apple and google- Charge issues' },
+        { icon: '🏧', label: 'كيوسك',                   value: 'Kiosk- Payment issue' },
+        { icon: '🎫', label: 'Voucher',                  value: 'Voucher- issues' },
+        { icon: '📲', label: 'eSIM',                     value: 'E-SIM-  issues' }
+      ], 'cat-sub');
+    } else if (value === 'services') {
+      showSubPicker('شو نوع المشكلة؟', [
+        { icon: '💰', label: 'رصيد / صلاحية',          value: 'Prepaid – Balance & validity' },
+        { icon: '💸', label: 'رسوم إضافة / بوستر',     value: 'Plan/Add on services- Charge issues' },
+        { icon: '🔧', label: 'مشكلة الخطة / الإضافة',  value: 'Plan/Add on services- Technical issues' },
+        { icon: '🎭', label: 'طرف ثالث',               value: '3rd party- charge issues' },
+        { icon: '⌚', label: 'Apple Watch',             value: 'Apple Watch' },
+        { icon: '⭐', label: 'Qitaf',                   value: 'Qitaf points' }
+      ], 'cat-sub');
+    } else if (value === 'special') {
+      showSubPicker('شو نوع الحالة؟', [
+        { icon: '🏛️', label: 'CITRA',         value: 'CITRA' },
+        { icon: '👥', label: 'Staff / F&F',   value: 'Staff/Friends & Family' },
+        { icon: '🔄', label: 'متابعة TT',     value: 'Follow Up TT' },
+        { icon: '🏢', label: 'HQ Complaint',  value: 'HQ Complaint' }
+      ], 'cat-sub');
+    } else if (value === 'outage') {
+      showSubPicker('شو نوع العطل؟', [
+        { icon: '📱', label: 'تطبيق / خدمة', value: 'Outage- Global Service/App' },
+        { icon: '📡', label: 'شبكة',          value: 'Outage- Network' }
+      ], 'cat-sub');
+    }
+    return;
+  }
+
+  // ── SUB ISSUE SELECTED ──
+  if (groupId === 'cat-sub') {
+    issueContext.subIssue = value;
+    var noLineNeeded = [
+      'Internet- Site Down', 'Internet- Baity', 'Internet- Baity Low Speed',
+      'App & Web-  Payment issue', 'App & Web- Technical Issues',
+      'Apple and google- Charge issues', 'Kiosk- Payment issue',
+      'Voucher- issues', 'E-SIM-  issues',
+      'Prepaid – Balance & validity', 'Plan/Add on services- Charge issues',
+      'Plan/Add on services- Technical issues', '3rd party- charge issues',
+      'Apple Watch', 'Qitaf points', 'CITRA', 'Staff/Friends & Family',
+      'Follow Up TT', 'HQ Complaint', 'Outage- Global Service/App', 'Outage- Network',
+      'Calls- Diverts', 'MNP-  Technical Issues', 'SMS & Verification- issues',
+      'Roaming Billing- Charges'
+    ];
+    // Fiber and Baity: no line type needed
+    if (issueContext.service === 'fiber' || issueContext.service === 'baity_odu') {
+      triggerIssueWithContext();
+    } else if (noLineNeeded.indexOf(value) !== -1) {
+      triggerIssueWithContext();
+    } else {
+      // Only roaming BILLING CHARGES needs billing type question
+      var needsBilling = (issueContext.subIssue === 'Roaming Billing- Charges');
+      if (needsBilling) {
+        showLineTypePicker(true); // Voice/DATA → then billing
+      } else {
+        triggerIssueWithContext(); // everything else: go straight to AI
+      }
+    }
+    return;
+  }
+
+  // ── LINE TYPE SELECTED ──
+  if (groupId === 'cat-linetype') {
+    issueContext.lineType = label;
+    if (value === 'fiber') {
+      issueContext.billingType = 'Postpaid';
+      triggerIssueWithContext();
+    } else {
+      showBillingPicker();
+    }
+    return;
+  }
+
+  // ── BILLING TYPE SELECTED ──
+  if (groupId === 'cat-billing') {
+    issueContext.billingType = label;
+    triggerIssueWithContext();
+    return;
+  }
 }
 
 function showAddEmployee() {
