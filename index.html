@@ -1922,8 +1922,24 @@ async function getEmployees() {
         "Authorization": "Bearer " + SUPABASE_KEY
       }
     });
-    return await res.json();
-  } catch(e) { return []; }
+    const data = await res.json();
+    if (Array.isArray(data) && data.length > 0) return data;
+    return buildEmployeesFromLogs();
+  } catch(e) { return buildEmployeesFromLogs(); }
+}
+
+function buildEmployeesFromLogs() {
+  const map = {};
+  (logs || []).forEach(function(l) {
+    if (!l.email) return;
+    if (!map[l.email]) {
+      map[l.email] = { email: l.email, name: l.email.split('@')[0], role: 'L1', status: 'active', last_seen: l.time, questions_today: 0 };
+    }
+    if (l.time > map[l.email].last_seen) map[l.email].last_seen = l.time;
+    const today = new Date().toDateString();
+    if (new Date(l.time).toDateString() === today) map[l.email].questions_today = (map[l.email].questions_today||0) + 1;
+  });
+  return Object.values(map);
 }
 
 async function toggleEmployeeDisabled(email, disabled) {
@@ -5520,8 +5536,24 @@ async function getEmployees() {
         "Authorization": "Bearer " + SUPABASE_KEY
       }
     });
-    return await res.json();
-  } catch(e) { return []; }
+    const data = await res.json();
+    if (Array.isArray(data) && data.length > 0) return data;
+    return buildEmployeesFromLogs();
+  } catch(e) { return buildEmployeesFromLogs(); }
+}
+
+function buildEmployeesFromLogs() {
+  const map = {};
+  (logs || []).forEach(function(l) {
+    if (!l.email) return;
+    if (!map[l.email]) {
+      map[l.email] = { email: l.email, name: l.email.split('@')[0], role: 'L1', status: 'active', last_seen: l.time, questions_today: 0 };
+    }
+    if (l.time > map[l.email].last_seen) map[l.email].last_seen = l.time;
+    const today = new Date().toDateString();
+    if (new Date(l.time).toDateString() === today) map[l.email].questions_today = (map[l.email].questions_today||0) + 1;
+  });
+  return Object.values(map);
 }
 
 async function toggleEmployeeDisabled(email, disabled) {
@@ -9119,8 +9151,24 @@ async function getEmployees() {
         "Authorization": "Bearer " + SUPABASE_KEY
       }
     });
-    return await res.json();
-  } catch(e) { return []; }
+    const data = await res.json();
+    if (Array.isArray(data) && data.length > 0) return data;
+    return buildEmployeesFromLogs();
+  } catch(e) { return buildEmployeesFromLogs(); }
+}
+
+function buildEmployeesFromLogs() {
+  const map = {};
+  (logs || []).forEach(function(l) {
+    if (!l.email) return;
+    if (!map[l.email]) {
+      map[l.email] = { email: l.email, name: l.email.split('@')[0], role: 'L1', status: 'active', last_seen: l.time, questions_today: 0 };
+    }
+    if (l.time > map[l.email].last_seen) map[l.email].last_seen = l.time;
+    const today = new Date().toDateString();
+    if (new Date(l.time).toDateString() === today) map[l.email].questions_today = (map[l.email].questions_today||0) + 1;
+  });
+  return Object.values(map);
 }
 
 async function toggleEmployeeDisabled(email, disabled) {
@@ -12717,8 +12765,24 @@ async function getEmployees() {
         "Authorization": "Bearer " + SUPABASE_KEY
       }
     });
-    return await res.json();
-  } catch(e) { return []; }
+    const data = await res.json();
+    if (Array.isArray(data) && data.length > 0) return data;
+    return buildEmployeesFromLogs();
+  } catch(e) { return buildEmployeesFromLogs(); }
+}
+
+function buildEmployeesFromLogs() {
+  const map = {};
+  (logs || []).forEach(function(l) {
+    if (!l.email) return;
+    if (!map[l.email]) {
+      map[l.email] = { email: l.email, name: l.email.split('@')[0], role: 'L1', status: 'active', last_seen: l.time, questions_today: 0 };
+    }
+    if (l.time > map[l.email].last_seen) map[l.email].last_seen = l.time;
+    const today = new Date().toDateString();
+    if (new Date(l.time).toDateString() === today) map[l.email].questions_today = (map[l.email].questions_today||0) + 1;
+  });
+  return Object.values(map);
 }
 
 async function toggleEmployeeDisabled(email, disabled) {
