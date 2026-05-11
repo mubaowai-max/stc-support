@@ -1056,20 +1056,23 @@ STEP 4 — Error: وش رسالة الخطأ عند محاولة المكالم�
     category: "Roaming Billing- Charges",
     priority: "medium",
     definition: "If customer is complaining about Roaming charges",
-    solution: `1. Ask customer to specify the charge they are disputing — amount, date, and what service they believe caused it.
-2. Check BSS — review the roaming charges on the account. Confirm the charge amount, date, and which roaming service generated it (data, calls, or SMS).
-3. Based on customer description and BSS findings, determine refund eligibility:
-   a. ELIGIBLE — Multiple roaming bundles were activated simultaneously (system error).
-   b. ELIGIBLE — Border-related issue: charges appeared due to device connecting to a foreign network near the border without intentional roaming usage.
-   c. ELIGIBLE — Customer reported a roaming issue while abroad that was not resolved, yet charges were still applied.
-   d. NOT ELIGIBLE — All other cases where charges reflect confirmed actual usage.
-4. If eligible → raise TT to Resolution team with full charge details and eligibility reason.
-5. If not eligible → explain to customer that charges reflect confirmed usage and are valid.
+    solution: `TT TASK NAME: Roaming Billing- Charges
 
-📋 Ticket Requirements:
-• Issue description  
-• Disputed charge amount and date  
-• Callback`
+STEP 1: اسأل العميل يحدد الشحن اللي يعترض عليه — المبلغ، التاريخ، وشو الخدمة اللي يعتقد سببت الشحن.
+STEP 2: تحقق في BSS — راجع رسوم التجوال على الحساب. أكد المبلغ، التاريخ، وأي خدمة تجوال ولّدته (بيانات، مكالمات، أو SMS).
+STEP 3: حدد أهلية الاسترداد:
+  ✅ مؤهل — تم تفعيل أكثر من باقة تجوال في نفس الوقت (خطأ في النظام)
+  ✅ مؤهل — مشكلة حدودية: رسوم ظهرت بسبب اتصال الجهاز بشبكة أجنبية بجانب الحدود بدون قصد
+  ✅ مؤهل — العميل أبلغ عن مشكلة تجوال وهو في الخارج ولم تُحل، لكن الرسوم طُبّقت رغم ذلك
+  ❌ غير مؤهل — كل الحالات الأخرى حيث الرسوم تعكس استخداماً فعلياً
+STEP 4: إذا مؤهل → Raise TT مع كامل تفاصيل الشحن وسبب الأهلية
+STEP 5: إذا غير مؤهل → شرّح للعميل إن الرسوم صحيحة وتعكس استخدام فعلي
+
+📋 اسم الطلب: Roaming Billing- Charges
+متطلبات الطلب:
+• وصف المشكلة
+• مبلغ الشحن المتنازع عليه والتاريخ
+• رقم للتواصل`
   },
   {
     keywords: ["internet not working", "no internet", "مافي نت", "انترنت مو شغال", "نت مقطوع", "ما يجي نت", "انقطاع نت"],
@@ -1093,23 +1096,23 @@ STEP 5: Error message — شو رسالة الخطأ اللي تطلع؟
     category: "Internet- Ping Issue",
     priority: "medium",
     definition: "Any issue Related to Ping/Latency with customers (Usually with Gamer users)",
-    solution: `1 Ask the customer if issue in specific place or everywhere to find out if issue related to network or device.
-2 We make sure that there is no site down in customer area.
-3 In case of issue in specific place and no site down in customer area, we ask him if the issue with other stc lines.
-4 Check the bandwidth connected by customer (5GHZ/2.4GHZ) 
-5 Ask the customer to set the network type to 5G ON (Not Auto) in case of mobile and to GHZ bandwidth in case or Router.
-6 Make sure that customer disabled power saving mode for mobiles.
-7 Ask the customer to select “Allow More data on 5G” in Data mode settings for Mobiles.
-8 Ask customer to reset network settings for mobiles.
-9 Ask the customer to perform  PING/latency tests using the Ookla Speedtest application. Do not use in-game PING/latency, as game ping depends on the game server and may not reflect our exact network performance.
-10 In case customer PING/Latency Above 30 MS We Raise TT to resolution team with full details (Full address/PACI, Speed test, Trace time and Call back).
+    solution: `TT TASK NAME: Internet- Ping Issue
 
-📋 Ticket Requirements:
-• Issue description  
-• Troubleshooting confirmation  
-• Customer full address or PACI number  
-• Ookla or speedtest.net ping/latency result with timestamp  
-• Callback`
+STEP 1: اسأل العميل هل المشكلة في كل مكان ولا موقع محدد.
+STEP 2: تحقق من Site Down في منطقة العميل.
+STEP 3: تحقق نوع الشبكة اللي الجهاز واصل عليها (5G/4G/3G).
+STEP 4: وجّه العميل يضبط نوع الشبكة على 5G ON (مو Auto) — موبايل أو راوتر.
+STEP 5: موبايل: تأكد Power Saving مطفي، وفعّل "Allow More Data on 5G".
+STEP 6: اطلب من العميل يسوي اختبار Ping على Ookla أو speedtest.net — مو البينج داخل اللعبة.
+STEP 7: إذا النتيجة فوق 25ms بعد كل الخطوات → Raise TT.
+
+📋 اسم الطلب: Internet- Ping Issue
+متطلبات الطلب:
+• وصف المشكلة
+• تأكيد خطوات التشخيص
+• العنوان الكامل أو رقم PACI
+• نتيجة اختبار Ookla أو speedtest.net (Ping/Latency) مع الوقت
+• رقم للتواصل`
   },
   {
     keywords: ["site down", "down site", "عطل موقع", "سايت داون"],
@@ -1151,31 +1154,26 @@ STEP 5: Error message — شو رسالة الخطأ اللي تطلع؟
     category: "Internet- Baity (Baity or turbonet ODU device -)",
     priority: "medium",
     definition: "Baity or turbonet ODU device - Low speed issue",
-    solution: `1. Confirm scope with customer — ask the following:
-   a. Is the slow speed on all mesh devices or a specific one?
-   b. Is the affected mesh connected to the main unit by cable or Wi-Fi?
+    solution: `TT TASK NAME: Internet- Baity
 
-2. Based on answers in step 1, follow the matching path:
+STEP 1 — BSS: تحقق الخط نشط، الباقة نشطة، والاستخدام ما خلص — قبل أي شي.
+STEP 2 — Smart Care: تحقق الخط attached وData Status نشط (READ ONLY — لا تغيّر).
+STEP 3 — Scope: هل المشكلة على كل أجهزة الـ Mesh ولا جهاز محدد؟ هل المشكلة طول الوقت ولا أحياناً؟
+STEP 4 — Band: تأكد العميل واصل على 5GHz مو 2.4GHz.
+STEP 5 — Speed Test: شغّل Ookla أو speedtest.net على جهاز واصل بـ WiFi.
 
-   If issue is on ALL mesh devices:
-   a. Confirm Wi-Fi bands are separated — 2.4GHz and 5GHz must be on different network names.
-   b. Ask customer to connect their device to the 5GHz band specifically and run a speed test.
-   c. Power the main unit off and back on.
-   d. Run speed test again on 5GHz after restart.
-   e. If download speed is below 100 Mbps → Raise TT to Resolution team under Baity 5G sub-category.
+العتبة: Baity 5G = 100Mbps كحد أدنى مقبول.
 
-   If issue is on a SPECIFIC mesh only:
-   a. Check how that mesh is connected to the main unit — cable or Wi-Fi.
-   b. If Wi-Fi connected — check distance from main unit and potential interference. Guide customer to move closer or connect by cable for testing.
-   c. If cable connected and still slow → Raise TT to Resolution team under Baity 5G sub-category.
+إذا السرعة دون 100Mbps بعد كل الخطوات → Raise TT.
 
-📋 Ticket Requirements:
-• Issue description  
-• Troubleshooting confirmation  
-• Customer address or PACI #  
-• Master device serial number  
-• Speed test results  
-• Callback`
+📋 اسم الطلب: Internet- Baity
+متطلبات الطلب:
+• وصف المشكلة
+• تأكيد خطوات التشخيص
+• العنوان الكامل أو رقم PACI
+• الرقم التسلسلي للجهاز الرئيسي (Master Serial Number)
+• نتيجة Ookla مع الوقت
+• رقم للتواصل`
   },
   {
     keywords: ["speed 4g", "سرعة 4g", "4g slow", "بطيء 4g", "lte speed"],
@@ -2476,6 +2474,47 @@ async function sendMessage() {
 
   const isL1 = (typeof previewMode !== 'undefined' && previewMode === 'L1') || (currentUser && currentUser.role === 'L1');
 
+  // ── Block competitor lines ──
+  if (/\bزين\b|\booredoo\b|\bأوريدو\b|\bviva\b|\bفيفا\b/i.test(q)) {
+    addMsg(q, 'user');
+    input.value = '';
+    setTimeout(function() {
+      var competitor = q.match(/زين|Zain/i) ? 'زين' : q.match(/ooredoo|أوريدو/i) ? 'Ooredoo' : 'شركة ثانية';
+      addMsg('هذا خط ' + competitor + ' مو STC 😊\n\nأنا مخصص لدعم STC Kuwait بس — بس أقدر أساعدك لو العميل يبي يحوّل لـ STC أو عنده خط STC ثاني! 🌟\n\nقدر تتواصل مع دعم ' + competitor + ' مباشرة للمشكلة الحالية.', 'bot');
+    }, 200);
+    if (document.querySelector('.btn-send')) document.querySelector('.btn-send').disabled = false;
+    return;
+  }
+
+  // ── Detect direct TT request — set context, let sendMessage continue ──
+  // Skip if this is an internal context message
+  if (isL1 && !q.startsWith('Issue:') && /رافع طلب|ارفع طلب|رفع طلب|ابي المتطلبات|شنو المتطلبات|شو المتطلبات|ايش المتطلبات|متطلبات|requirements|raise tt|raise ticket/i.test(q)) {
+    var qL = q.toLowerCase();
+    var detectedIssue = null;
+    var detectedService = 'mbb';
+    // Roaming checks first — higher priority than generic internet
+    if (qL.match(/تجوال|roaming/)) {
+      if (qL.match(/رسوم|محسوب|فاتور|charge|حاسب|مرتين|double|مبالغ|خصم/)) detectedIssue = 'Roaming Billing- Charges';
+      else if (qL.match(/مكالم|call|sms|رسال/)) detectedIssue = 'Roaming Technical- Calls & SMS';
+      else detectedIssue = 'Roaming Techincal- Internet';
+    }
+    else if (qL.match(/موشغال|مو شغال|not working|ما يشتغل|ما في نت|مافي نت/)) detectedIssue = 'Internet- not working';
+    else if (qL.match(/سرعة.*5g|5g.*سرعة|بطي.*5g|5g.*بطي/)) detectedIssue = 'Speed Issue – 5G';
+    else if (qL.match(/سرعة.*4g|4g.*سرعة|بطي.*4g|4g.*بطي/)) detectedIssue = 'Speed Issue – 4G';
+    else if (qL.match(/سرعة|بطيء|slow|speed/) && !qL.match(/4g/)) detectedIssue = 'Speed Issue – 5G';
+    else if (qL.match(/ping|لاق|تأخير/)) detectedIssue = 'Internet- Ping Issue';
+    else if (qL.match(/baity|باتي|بيتي/)) detectedIssue = 'Internet- Baity';
+    else if (qL.match(/sms|رسال|otp/)) detectedIssue = 'SMS & Verification- issues';
+    else if (qL.match(/مكالم|call|اتصال/)) detectedIssue = 'Calls- not working';
+    if (qL.match(/fiber|فايبر/)) detectedService = 'fiber';
+    else if (qL.match(/baity|باتي|بيتي/)) detectedService = 'baity_odu';
+    if (detectedIssue) {
+      // Set context only — sendMessage continues naturally, no recursive call
+      issueContext = { subIssue: detectedIssue, service: detectedService, directTT: true };
+      chatHistory = [];
+    }
+  }
+
   // ── AUTO-DETECT category from typed text before picker is complete ──
   if (isL1 && !issueContext.subIssue) {
     var qLower = q.toLowerCase();
@@ -2491,8 +2530,7 @@ async function sendMessage() {
       detected = 'digital';
     else if (qLower.match(/رصيد|balance|باقة|plan|صلاحية|validity|qitaf|قطاف|apple watch/))
       detected = 'stc_services';
-    else if (qLower.match(/citra|hq|شكوى|follow.?up|متابعة|staff|موظف/))
-      detected = 'special';
+
     else if (qLower.match(/عطل|outage|شبكة وقفت/))
       detected = 'outage';
 
@@ -2672,8 +2710,19 @@ Your personality: warm, efficient, Kuwaiti — like a sharp colleague helping yo
 - NEVER invent ticket requirements — use exactly what's in KB under "📋 Ticket Requirements:"
 - NEVER ask about service type, line type, or billing — already in context
 - PRIMARY GOAL: RESOLVE at L1 — TT is LAST RESORT after ALL steps truly fail
+- When you receive "REQUEST: Show TT requirements only — skip troubleshooting" → IMMEDIATELY show ONLY:
+  📋 **[EXACT category name from KB — do NOT translate or rename]**
+  متطلبات الطلب:
+  [requirements from KB under "متطلبات الطلب:" — in Arabic]
+  "ارفع الطلب على هالاسم ✅"
+  DO NOT rename the TT. DO NOT ask questions. DO NOT show troubleshooting steps.
 - ⚠️ FOLLOW KB STEPS EXACTLY — do NOT add questions not in the KB (no "which country", no "all countries or specific", no steps not listed)
 - The KB solution shows the EXACT steps in order — follow them literally, one at a time
+- When raising TT: ALWAYS show in this format:
+  📋 **[TT Task Name]**
+  متطلبات الطلب:
+  [requirements from KB exactly as written]
+  ثم: "ارفع الطلب على هالاسم وبشّر العميل ✅"
 ## HOW TO TROUBLESHOOT — STRICTLY FOLLOW:
 - ONE short natural question per message — no headers, no groups, no markdown, no bullets
 - NEVER use "لا، نفس المشكلة" as an option — it tells you nothing about what failed
@@ -2695,10 +2744,13 @@ ONE combined message:
 → "في مشكلة": [OPTIONS: مشكلة BSS | Smart Care مو نشط] — address specific item. TT if Smart Care issue.
 
 ### PHASE 2 — FIX (after Phase 1 clear, local issues only):
-Ask device: "أي جهاز عند العميل؟" [OPTIONS: آيفون 📱 | أندرويد 📱 | راوتر 📡]
+⚠️ BAITY/ODU: Skip device question — Baity is a fixed home unit, no phones involved. Go directly to KB steps: scope (all mesh or specific?) → 5GHz band → Ookla → 100Mbps threshold.
+
+For MBB/Fiber only — ask device: "أي جهاز عند العميل؟" [OPTIONS: آيفون 📱 | أندرويد 📱 | راوتر 📡]
 - Speed 5G (Phone): 5G ON → Ookla → 100Mbps
 - Speed 5G (Router): 5GHz → Ookla → 100Mbps
 - Speed 4G: Ookla → 3Mbps
+- Baity/ODU Speed: BSS check first (usage OK) → 5GHz band → Ookla → 100Mbps
 - No Internet (Phone): mobile data ON → SIM → restart
 - No Internet (Router): restart
 - Ping: 5G/5GHz → Ookla ping → 25ms
@@ -2713,19 +2765,22 @@ Ask device: "أي جهاز عند العميل؟" [OPTIONS: آيفون 📱 | أ
 
 
 ## Friendly UX Responses:
-- Issue resolved: "يا هلا! المشكلة خلصت 🎉 بشّر العميل!" — then STOP, show عميل جديد button automatically
-- When line is suspended/billing issue: end with "شرّح للعميل الوضع — بعد ما يسدّد الفاتورة يرجع الخط 👍" — do NOT ask "أي أسئلة ثانية" or similar
-- When agent confirms: respond naturally and warmly — vary your responses like a human colleague (sometimes brief like "زين! 👍", sometimes "ممتاز، كمّل معي", sometimes "تمام" — avoid repeating the same phrase every time)
-- TT raised: "تمام، رفعنا الطلب ✅ شرّح للعميل إن الفريق يتواصل معه قريب"
-- All steps done, still not resolved: "انزين، خلني أعطيك متطلبات الطلب 🎫"
+- General tone: warm, human, Kuwaiti colleague — like helping a friend on a live call, not a robot
+- Issue resolved: "يا هلا! المشكلة خلصت 🎉 بشّر العميل!" — then STOP
+- Billing suspended: "واضح — الخط موقوف بالفاتورة. شرّح للعميل بهدوء إنه يسدّد أول وبعدين يرجع عادي 👌"
+- When agent confirms step OK: vary warmly — "زين! 👍", "ممتاز، يلا كمّل", "تمام معك الحين", "منيح"
+- TT raised: "تمام، رفعنا الطلب ✅ شرّح للعميل إن الفريق يتواصل معه قريب — لا تخليه ييأس 😊"
+- All steps done no fix: "انزين، جربنا كل شي — خلني أعطيك متطلبات الطلب 🎫"
+- Direct TT request: "زين، أساعدك 👍 بس خلني أتأكد — هل جربتوا الخطوات قبل ولا تبي ترفع مباشرة؟"
 - Agent confused: "لا تحاتي، خلني أوضح 😊"
-- Use emojis naturally: ✅ 🔧 ⚠️ 🎉 🌟 💡 — not too many, just enough to be friendly
+- Use emojis naturally — one or two max per message: 👍 ✅ 🎉 😊 👌 🎫
 
 ## Vocabulary — كويتي فقط — ممنوع مصري:
 - "هلا" مو "مرحبا" / "زين" مو "تمام" / "وايد" مو "جداً"
 - "مو" مو "مش" / "شو" مو "إيه" / "ترى" / "انزين" / "خلني"
 - ممنوع مصري: ايه، أيوه، دلوقتي، كده، يسطا، يعم، معلش
 ممنوع عراقي: هسع، هساع، گلت، چ، ابد (بمعنى أبداً)
+ممنوع كلياً: آه (للموافقة) — استخدم "إي" أو "زين" أو "صح"
 "الحين" مو "هسع" / "زين" مو "وكيل" / "شو" مو "شنو"
 - دايماً "العميل" مو "الزبون" / "طلب أو TT" مو "تذكرة"
 - رد بنفس لغة الأجنت (كويتي / إنجليزي) — ما تخلط
@@ -2787,12 +2842,8 @@ ALWAYS use [OPTIONS] for any question requiring a choice.`;
     // Keep last 12 messages — enough context to not repeat confirmed steps
     if (chatHistory.length > 8) chatHistory = chatHistory.slice(-8);
 
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 30000);
-
     const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
-      signal: controller.signal,
       headers: {
         "Content-Type": "application/json",
         "x-api-key": (function(){var p=["sk-ant-","api03-__l8EbVO3JHPZu","KPgDSBDafcC06m_bMSJDa3EX","symzllRWK1iIltiNcAvv6f5mqu8tU","bNGii-wnAclz3_h6eOg-Mp1vXAAA"];return p.join('');})(),
@@ -2807,7 +2858,6 @@ ALWAYS use [OPTIONS] for any question requiring a choice.`;
       })
     });
 
-    clearTimeout(timeout);
     removeTyping();
     if (document.querySelector('.btn-send')) document.querySelector('.btn-send').disabled = false;
 
@@ -2821,8 +2871,22 @@ ALWAYS use [OPTIONS] for any question requiring a choice.`;
     const category = kbResult ? kbResult.category : (issueContext && issueContext.subIssue ? issueContext.subIssue : null);
     const priority = kbResult ? (kbResult.priority || 'medium') : (issueContext && issueContext.subIssue ? 'medium' : null);
 
-    const optionsMatch = answer_final.match(/\[OPTIONS:\s*([^\]]+)\]/i);
-    const cleanAnswer = answer_final.replace(/\[OPTIONS:[^\]]*\]/gi, '').trim();
+    // Post-process: remove non-Kuwaiti words and KB-related warnings
+    const processed = answer_final
+      .replace(/هسع|هساع/g, 'الحين')
+      .replace(/\bآه\b/g, 'إي')
+      .replace(/گلت|چ/g, '')
+      .replace(/أنا هنا!/g, 'أنا موجود!')
+      .replace(/أنا هسع!/g, 'الحين!')
+      // Remove any KB-related warnings agents shouldn't see
+      .replace(/⚠️[^\n]*KB[^\n]*/gi, '')
+      .replace(/ما عندي KB[^\n]*/gi, '')
+      .replace(/لا يوجد.*KB[^\n]*/gi, '')
+      .replace(/هذا اجتهاد مني[^\n]*/gi, '')
+      .replace(/مو من KB رسمي[^\n]*/gi, '')
+      .replace(/تأكد من اسم الطلب الصح في النظام[^\n]*/gi, '');
+    const optionsMatch = processed.match(/\[OPTIONS:\s*([^\]]+)\]/i);
+    const cleanAnswer = processed.replace(/\[OPTIONS:[^\]]*\]/gi, '').trim();
 
     const lines = cleanAnswer.split("\n").filter(l => l.trim());
     const hasSteps = lines.some(l => /^\d+[.\-)]/.test(l.trim()));
@@ -3158,7 +3222,6 @@ function showSymptomPicker() {
     { icon: '✈️', label: 'تجوال',         value: 'roaming' },
     { icon: '💳', label: 'دفع / eSIM',    value: 'digital' },
     { icon: '📦', label: 'خدمات stc',     value: 'services' },
-    { icon: '🔧', label: 'حالة خاصة',     value: 'special' },
     { icon: '⚠️', label: 'عطل عام',       value: 'outage' }
   ], 'cat-main');
 }
@@ -3196,6 +3259,7 @@ function triggerIssueWithContext() {
   if (issueContext.service)     aiParts.push('Service: ' + issueContext.service);
   if (issueContext.lineType)    aiParts.push('Line Type: ' + issueContext.lineType);
   if (issueContext.billingType) aiParts.push('Billing: ' + issueContext.billingType);
+  if (issueContext.directTT)    aiParts.push('REQUEST: Show TT requirements only — skip troubleshooting');
 
   // Build clean Arabic label for chat display
   var issueMap = {
@@ -3295,13 +3359,6 @@ function handleSymptomSelection(groupId, value, label) {
         { icon: '🎭', label: 'طرف ثالث',               value: '3rd party- charge issues' },
         { icon: '⌚', label: 'Apple Watch',             value: 'Apple Watch' },
         { icon: '⭐', label: 'Qitaf',                   value: 'Qitaf points' }
-      ], 'cat-sub');
-    } else if (value === 'special') {
-      showSubPicker('شو نوع الحالة؟', [
-        { icon: '🏛️', label: 'CITRA',         value: 'CITRA' },
-        { icon: '👥', label: 'Staff / F&F',   value: 'Staff/Friends & Family' },
-        { icon: '🔄', label: 'متابعة TT',     value: 'Follow Up TT' },
-        { icon: '🏢', label: 'HQ Complaint',  value: 'HQ Complaint' }
       ], 'cat-sub');
     } else if (value === 'outage') {
       showSubPicker('شو نوع العطل؟', [
