@@ -2477,7 +2477,7 @@ async function loadHistory() {
     const email = encodeURIComponent(currentUser.email);
     const isAdmin = currentUser.role === 'admin';
     const url = isAdmin
-      ? SUPABASE_URL + "/rest/v1/logs?order=created_at.desc&created_at=gte." + since + "&limit=200"
+      ? SUPABASE_URL + "/rest/v1/logs?order=created_at.desc&limit=1000"
       : SUPABASE_URL + "/rest/v1/logs?order=created_at.desc&created_at=gte." + since + "&email=eq." + email + "&limit=200";
     const res = await fetch(url, {
       method: "GET",
