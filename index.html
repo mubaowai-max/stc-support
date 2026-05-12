@@ -2751,6 +2751,7 @@ function formatBotMessage(text) {
     if (line.startsWith('🔧')) return '<div class="answer-header">' + line + '</div>';
     if (line.includes('━')) return '<hr class="answer-divider">';
     if (line.startsWith('⚠️')) return '<div class="answer-note">' + line + '</div>';
+    if (line.includes('[NEW_CUSTOMER]')) return '<div style="margin-top:12px"><button onclick="resetForNewCustomer()" style="background:var(--primary);border:none;border-radius:10px;padding:10px 20px;color:white;font-size:13px;font-family:inherit;cursor:pointer;font-weight:600">👤 عميل جديد</button></div>';
     if (line.startsWith('✅')) return '<div class="answer-success">' + line + '</div>';
     if (line.startsWith('📞')) return '<div class="answer-escalate">' + line + '</div>';
     // Numbered steps
@@ -3109,16 +3110,23 @@ async function sendMessage() {
   } else {
     kbContext = "General question — answer naturally in Kuwaiti dialect.";
   }
-  const agentFirstName = (currentUser && currentUser.name) ? currentUser.name.split(' ')[0] : 'الأجنت';
+  const agentFirstName = (currentUser && currentUser.name && currentUser.name.trim()) ? currentUser.name.trim().split(' ')[0] : (currentUser ? currentUser.email.split('@')[0] : 'الأجنت');
   const systemPrompt = isL1Mode
     ? `You are a fast, friendly Call Center Assistant for stc Kuwait L1 agents.
-The agent's name is ${agentFirstName} — at the end of every final answer (when you have fully resolved the issue or given complete steps), always end with:
-"${agentFirstName}، على شي ثاني؟ 😊
-[OPTIONS: ✅ إي، عندي سؤال ثاني | 🏁 لا، شكراً]"
-- If agent selects "✅ إي، عندي سؤال ثاني" → stay ready and ask what the new issue is with: "قول وش عندك، أنا هنا 👂"
-- If agent selects "🏁 لا، شكراً" → reply ONLY with: "زين! متى احتجت أنا هنا 👋😊" — nothing else, no buttons, no new customer
+The agent's name is ${agentFirstName} — at the end of every final answer, randomly pick ONE of these (vary each time):
+- "${agentFirstName}، على شي ثاني؟ 😊"
+- "${agentFirstName} 👋 على شي ثاني؟"
+- "${agentFirstName}، أقدر أساعدك بشي ثاني؟ 💪"
+- "${agentFirstName}، شي ثاني يخدمك؟ 🙌"
+MANDATORY — you MUST always include on a new line immediately after the question:
+[OPTIONS: ✅ إي، في سؤال ثاني | 🏁 لا، يكفي — شكراً]
+NEVER ask "على شي ثاني؟" without the OPTIONS line — it is required every single time.
+- If "✅ إي، في سؤال ثاني" → ask what the new issue is naturally
+- If "🏁 لا، يكفي — شكراً" → reply with "تمام ${agentFirstName}! 👋 إذا احتجت أنا هنا" then on new line write exactly: [NEW_CUSTOMER]
+- If the agent says the issue is resolved (e.g. "انحلت", "تم الحل", "حُلّت", "solved", "fixed", "resolved", "زين الحين", "اشتغل") → reply ONLY with "ممتاز! 🎉 زين إنها انحلّت" then ask "${agentFirstName}، على شي ثاني؟ 😊" with [OPTIONS: ✅ إي، في سؤال ثاني | 🏁 لا، يكفي — شكراً] — do NOT mention Resolutions or raise TT
 You help agents who are on a LIVE CALL with the customer — speed and accuracy matter.
 - NEVER use the word 'كول' in Arabic — always say 'المكالمة' instead.
+- NEVER say 'سيتم التواصل من فريق Resolutions' unless you have explicitly raised a TT in the same response.
 
 Your personality: warm, efficient, Kuwaiti — like a sharp colleague helping you live on a call.
 
@@ -3309,8 +3317,41 @@ ALWAYS use [OPTIONS] for any question requiring a choice.`;
     const priority = kbResult ? (kbResult.priority || 'medium') : (issueContext && issueContext.subIssue ? 'medium' : null);
 
     // Post-process: remove non-Kuwaiti words and KB-related warnings
-    const processed = answer_final
+    let processed = answer_final
       .replace(/\bشو\b/g, 'شنو')
+      .replace(/\bوش\b/g, 'شنو')
+      .replace(/\bإيش\b/g, 'شنو')
+      .replace(/\bايش\b/g, 'شنو')
+      .replace(/\bلسع\b/g, 'بعد')
+      .replace(/لسع /g, 'بعد ')
+      .replace(/\bهسه\b/g, 'الحين')
+      .replace(/\bهلق\b/g, 'الحين')
+      .replace(/\bدلوقتي\b/g, 'الحين')
+      .replace(/\bقوام\b/g, 'الحين')
+      .replace(/\bهيك\b/g, 'جذي')
+      .replace(/\bكده\b/g, 'جذي')
+      .replace(/\bكدا\b/g, 'جذي')
+      .replace(/\bجذى\b/g, 'جذي')
+      .replace(/\bبدي\b/g, 'أبي')
+      .replace(/\bمش\b/g, 'مو')
+      .replace(/\bليه\b/g, 'ليش')
+      .replace(/\bفين\b/g, 'وين')
+      .replace(/\bامتى\b/g, 'متى')
+      .replace(/\bبكره\b/g, 'باكر')
+      .replace(/\bالنهارده\b/g, 'اليوم')
+      .replace(/\bأيوه\b/g, 'إي')
+      .replace(/\bآه\b/g, 'إي')
+      .replace(/\bلأ\b/g, 'لا')
+      .replace(/\bإزيك\b/g, 'شلونك')
+      .replace(/\bعامل إيه\b/g, 'شلونك')
+      .replace(/\bحاجة\b/g, 'شي')
+      .replace(/\bحاجات\b/g, 'أشياء')
+      .replace(/\bده\b/g, 'هذا')
+      .replace(/\bدي\b/g, 'هذي')
+      .replace(/\bمفيش\b/g, 'ما في')
+      .replace(/\bبرضو\b/g, 'كذلك')
+      .replace(/\bشوية\b/g, 'شوي')
+      .replace(/\bأنهي\b/g, 'أي')
       .replace(/\bاللخ\b/g, '')
       .replace(/\bلخ\b/g, '')
       .replace(/\bيعني إيه\b/g, 'يعني شنو')
@@ -3342,7 +3383,11 @@ ALWAYS use [OPTIONS] for any question requiring a choice.`;
       .replace(/⚠️[^\n]*Smart Care[^\n]*TT[^\n]*/gi, '')
       .replace(/أي مشكلة في Smart Care[^\n]*/gi, '');
     const optionsMatch = processed.match(/\[OPTIONS:\s*([^\]]+)\]/i);
-    const cleanAnswer = processed.replace(/\[OPTIONS:[^\]]*\]/gi, '').trim();
+    let cleanAnswer = processed.replace(/\[OPTIONS:[^\]]*\]/gi, '').trim();
+    // Auto-inject OPTIONS if AI forgot after "على شي ثاني؟"
+    if (/على شي ثاني/.test(cleanAnswer) && !optionsMatch) {
+      optionsMatch = ['', '✅ إي، في سؤال ثاني | 🏁 لا، يكفي — شكراً'];
+    }
 
     const lines = cleanAnswer.split("\n").filter(l => l.trim());
     const hasSteps = lines.some(l => /^\d+[.\-)]/.test(l.trim()));
