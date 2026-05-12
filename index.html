@@ -3979,8 +3979,8 @@ function switchPreview(mode) {
       <div class="msg-avatar">🤖</div>
       <div class="msg-bubble" id="welcomeMsg">
         ${mode === 'L1'
-          ? (_t ? _t.welcomeL1 : '🌹 أهلاً فيكم<br><br>مساعدكم الذكي في stc — جاهز لحل المشاكل وخدمة العميل ⚡<br><br>اختر المشكلة أو اكتبها مباشرة 👇')
-          : (_t ? _t.welcomeL2 : 'هلا! 👋 أنا مساعد Resolutions.<br>اكتب مشكلة العميل وأساعدك بها.')}
+          ? (_t ? _t.welcomeL1.replace('فيكم', (currentUser && currentUser.name ? currentUser.name.split(' ')[0] : 'فيكم')) : '🌹 أهلاً فيكم<br><br>مساعدكم الذكي في stc — جاهز لحل المشاكل وخدمة العميل ⚡<br><br>اختر المشكلة أو اكتبها مباشرة 👇')
+          : (_t ? _t.welcomeL2.replace('هلا!', 'هلا ' + (currentUser && currentUser.name ? currentUser.name.split(' ')[0] : '') + '!') : 'هلا! 👋 أنا مساعد Resolutions.<br>اكتب مشكلة العميل وأساعدك بها.')}
       </div>
     </div>`;
   chatHistory = [];
@@ -4694,7 +4694,10 @@ function applyLang() {
   const welcomeEl = document.getElementById('welcomeMsg');
   if (welcomeEl) {
     const isL1 = (typeof previewMode !== 'undefined' && previewMode === 'L1');
-    welcomeEl.innerHTML = isL1 ? t.welcomeL1 : t.welcomeL2;
+    const _fn = currentUser && currentUser.name ? currentUser.name.split(' ')[0] : '';
+    welcomeEl.innerHTML = isL1
+      ? (t.welcomeL1 + '').replace('فيكم', _fn || 'فيكم').replace('Welcome!', 'Welcome ' + (_fn || '') + '!')
+      : (t.welcomeL2 + '').replace('هلا!', 'هلا ' + _fn + '!').replace('Hello!', 'Hello ' + _fn + '!');
   }
 
   // Update logout button in profile menu
