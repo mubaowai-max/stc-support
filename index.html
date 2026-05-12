@@ -3812,14 +3812,19 @@ async function saveEditEmp() {
   const body = { name, role };
   if (pass) body.password = pass;
   try {
-    await fetch(SUPABASE_URL + '/rest/v1/employees?email=eq.' + encodeURIComponent(email), {
+    const res = await fetch(SUPABASE_URL + '/rest/v1/employees?email=eq.' + encodeURIComponent(email), {
       method: 'PATCH',
       headers: { 'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY },
       body: JSON.stringify(body)
     });
-    document.getElementById('editEmpModal').style.display = 'none';
-    renderAdmin();
-  } catch(e) { alert('خطأ: ' + e.message); }
+    if (res.ok) {
+      document.getElementById('editEmpModal').style.display = 'none';
+      renderAdmin();
+    } else {
+      const err = await res.json().catch(()=>({}));
+      alert('خطأ Supabase: ' + JSON.stringify(err));
+    }
+  } catch(e) { alert('خطأ اتصال: ' + e.message); }
 }
 
 async function forceLogoutUser(email) {
