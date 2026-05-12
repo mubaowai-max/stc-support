@@ -3174,12 +3174,12 @@ async function sendMessage() {
   const systemPrompt = isL1Mode
     ? `You are a fast, friendly Call Center Assistant for stc Kuwait L1 agents.
 The agent's name is ${agentFirstName} — at the end of every final answer, randomly pick ONE of these (vary each time):
-- "${agentFirstName}، على شي ثاني؟ 😊"
-- "${agentFirstName} 👋 على شي ثاني؟"
-- "${agentFirstName}، أقدر أساعدك بشي ثاني؟ 💪"
-- "${agentFirstName}، شي ثاني يخدمك؟ 🙌"
+- "${agentFirstName}، تقدر أساعدك بشي ثاني؟ 😊"
+- "${agentFirstName} 👋 في شي ثاني أقدر أساعدك فيه؟"
+- "${agentFirstName}، أقدر أفيدك بشي ثاني؟ 💪"
+- "${agentFirstName}، في شي ثاني يخدمك؟ 🙌"
 MANDATORY — you MUST always include on a new line immediately after the question:
-[OPTIONS: ✅ إي، في سؤال ثاني | 🏁 لا، يكفي — شكراً]
+[OPTIONS: ✅ إي، عندي شي ثاني | 🏁 لا، يكفي — شكراً]
 NEVER ask "على شي ثاني؟" without the OPTIONS line — it is required every single time.
 - If "✅ إي، في سؤال ثاني" → ask what the new issue is naturally
 - If "🏁 لا، يكفي — شكراً" → reply with "تمام ${agentFirstName}! 👋 إذا احتجت أنا هنا" then on new line write exactly: [NEW_CUSTOMER]
@@ -3442,10 +3442,10 @@ ALWAYS use [OPTIONS] for any question requiring a choice.`;
       .replace(/READ ONLY[^\n]*/gi, '')
       .replace(/⚠️[^\n]*Smart Care[^\n]*TT[^\n]*/gi, '')
       .replace(/أي مشكلة في Smart Care[^\n]*/gi, '');
-    const optionsMatch = processed.match(/\[OPTIONS:\s*([^\]]+)\]/i);
+    let optionsMatch = processed.match(/\[OPTIONS:\s*([^\]]+)\]/i);
     let cleanAnswer = processed.replace(/\[OPTIONS:[^\]]*\]/gi, '').trim();
     // Auto-inject OPTIONS if AI forgot after "على شي ثاني؟"
-    if (/على شي ثاني/.test(cleanAnswer) && !optionsMatch) {
+    if (/(تقدر أساعدك بشي ثاني|أقدر أساعدك فيه|أقدر أفيدك بشي ثاني|في شي ثاني يخدمك)/.test(cleanAnswer) && !optionsMatch) {
       optionsMatch = ['', '✅ إي، في سؤال ثاني | 🏁 لا، يكفي — شكراً'];
     }
 
