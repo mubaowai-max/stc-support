@@ -979,7 +979,10 @@
     <div id="historyPanel" style="display:none;padding:20px;max-width:900px;margin:0 auto">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
         <h3 style="color:var(--text);margin:0">🕐 سجل محادثاتي — آخر 24 ساعة</h3>
-        <button onclick="loadHistory()" style="background:var(--surface3);border:1px solid var(--border);border-radius:8px;padding:7px 14px;color:var(--text);font-size:13px;font-family:inherit;cursor:pointer">🔄 تحديث</button>
+        <div style="display:flex;gap:8px">
+          <button onclick="loadHistory()" style="background:var(--surface3);border:1px solid var(--border);border-radius:8px;padding:7px 14px;color:var(--text);font-size:13px;font-family:inherit;cursor:pointer">🔄 تحديث</button>
+          <button onclick="exportHistoryExcel()" style="background:#1D6F42;border:none;border-radius:8px;padding:7px 14px;color:white;font-size:13px;font-family:inherit;cursor:pointer;font-weight:600">⬇️ تنزيل Excel</button>
+        </div>
       </div>
       <div id="historyBody" style="display:flex;flex-direction:column;gap:12px">
         <div style="color:var(--text-muted);text-align:center;padding:40px">جاري التحميل...</div>
@@ -2443,6 +2446,29 @@ function showTab(tab, el) {
   if (tab === 'history') loadHistory();
 }
 
+function exportHistoryExcel() {
+  var data = window._historyData;
+  if (!data || !data.length) { alert('اضغط تحديث أولاً'); return; }
+  var SUBCAT = {'Roaming Techincal- Internet':'Roaming Complaint','Internet- not working':'Internet issue','Speed Issue –4G':'Internet issue','Speed Issue –5G':'Internet issue','Calls- not working':'Call & SMS issues','Outage- Network':'General Issue'};
+  var rows = [['Time','Agent','Question','Answer','Task Name','Sub Category']];
+  data.forEach(function(l) {
+    var d = new Date(l.time || l.created_at);
+    var ans = (l.answer || '').replace(/<[^>]*>/g,'').substring(0,300);
+    rows.push([d.toLocaleString('en-GB'), l.email||'', l.question||'', ans, l.category||'', SUBCAT[l.category]||'-']);
+  });
+  var csv = rows.map(function(r) {
+    return r.map(function(c) { return '"' + String(c).replace(/"/g,'""') + '"'; }).join(',');
+  }).join('\r\n');
+  var blob = new Blob(['﻿' + csv], {type:'text/csv;charset=utf-8;'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'history_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+
 async function loadHistory() {
   const body = document.getElementById('historyBody');
   body.innerHTML = '<div style="color:var(--text-muted);text-align:center;padding:40px">جاري التحميل...</div>';
@@ -2516,6 +2542,7 @@ async function loadHistory() {
         + '</div></div>';
     });
     body.innerHTML = cards;
+    window._historyData = logs;
   } catch(e) {
     console.error("History load error:", e);
     // Try without answer column in case it doesn't exist yet
