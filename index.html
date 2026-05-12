@@ -3780,7 +3780,8 @@ function renderEmployeesTable(employees) {
       ? " <button onclick=\"forceLogoutUser('" + safeEmail + "')\" style=\"background:#7F1D1D;border:1px solid #991B1B;border-radius:6px;padding:4px 10px;color:#FCA5A5;font-size:11px;cursor:pointer;font-family:inherit\">Force Logout</button>"
       : '';
 
-    const editBtn = "<button onclick=\"openEditEmp('" + safeEmail + "', '" + (e.name||'').replace(/'/g,"\\'"') + "', '" + (e.role||'') + "')\" style=\"background:var(--surface3);border:1px solid var(--border);border-radius:6px;padding:4px 10px;color:var(--text);font-size:11px;cursor:pointer;font-family:inherit\">✏️ تعديل</button>";
+    const safeName = (e.name||'').replace(/'/g,'&#39;');
+    const editBtn = '<button onclick="openEditEmp(\''+safeEmail+'\',\''+safeName+'\',\''+( e.role||'')+'\')" style="background:var(--surface3);border:1px solid var(--border);border-radius:6px;padding:4px 10px;color:var(--text);font-size:11px;cursor:pointer;font-family:inherit">✏️ تعديل</button>';
     return '<tr><td class="td-email">' + e.email + '</td><td>' + (e.name||'-') + '</td><td><span style="color:#C77DFF">' + (e.role||'-') + '</span></td><td>' + statusBadge + '</td><td class="td-time">' + lastSeen + '</td><td style="display:flex;gap:4px;flex-wrap:wrap">' + editBtn + toggleBtn + forceLogoutBtn + '</td></tr>';
   }).join('');
 
