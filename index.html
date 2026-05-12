@@ -1432,8 +1432,15 @@ STEP 5 — Speed Test: شغّل Ookla أو speedtest.net على جهاز واص�
     category: "Speed Issue – 4G",
     priority: "medium",
     definition: "Mobile: Any issue related to 4G internet speed users (LTE)",
-    solution: `1. Ask customer if the issue occurs everywhere or in a specific location — this determines if it is network coverage or device related.
-2. Check for site down in customer's area. If site down confirmed → Raise TT immediately with tower number and area name.
+    solution: `STEP 1 — ⚠️ START HERE — Basic Checks (MANDATORY FIRST STEP — DO NOT SKIP):
+🔵 BSS: الخط نشط، الباقة نشطة، استخدام العميل ما خلص
+🔵 Smart Care: الخط attached، Data Status نشط، وفي إشارة
+🔵 Site Down: ما في عطل في منطقة العميل
+
+[OPTIONS: ✅ كل شي زين، نكمل | ⚠️ في مشكلة بالأساسيات]
+
+STEP 2 — Ask customer if the issue occurs everywhere or in a specific location.
+STEP 3 — Check for site down in customer's area. If site down confirmed → Raise TT immediately with tower number and area name.
 3. Ask customer to run a speed test using Ookla Speedtest or speedtest.net and share the result.
 4. In Smart Care — go to Quality Complaint Handling > Overall Quality > Speed Test. Cross-reference DL Throughput and Speed Experience with the customer's Ookla result.
 5. If download speed is below 3 Mbps → Raise TT to Resolution team.
@@ -1478,10 +1485,17 @@ STEP 5 — Speed Test: شغّل Ookla أو speedtest.net على جهاز واص�
     category: "Speed Issue – 5G",
     priority: "medium",
     definition: "Mobile: Any issue related to 5G internet speed users",
-    solution: `1. Ask customer if the issue occurs everywhere or in a specific location — this determines if it is network coverage or device related.
+    solution: `STEP 1 — ⚠️ START HERE — Basic Checks (MANDATORY FIRST STEP — DO NOT SKIP):
+🔵 BSS: الخط نشط، الباقة نشطة، استخدام العميل ما خلص
+🔵 Smart Care: الخط attached، Data Status نشط، وفي إشارة
+🔵 Site Down: ما في عطل في منطقة العميل
+
+[OPTIONS: ✅ كل شي زين، نكمل | ⚠️ في مشكلة بالأساسيات]
+
+STEP 2 — Ask customer if the issue occurs everywhere or in a specific location.
 2. Check for site down in customer's area. If site down confirmed → Raise TT immediately with tower number and area name.
 3. Ask customer to check which network band they are connected to — must be 5G, not 4G. Guide customer to set network type to 5G ON (not Auto) in mobile network settings.
-4. Ask customer to disable power saving mode — it throttles network performance.
+4. Ask customer to disable power saving mode — it throttles network performance. Then ask them to run a speed test.
 5. Ask customer to run a speed test using Ookla Speedtest or speedtest.net and share the result.
 6. In Smart Care — go to Quality Complaint Handling > Overall Quality > Speed Test. Cross-reference DL Throughput and Speed Experience with the customer's Ookla result.
 7. If download speed is below 100 Mbps → Raise TT to Resolution team.
@@ -3162,6 +3176,21 @@ async function sendMessage() {
   }
 
   if (kbResult) {
+    // Auto-inject basics if STEP 1 exists
+    if (kbResult.solution && kbResult.solution.includes('STEP 1 — ⚠️ START HERE')) {
+      const basicLines = kbResult.solution.split('STEP 2')[0]
+        .replace('STEP 1 — ⚠️ START HERE — Basic Checks (MANDATORY FIRST STEP — DO NOT SKIP):\n','')
+        .replace(/\[OPTIONS:[^\]]+\]/g,'').trim();
+      addMsg(basicLines, 'bot', null, kbResult.priority, kbResult.category);
+      setTimeout(() => {
+        addButtonGroup([
+          {icon:'1️⃣', label:'✅ كل شي زين، نكمل', value:'كل شي زين'},
+          {icon:'2️⃣', label:'⚠️ في مشكلة بالأساسيات', value:'في مشكلة'}
+        ], 'basics-' + Date.now());
+      }, 300);
+      savLog(q, kbResult.category, kbResult.priority, basicLines);
+      return;
+    }
     kbContext = sessionCtx + "KB Match — " + kbResult.category + ":\n" + kbResult.solution;
   } else if (issueContext && issueContext.subIssue) {
     // No KB match but we have issue context — use it directly
@@ -3174,20 +3203,23 @@ async function sendMessage() {
   const agentFirstName = (currentUser && currentUser.name && currentUser.name.trim()) ? currentUser.name.trim().split(' ')[0] : (currentUser ? currentUser.email.split('@')[0] : 'الأجنت');
   const systemPrompt = isL1Mode
     ? `You are a fast, friendly Call Center Assistant for stc Kuwait L1 agents.
-The agent's name is ${agentFirstName} — at the end of every final answer, randomly pick ONE of these (vary each time):
+The agent's name is ${agentFirstName} — use it ONLY at the END of your final answer to say goodbye, like:
 - "${agentFirstName}، تقدر أساعدك بشي ثاني؟ 😊"
 - "${agentFirstName} 👋 في شي ثاني أقدر أساعدك فيه؟"
 - "${agentFirstName}، أقدر أفيدك بشي ثاني؟ 💪"
 - "${agentFirstName}، في شي ثاني يخدمك؟ 🙌"
+NEVER introduce yourself using the agent's name. NEVER say "أنا [name] من فريق L1/L2".
 MANDATORY — you MUST always include on a new line immediately after the question:
 [OPTIONS: ✅ إي، عندي شي ثاني | 🏁 لا، يكفي — شكراً]
-NEVER ask "على شي ثاني؟" without the OPTIONS line — it is required every single time.
+NEVER ask without the OPTIONS line — it is required every single time.
 - If "✅ إي، في سؤال ثاني" → ask what the new issue is naturally
 - If "🏁 لا، يكفي — شكراً" → reply with "تمام ${agentFirstName}! 👋 إذا احتجت أنا هنا" then on new line write exactly: [NEW_CUSTOMER]
-- If the agent says the issue is resolved (e.g. "انحلت", "تم الحل", "حُلّت", "solved", "fixed", "resolved", "زين الحين", "اشتغل") → reply ONLY with "ممتاز! 🎉 زين إنها انحلّت" then ask "${agentFirstName}، على شي ثاني؟ 😊" with [OPTIONS: ✅ إي، في سؤال ثاني | 🏁 لا، يكفي — شكراً] — do NOT mention Resolutions or raise TT
+- If the agent says the issue is resolved → reply ONLY with "ممتاز! 🎉 زين إنها انحلّت" then ask "${agentFirstName}، تقدر أساعدك بشي ثاني؟ 😊" with [OPTIONS: ✅ إي، في سؤال ثاني | 🏁 لا، يكفي — شكراً] — do NOT mention Resolutions or raise TT
 You help agents who are on a LIVE CALL with the customer — speed and accuracy matter.
 - NEVER use the word 'كول' in Arabic — always say 'المكالمة' instead.
 - NEVER say 'سيتم التواصل من فريق Resolutions' unless you have explicitly raised a TT in the same response.
+- ALWAYS start with the basic checks (BSS, Smart Care, Site Down) when they are listed at the beginning of the KB entry — NEVER skip them or jump to other steps.
+- Follow the KB solution in EXACT ORDER — do not reorder, skip, or summarize steps.
 
 Your personality: warm, efficient, Kuwaiti — like a sharp colleague helping you live on a call.
 
@@ -3891,7 +3923,8 @@ function renderEmployeesTable(employees) {
 
     const safeName = (e.name||'').replace(/'/g,'&#39;');
     const editBtn = '<button onclick="openEditEmp(\''+safeEmail+'\',\''+safeName+'\',\''+( e.role||'')+'\')" style="background:var(--surface3);border:1px solid var(--border);border-radius:6px;padding:4px 10px;color:var(--text);font-size:11px;cursor:pointer;font-family:inherit">✏️ تعديل</button>';
-    return '<tr><td class="td-email">' + e.email + '</td><td>' + (e.name||'-') + '</td><td><span style="color:#C77DFF">' + (e.role||'-') + '</span></td><td>' + statusBadge + '</td><td class="td-time">' + lastSeen + '</td><td style="display:flex;gap:4px;flex-wrap:wrap">' + editBtn + toggleBtn + forceLogoutBtn + '</td></tr>';
+    const roleLabel = e.role === 'admin' ? 'مدير' : e.role === 'L1' ? 'L1' : e.role === 'employee' ? 'L2' : (e.role||'-');
+    return '<tr><td class="td-email">' + e.email + '</td><td>' + (e.name||'-') + '</td><td><span style="color:#C77DFF">' + roleLabel + '</span></td><td>' + statusBadge + '</td><td class="td-time">' + lastSeen + '</td><td style="display:flex;gap:4px;flex-wrap:wrap">' + editBtn + toggleBtn + forceLogoutBtn + '</td></tr>';
   }).join('');
 
   body.innerHTML = '<table><thead><tr><th>الإيميل</th><th>الاسم</th><th>الدور</th><th>الحالة</th><th>آخر دخول</th><th>إجراء</th></tr></thead><tbody>' + rows + '</tbody></table>';
@@ -4077,6 +4110,27 @@ function triggerIssueWithContext() {
   };
   var displayIssue = issueMap[issueContext.subIssue] || issueContext.subIssue;
   var serviceLabel = issueContext.service === 'fiber' ? '— Fiber' : issueContext.service === 'baity_odu' ? '— Baity' : '';
+
+  // Show basics for internet/speed/calls issues
+  var needsBasics = issueContext.subIssue && (
+    issueContext.subIssue.includes('Speed Issue') ||
+    issueContext.subIssue.includes('Internet-') ||
+    issueContext.subIssue.includes('Calls-')
+  );
+
+  if (needsBasics) {
+    var basicMsg = 'الأساسيات أولاً — تحقق من كل هالنقاط قبل أي خطوة:\n\n🔵 BSS: الخط نشط، الباقة نشطة، استخدام العميل ما خلص\n🔵 Smart Care: الخط attached، Data Status نشط، وفي إشارة\n🔵 Site Down: ما في عطل في منطقة العميل';
+    var kbCat = issueContext.subIssue;
+    addMsg(basicMsg, 'bot', null, 'medium', kbCat);
+    setTimeout(function() {
+      addButtonGroup([
+        {icon:'1️⃣', label:'✅ كل شي زين، نكمل', value:'كل شي زين'},
+        {icon:'2️⃣', label:'⚠️ في مشكلة بالأساسيات', value:'في مشكلة'}
+      ], 'basics-' + Date.now());
+    }, 300);
+    savLog(aiParts.join(' | '), kbCat, 'medium', basicMsg);
+    return;
+  }
 
   sendMessageText(aiParts.join(' | '), '📋 ' + displayIssue + (serviceLabel ? ' ' + serviceLabel : ''));
 }
