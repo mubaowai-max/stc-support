@@ -1150,12 +1150,12 @@
 
       <div class="logs-table-wrap">
         <div class="logs-header">
-          <h3>سجل الأسئلة</h3>
+          <h3 id="lblSecLogs">سجل الأسئلة <span id="liveIndicator" style="display:none;font-size:11px;color:#2ECC71;font-weight:400;margin-right:8px"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#2ECC71;animation:pulse 1.5s infinite;vertical-align:middle;margin-left:4px"></span>مباشر</span></h3>
           <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
             <input class="filter-input" placeholder="بحث..." oninput="filterLogs(this.value)" id="filterInput">
-            <input type="date" id="dateFrom" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 10px;color:var(--text);font-size:13px;font-family:inherit" onchange="applyDateFilter()">
+            <input type="date" id="dateFrom" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 10px;color:var(--text);font-size:13px;font-family:inherit">
             <span style="color:var(--text-muted);font-size:13px">—</span>
-            <input type="date" id="dateTo" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 10px;color:var(--text);font-size:13px;font-family:inherit" onchange="applyDateFilter()">
+            <input type="date" id="dateTo" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 10px;color:var(--text);font-size:13px;font-family:inherit"><button onclick="applyDateFilter()" style="background:var(--primary);border:none;border-radius:8px;padding:7px 16px;color:white;font-size:13px;font-family:inherit;cursor:pointer;font-weight:600;margin-right:4px">🔍 بحث</button>
             <button onclick="clearDateFilter()" style="background:var(--surface3);border:1px solid var(--border);border-radius:8px;padding:7px 10px;color:var(--text);font-size:12px;font-family:inherit;cursor:pointer">مسح</button>
             <button onclick="exportExcel()" style="background:linear-gradient(135deg,#2ECC71,#27AE60);border:none;border-radius:8px;padding:8px 16px;color:white;font-size:13px;font-family:inherit;cursor:pointer;white-space:nowrap">⬇️ تنزيل Excel</button>
           </div>
@@ -1226,22 +1226,34 @@ const KB = [
     category: "Roaming Techincal- Internet",
     priority: "medium",
     definition: "Any issue with internet while customer in roaming status",
-    solution: `STEP 1 — Device: قول للعميل يتأكد إن التجوال مفعّل في الإعدادات (Data Roaming = ON). هذا أول شي قبل أي شي ثاني.
-STEP 2 — BSS: تحقق الخط ما موقوف بسبب الفاتورة.
-STEP 3 — Smart Care — تحقق:
-  a. Roaming Package = YES؟ (إذا NO → لازم تفعيل التجوال → Raise TT)
-  b. CS Roam = NOBAR؟ (إذا BAR → قيد على التجوال → Raise TT)
-  c. Roaming field = ROAM؟ (إذا LOCAL → العميل مو متصل بشبكة تجوال → وجّهه يختار الشبكة يدوياً مو Auto)
-  d. Roaming Operator = شبكة صحيحة؟ (إذا فاضي → وجّهه يختار الشبكة يدوياً)
-  → أي مشكلة في أي نقطة من Smart Care = Raise TT فوراً
-STEP 4 — Reset: اطلب من العميل يسوي Reset Network Settings على الجهاز.
-STEP 5 — Error: وش رسالة الخطأ اللي تطلع عند محاولة الاتصال بالإنترنت؟
-STEP 6 — SIM: إذا عنده SIM مزدوجة — تأكد الخط الصح محدد للبيانات.
-→ إذا ما انحلّت بعد كل الخطوات → Raise TT
+    solution: `أول في — تأكد إن العميل فعلاً متصل بشبكة رومينق:
+
+📶 شريط الحالة — هل يظهر اسم شبكة تجوال؟
+- لو يظهر "No Service" → مو متصل بأي شبكة → خلنا نرشده يختار الشبكة يدوياً أول
+
+📦 باقة الرومينق — عند العميل باقة رومينق نشطة؟
+- لو ما عنده → اطلب منه يفعّلها أول، وبعدين نكمل
+
+[OPTIONS: ✅ متصل وعنده باقة، نكمل | 📵 ما عنده باقة رومينق | ❌ ما متصل بأي شبكة]
+
+→ ✅ لو تأكدنا إنه متصل وعنده باقة، تحقق من هالنقاط مع بعض:
+
+🔵 الجهاز: Data Roaming = ON في الإعدادات؟
+🔵 BSS: الخط نشط، ما في إيقاف بسبب فاتورة؟
+🔵 Smart Care:
+  - CS Roam = NOBAR؟ (لو BAR → قيد على الخط → نرفع TT)
+  - Roaming field = ROAM؟ (لو LOCAL → العميل يختار الشبكة يدوياً)
+  - Roaming Operator = شبكة صحيحة؟ (لو فاضي → يختار يدوياً)
+
+[OPTIONS: ✅ تأكدنا، نكمل | ⚠️ في مشكلة]
+
+→ ✅ لو كل الأساسيات زينة:
+STEP 4 — اطلب من العميل Reset Network Settings على الجهاز
+STEP 5 — لو المشكلة لا زالت موجودة → Raise TT
 
 📋 Ticket Requirements:
 • Issue description
-• Error message shown on device
+• Error message on device
 • Troubleshooting confirmation
 • Callback + active WhatsApp`
   },
@@ -3097,8 +3109,14 @@ async function sendMessage() {
   } else {
     kbContext = "General question — answer naturally in Kuwaiti dialect.";
   }
+  const agentFirstName = (currentUser && currentUser.name) ? currentUser.name.split(' ')[0] : 'الأجنت';
   const systemPrompt = isL1Mode
     ? `You are a fast, friendly Call Center Assistant for stc Kuwait L1 agents.
+The agent's name is ${agentFirstName} — at the end of every final answer (when you have fully resolved the issue or given complete steps), always end with:
+"${agentFirstName}، على شي ثاني؟ 😊
+[OPTIONS: ✅ إي، عندي سؤال ثاني | 🏁 لا، شكراً]"
+- If agent selects "✅ إي، عندي سؤال ثاني" → stay ready and ask what the new issue is with: "قول وش عندك، أنا هنا 👂"
+- If agent selects "🏁 لا، شكراً" → reply ONLY with: "زين! متى احتجت أنا هنا 👋😊" — nothing else, no buttons, no new customer
 You help agents who are on a LIVE CALL with the customer — speed and accuracy matter.
 - NEVER use the word 'كول' in Arabic — always say 'المكالمة' instead.
 
@@ -3213,6 +3231,7 @@ For MBB/Fiber only — ask device: "أي جهاز عند العميل؟" [OPTION
 - NEVER use: DSL, Business Line, Home Broadband, Mobile Data, MBB Router
 - NEVER add [OPTIONS] when giving steps — only at decision points`
     : `You are a smart Resolutions Assistant for stc Kuwait support agents (L2 team).
+The agent's name is ${agentFirstName} — at the end of every final answer, always end with: "${agentFirstName}، في شي ثاني؟"
 
 Your name: Resolutions Assistant
 Your personality: natural, smart, diagnostic — like an experienced telecom engineer helping a colleague.
@@ -3292,6 +3311,11 @@ ALWAYS use [OPTIONS] for any question requiring a choice.`;
     // Post-process: remove non-Kuwaiti words and KB-related warnings
     const processed = answer_final
       .replace(/\bشو\b/g, 'شنو')
+      .replace(/\bاللخ\b/g, '')
+      .replace(/\bلخ\b/g, '')
+      .replace(/\bيعني إيه\b/g, 'يعني شنو')
+      .replace(/\bازيك\b/g, 'شلونك')
+      .replace(/\bعامل إيه\b/g, 'شلونك')
       .replace(/\bإيش\b/g, 'شنو')
       .replace(/\bايش\b/g, 'شنو')
       .replace(/\bكول\b/g, 'المكالمة')
@@ -3357,7 +3381,8 @@ ALWAYS use [OPTIONS] for any question requiring a choice.`;
     const sessionEndSignals = [
       'رفعنا الطلب', 'ارفع الطلب', 'raise tt', 'raise the tt',
       'المشكلة خلصت', 'خلصت المشكلة', 'issue resolved', 'problem solved',
-      'بلّغ العميل إنه سيتم التواصل معه من فريق Resolutions بأقرب وقت', 'يتواصل معه', 'أي أسئلة', 'any other', 'أي شي ثاني',
+      'بلّغ العميل إنه سيتم التواصل معه من فريق Resolutions بأقرب وقت', 'يتواصل معه',
+      'متى احتجت أنا هنا', 'زين! متى احتجت',
       'يسكّد الفاتورة', 'يسدّد الفاتورة', 'يسوّي الفاتورة', 'يدفع الفاتورة',
       'ينتظر يتصلون', 'شرّح للعميل',
       'يحاول مرة ثانية', 'اطلب من العميل يحاول',
@@ -3489,6 +3514,7 @@ async function renderAdmin() {
     question: l.question,
     category: l.category,
     priority: l.priority,
+    answer: l.answer || '',
     time: l.created_at
   })) : logs.filter(l => isAdmin || l.email === currentUser.email);
 
@@ -3554,6 +3580,47 @@ async function renderAdmin() {
     if (isAdmin) { anSec.style.display='block'; renderAnalytics(); }
     else anSec.style.display='none';
   }
+
+  // Start live refresh for admin
+  if (isAdmin) startLiveRefresh();
+}
+
+let liveRefreshInterval = null;
+
+function startLiveRefresh() {
+  if (liveRefreshInterval) clearInterval(liveRefreshInterval);
+  const indicator = document.getElementById('liveIndicator');
+  if (indicator) indicator.style.display = 'inline';
+
+  // Refresh every 15 seconds — always update
+  liveRefreshInterval = setInterval(async () => {
+    if (!currentUser || currentUser.role !== 'admin') return;
+    try {
+      const res = await fetch(SUPABASE_URL + '/rest/v1/logs?order=created_at.desc&limit=500', {
+        headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+      });
+      if (!res.ok) return;
+      const fresh = await res.json();
+      if (!Array.isArray(fresh)) return;
+
+      // Always update — compare latest entry time
+      const latestNew = fresh[0] ? fresh[0].created_at : null;
+      const latestOld = allLogsCache[0] ? allLogsCache[0].time : null;
+      if (latestNew !== latestOld) {
+        allLogsCache = fresh.map(l => ({
+          email: l.email, question: l.question, category: l.category,
+          priority: l.priority, answer: l.answer || '', time: l.created_at
+        }));
+        currentLogsPage = 1;
+        renderLogsTable(allLogsCache);
+        document.getElementById('statTotal').textContent = allLogsCache.length;
+        const today = new Date().toDateString();
+        document.getElementById('statToday').textContent = allLogsCache.filter(l => new Date(l.time).toDateString() === today).length;
+        // Flash indicator green
+        if (indicator) { indicator.style.color='#2ECC71'; setTimeout(()=>{ if(indicator) indicator.style.color=''; },1000); }
+      }
+    } catch(e) {}
+  }, 15000);
 }
 
 async function applyDateFilter() {
@@ -3713,7 +3780,8 @@ function renderEmployeesTable(employees) {
       ? " <button onclick=\"forceLogoutUser('" + safeEmail + "')\" style=\"background:#7F1D1D;border:1px solid #991B1B;border-radius:6px;padding:4px 10px;color:#FCA5A5;font-size:11px;cursor:pointer;font-family:inherit\">Force Logout</button>"
       : '';
 
-    return '<tr><td class="td-email">' + e.email + '</td><td>' + (e.name||'-') + '</td><td><span style="color:#C77DFF">' + (e.role||'-') + '</span></td><td>' + statusBadge + '</td><td class="td-time">' + lastSeen + '</td><td style="display:flex;gap:4px;flex-wrap:wrap">' + toggleBtn + forceLogoutBtn + '</td></tr>';
+    const editBtn = "<button onclick=\"openEditEmp('" + safeEmail + "', '" + (e.name||'').replace(/'/g,"\\'"') + "', '" + (e.role||'') + "')\" style=\"background:var(--surface3);border:1px solid var(--border);border-radius:6px;padding:4px 10px;color:var(--text);font-size:11px;cursor:pointer;font-family:inherit\">✏️ تعديل</button>";
+    return '<tr><td class="td-email">' + e.email + '</td><td>' + (e.name||'-') + '</td><td><span style="color:#C77DFF">' + (e.role||'-') + '</span></td><td>' + statusBadge + '</td><td class="td-time">' + lastSeen + '</td><td style="display:flex;gap:4px;flex-wrap:wrap">' + editBtn + toggleBtn + forceLogoutBtn + '</td></tr>';
   }).join('');
 
   body.innerHTML = '<table><thead><tr><th>الإيميل</th><th>الاسم</th><th>الدور</th><th>الحالة</th><th>آخر دخول</th><th>إجراء</th></tr></thead><tbody>' + rows + '</tbody></table>';
@@ -3723,6 +3791,34 @@ async function toggleEmp(email, disabled) {
   await toggleEmployeeDisabled(email, disabled);
   saveAuditLog(disabled ? 'disable_employee' : 'enable_employee', email, disabled ? 'Account disabled by admin' : 'Account re-enabled by admin');
   renderAdmin();
+}
+
+function openEditEmp(email, name, role) {
+  // Fill edit modal
+  document.getElementById('editEmpEmail').value = email;
+  document.getElementById('editEmpName').value = name;
+  document.getElementById('editEmpRole').value = role;
+  document.getElementById('editEmpPass').value = '';
+  document.getElementById('editEmpModal').style.display = 'flex';
+}
+
+async function saveEditEmp() {
+  const email = document.getElementById('editEmpEmail').value;
+  const name  = document.getElementById('editEmpName').value.trim();
+  const role  = document.getElementById('editEmpRole').value;
+  const pass  = document.getElementById('editEmpPass').value.trim();
+  if (!name) return;
+  const body = { name, role };
+  if (pass) body.password = pass;
+  try {
+    await fetch(SUPABASE_URL + '/rest/v1/employees?email=eq.' + encodeURIComponent(email), {
+      method: 'PATCH',
+      headers: { 'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY },
+      body: JSON.stringify(body)
+    });
+    document.getElementById('editEmpModal').style.display = 'none';
+    renderAdmin();
+  } catch(e) { alert('خطأ: ' + e.message); }
 }
 
 async function forceLogoutUser(email) {
@@ -4040,8 +4136,9 @@ async function addEmployee() {
       document.getElementById('newEmpPass').value = '';
       setTimeout(() => { hideAddEmployee(); renderAdmin(); }, 1500);
     } else {
+      const errData = await res.json().catch(()=>({}));
       msg.style.color = '#E74C3C';
-      msg.textContent = '⚠️ خطأ في الإضافة - تأكد من الإيميل';
+      msg.textContent = '⚠️ ' + (errData.message || errData.error || 'خطأ في الإضافة - تأكد من الإيميل');
       msg.style.display = 'block';
     }
   } catch(e) {
@@ -4566,6 +4663,43 @@ window.addEventListener('load', () => {
   applyLang();
 });
 </script>
+
+
+<!-- Edit Employee Modal -->
+<div id="editEmpModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.7);align-items:center;justify-content:center;padding:20px">
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;width:100%;max-width:420px;padding:24px;box-shadow:0 40px 80px rgba(0,0,0,0.5)">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+      <span style="font-size:15px;font-weight:600;color:var(--text)">✏️ تعديل بيانات الموظف</span>
+      <button onclick="document.getElementById('editEmpModal').style.display='none'" style="background:none;border:none;color:var(--text-muted);font-size:20px;cursor:pointer">✕</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div>
+        <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:4px">الإيميل</label>
+        <input id="editEmpEmail" readonly style="width:100%;background:var(--surface3);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text-muted);font-size:13px;font-family:inherit;direction:ltr">
+      </div>
+      <div>
+        <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:4px">الاسم</label>
+        <input id="editEmpName" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-size:13px;font-family:inherit">
+      </div>
+      <div>
+        <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:4px">الدور</label>
+        <select id="editEmpRole" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-size:13px;font-family:inherit">
+          <option value="employee">موظف L1</option>
+          <option value="L2">موظف L2</option>
+          <option value="admin">مدير</option>
+        </select>
+      </div>
+      <div>
+        <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:4px">كلمة المرور الجديدة (اختياري)</label>
+        <input id="editEmpPass" type="password" placeholder="اتركه فاضي إذا ما تبي تغير" style="width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-size:13px;font-family:inherit;direction:ltr">
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:20px">
+      <button onclick="document.getElementById('editEmpModal').style.display='none'" style="background:var(--surface3);border:1px solid var(--border);border-radius:8px;padding:8px 20px;color:var(--text);font-size:13px;font-family:inherit;cursor:pointer">إلغاء</button>
+      <button onclick="saveEditEmp()" style="background:var(--primary);border:none;border-radius:8px;padding:8px 24px;color:white;font-size:13px;font-family:inherit;cursor:pointer;font-weight:600">حفظ التعديلات</button>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
