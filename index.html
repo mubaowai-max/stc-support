@@ -3864,13 +3864,16 @@ function renderEmployeesTable(employees) {
     const diffMin = (now - lastSeenMs) / 60000;
     const isOnlineNow = !e.disabled && diffMin < 5;
 
+    const neverLoggedIn = !e.last_seen || e.last_seen === null;
     const statusBadge = e.disabled
       ? '<span style="color:#FF6B6B;font-weight:600">🔴 Disabled</span>'
       : isOnlineNow
-      ? '<span style="color:#2ECC71;font-weight:600;animation:pulse 1.5s infinite">🟢 Online Now</span>'
-      : e.status === 'active'
-      ? '<span style="color:#2ECC71;font-weight:600">🟢 Active</span>'
-      : '<span style="color:#FFD93D;font-weight:600">🟡 Idle</span>';
+      ? '<span style="color:#2ECC71;font-weight:600">🟢 Online Now</span>'
+      : neverLoggedIn
+      ? '<span style="color:#888;font-weight:500">⚪ لم يسجّل دخول</span>'
+      : e.status === 'idle'
+      ? '<span style="color:#FF8C00;font-weight:600">🟠 Not Active</span>'
+      : '<span style="color:#FF6B6B;font-weight:600">🔴 Offline</span>';
 
     const lastSeen = e.last_seen
       ? new Date(e.last_seen).toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'}) + ' ' + new Date(e.last_seen).toLocaleDateString('en-GB')
