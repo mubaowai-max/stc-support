@@ -2458,8 +2458,28 @@ async function loadHistory() {
       const d = new Date(l.created_at);
       const timeStr = d.toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
       const dateStr = d.toLocaleDateString('ar-KW');
-      const pColor = l.priority === 'high' ? '#FF6B6B' : l.priority === 'medium' ? '#FFD93D' : '#2ECC71';
-      const pLabel = l.priority === 'high' ? 'عالي' : l.priority === 'medium' ? 'متوسط' : 'منخفض';
+      const _scMap1 = {
+        'CITRA':'Special Resolution request','Staff/Friends & Family':'Special Resolution request',
+        'Follow Up TT':'Special Resolution request','HQ Complaint':'Special Resolution request',
+        'Roaming Techincal- Internet':'Roaming Complaint','Roaming Technical- Calls & SMS':'Roaming Complaint',
+        'Roaming Billing- Charges':'Roaming Complaint','Internet- not working':'Internet issue',
+        'Internet- Ping Issue':'Internet issue','Internet- Site Down':'Internet issue',
+        'Internet- Baity':'Internet issue','Internet- Baity Low Speed':'Internet issue',
+        'Speed Issue – 4G':'Internet issue','Speed Issue – 5G':'Internet issue',
+        'Calls- not working':'Call & SMS issues','Calls- Quality':'Call & SMS issues',
+        'Calls- International':'Call & SMS issues','Calls- Diverts':'Call & SMS issues',
+        'MNP-  Technical Issues':'Call & SMS issues','SMS & Verification- issues':'Call & SMS issues',
+        'App & Web-  Payment issue':'Digital and self service','App & Web- Technical Issues':'Digital and self service',
+        'Apple and google- Charge issues':'Digital and self service','Kiosk- Payment issue':'Digital and self service',
+        'Voucher- issues':'Digital and self service','E-SIM-  issues':'Digital and self service',
+        'E-SIM-  issues (Code activation issues)':'Digital and self service',
+        'Prepaid – Balance & validity':'stc services','Plan/Add on services- Charge issues':'stc services',
+        'Plan/Add on services- Technical issues':'stc services','3rd party- charge issues':'stc services',
+        'Apple Watch':'stc services','Qitaf points':'stc services',
+        'Outage- Global Service/App':'General Issue','Outage- Network':'General Issue'
+      };
+      const pColor = '#C77DFF';
+      const pLabel = _scMap1[l.category] || l.category || '-';
       const empLine = isAdmin ? '<div style="color:#C77DFF;font-size:12px;margin-bottom:4px">👤 ' + l.email + '</div>' : '';
       const answerBlock = l.answer ? '<div style="background:var(--surface3);border-radius:8px;padding:10px 14px;margin-top:8px;border-right:3px solid #C77DFF">'
         + '<div style="color:var(--text-muted);font-size:11px;margin-bottom:4px">🤖 الجواب:</div>'
@@ -2505,8 +2525,28 @@ async function loadHistory() {
         const d = new Date(l.created_at);
         const timeStr = d.toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
         const dateStr = d.toLocaleDateString('ar-KW');
-        const pColor = l.priority === 'high' ? '#FF6B6B' : l.priority === 'medium' ? '#FFD93D' : '#2ECC71';
-        const pLabel = l.priority === 'high' ? 'عالي' : l.priority === 'medium' ? 'متوسط' : 'منخفض';
+        const _scMap2 = {
+        'CITRA':'Special Resolution request','Staff/Friends & Family':'Special Resolution request',
+        'Follow Up TT':'Special Resolution request','HQ Complaint':'Special Resolution request',
+        'Roaming Techincal- Internet':'Roaming Complaint','Roaming Technical- Calls & SMS':'Roaming Complaint',
+        'Roaming Billing- Charges':'Roaming Complaint','Internet- not working':'Internet issue',
+        'Internet- Ping Issue':'Internet issue','Internet- Site Down':'Internet issue',
+        'Internet- Baity':'Internet issue','Internet- Baity Low Speed':'Internet issue',
+        'Speed Issue – 4G':'Internet issue','Speed Issue – 5G':'Internet issue',
+        'Calls- not working':'Call & SMS issues','Calls- Quality':'Call & SMS issues',
+        'Calls- International':'Call & SMS issues','Calls- Diverts':'Call & SMS issues',
+        'MNP-  Technical Issues':'Call & SMS issues','SMS & Verification- issues':'Call & SMS issues',
+        'App & Web-  Payment issue':'Digital and self service','App & Web- Technical Issues':'Digital and self service',
+        'Apple and google- Charge issues':'Digital and self service','Kiosk- Payment issue':'Digital and self service',
+        'Voucher- issues':'Digital and self service','E-SIM-  issues':'Digital and self service',
+        'E-SIM-  issues (Code activation issues)':'Digital and self service',
+        'Prepaid – Balance & validity':'stc services','Plan/Add on services- Charge issues':'stc services',
+        'Plan/Add on services- Technical issues':'stc services','3rd party- charge issues':'stc services',
+        'Apple Watch':'stc services','Qitaf points':'stc services',
+        'Outage- Global Service/App':'General Issue','Outage- Network':'General Issue'
+      };
+        const pColor = '#C77DFF';
+        const pLabel = _scMap2[l.category] || l.category || '-';
         const empLine = isAdmin3 ? '<div style="color:#C77DFF;font-size:12px;margin-bottom:4px">👤 ' + l.email + '</div>' : '';
         cards2 += '<div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px 18px">'
           + empLine
@@ -2784,9 +2824,29 @@ function addMsg(text, role, stepsHtml, priority, category) {
   }
   
   if (priority && category) {
-    const pLabel = priority === 'high' ? 'عالي' : priority === 'medium' ? 'متوسط' : 'منخفض';
-    const pEmoji = priority === 'high' ? '🔴' : priority === 'medium' ? '🟡' : '🔵';
-    bubbleContent = `<div class="priority-badge ${priority}">📋 ${category}</div>` + bubbleContent;
+    const CHAT_SUBCAT_MAP = {
+      'CITRA':'Special Resolution request','Staff/Friends & Family':'Special Resolution request',
+      'Follow Up TT':'Special Resolution request','HQ Complaint':'Special Resolution request',
+      'Roaming Techincal- Internet':'Roaming Complaint','Roaming Technical- Calls & SMS':'Roaming Complaint',
+      'Roaming Billing- Charges':'Roaming Complaint','Internet- not working':'Internet issue',
+      'Internet- Ping Issue':'Internet issue','Internet- Site Down':'Internet issue',
+      'Internet- Baity':'Internet issue','Internet- Baity Low Speed':'Internet issue',
+      'Speed Issue – 4G':'Internet issue','Speed Issue – 5G':'Internet issue',
+      'Calls- not working':'Call & SMS issues','Calls- Quality':'Call & SMS issues',
+      'Calls- International':'Call & SMS issues','Calls- Diverts':'Call & SMS issues',
+      'MNP-  Technical Issues':'Call & SMS issues','SMS & Verification- issues':'Call & SMS issues',
+      'App & Web-  Payment issue':'Digital and self service','App & Web- Technical Issues':'Digital and self service',
+      'Apple and google- Charge issues':'Digital and self service','Kiosk- Payment issue':'Digital and self service',
+      'Voucher- issues':'Digital and self service','E-SIM-  issues':'Digital and self service',
+      'E-SIM-  issues (Code activation issues)':'Digital and self service',
+      'Prepaid – Balance & validity':'stc services','Plan/Add on services- Charge issues':'stc services',
+      'Plan/Add on services- Technical issues':'stc services','3rd party- charge issues':'stc services',
+      'Apple Watch':'stc services','Qitaf points':'stc services',
+      'Outage- Global Service/App':'General Issue','Outage- Network':'General Issue'
+    };
+    const subCatLabel = CHAT_SUBCAT_MAP[category] || category || '';
+    const pClass = priority === 'high' ? 'high' : priority === 'medium' ? 'medium' : 'low';
+    bubbleContent = `<div class="priority-badge ${pClass}">📂 ${subCatLabel}</div>` + bubbleContent;
   }
   if (stepsHtml) bubbleContent += stepsHtml;
 
