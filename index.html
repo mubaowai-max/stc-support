@@ -1336,17 +1336,77 @@ STEP 1 — شنو نوع المشكلة؟
     category: "Internet- not working",
     priority: "medium",
     definition: "If customer is facing internet disconnection issue",
-    solution: `STEP 1: Check BSS — خط نشط؟ فاتورة مدفوعة؟ باقة نشطة؟ كوتا ما خلصت؟
-STEP 2: Site down check — تحقق في منطقة العميل. إذا في عطل → ارفع TT فوراً بالتاور والمنطقة.
-STEP 3: Smart Care — الخط متصل (Network Attach)؟ Data Status نشط؟
-STEP 4: Device — البيانات الخلوية مشغّلة؟ وضع الطيران مطفي؟ إذا SIM مزدوجة الخط الصح؟
-STEP 5: Error message — شو رسالة الخطأ اللي تطلع؟
+    solution: `STEP 1 — ⚠️ الأساسيات أولاً (إلزامي):
+🔵 BSS: الخط نشط، الباقة نشطة، استخدام العميل ما خلص
+🔵 Smart Care: الخط attached، Data Status نشط، وفي إشارة
+🔵 Site Down: ما في عطل في منطقة العميل
 
-📋 متطلبات الطلب:
-• وصف المشكلة
-• رسالة الخطأ (إذا في)
-• تأكيد خطوات التشخيص
-• رقم للتواصل`
+[OPTIONS: ✅ كل شي زين، نكمل | ⚠️ في مشكلة بالأساسيات]
+
+→ ⚠️ لو في مشكلة بالأساسيات:
+[OPTIONS: 🔴 مشكلة BSS | 🔴 Smart Care مو زين | 📡 في سايت داون]
+
+• مشكلة BSS → عالج المشكلة (فاتورة، باقة، استخدام)
+• Smart Care مو زين → Raise TT فوراً — Smart Care للقراءة فقط، ما نعدّل فيه
+• في سايت داون → Raise TT فوراً بالتاور ورقم الموقع
+
+→ ✅ لو كل شي زين → شنو جهاز العميل؟
+[OPTIONS: 🍎 آيفون | 🤖 أندرويد | 📡 راوتر MBB | 🏠 راوتر CPE/Indoor]
+
+→ 🍎 آيفون:
+اطلب من العميل يسوي كل الخطوات مع بعض:
+1. وضع الطيران OFF ثم ON
+2. إعدادات ← Cellular ← تأكد البيانات الخلوية ON
+3. إعدادات ← Cellular ← Voice & Data ← 5G On
+4. Dual SIM؟ → تأكد الشريحة الصحيحة مختارة لـ Cellular Data
+5. أعد تشغيل الجهاز
+[OPTIONS: ✅ رجع النت | ❌ ما رجع]
+• ❌ ما رجع → Reset Network Settings:
+  إعدادات ← General ← Transfer or Reset iPhone ← Reset ← Reset Network Settings
+  ⚠️ تنبيه للأجنت: راح تنمسح كلمات مرور الـ WiFi المحفوظة
+[OPTIONS: ✅ رجع النت | ❌ ما رجع → Raise TT]
+
+→ 🤖 أندرويد:
+اطلب من العميل يسوي كل الخطوات مع بعض:
+1. وضع الطيران OFF ثم ON
+2. إعدادات ← اتصالات ← تأكد البيانات الجوالة ON
+3. إعدادات ← اتصالات ← شبكات الجوال ← نوع الشبكة ← 5G
+4. أعد تشغيل الجهاز
+[OPTIONS: ✅ رجع النت | ❌ ما رجع]
+• ❌ ما رجع → إعادة تعيين إعدادات الشبكة:
+  إعدادات ← الإدارة العامة ← إعادة تعيين ← إعادة تعيين إعدادات الشبكة
+  ⚠️ تنبيه للأجنت: راح تنمسح كلمات مرور الـ WiFi المحفوظة
+[OPTIONS: ✅ رجع النت | ❌ ما رجع → Raise TT]
+
+→ 📡 راوتر MBB:
+1. تحقق من BSS — رقم الـ IMSI مطابق للشريحة اللي بالراوتر؟
+[OPTIONS: ✅ مطابق | ❌ مو مطابق]
+• ❌ مو مطابق → الشريحة غلط أو مشكلة بالـ provisioning → Raise TT فوراً
+• ✅ مطابق → أطفي الراوتر 30 ثانية وشغّله
+[OPTIONS: ✅ رجع النت | ❌ ما رجع]
+• ❌ ما رجع → Reset:
+  اضغط زر الـ Reset خلف الجهاز 10 ثواني
+  ⚠️ تنبيه للأجنت: الريسيت يمسح كل الإعدادات — تأكد العميل موافق
+[OPTIONS: ✅ رجع النت | ❌ ما رجع → Raise TT]
+
+→ 🏠 راوتر CPE/Indoor:
+1. تحقق من BSS — رقم الـ IMSI مطابق للشريحة اللي بالراوتر؟
+[OPTIONS: ✅ مطابق | ❌ مو مطابق]
+• ❌ مو مطابق → الشريحة غلط أو مشكلة بالـ provisioning → Raise TT فوراً
+• ✅ مطابق → تحقق من شاشة الراوتر — في إشارة حمراء؟
+[OPTIONS: ✅ طبيعي | 🔴 في إشارة حمراء]
+• وثّق الإشارة الحمراء ثم أطفي الراوتر 30 ثانية وشغّله
+[OPTIONS: ✅ رجع النت | ❌ ما رجع]
+• ❌ ما رجع → Reset:
+  اضغط زر الـ Reset خلف الجهاز 10 ثواني
+  ⚠️ تنبيه للأجنت: الريسيت يمسح كل الإعدادات — تأكد العميل موافق
+[OPTIONS: ✅ رجع النت | ❌ ما رجع → Raise TT]
+
+📋 Ticket Requirements:
+• Issue description
+• Troubleshooting confirmation
+• Customer address or PACI #
+• Callback`
   },
   {
     keywords: ["ping", "latency", "lag", "لاق", "تأخير", "جيمنج", "gaming", "بينج"],
@@ -1759,23 +1819,46 @@ STEP 5 — Speed Test:
     category: "Calls- not working",
     priority: "medium",
     definition: "If customer is facing outgoing or incoming calls disconnection issue",
-    solution: `1. Check BSS — confirm the following:
-   a. Line is active and not suspended or disconnected due to billing. If suspended: advise customer to settle balance first.
-   b. If customer is on a package — confirm remaining minutes are available. If minutes exhausted: inform customer and advise renewal.
-   c. If customer is on prepaid without a package — confirm sufficient balance is available to make calls. If balance is zero: inform customer and advise recharge.
-2. Ask customer to toggle Airplane mode OFF then ON — this forces the device to re-register on the network.
-3. Ask customer if the issue occurs everywhere or in a specific location.
-   - If specific location → check for site down in that area. If site down confirmed → Raise TT immediately with tower number and area name.
-   - If everywhere → proceed to step 4.
-4. Check BSS Usage — review recent call activity on the line to identify any anomalies.
-5. Ask customer if the issue occurs with all numbers or a specific number only.
-   - If specific number only → collect call details (time, date, A-party, B-party) and Raise TT to Resolution team.
-   - If all numbers → Raise TT to Resolution team.
+    solution: `STEP 1 — ⚠️ الأساسيات أولاً (إلزامي):
+🔵 BSS: الخط نشط، ما في إيقاف بالفاتورة، الباقة تشمل المكالمات أو في رصيد كافي
+🔵 Smart Care: CS Bar = NOBAR، الخط attached
+🔵 Site Down: ما في عطل في منطقة العميل
+
+[OPTIONS: ✅ كل شي زين، نكمل | ⚠️ في مشكلة بالأساسيات]
+
+→ ⚠️ لو في مشكلة بالأساسيات:
+[OPTIONS: 🔴 مشكلة BSS | 🔴 CS Bar موجود | 📡 في سايت داون]
+• مشكلة BSS → عالج (فاتورة، باقة، رصيد)
+• CS Bar موجود → Raise TT فوراً
+• في سايت داون → Raise TT فوراً بالتاور والمنطقة
+
+→ ✅ كل شي زين → شنو المشكلة بالضبط؟
+[OPTIONS: 📞 ما يقدر يتصل | 📵 ما يوصله اتصال | ❌ الاثنين]
+
+→ 📞 ما يقدر يتصل (Outgoing):
+اطلب من العميل يطفي وضع الطيران ويشغّله
+المشكلة مع كل الأرقام أو رقم معين؟
+[OPTIONS: 📋 كل الأرقام | 🔢 رقم معين بس]
+• رقم معين → جمّع التفاصيل (وقت، تاريخ، A-party، B-party) → Raise TT
+• كل الأرقام → Raise TT
+
+→ 📵 ما يوصله اتصال (Incoming):
+تحقق إذا في تحويل مكالمات شغّال → اطلب منه يكتب ‎##002# لإلغاء الكل
+[OPTIONS: ✅ ما في تحويل | 🔀 كان في تحويل وانلغى]
+• انلغى → جرّب مكالمة وشوف
+• ما في تحويل → المشكلة مع كل الأرقام أو رقم معين؟
+[OPTIONS: 📋 كل الأرقام | 🔢 رقم معين بس]
+• رقم معين → احتمال المشكلة من الطرف الثاني
+• كل الأرقام → Raise TT
+
+→ ❌ الاثنين → طبّق خطوات Outgoing وIncoming مع بعض → Raise TT
 
 📋 Ticket Requirements:
-• Issue description  
-• Troubleshooting confirmation  
-• Callback and active WhatsApp`
+• وصف المشكلة (Outgoing / Incoming / الاثنين)
+• تأكيد خطوات التشخيص
+• وقت وتاريخ آخر مكالمة
+• رقم المتصل (A-party) ورقم المستقبل (B-party)
+• رقم للتواصل + WhatsApp نشط`
   },
   {
     keywords: ["call quality", "جودة مكالمة", "تقطيع", "صوت مقطوع", "call drops"],
@@ -2617,6 +2700,15 @@ async function login() {
           switchPreview('L2');
         }
         try { upsertEmployee(email, emp.name, emp.role); } catch(e) {}
+        // Track login count and session start
+        try {
+          await fetch(SUPABASE_URL + '/rest/v1/employees?email=eq.' + encodeURIComponent(email), {
+            method: 'PATCH',
+            headers: { 'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY },
+            body: JSON.stringify({ login_count: (emp.login_count||0) + 1 })
+          });
+        } catch(e) {}
+        window._sessionStart = Date.now();
         startIdleTimer();
       } else if (data.length > 0 && data[0].disabled) {
         errEl.textContent = 'حسابك موقوف. تواصل مع المدير.';
@@ -2641,6 +2733,18 @@ function logout() {
   if (currentUser) {
     updateEmployeeStatus(currentUser.email, 'idle');
     saveAuditLog('logout', currentUser.email, 'User logged out');
+    // Save session duration
+    if (window._sessionStart) {
+      const mins = Math.round((Date.now() - window._sessionStart) / 60000);
+      if (mins > 0) {
+        fetch(SUPABASE_URL + '/rest/v1/employees?email=eq.' + encodeURIComponent(currentUser.email), {
+          method: 'PATCH',
+          headers: { 'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY },
+          body: JSON.stringify({ total_minutes: (currentUser.total_minutes||0) + mins })
+        }).catch(()=>{});
+      }
+      window._sessionStart = null;
+    }
   }
   currentUser = null;
   chatHistory = [];
@@ -4363,6 +4467,12 @@ function renderEmployeesTable(employees) {
       ? new Date(e.last_seen).toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'}) + ' ' + new Date(e.last_seen).toLocaleDateString('en-GB')
       : '-';
 
+    const loginCount = e.login_count || 0;
+    const totalMins = e.total_minutes || 0;
+    const totalHours = totalMins >= 60
+      ? (Math.floor(totalMins/60) + 'س ' + (totalMins%60) + 'د')
+      : (totalMins + 'د');
+
     const safeEmail = e.email.replace(/'/g, "\'");
     const toggleBtn = e.disabled
       ? "<button onclick=\"toggleEmp('" + safeEmail + "', false)\" style=\"background:#2ECC71;border:none;border-radius:6px;padding:4px 10px;color:white;font-size:11px;cursor:pointer;font-family:inherit\">تفعيل</button>"
@@ -4375,10 +4485,10 @@ function renderEmployeesTable(employees) {
     const safeName = (e.name||'').replace(/'/g,'&#39;');
     const editBtn = '<button onclick="openEditEmp(\''+safeEmail+'\',\''+safeName+'\',\''+( e.role||'')+'\')" style="background:var(--surface3);border:1px solid var(--border);border-radius:6px;padding:4px 10px;color:var(--text);font-size:11px;cursor:pointer;font-family:inherit">✏️ تعديل</button>';
     const roleLabel = e.role === 'admin' ? 'مدير' : e.role === 'L1' ? 'L1' : e.role === 'employee' ? 'L2' : (e.role||'-');
-    return '<tr><td class="td-email">' + e.email + '</td><td>' + (e.name||'-') + '</td><td><span style="color:#C77DFF">' + roleLabel + '</span></td><td>' + statusBadge + '</td><td class="td-time">' + lastSeen + '</td><td style="display:flex;gap:4px;flex-wrap:wrap">' + editBtn + toggleBtn + forceLogoutBtn + '</td></tr>';
+    return '<tr><td class="td-email">' + e.email + '</td><td>' + (e.name||'-') + '</td><td><span style="color:#C77DFF">' + roleLabel + '</span></td><td>' + statusBadge + '</td><td class="td-time">' + lastSeen + '</td><td style="text-align:center;color:#C77DFF;font-weight:600">' + loginCount + '</td><td style="text-align:center;color:var(--text-muted)">' + totalHours + '</td><td style="display:flex;gap:4px;flex-wrap:wrap">' + editBtn + toggleBtn + forceLogoutBtn + '</td></tr>';
   }).join('');
 
-  body.innerHTML = '<table><thead><tr><th>الإيميل</th><th>الاسم</th><th>الدور</th><th>الحالة</th><th>آخر دخول</th><th>إجراء</th></tr></thead><tbody>' + rows + '</tbody></table>';
+  body.innerHTML = '<table><thead><tr><th>الإيميل</th><th>الاسم</th><th>الدور</th><th>الحالة</th><th>آخر دخول</th><th>مرات الدخول</th><th>الوقت الكلي</th><th>إجراء</th></tr></thead><tbody>' + rows + '</tbody></table>';
 }
 
 async function toggleEmp(email, disabled) {
@@ -4575,11 +4685,12 @@ function triggerIssueWithContext() {
   if (needsBasics && !issueContext.basicsShown) {
     issueContext.basicsShown = true;
     var basicMsg = isRoaming
-    var basicMsg = isRoaming
       ? (issueContext.subIssue === 'Roaming Techincal- Internet'
           ? 'الأساسيات أولاً — تحقق من هالنقاط قبل أي خطوة:\n\n🔵 BSS: الخط نشط، الباقة فعّالة، ما في إيقاف بالفاتورة، واستخدام الإنترنت ما خلص\n🔵 Smart Care: CS Roam = NOBAR، Roaming Package = YES، الخط attached على شبكة رومينق\n🔵 Data Roaming: مفعّل على جهاز العميل'
           : 'الأساسيات أولاً — تحقق من هالنقاط قبل أي خطوة:\n\n🔵 BSS: الخط نشط، الباقة فعّالة، ما في إيقاف بالفاتورة\n🔵 Smart Care: الخط attached على شبكة رومينق')
-      : 'الأساسيات أولاً — تحقق من كل هالنقاط قبل أي خطوة:\n\n🔵 BSS: الخط نشط، الباقة نشطة، استخدام العميل ما خلص\n🔵 Smart Care: الخط attached، Data Status نشط، وفي إشارة\n🔵 Site Down: ما في عطل في منطقة العميل';
+      : (issueContext.subIssue && issueContext.subIssue.includes('Calls-')
+          ? 'الأساسيات أولاً — تحقق من هالنقاط قبل أي خطوة:\n\n🔵 BSS: الخط نشط، ما في إيقاف بالفاتورة، الباقة تشمل المكالمات أو في رصيد كافي\n🔵 Smart Care: CS Bar = NOBAR، الخط attached\n🔵 Site Down: ما في عطل في منطقة العميل'
+          : 'الأساسيات أولاً — تحقق من كل هالنقاط قبل أي خطوة:\n\n🔵 BSS: الخط نشط، الباقة نشطة، استخدام العميل ما خلص\n🔵 Smart Care: الخط attached، Data Status نشط، وفي إشارة\n🔵 Site Down: ما في عطل في منطقة العميل');
     var kbCat = issueContext.subIssue;
     addMsg(basicMsg, 'bot', null, 'medium', kbCat);
     setTimeout(function() {
@@ -5032,14 +5143,28 @@ function renderAnalytics() {
   const maxTotal = agents.length ? agents[0][1].total : 1;
   const tbody = document.getElementById('anAgentBody');
   tbody.innerHTML = agents.map(([email,a]) => {
-    const topTask = Object.entries(a.tasks).sort((x,y)=>y[1]-x[1])[0];
     const pct = Math.round((a.total/maxTotal)*100);
     const shortEmail = email.split('@')[0];
+    const allTasks = Object.entries(a.tasks).sort((x,y)=>y[1]-x[1]);
+    const topTask = allTasks[0];
+    const taskRows = allTasks.map(([cat,cnt]) =>
+      `<div style="display:flex;justify-content:space-between;padding:3px 8px;font-size:11px;color:var(--text-muted);border-bottom:1px solid var(--border)">
+        <span>${cat}</span><span style="color:#C77DFF;font-weight:600">${cnt}</span>
+      </div>`
+    ).join('');
+    const detailId = 'detail_' + email.replace(/[@.]/g,'_');
     return `<tr style="border-bottom:1px solid var(--border)">
       <td style="padding:8px;color:var(--text)">${shortEmail}</td>
       <td style="text-align:center;padding:8px;font-weight:600;color:#C77DFF">${a.total}</td>
       <td style="text-align:center;padding:8px;color:var(--text)">${a.today}</td>
-      <td style="padding:8px;font-size:11px;color:var(--text-muted);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${topTask?topTask[0]:'-'}</td>
+      <td style="padding:8px;font-size:11px;max-width:160px">
+        <div style="cursor:pointer;color:var(--text-muted)" onclick="document.getElementById('${detailId}').style.display=document.getElementById('${detailId}').style.display==='none'?'block':'none'">
+          ${topTask?topTask[0]:'-'} <span style="color:#C77DFF;font-size:10px">▾ كل الأسئلة</span>
+        </div>
+        <div id="${detailId}" style="display:none;margin-top:6px;background:var(--surface2);border-radius:6px;overflow:hidden">
+          ${taskRows}
+        </div>
+      </td>
       <td style="padding:8px 12px;min-width:80px">
         <div style="height:6px;background:var(--surface3);border-radius:4px;overflow:hidden">
           <div style="height:100%;width:${pct}%;background:#8B2FA0;border-radius:4px"></div>
