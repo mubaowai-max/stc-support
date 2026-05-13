@@ -1490,10 +1490,58 @@ STEP 3 — المشكلة على كل الـ Mesh nodes ولا جهاز معين
 [OPTIONS: ✅ كل شي زين، نكمل | ⚠️ في مشكلة بالأساسيات]
 
 STEP 2 — Ask customer if the issue occurs everywhere or in a specific location.
-STEP 3 — Check for site down in customer's area. If site down confirmed → Raise TT immediately with tower number and area name.
-3. Ask customer to run a speed test using Ookla Speedtest or speedtest.net and share the result.
-4. In Smart Care — go to Quality Complaint Handling > Overall Quality > Speed Test. Cross-reference DL Throughput and Speed Experience with the customer's Ookla result.
-5. If download speed is below 3 Mbps → Raise TT to Resolution team.
+2. Check for site down in customer's area. If site down confirmed → Raise TT immediately with tower number and area name.
+3. اسأل العميل: شنو جهازه؟
+[OPTIONS: 📱 جوال | 📡 راوتر MBB | 🏠 راوتر CPE/Indoor]
+
+→ 📱 لو جوال:
+اسأل: المشكلة بكل مكان أو منطقة معينة؟
+[OPTIONS: 🌍 كل مكان | 📍 منطقة معينة]
+• منطقة معينة → راجع الأساسيات (Site Down) ✅
+• كل مكان → كمّل
+[OPTIONS: 🍎 آيفون | 🤖 أندرويد]
+• آيفون: إعدادات ← Cellular ← Voice & Data ← اختار LTE/4G
+  💡 لو عنده Low Power Mode: إعدادات ← Battery ← طفّيه
+• أندرويد: إعدادات ← اتصالات ← شبكات الجوال ← نوع الشبكة ← LTE/4G
+
+→ 📡 لو راوتر MBB أو CPE/Indoor:
+
+[OPTIONS: 📡 راوتر متنقل MBB | 🏠 راوتر ثابت 4G (CPE/Indoor)]
+
+→ 📡 راوتر متنقل MBB:
+اسأل: المشكلة بكل مكان أو منطقة معينة؟
+[OPTIONS: 🌍 كل مكان | 📍 منطقة معينة]
+• منطقة معينة → راجع الأساسيات (Site Down) ✅
+• كل مكان → كمّل
+
+→ 🏠 راوتر ثابت CPE/Indoor → كمّل
+
+STEP A — كم جهاز شابك على الراوتر؟
+[OPTIONS: 📱 جهاز واحد بس | 👥 أكثر من جهاز]
+• لو أكثر من جهاز → اطلب منه يفصل كل الأجهزة ويجرب بجهازه بوحده
+
+4. اطلب من العميل يسوي Speed Test من تطبيق Ookla أو speedtest.net ويشاركك النتيجة 📊
+
+[OPTIONS: ✅ فوق 3 Mbps | ⚠️ دون 3 Mbps]
+
+→ ✅ لو السرعة فوق 3 Mbps:
+ممتاز! 🎉 السرعة زينة.
+
+[OPTIONS: ✅ انحلت | 📱 المشكلة ببرنامج واحد بس | 🌐 المشكلة بكل البرامج]
+
+- لو انحلت → ممتاز، وثّق الحل
+- لو المشكلة ببرنامج واحد بس → الخلل من البرنامج نفسه مو من الشبكة
+- لو المشكلة بكل البرامج →
+  1. اطلب منه يطفي VPN إذا كان شغّال
+  2. إعادة تشغيل الجهاز
+  3. إذا ما نفع → Raise TT
+
+→ ⚠️ لو السرعة دون 3 Mbps → جرّب قبل TT:
+
+💡 إعادة تشغيل الراوتر:
+- أطفي الراوتر 30 ثانية وشغّله — انتظر دقيقتين وجرّب السرعة ثاني
+
+[OPTIONS: ✅ تحسنت السرعة | ❌ ما تحسنت → Raise TT]
 
 📋 Ticket Requirements:
 • Issue description  
@@ -1507,28 +1555,46 @@ STEP 3 — Check for site down in customer's area. If site down confirmed → Ra
     category: "Speed Issue – 4G (Router: Any issue related to 4)",
     priority: "medium",
     definition: "Router: Any issue related to 4G internet speed users (LTE)",
-    solution: `1. Ask customer if the router is mobile (portable) or indoor/CPE.
+    solution: `STEP 1 — ⚠️ الأساسيات أولاً (إلزامي):
+🔵 BSS: الخط نشط، الباقة نشطة، استخدام العميل ما خلص
+🔵 Smart Care: الخط attached، Data Status نشط، وفي إشارة
+🔵 Site Down: ما في عطل في منطقة العميل
 
-   If Mobile Router:
-   a. Ask if the issue occurs everywhere or in a specific location.
-      - If everywhere → skip to step 3.
-      - If specific location → check for site down in that area. If site down confirmed → Raise TT immediately with tower number and area name.
+[OPTIONS: ✅ كل شي زين، نكمل | ⚠️ في مشكلة بالأساسيات]
 
-   If Indoor Router/CPE:
-   a. Ask if the issue is constant or intermittent.
-      - If constant → skip to step 3.
-      - If intermittent → check for site down in customer's area. If site down confirmed → Raise TT immediately with tower number and area name.
+STEP 2 — نوع الراوتر:
+[OPTIONS: 📡 راوتر متنقل MBB | 🏠 راوتر ثابت CPE/Indoor]
 
-3. Ask customer to run a speed test using Ookla Speedtest or speedtest.net and share the result.
-4. In Smart Care — go to Quality Complaint Handling > Overall Quality > Speed Test. Cross-reference DL Throughput and Speed Experience with the customer's Ookla result.
-5. If download speed is below 3 Mbps → Raise TT to Resolution team.
+→ 📡 راوتر متنقل MBB:
+اسأل: المشكلة بكل مكان أو منطقة معينة؟
+[OPTIONS: 🌍 كل مكان | 📍 منطقة معينة]
+• منطقة معينة → راجع الأساسيات (Site Down) ✅
+• كل مكان → كمّل
+
+→ 🏠 راوتر ثابت CPE/Indoor → كمّل
+
+STEP 3 — التردد:
+[OPTIONS: ✅ 5GHz | 📶 2.4GHz | 🤔 ما أعرف | 💡 طريقة التغيير]
+• 2.4GHz أو ما يعرف → وجّهه يشبك على 5GHz
+
+STEP 4 — كم جهاز شابك؟
+[OPTIONS: 📱 جهاز واحد | 👥 أكثر من جهاز]
+• أكثر من جهاز → فصّلهم وجرّب بوحده
+
+STEP 5 — Speed Test على Ookla 📊
+[OPTIONS: ✅ فوق 3 Mbps | ⚠️ دون 3 Mbps]
+
+→ ✅ فوق 3 Mbps → السرعة زينة 🎉
+→ ⚠️ دون 3 Mbps → أطفي الراوتر 30 ثانية وشغّله
+  ⚠️ تنبيه للأجنت: Restart فقط — لا تطلب Reset
+[OPTIONS: ✅ تحسنت | ❌ ما تحسنت → Raise TT]
 
 📋 Ticket Requirements:
-• Issue description  
-• Troubleshooting confirmation  
-• Customer address or PACI #  
-  • Speed test results  
-  • Callback`
+• Issue description
+• Troubleshooting confirmation
+• Customer address or PACI #
+• Speed test results
+• Callback`
   },
   {
     keywords: ["speed 5g", "سرعة 5g", "5g slow", "بطيء 5g"],
