@@ -2808,6 +2808,18 @@ function selectDiagOption(btn, groupId, value, label) {
     }
   }
 
+  // Handle basics confirmation buttons
+  if (groupId.startsWith('basics-')) {
+    if (value.includes('كل شي زين')) {
+      issueContext.basicsShown = true;
+      sendMessageText(label);
+    } else {
+      // في مشكلة بالأساسيات — send to AI for guidance
+      sendMessageText(label);
+    }
+    return;
+  }
+
   // Send to AI (sendMessage adds the user bubble)
   sendMessageText(label);
 }
@@ -3232,7 +3244,7 @@ async function sendMessage() {
 
   if (kbResult) {
     // Auto-inject basics if STEP 1 exists
-    if (kbResult.solution && kbResult.solution.includes('STEP 1 — ⚠️ START HERE')) {
+    if (kbResult.solution && kbResult.solution.includes('STEP 1 — ⚠️ START HERE') && !issueContext.basicsShown) {
       const basicLines = kbResult.solution.split('STEP 2')[0]
         .replace('STEP 1 — ⚠️ START HERE — Basic Checks (MANDATORY FIRST STEP — DO NOT SKIP):\n','')
         .replace(/\[OPTIONS:[^\]]+\]/g,'').trim();
@@ -4178,7 +4190,8 @@ function triggerIssueWithContext() {
     issueContext.subIssue.includes('Calls-')
   );
 
-  if (needsBasics) {
+  if (needsBasics && !issueContext.basicsShown) {
+    issueContext.basicsShown = true;
     var basicMsg = 'الأساسيات أولاً — تحقق من كل هالنقاط قبل أي خطوة:\n\n🔵 BSS: الخط نشط، الباقة نشطة، استخدام العميل ما خلص\n🔵 Smart Care: الخط attached، Data Status نشط، وفي إشارة\n🔵 Site Down: ما في عطل في منطقة العميل';
     var kbCat = issueContext.subIssue;
     addMsg(basicMsg, 'bot', null, 'medium', kbCat);
@@ -4288,6 +4301,7 @@ function handleSymptomSelection(groupId, value, label) {
   // ── SUB ISSUE SELECTED ──
   if (groupId === 'cat-sub') {
     issueContext.subIssue = value;
+    issueContext.basicsShown = false;
     var noLineNeeded = [
       'Internet- Site Down', 'Internet- Baity', 'Internet- Baity Low Speed',
       'App & Web-  Payment issue', 'App & Web- Technical Issues',
