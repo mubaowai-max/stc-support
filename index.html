@@ -1220,9 +1220,15 @@ const USERS = {
   "admin@stc.com.kw": { pass: "admin123", role: "admin", name: "المدير" },
   "support@stc.com.kw": { pass: "stc2024", role: "employee", name: "موظف الدعم" },
   "tech@stc.com.kw": { pass: "stc2024", role: "employee", name: "الفني" },
-  "agent@stc.com.kw": { pass: "agent123", role: "L1", name: "agent" },
   // أضف موظفين هنا بنفس الطريقة
 };
+
+// ========== BLOCKED USERS ==========
+// أضف أي إيميل هنا وما يقدر يدخل حتى لو عنده جلسة قديمة
+const BLOCKED_USERS = [
+  "agent@stc.com.kw",
+  // أضف إيميلات محظورة هنا
+];
 
 // ========== KNOWLEDGE BASE ==========
 const KB = [
@@ -1498,11 +1504,41 @@ STEP 3 — Check for site down in customer's area. If site down confirmed → Ra
 
 STEP 2 — Ask customer if the issue occurs everywhere or in a specific location.
 2. Check for site down in customer's area. If site down confirmed → Raise TT immediately with tower number and area name.
-3. Ask customer to check which network band they are connected to — must be 5G, not 4G. Guide customer to set network type to 5G ON (not Auto) in mobile network settings.
-4. Ask customer to disable power saving mode — it throttles network performance. Then ask them to run a speed test.
-5. Ask customer to run a speed test using Ookla Speedtest or speedtest.net and share the result.
-6. In Smart Care — go to Quality Complaint Handling > Overall Quality > Speed Test. Cross-reference DL Throughput and Speed Experience with the customer's Ookla result.
-7. If download speed is below 100 Mbps → Raise TT to Resolution team.
+3. اسأل العميل: شنو جهازه؟
+[OPTIONS: 📱 جوال | 📡 راوتر MBB | 🏠 راوتر CPE/Indoor]
+
+→ 📱 لو جوال:
+[OPTIONS: 🍎 آيفون | 🤖 أندرويد]
+• آيفون: إعدادات ← Cellular ← Voice & Data ← اختار 5G On
+  💡 لو عنده Low Power Mode: إعدادات ← Battery ← طفّيه
+• أندرويد: إعدادات ← اتصالات ← شبكات الجوال ← نوع الشبكة ← 5G (مو Auto)
+
+→ 📡 لو راوتر MBB أو CPE/Indoor:
+اسأله: هل جهازه الـ WiFi واصل على شبكة الـ 5GHz أو 2.4GHz؟
+[OPTIONS: ✅ 5GHz | 📶 2.4GHz | 🤔 ما أعرف]
+• لو 2.4GHz أو ما يعرف → قوله يشبك على شبكة الـ 5GHz (أسرع) — عادةً بنفس اسم الشبكة مع "_5G" في الآخر
+• لو 5GHz → تمام، كمّل
+
+4. اطلب من العميل يسوي Speed Test من تطبيق Ookla أو speedtest.net ويشاركك النتيجة 📊
+
+💡 بنفس الوقت: روح Smart Care ← Quality Complaint Handling ← Overall Quality ← Speed Test
+قارن نتيجة DL Throughput وSpeed Experience مع نتيجة Ookla 📊
+
+[OPTIONS: ✅ فوق 100 Mbps | ⚠️ دون 100 Mbps]
+
+→ ✅ لو السرعة فوق 100 Mbps:
+ممتاز! 🎉 السرعة زينة.
+
+[OPTIONS: ✅ انحلت | 📱 برنامج واحد بس | 🌐 كل البرامج]
+
+- لو انحلت → ممتاز، وثّق الحل
+- لو برنامج واحد بس → الخلل من البرنامج نفسه مو من الشبكة
+- لو كل البرامج →
+  1. اطلب منه يطفي VPN إذا كان شغّال
+  2. إعادة تشغيل الجهاز
+  3. إذا ما نفع → Raise TT
+
+→ ⚠️ لو السرعة دون 100 Mbps → Raise TT
 
 📋 Ticket Requirements:
 • Issue description  
@@ -2265,6 +2301,11 @@ async function login() {
   const errEl = document.getElementById('loginError');
 
   // First check local USERS — if email exists here, never go to Supabase
+  if (BLOCKED_USERS.includes(email)) {
+    errEl.textContent = 'حسابك موقوف. تواصل مع المدير.';
+    errEl.style.display = 'block';
+    return;
+  }
   if (USERS[email]) {
     if (USERS[email].pass !== pass) {
       errEl.textContent = 'كلمة المرور غير صحيحة';
@@ -4412,6 +4453,11 @@ window.addEventListener('load', function() {
   if (saved) {
     try {
       const session = JSON.parse(saved);
+      // Block banned users even if they have an active session
+      if (BLOCKED_USERS.includes(session.email)) {
+        localStorage.removeItem('stc_session');
+        return;
+      }
       currentUser = session;
       document.getElementById('loginPage').style.display = 'none';
       document.getElementById('mainApp').style.display = 'flex';
