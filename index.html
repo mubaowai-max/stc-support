@@ -1224,10 +1224,8 @@ const USERS = {
 };
 
 // ========== BLOCKED USERS ==========
-// أضف أي إيميل هنا وما يقدر يدخل حتى لو عنده جلسة قديمة
 const BLOCKED_USERS = [
   "agent@stc.com.kw",
-  // أضف إيميلات محظورة هنا
 ];
 
 // ========== KNOWLEDGE BASE ==========
@@ -1508,16 +1506,49 @@ STEP 2 — Ask customer if the issue occurs everywhere or in a specific location
 [OPTIONS: 📱 جوال | 📡 راوتر MBB | 🏠 راوتر CPE/Indoor]
 
 → 📱 لو جوال:
+اسأل: المشكلة بكل مكان أو منطقة معينة؟
+[OPTIONS: 🌍 كل مكان | 📍 منطقة معينة]
+• منطقة معينة → راجع الأساسيات (Site Down) ✅
+• كل مكان → كمّل
 [OPTIONS: 🍎 آيفون | 🤖 أندرويد]
 • آيفون: إعدادات ← Cellular ← Voice & Data ← اختار 5G On
   💡 لو عنده Low Power Mode: إعدادات ← Battery ← طفّيه
 • أندرويد: إعدادات ← اتصالات ← شبكات الجوال ← نوع الشبكة ← 5G (مو Auto)
 
 → 📡 لو راوتر MBB أو CPE/Indoor:
-اسأله: هل جهازه الـ WiFi واصل على شبكة الـ 5GHz أو 2.4GHz؟
-[OPTIONS: ✅ 5GHz | 📶 2.4GHz | 🤔 ما أعرف]
-• لو 2.4GHz أو ما يعرف → قوله يشبك على شبكة الـ 5GHz (أسرع) — عادةً بنفس اسم الشبكة مع "_5G" في الآخر
-• لو 5GHz → تمام، كمّل
+
+[OPTIONS: 📡 راوتر متنقل MBB | 🏠 راوتر ثابت 5G (CPE/Indoor)]
+
+→ 📡 راوتر متنقل MBB:
+اسأل: المشكلة بكل مكان أو منطقة معينة؟
+[OPTIONS: 🌍 كل مكان | 📍 منطقة معينة]
+• منطقة معينة → راجع الأساسيات (Site Down) ✅
+• كل مكان → كمّل
+
+→ 🏠 راوتر ثابت CPE/Indoor → كمّل
+
+STEP A — التردد:
+اسأل العميل: شبكة الـ WiFi اللي شابك عليها 5GHz أو 2.4GHz؟
+[OPTIONS: ✅ 5GHz | 📶 2.4GHz | 🤔 ما أعرف | 💡 طريقة التغيير]
+• لو 2.4GHz أو ما يعرف → وجّهه يشبك على الـ 5GHz
+
+→ 💡 لو طلب طريقة التغيير:
+
+📡 راوتر متنقل MBB:
+1. افتح المتصفح واكتب: 192.168.8.1
+2. ادخل بكلمة المرور (مكتوبة خلف الجهاز)
+3. روح WiFi Settings → Band → غيّر بين 2.4GHz و 5GHz
+4. احفظ وأعد التشغيل
+
+🏠 راوتر ثابت CPE/Indoor:
+1. افتح المتصفح واكتب: 192.168.1.1
+2. ادخل بكلمة المرور (مكتوبة خلف الجهاز)
+3. روح WiFi Settings → Band → غيّر بين 2.4GHz و 5GHz
+4. احفظ وأعد التشغيل
+
+STEP B — كم جهاز شابك على الراوتر؟
+[OPTIONS: 📱 جهاز واحد بس | 👥 أكثر من جهاز]
+• لو أكثر من جهاز → اطلب منه يفصل كل الأجهزة ويجرب بجهازه بوحده
 
 4. اطلب من العميل يسوي Speed Test من تطبيق Ookla أو speedtest.net ويشاركك النتيجة 📊
 
@@ -1529,16 +1560,21 @@ STEP 2 — Ask customer if the issue occurs everywhere or in a specific location
 → ✅ لو السرعة فوق 100 Mbps:
 ممتاز! 🎉 السرعة زينة.
 
-[OPTIONS: ✅ انحلت | 📱 برنامج واحد بس | 🌐 كل البرامج]
+[OPTIONS: ✅ انحلت | 📱 المشكلة ببرنامج واحد بس | 🌐 المشكلة بكل البرامج]
 
 - لو انحلت → ممتاز، وثّق الحل
-- لو برنامج واحد بس → الخلل من البرنامج نفسه مو من الشبكة
-- لو كل البرامج →
+- لو المشكلة ببرنامج واحد بس → الخلل من البرنامج نفسه مو من الشبكة
+- لو المشكلة بكل البرامج →
   1. اطلب منه يطفي VPN إذا كان شغّال
   2. إعادة تشغيل الجهاز
   3. إذا ما نفع → Raise TT
 
-→ ⚠️ لو السرعة دون 100 Mbps → Raise TT
+→ ⚠️ لو السرعة دون 100 Mbps → جرّب قبل TT:
+
+💡 إعادة تشغيل الراوتر:
+- أطفي الراوتر 30 ثانية وشغّله — انتظر دقيقتين وجرّب السرعة ثاني
+
+[OPTIONS: ✅ تحسنت السرعة | ❌ ما تحسنت → Raise TT]
 
 📋 Ticket Requirements:
 • Issue description  
@@ -1552,28 +1588,62 @@ STEP 2 — Ask customer if the issue occurs everywhere or in a specific location
     category: "Speed Issue – 5G (Router: Any issue related to 5)",
     priority: "medium",
     definition: "Router: Any issue related to 5G internet speed users",
-    solution: `1. Ask customer if the router is mobile (portable) or indoor/CPE.
+    solution: `STEP 1 — ⚠️ الأساسيات أولاً (إلزامي):
+🔵 BSS: الخط نشط، الباقة نشطة، استخدام العميل ما خلص
+🔵 Smart Care: الخط attached، Data Status نشط، وفي إشارة
+🔵 Site Down: ما في عطل في منطقة العميل
 
-   If Mobile Router:
-   a. Ask if the issue occurs everywhere or in a specific location.
-      - If everywhere → skip to step 3.
-      - If specific location → check for site down in that area. If site down confirmed → Raise TT immediately with tower number and area name.
+[OPTIONS: ✅ كل شي زين، نكمل | ⚠️ في مشكلة بالأساسيات]
 
-   If Indoor Router/CPE:
-   a. Ask if the issue is constant or intermittent.
-      - If constant → skip to step 3.
-      - If intermittent → check for site down in customer's area. If site down confirmed → Raise TT immediately with tower number and area name.
+STEP 2 — نوع الراوتر:
+[OPTIONS: 📡 راوتر متنقل MBB | 🏠 راوتر ثابت 5G (CPE/Indoor)]
 
-3. Ask customer to confirm they are connected to the 5GHz WiFi band on the router, not 2.4GHz.
-4. Ask customer to run a speed test using Ookla Speedtest or speedtest.net and share the result.
-5. In Smart Care — go to Quality Complaint Handling > Overall Quality > Speed Test. Cross-reference DL Throughput and Speed Experience with the customer's Ookla result.
-6. If download speed is below 100 Mbps → Raise TT to Resolution team.
+→ 📡 راوتر متنقل MBB:
+• هل المشكلة في كل مكان أو منطقة معينة؟
+  - منطقة معينة → تحقق من Site Down → لو فيه عطل: ارفع TT فوراً بـ رقم البرج والمنطقة
+  - كل مكان → كمّل
+
+→ 🏠 راوتر ثابت CPE/Indoor:
+• هل المشكلة مستمرة أو متقطعة؟
+  - متقطعة → تحقق من Site Down في منطقة العميل → لو فيه عطل: ارفع TT فوراً
+  - مستمرة → كمّل
+
+STEP 3 — التردد:
+اسأل العميل: شبكة الـ WiFi اللي شابك عليها 5GHz أو 2.4GHz؟
+[OPTIONS: ✅ 5GHz | 📶 2.4GHz | 🤔 ما أعرف]
+• لو 2.4GHz أو ما يعرف → وجّهه يشبك على الـ 5GHz
+
+💡 طريقة تغيير التردد:
+- افتح المتصفح واكتب: 192.168.8.1 (MBB) أو 192.168.1.1 (CPE)
+- ادخل بكلمة المرور (مكتوبة خلف الجهاز)
+- روح WiFi Settings → غيّر الـ Band من 2.4GHz لـ 5GHz أو العكس
+- احفظ وأعد التشغيل
+
+STEP 4 — كم جهاز شابك على الراوتر؟
+[OPTIONS: 📱 جهاز واحد بس | 👥 أكثر من جهاز]
+• لو أكثر من جهاز → اطلب منه يفصل كل الأجهزة ويجرب بجهازه بوحده
+
+STEP 5 — Speed Test:
+اطلب من العميل يسوي Speed Test من تطبيق Ookla ويشاركك النتيجة 📊
+
+[OPTIONS: ✅ فوق 100 Mbps | ⚠️ دون 100 Mbps]
+
+→ ✅ فوق 100 Mbps → ممتاز! المشكلة كانت من ضغط الأجهزة
+
+→ ⚠️ دون 100 Mbps → جرّب قبل TT:
+
+💡 إعادة تشغيل الراوتر:
+- أطفي الراوتر 30 ثانية وشغّله — انتظر دقيقتين وجرّب
+
+[OPTIONS: ✅ تحسنت السرعة | ❌ ما تحسنت → Raise TT]
+
+→ ❌ لو ما تحسنت → Raise TT
 
 📋 Ticket Requirements:
-• Issue description  
-• Troubleshooting confirmation  
-• Customer address or PACI #  
-• Speed test results  
+• Issue description
+• Troubleshooting confirmation
+• Customer address or PACI #
+• Speed test results
 • Callback`
   },
   {
@@ -3312,17 +3382,14 @@ async function sendMessage() {
   const systemPrompt = isL1Mode
     ? `You are a fast, friendly Call Center Assistant for stc Kuwait L1 agents.
 The agent's name is ${agentFirstName} — use it ONLY at the END of your final answer to say goodbye, like:
-- "${agentFirstName}، تقدر أساعدك بشي ثاني؟ 😊"
-- "${agentFirstName} 👋 في شي ثاني أقدر أساعدك فيه؟"
-- "${agentFirstName}، أقدر أفيدك بشي ثاني؟ 💪"
-- "${agentFirstName}، في شي ثاني يخدمك؟ 🙌"
+- "${agentFirstName}، تامر على شي ثاني؟"
 NEVER introduce yourself using the agent's name. NEVER say "أنا [name] من فريق L1/L2".
 MANDATORY — you MUST always include on a new line immediately after the question:
 [OPTIONS: ✅ إي، عندي شي ثاني | 🏁 لا، يكفي — شكراً]
 NEVER ask without the OPTIONS line — it is required every single time.
 - If "✅ إي، في سؤال ثاني" → ask what the new issue is naturally
 - If "🏁 لا، يكفي — شكراً" → reply with "تمام ${agentFirstName}! 👋 إذا احتجت أنا هنا" then on new line write exactly: [NEW_CUSTOMER]
-- If the agent says the issue is resolved → reply ONLY with "ممتاز! 🎉 زين إنها انحلّت" then ask "${agentFirstName}، تقدر أساعدك بشي ثاني؟ 😊" with [OPTIONS: ✅ إي، في سؤال ثاني | 🏁 لا، يكفي — شكراً] — do NOT mention Resolutions or raise TT
+- If the agent says the issue is resolved → reply ONLY with "ممتاز! 🎉 زين إنها انحلّت" then ask "${agentFirstName}، تامر على شي ثاني؟" with [OPTIONS: ✅ إي، في سؤال ثاني | 🏁 لا، يكفي — شكراً] — do NOT mention Resolutions or raise TT
 You help agents who are on a LIVE CALL with the customer — speed and accuracy matter.
 - NEVER use the word 'كول' in Arabic — always say 'المكالمة' instead.
 - NEVER say 'سيتم التواصل من فريق Resolutions' unless you have explicitly raised a TT in the same response.
@@ -3371,22 +3438,75 @@ ONE combined message — all 3 checks together:
 
 [OPTIONS: ✅ تأكدنا، نكمل | ⚠️ في مشكلة]
 
-→ "تأكدنا، نكمل" → Phase 1 done → go to Phase 2. NEVER ask site down again.
+→ "تأكدنا، نكمل" → Phase 1 done → go to Phase 2. NEVER ask site down again. NEVER ask "هل في عطل" or "تحقق من Site Down" at any point after Phase 1 is confirmed — it is already done.
 → "في مشكلة": [OPTIONS: مشكلة BSS | Smart Care مو نشط | في سايت داون]
   - BSS: address it (billing, package, usage)
   - Smart Care: Raise TT immediately — READ ONLY, never fix
   - Site Down: Raise TT with tower + area. STOP.
 
-### PHASE 2 — FIX (after Phase 1 clear, local issues only):
-⚠️ BAITY/ODU: Phase 1 applies (BSS + Smart Care + Site Down same as others). After Phase 1 clear → skip device question, go directly to Baity steps: scope (all mesh or specific?) → 5GHz band → Ookla → 100Mbps threshold.
+### PHASE 2 — FIX (after Phase 1 clear):
+⚠️ BAITY/ODU: After Phase 1 clear → skip device question, go directly to Baity steps: scope (all mesh or specific?) → 5GHz band → Ookla → 100Mbps threshold.
 
-For MBB/Fiber only — ask device: "أي جهاز عند العميل؟" [OPTIONS: آيفون 📱 | أندرويد 📱 | راوتر 📡]
+**For all MBB issues — ask device first:**
+"شنو جهاز العميل؟"
+[OPTIONS: 🍎 آيفون | 🤖 أندرويد | 📡 راوتر MBB | 🏠 راوتر CPE/Indoor]
+
+→ 🍎 آيفون — ما في نت:
+⚠️ اطلب من العميل يسوي كل الخطوات مع بعض:
+1. وضع الطيران OFF ثم ON
+2. إعدادات ← Cellular ← تأكد البيانات الخلوية ON
+3. إعدادات ← Cellular ← Voice & Data ← 5G On
+4. عنده Dual SIM؟ → تأكد الشريحة الصحيحة مختارة لـ Cellular Data
+   إعدادات ← Cellular ← Cellular Data
+5. أعد تشغيل الجهاز
+[OPTIONS: ✅ رجع النت | ❌ ما رجع]
+• ❌ ما رجع → Reset Network Settings:
+  إعدادات ← General ← Transfer or Reset iPhone ← Reset ← Reset Network Settings
+  ⚠️ تنبيه للأجنت: راح تنمسح كلمات مرور الـ WiFi المحفوظة
+[OPTIONS: ✅ رجع النت | ❌ ما رجع → Raise TT]
+
+→ 🤖 أندرويد — ما في نت:
+⚠️ اطلب من العميل يسوي كل الخطوات مع بعض:
+1. وضع الطيران OFF ثم ON
+2. إعدادات ← اتصالات ← تأكد البيانات الجوالة ON
+3. إعدادات ← اتصالات ← شبكات الجوال ← نوع الشبكة ← 5G
+4. أعد تشغيل الجهاز
+[OPTIONS: ✅ رجع النت | ❌ ما رجع]
+• ❌ ما رجع → إعادة تعيين إعدادات الشبكة:
+  إعدادات ← الإدارة العامة ← إعادة تعيين ← إعادة تعيين إعدادات الشبكة
+  ⚠️ تنبيه للأجنت: راح تنمسح كلمات مرور الـ WiFi المحفوظة
+[OPTIONS: ✅ رجع النت | ❌ ما رجع → Raise TT]
+
+→ 📡 راوتر MBB — ما في نت:
+1. تحقق من BSS — رقم الـ IMSI مطابق للشريحة اللي بالراوتر؟
+[OPTIONS: ✅ مطابق | ❌ مو مطابق]
+• ❌ مو مطابق → الشريحة غلط أو مشكلة بالـ provisioning → Raise TT فوراً
+• ✅ مطابق → كمّل
+2. أطفي الراوتر 30 ثانية وشغّله
+[OPTIONS: ✅ رجع النت | ❌ ما رجع]
+• ❌ ما رجع → Reset:
+  اضغط زر الـ Reset خلف الجهاز 10 ثواني
+  ⚠️ تنبيه للأجنت: الريسيت يمسح كل الإعدادات (اسم الشبكة وكلمة المرور) — تأكد العميل موافق
+[OPTIONS: ✅ رجع النت | ❌ ما رجع → Raise TT]
+→ 🏠 راوتر CPE/Indoor — ما في نت:
+1. تحقق من BSS — رقم الـ IMSI مطابق للشريحة اللي بالراوتر؟
+[OPTIONS: ✅ مطابق | ❌ مو مطابق]
+• ❌ مو مطابق → الشريحة غلط أو مشكلة بالـ provisioning → Raise TT فوراً
+• ✅ مطابق → كمّل
+2. تحقق من شاشة الراوتر — في إشارة حمراء؟
+[OPTIONS: ✅ كل شي طبيعي | 🔴 في إشارة حمراء]
+• 🔴 إشارة حمراء → وثّق ثم أطفي الراوتر 30 ثانية وشغّله
+• ✅ طبيعي → أطفي الراوتر 30 ثانية وشغّله
+[OPTIONS: ✅ رجع النت | ❌ ما رجع]
+• ❌ ما رجع → Reset:
+  اضغط زر الـ Reset خلف الجهاز 10 ثواني
+  ⚠️ تنبيه للأجنت: الريسيت يمسح كل الإعدادات (اسم الشبكة وكلمة المرور) — تأكد العميل موافق
+[OPTIONS: ✅ رجع النت | ❌ ما رجع → Raise TT]
+
 - Speed 5G (Phone): 5G ON → Ookla → 100Mbps
 - Speed 5G (Router): 5GHz → Ookla → 100Mbps
 - Speed 4G: Ookla → 3Mbps
 - Baity/ODU Speed: BSS check first (usage OK) → 5GHz band → Ookla → 100Mbps
-- No Internet (Phone): mobile data ON → airplane mode OFF → if dual SIM confirm correct SIM selected for data → restart — ⚠️ NEVER tell customer to remove or clean SIM physically
-- No Internet (Router): restart router
 - Ping: 5G/5GHz → Ookla ping → 25ms
 [OPTIONS: فوق الحد ✅ | دون الحد ⚠️] or [OPTIONS: صار ✅ | ما صار ⚠️]
 → All done, still failing → 🎫 KB requirements → "بلّغ العميل إنه سيتم التواصل معه من فريق Resolutions بأقرب وقت 📞✅"
@@ -3428,19 +3548,19 @@ For MBB/Fiber only — ask device: "أي جهاز عند العميل؟" [OPTION
 - EVERY single message that ends with a question MUST include [OPTIONS: ...] on the last line
 - If you ask "شو طلع معه؟" → must add [OPTIONS: السرعة زينة ✅ | السرعة دون المطلوب ⚠️]
 - If you ask "شو صار؟" → must add [OPTIONS: صار، شغّل ✅ | ما صار ⚠️]
-- If you ask "أي جهاز؟" → must add [OPTIONS: آيفون 📱 | أندرويد 📱 | راوتر 📡]
+- If you ask "أي جهاز؟" or "شنو جهاز العميل؟" → must add [OPTIONS: 🍎 آيفون | 🤖 أندرويد | 📡 راوتر MBB | 🏠 راوتر CPE/Indoor]
 - ZERO exceptions — if your message has a question, it MUST end with [OPTIONS: ...]
 - Scope: [OPTIONS: كل مكان 🌍 | موقع محدد 📍]
 - Site down: [OPTIONS: في سايت داون ✅ | ما في سايت داون ❌]
 - SITE DOWN LOGIC — STRICTLY FOLLOW:
   • If agent confirms site down EXISTS → Raise TT immediately with tower number and area name. STOP troubleshooting.
   • If agent confirms NO site down → continue to NEXT troubleshooting group. Do NOT show TT requirements.
-- Service (if needed): [OPTIONS: MBB (Voice/DATA) 📱 | Fiber 🏠 | Baity/ODU 🏡]
+- Service (if needed): [OPTIONS: MBB (Voice/DATA) 📱 | Baity/ODU 🏡]
 - Billing (if needed): [OPTIONS: مسبق (Prepaid) 💳 | مؤجل (Postpaid) 📄]
 - NEVER use: DSL, Business Line, Home Broadband, Mobile Data, MBB Router
 - NEVER add [OPTIONS] when giving steps — only at decision points`
     : `You are a smart Resolutions Assistant for stc Kuwait support agents (L2 team).
-The agent's name is ${agentFirstName} — at the end of every final answer, always end with: "${agentFirstName}، في شي ثاني؟"
+The agent's name is ${agentFirstName} — at the end of every final answer, always end with: "${agentFirstName}، تامر على شي ثاني؟"
 
 Your name: Resolutions Assistant
 Your personality: natural, smart, diagnostic — like an experienced telecom engineer helping a colleague.
@@ -3471,7 +3591,7 @@ Examples:
 - Roaming: [OPTIONS: No Data | No Calls | Both]
 - Yes/No: [OPTIONS: Yes ✅ | No ❌]
 - Time: [OPTIONS: Just Started | Since Yesterday | Days Ago | Weeks Ago]
-- Line type: [OPTIONS: Voice 📞 | DATA 📡 | Fiber 🏠]
+- Line type: [OPTIONS: Voice 📞 | DATA 📡]
 
 Do NOT add [OPTIONS] when giving final troubleshooting steps or answers.
 ALWAYS use [OPTIONS] for any question requiring a choice.`;
@@ -3590,7 +3710,7 @@ ALWAYS use [OPTIONS] for any question requiring a choice.`;
     let optionsMatch = processed.match(/\[OPTIONS:\s*([^\]]+)\]/i);
     let cleanAnswer = processed.replace(/\[OPTIONS:[^\]]*\]/gi, '').trim();
     // Auto-inject OPTIONS if AI forgot after "على شي ثاني؟"
-    if (/(تقدر أساعدك بشي ثاني|أقدر أساعدك فيه|أقدر أفيدك بشي ثاني|في شي ثاني يخدمك)/.test(cleanAnswer) && !optionsMatch) {
+    if (/(تقدر أساعدك بشي ثاني|أقدر أساعدك فيه|أقدر أفيدك بشي ثاني|في شي ثاني يخدمك|تامر على شي ثاني)/.test(cleanAnswer) && !optionsMatch) {
       optionsMatch = ['', '✅ إي، في سؤال ثاني | 🏁 لا، يكفي — شكراً'];
     }
 
@@ -4182,7 +4302,7 @@ function showSubPicker(question, buttons, groupId) {
 function showLineTypePicker(callsOnly) {
   var btns = callsOnly
     ? [{ icon: '📞', label: 'Voice', value: 'voice' }, { icon: '📡', label: 'DATA', value: 'data' }]
-    : [{ icon: '📞', label: 'Voice', value: 'voice' }, { icon: '📡', label: 'DATA', value: 'data' }, { icon: '🏠', label: 'Fiber', value: 'fiber' }];
+    : [{ icon: '📞', label: 'Voice', value: 'voice' }, { icon: '📡', label: 'DATA', value: 'data' }];
   showSubPicker('شو نوع خط العميل؟', btns, 'cat-linetype');
 }
 
@@ -4289,7 +4409,6 @@ function handleSymptomSelection(groupId, value, label) {
     if (value === 'internet') {
       showSubPicker('شو نوع خدمة الإنترنت عند العميل؟', [
         { icon: '📱', label: 'MBB (Voice / DATA)', value: 'mbb' },
-        { icon: '🏠', label: 'Fiber',               value: 'fiber' },
         { icon: '🏡', label: 'Baity / ODU',          value: 'baity_odu' }
       ], 'cat-service');
     } else if (value === 'calls') {
@@ -4453,7 +4572,6 @@ window.addEventListener('load', function() {
   if (saved) {
     try {
       const session = JSON.parse(saved);
-      // Block banned users even if they have an active session
       if (BLOCKED_USERS.includes(session.email)) {
         localStorage.removeItem('stc_session');
         return;
