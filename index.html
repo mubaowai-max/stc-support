@@ -978,10 +978,11 @@
     <!-- HISTORY -->
     <div id="historyPanel" style="display:none;padding:20px;max-width:900px;margin:0 auto">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-        <h3 style="color:var(--text);margin:0">🕐 سجل محادثاتي — آخر 24 ساعة</h3>
-        <div style="display:flex;gap:8px">
+        <h3 id="historyTitle" style="color:var(--text);margin:0">🕐 سجل المحادثات</h3>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
           <button onclick="loadHistory()" style="background:var(--surface3);border:1px solid var(--border);border-radius:8px;padding:7px 14px;color:var(--text);font-size:13px;font-family:inherit;cursor:pointer">🔄 تحديث</button>
           <button onclick="exportHistoryExcel()" style="background:#1D6F42;border:none;border-radius:8px;padding:7px 14px;color:white;font-size:13px;font-family:inherit;cursor:pointer;font-weight:600">⬇️ تنزيل Excel</button>
+          <input id="historySearch" type="text" placeholder="🔍 بحث باسم الموظف أو الموضوع..." oninput="filterHistory()" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 14px;color:var(--text);font-size:13px;font-family:inherit;min-width:220px;outline:none;direction:rtl">
         </div>
       </div>
       <div id="historyBody" style="display:flex;flex-direction:column;gap:12px">
@@ -1031,9 +1032,9 @@
             <option value="all">الكل</option>
           </select>
           <span style="font-size:13px;color:var(--text-muted)">أو تاريخ مخصص:</span>
-          <input type="date" id="analyticsFrom" onchange="renderAnalytics()" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 10px;color:var(--text);font-size:13px;font-family:inherit;outline:none">
+          <input type="date" id="analyticsFrom" onchange="debouncedAnalytics()" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 10px;color:var(--text);font-size:13px;font-family:inherit;outline:none">
           <span style="color:var(--text-muted)">—</span>
-          <input type="date" id="analyticsTo" onchange="renderAnalytics()" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 10px;color:var(--text);font-size:13px;font-family:inherit;outline:none">
+          <input type="date" id="analyticsTo" onchange="debouncedAnalytics()" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 10px;color:var(--text);font-size:13px;font-family:inherit;outline:none">
           <button onclick="renderAnalytics()" style="background:var(--surface3);border:1px solid var(--border);border-radius:8px;padding:6px 14px;color:var(--text);font-size:13px;font-family:inherit;cursor:pointer;margin-right:auto">🔄 تحديث</button>
         </div>
 
@@ -2446,6 +2447,20 @@ function showTab(tab, el) {
   if (tab === 'history') loadHistory();
 }
 
+function filterHistory() {
+  const q = (document.getElementById('historySearch').value || '').toLowerCase();
+  if (!window._historyData) return;
+  const cards = document.querySelectorAll('#historyBody > div[data-email]');
+  cards.forEach(card => {
+    const email = (card.getAttribute('data-email') || '').toLowerCase();
+    const name = (card.getAttribute('data-name') || '').toLowerCase();
+    const question = (card.getAttribute('data-question') || '').toLowerCase();
+    const cat = (card.getAttribute('data-cat') || '').toLowerCase();
+    const match = !q || email.includes(q) || name.includes(q) || question.includes(q) || cat.includes(q);
+    card.style.display = match ? '' : 'none';
+  });
+}
+
 function exportHistoryExcel() {
   var data = window._historyData;
   if (!data || !data.length) { alert('اضغط تحديث أولاً'); return; }
@@ -2472,6 +2487,15 @@ function exportHistoryExcel() {
 async function loadHistory() {
   const body = document.getElementById('historyBody');
   body.innerHTML = '<div style="color:var(--text-muted);text-align:center;padding:40px">جاري التحميل...</div>';
+  // Load employee names for display
+  try {
+    const empRes = await fetch(SUPABASE_URL + '/rest/v1/employees?select=email,name', {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+    });
+    const empData = await empRes.json();
+    window._empNames = {};
+    if (Array.isArray(empData)) empData.forEach(e => { if(e.email && e.name) window._empNames[e.email] = e.name; });
+  } catch(e) {}
   try {
     const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
     const email = encodeURIComponent(currentUser.email);
@@ -2494,7 +2518,9 @@ async function loadHistory() {
       body.innerHTML = '<div style="color:var(--text-muted);text-align:center;padding:40px">لا توجد محادثات في آخر 24 ساعة</div>';
       return;
     }
-    let cards = '<div style="color:var(--text-muted);font-size:13px;margin-bottom:12px">' + data.length + ' محادثة في آخر 24 ساعة</div>';
+    const histTitle = document.getElementById('historyTitle');
+    if (histTitle) histTitle.textContent = isAdmin ? '📋 سجل المحادثات — الكل' : '🕐 سجل محادثاتي — آخر 24 ساعة';
+    let cards = '<div style="color:var(--text-muted);font-size:13px;margin-bottom:12px">' + data.length + (isAdmin ? ' محادثة إجمالي' : ' محادثة في آخر 24 ساعة') + '</div>';
     data.forEach(function(l) {
       const d = new Date(l.created_at);
       const timeStr = d.toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
@@ -2521,12 +2547,14 @@ async function loadHistory() {
       };
       const pColor = '#C77DFF';
       const pLabel = _scMap1[l.category] || l.category || '-';
-      const empLine = isAdmin ? '<div style="color:#C77DFF;font-size:12px;margin-bottom:4px">👤 ' + l.email + '</div>' : '';
+      const empName = (window._empNames && window._empNames[l.email]) || l.name || l.email;
+      const empLine = isAdmin ? '<div style="color:#C77DFF;font-size:12px;margin-bottom:4px">👤 ' + empName + '</div>' : '';
       const answerBlock = l.answer ? '<div style="background:var(--surface3);border-radius:8px;padding:10px 14px;margin-top:8px;border-right:3px solid #C77DFF">'
         + '<div style="color:var(--text-muted);font-size:11px;margin-bottom:4px">🤖 الجواب:</div>'
         + '<div style="color:var(--text);font-size:13px;line-height:1.6">' + (l.answer || '').split('\n').join('<br>') + '</div>'
         + '</div>' : '';
-      cards += '<div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px 18px">'
+      const _cn = (window._empNames && window._empNames[l.email]) || l.name || l.email;
+      cards += '<div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px 18px" data-email="' + (l.email||'').replace(/"/g,'') + '" data-name="' + _cn.replace(/"/g,'') + '" data-question="' + (l.question||'').replace(/"/g,'') + '" data-cat="' + (l.category||'').replace(/"/g,'') + '">'
         + empLine
         + '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap">'
         + '<div style="display:flex;align-items:center;gap:8px">'
@@ -2542,7 +2570,7 @@ async function loadHistory() {
         + '</div></div>';
     });
     body.innerHTML = cards;
-    window._historyData = logs;
+    window._historyData = data;
   } catch(e) {
     console.error("History load error:", e);
     // Try without answer column in case it doesn't exist yet
@@ -3439,6 +3467,10 @@ ALWAYS use [OPTIONS] for any question requiring a choice.`;
     // Post-process: remove non-Kuwaiti words and KB-related warnings
     let processed = answer_final
       .replace(/\bشو\b/g, 'شنو')
+      .replace(/الشارج/g, 'الخصم على حساب العميل')
+      .replace(/\bشارج\b/g, 'خصم على حساب العميل')
+      .replace(/سوّت الشارج/g, 'سوّت الخصم')
+      .replace(/سوت الشارج/g, 'سوت الخصم')
       .replace(/\bوش\b/g, 'شنو')
       .replace(/\bإيش\b/g, 'شنو')
       .replace(/\bايش\b/g, 'شنو')
@@ -4077,7 +4109,8 @@ function showSymptomPicker() {
     { icon: '🌐', label: _st ? _st.catInternet  : 'إنترنت',        value: 'internet' },
     { icon: '📞', label: _st ? _st.catCalls     : 'اتصال / SMS',   value: 'calls' },
     { icon: '✈️', label: _st ? _st.catRoaming   : 'تجوال',         value: 'roaming' },
-    { icon: '💳', label: _st ? _st.catDigital   : 'دفع / eSIM',    value: 'digital' },
+    { icon: '💳', label: _st ? _st.catPayment : 'دفع', value: 'payment' },
+    { icon: '📲', label: _st ? _st.catEsim : 'eSIM', value: 'esim' },
     { icon: '📦', label: _st ? _st.catServices  : 'خدمات stc',     value: 'services' },
     { icon: '⚠️', label: _st ? _st.catOutage    : 'عطل عام',       value: 'outage' }
   ], 'cat-main');
@@ -4220,13 +4253,16 @@ function handleSymptomSelection(groupId, value, label) {
         { icon: '📞', label: 'مكالمات / SMS في التجوال',   value: 'Roaming Technical- Calls & SMS' },
         { icon: '💰', label: 'رسوم تجوال',                 value: 'Roaming Billing- Charges' }
       ], 'cat-sub');
-    } else if (value === 'digital') {
-      showSubPicker('شو نوع المشكلة؟', [
+    } else if (value === 'payment') {
+      showSubPicker('شو نوع مشكلة الدفع؟', [
         { icon: '💸', label: 'دفعة مفقودة App/Web',    value: 'App & Web-  Payment issue' },
         { icon: '📱', label: 'مشكلة تطبيق / موقع',     value: 'App & Web- Technical Issues' },
-        { icon: '🍎', label: 'رسوم Apple / Google',     value: 'Apple and google- Charge issues' },
-        { icon: '🏧', label: 'كيوسك',                   value: 'Kiosk- Payment issue' },
-        { icon: '🎫', label: 'Voucher',                  value: 'Voucher- issues' },
+        { icon: '🍎', label: 'خصم على العميل Apple / Google', value: 'Apple and google- Charge issues' },
+        { icon: '🏧', label: 'Kiosk',                   value: 'Kiosk- Payment issue' },
+        { icon: '🎫', label: 'Voucher',                  value: 'Voucher- issues' }
+      ]);
+    } else if (value === 'esim') {
+      showSubPicker('شو نوع مشكلة الـ eSIM؟', [
         { icon: '📲', label: 'تحويل / إصدار eSIM جديد',  value: 'E-SIM-  issues' },
         { icon: '🔑', label: 'مشكلة كود تفعيل eSIM',      value: 'E-SIM-  issues (Code activation issues)' },
         { icon: '🔧', label: 'مشكلة تقنية في eSIM',       value: 'E-SIM-  issues' }
@@ -4494,6 +4530,12 @@ function getAnalyticsData() {
   return filtered;
 }
 
+let _analyticsTimer = null;
+function debouncedAnalytics() {
+  clearTimeout(_analyticsTimer);
+  _analyticsTimer = setTimeout(renderAnalytics, 600);
+}
+
 function renderAnalytics() {
   if (!currentUser || currentUser.role !== 'admin') return;
   const data = getAnalyticsData();
@@ -4652,7 +4694,8 @@ const I18N = {
     catInternet: 'إنترنت',
     catCalls: 'اتصال / SMS',
     catRoaming: 'تجوال',
-    catDigital: 'دفع / eSIM',
+    catPayment: 'دفع',
+    catEsim: 'eSIM',
     catServices: 'خدمات stc',
     catOutage: 'عطل عام',
     // Misc
@@ -4704,7 +4747,8 @@ const I18N = {
     catInternet: 'Internet',
     catCalls: 'Calls / SMS',
     catRoaming: 'Roaming',
-    catDigital: 'Payment / eSIM',
+    catPayment: 'Payment',
+    catEsim: 'eSIM',
     catServices: 'stc Services',
     catOutage: 'Outage',
     // Misc
