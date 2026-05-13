@@ -1716,57 +1716,117 @@ STEP 5 — Speed Test:
     category: "Calls- Quality",
     priority: "medium",
     definition: "Any issue related to voice call coverage such as incoming calls issue or interruption in calls due to bad coverage in specific place",
-    solution: `1. Ask customer to describe the quality issue — echo, one-way audio, choppy/breaking up, background noise, or low volume. Document it.
-2. Ask customer if the issue occurs everywhere or in a specific location.
-   - If specific location → check for site down in that area. If site down confirmed → Raise TT immediately with tower number and area name.
-   - If everywhere → proceed to step 3.
-3. Ask customer if the issue occurs on all calls or with a specific number only.
-   - If specific number only → the issue may be on the other party's network. Advise customer to test with a different number.
-   - If all calls → proceed to step 4.
-4. Ask customer to toggle Airplane mode OFF then ON — forces device to re-register on the network and re-select best available cell.
-5. If issue persists → Raise TT to Resolution team.
+    solution: `STEP 1 — كم إشارة ظاهرة على جهاز العميل؟
+[OPTIONS: 📵 لا إشارة | 📶 ضعيفة (1-2) | 📶📶 متوسطة (3) | 📶📶📶 قوية (4-5)]
 
-📋 Ticket Requirements:
-• Issue description including quality issue type  
-• Troubleshooting confirmation  
-• Customer full address or PACI number  
-• Date and exact time of call where issue occurred (for call trace)  
-• Callback + active WhatsApp`
+• 📵 لا إشارة → اسأله هل هو داخل مبنى؟
+  - داخل مبنى → اطلب منه يروح مكان مفتوح ويجرب
+  [OPTIONS: ✅ تحسنت الإشارة | ❌ ما تحسنت → Raise TT]
+
+• 📶 ضعيفة (1-2) → اسأله هل هو داخل مبنى؟
+  - داخل مبنى → اطلب منه يروح مكان مفتوح ويجرب
+  [OPTIONS: ✅ تحسنت الإشارة | ❌ ما تحسنت → Raise TT]
+
+• 📶📶 متوسطة (3) أو 📶📶📶 قوية (4-5) → الإشارة مقبولة، كمّل
+
+STEP 2 — شنو بالضبط نوع مشكلة الصوت؟
+[OPTIONS: 🔊 صدى (Echo) | 📉 صوت ضعيف | ✂️ صوت مقطوع/متقطع | 🎙️ ضوضاء خلفية | 🔇 كل الأعلى]
+
+STEP 3 — المشكلة بكل المكالمات أو رقم معين؟
+[OPTIONS: 📞 كل المكالمات | 🔢 رقم معين بس]
+• رقم معين → اطلب منه يجرب مع رقم ثاني — لو اشتغل المشكلة من الطرف الثاني مو من الشبكة
+• كل المكالمات → كمّل
+
+STEP 4 — اطلب من العميل يطفي وضع الطيران ويشغّله
+[OPTIONS: ✅ تحسن | ❌ ما تحسن → Raise TT]
+
+📋 اسم الطلب: Call & SMS issues - Calls Quality
+متطلبات الطلب:
+• وصف المشكلة — نوع مشكلة الصوت، في كل مكان
+• تأكيد خطوات التشخيص
+• العنوان الكامل أو رقم PACI
+• تاريخ ووقت آخر مكالمة فيها المشكلة
+• رقم للتواصل + WhatsApp نشط`
   },
   {
     keywords: ["international calls", "مكالمات دولية", "دولي", "international"],
     category: "Calls- International",
     priority: "medium",
     definition: "If customer is facing outgoing or incoming international calls issue",
-    solution: `1. Check BSS — confirm the following:
-   a. Line is active and not suspended or disconnected due to billing.
-   b. Customer has an active package that includes international minutes. If no package: advise customer to subscribe.
-   c. Sufficient international minutes usage and balance are available. If exhausted: inform customer and advise renewal or recharge.
-2. Ask customer for the exact error message shown during international call attempts. Document it.
-3. If more than one SIM active on device — confirm correct SIM is selected for calls.
-4. If issue persists after all steps → Raise TT to Resolution team.
+    solution: `STEP 1 — تحقق من BSS — عنده باقة مكالمات دولية نشطة؟
+[OPTIONS: ✅ عنده باقة | ❌ ما عنده باقة]
+• ❌ ما عنده باقة → وجّهه يشترك بباقة دولية أولاً
 
-📋 Ticket Requirements:
-• Issue description  
-• Error message shown on device  
-• Troubleshooting confirmation  
-• Call time & date  
-• A-party & B-party numbers  
-• Callback`
+STEP 2 — تأكد من صيغة الاتصال الصحيحة:
+الصيغة: + كود الدولة + رقم المستقبل (بدون صفر في البداية)
+مثال: +966 5XXXXXXXX
+[OPTIONS: ✅ الصيغة صحيحة | ❌ كان يتصل بصيغة غلط]
+• صيغة غلط → جرّب بالصيغة الصحيحة وشوف
+
+STEP 3 — عنده Dual SIM؟
+[OPTIONS: ✅ إي، دول سيم | ❌ لا]
+• دول سيم → تأكد السيم الصحيحة مختارة للمكالمات
+
+STEP 4 — في رسالة خطأ تطلع؟
+[OPTIONS: ✅ عنده رسالة خطأ | ❌ ما في رسالة بس ما تكمل]
+• عنده رسالة → وثّق نص الرسالة بالضبط → Raise TT
+• ما في رسالة → Raise TT
+
+📋 اسم الطلب: Call & SMS issues - Calls International
+متطلبات الطلب:
+• وصف المشكلة
+• رسالة الخطأ على الجهاز (إن وجدت)
+• تأكيد خطوات التشخيص
+• تاريخ ووقت المكالمة
+• رقم المتصل (A-party) ورقم المستقبل (B-party)
+• رقم للتواصل`
   },
   {
     keywords: ["divert", "تحويل مكالمة", "call forward", "forward"],
     category: "Calls- Diverts",
     priority: "medium",
     definition: "Any issues related to call diverts",
-    solution: `1 We ask the customer to cancel the call divert using the code ##21#. 
-2 If the divert is not cancelled after using the code raise tt to resolution team 
- If the divert is successfully cancelled but the issue persists, We Raise TT to resolution team .
+    solution: `STEP 1 — شنو مشكلة العميل بالتحويلات؟
+[OPTIONS: 📵 ما يقدر يفعّل التحويل | 🚫 ما يقدر يلغي التحويل | 📨 ما توصله رسائل من Mawjod Extra]
 
-📋 Ticket Requirements:
-• Issue description  
-• Troubleshooting confirmation  
-• Callback + active WhatsApp`
+→ 📵 تفعيل التحويل — كودات التفعيل:
+• كل المكالمات: ‎✱✱21✱[رقم]#
+• عند مشغول: ‎✱✱67✱[رقم]#
+• عند ما في رد: ‎✱✱61✱[رقم]#
+• عند خارج التغطية: ‎✱✱62✱[رقم]#
+[OPTIONS: ✅ اشتغل | ❌ ما اشتغل → Raise TT]
+
+→ 🚫 إلغاء التحويل — كودات الإلغاء:
+• إلغاء كل المكالمات: ‎##21#
+• إلغاء عند مشغول: ‎##67#
+• إلغاء عند ما في رد: ‎##61#
+• إلغاء عند خارج التغطية: ‎##62#
+• إلغاء جميع التحويلات: ‎##002#
+[OPTIONS: ✅ انلغى | ❌ ما انلغى → Raise TT]
+
+→ 📨 ما توصله رسائل من Mawjod Extra:
+تحقق من BSS — خدمة Mawjod Extra مفعّلة على الخط؟
+[OPTIONS: ✅ مفعّلة | ❌ مو مفعّلة]
+• مو مفعّلة → أضف الخدمة على الخط من BSS أولاً، بعدين كمّل
+• مفعّلة → كمّل
+
+اطلب من العميل يسوي الخطوات بالترتيب:
+
+1️⃣ يلغي جميع التحويلات أولاً: ‎##002#
+
+2️⃣ يعيد يفعّل التحويل على 234 — حسب اللي يبيه:
+   📞 كل المكالمات → ‎✱✱21✱234#
+   📵 عند مشغول → ‎✱✱67✱234#
+   🔕 عند ما في رد → ‎✱✱61✱234#
+   📡 عند خارج التغطية → ‎✱✱62✱234#
+
+[OPTIONS: ✅ اشتغل | ❌ ما اشتغل → Raise TT]
+
+📋 اسم الطلب: Call & SMS issues - Calls Diverts
+متطلبات الطلب:
+• وصف المشكلة
+• تأكيد خطوات التشخيص
+• رقم للتواصل + WhatsApp نشط`
   },
   {
     keywords: ["mnp", "port", "نقل رقم", "ported", "محول رقم"],
@@ -3468,8 +3528,9 @@ NEVER ask without the OPTIONS line — it is required every single time.
 - If the agent says the issue is resolved → reply ONLY with "ممتاز! 🎉 زين إنها انحلّت" then ask "${agentFirstName}، تامر على شي ثاني؟" with [OPTIONS: ✅ إي، في سؤال ثاني | 🏁 لا، يكفي — شكراً] — do NOT mention Resolutions or raise TT
 You help agents who are on a LIVE CALL with the customer — speed and accuracy matter.
 - NEVER use the word 'كول' in Arabic — always say 'المكالمة' instead.
+- When showing USSD/divert codes like **21*234#, ALWAYS write them as ✱✱21✱234# using ✱ not * to avoid markdown conflicts.
 - NEVER say 'سيتم التواصل من فريق Resolutions' unless you have explicitly raised a TT in the same response.
-- ALWAYS start with the basic checks (BSS, Smart Care, Site Down) when they are listed at the beginning of the KB entry — NEVER skip them or jump to other steps.
+- ALWAYS start with the basic checks (BSS, Smart Care, Site Down) when they are listed at the beginning of the KB entry — NEVER skip them or jump to other steps. EXCEPTION: Calls- Quality → NEVER show basics, go directly to STEP 1 (signal check).
 - Follow the KB solution in EXACT ORDER — do not reorder, skip, or summarize steps.
 
 Your personality: warm, efficient, Kuwaiti — like a sharp colleague helping you live on a call.
@@ -3786,7 +3847,19 @@ ALWAYS use [OPTIONS] for any question requiring a choice.`;
       .replace(/\]*\)/gi, '')
       .replace(/READ ONLY[^\n]*/gi, '')
       .replace(/⚠️[^\n]*Smart Care[^\n]*TT[^\n]*/gi, '')
-      .replace(/أي مشكلة في Smart Care[^\n]*/gi, '');
+      .replace(/أي مشكلة في Smart Care[^\n]*/gi, '')
+      // Protect USSD/divert codes - replace * with safe placeholder before markdown strip
+      .replace(/(\*\*[0-9]+\*[0-9]+#)/g, function(m) { return 'USSDSTART' + m.replace(/\*/g,'STAR') + 'USSDEND'; })
+      .replace(/\*\*([^*]+)\*\*/g, '$1')
+      .replace(/\*([^*]+)\*/g, '$1')
+      // Restore USSD codes and wrap in LTR span
+      .replace(/USSDSTART([A-Z0-9#]+)USSDEND/g, function(m, code) {
+        return '<span dir="ltr">' + code.replace(/STAR/g,'*') + '</span>';
+      })
+      // Wrap ## codes in LTR span
+      .replace(/(##[0-9#]+)/g, '<span dir="ltr">$1</span>')
+      // Wrap ✱✱ divert codes in LTR span
+      .replace(/(✱✱[0-9✱#]+)/g, '<span dir="ltr">$1</span>');
     let optionsMatch = processed.match(/\[OPTIONS:\s*([^\]]+)\]/i);
     let cleanAnswer = processed.replace(/\[OPTIONS:[^\]]*\]/gi, '').trim();
     // Auto-inject OPTIONS if AI forgot after "على شي ثاني؟"
@@ -4429,7 +4502,7 @@ function triggerIssueWithContext() {
   var needsBasics = issueContext.subIssue && (
     issueContext.subIssue.includes('Speed Issue') ||
     issueContext.subIssue.includes('Internet-') ||
-    issueContext.subIssue.includes('Calls-') ||
+    (issueContext.subIssue.includes('Calls-') && issueContext.subIssue !== 'Calls- Quality' && issueContext.subIssue !== 'Calls- Diverts') ||
     isRoaming
   );
 
