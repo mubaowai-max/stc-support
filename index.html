@@ -1235,30 +1235,35 @@ const KB = [
     category: "Roaming Techincal- Internet",
     priority: "medium",
     definition: "Any issue with internet while customer in roaming status",
-    solution: `أول في — تأكد إن العميل فعلاً متصل بشبكة رومينق:
-
+    solution: `STEP 1 — تأكد إن العميل متصل بشبكة رومينق:
 📶 شريط الحالة — هل يظهر اسم شبكة تجوال؟
-- لو يظهر "No Service" → مو متصل بأي شبكة → خلنا نرشده يختار الشبكة يدوياً أول
-
-📦 باقة الرومينق — عند العميل باقة رومينق نشطة؟
-- لو ما عنده → اطلب منه يفعّلها أول، وبعدين نكمل
+📦 عنده باقة رومينق نشطة؟
 
 [OPTIONS: ✅ متصل وعنده باقة، نكمل | 📵 ما عنده باقة رومينق | ❌ ما متصل بأي شبكة]
 
-→ ✅ لو تأكدنا إنه متصل وعنده باقة، تحقق من هالنقاط مع بعض:
+→ 📵 ما عنده باقة → اطلب منه يفعّلها أول
+→ ❌ ما متصل → وجّهه يختار الشبكة يدوياً
 
-🔵 الجهاز: Data Roaming = ON في الإعدادات؟
-🔵 BSS: الخط نشط، ما في إيقاف بسبب فاتورة؟
-🔵 Smart Care:
-  - CS Roam = NOBAR؟ (لو BAR → قيد على الخط → نرفع TT)
-  - Roaming field = ROAM؟ (لو LOCAL → العميل يختار الشبكة يدوياً)
-  - Roaming Operator = شبكة صحيحة؟ (لو فاضي → يختار يدوياً)
+STEP 2 — شنو نوع جهاز العميل؟
+[OPTIONS: 🍎 آيفون | 🤖 أندرويد]
 
-[OPTIONS: ✅ تأكدنا، نكمل | ⚠️ في مشكلة]
+→ 🍎 آيفون:
+1. إعدادات ← Cellular ← Data Roaming = ON
+2. أعد تشغيل الجهاز
+[OPTIONS: ✅ رجع النت | ❌ ما رجع]
+• ❌ ما رجع → Reset Network Settings:
+  إعدادات ← General ← Transfer or Reset iPhone ← Reset ← Reset Network Settings
+  ⚠️ تنبيه للأجنت: راح تنمسح كلمات مرور الـ WiFi المحفوظة
+[OPTIONS: ✅ رجع النت | ❌ ما رجع → Raise TT]
 
-→ ✅ لو كل الأساسيات زينة:
-STEP 4 — اطلب من العميل Reset Network Settings على الجهاز
-STEP 5 — لو المشكلة لا زالت موجودة → Raise TT
+→ 🤖 أندرويد:
+1. إعدادات ← اتصالات ← Data Roaming = ON
+2. أعد تشغيل الجهاز
+[OPTIONS: ✅ رجع النت | ❌ ما رجع]
+• ❌ ما رجع → Reset Network Settings:
+  إعدادات ← الإدارة العامة ← إعادة تعيين ← إعادة تعيين إعدادات الشبكة
+  ⚠️ تنبيه للأجنت: راح تنمسح كلمات مرور الـ WiFi المحفوظة
+[OPTIONS: ✅ رجع النت | ❌ ما رجع → Raise TT]
 
 📋 Ticket Requirements:
 • Issue description
@@ -1271,24 +1276,16 @@ STEP 5 — لو المشكلة لا زالت موجودة → Raise TT
     category: "Roaming Technical- Calls & SMS",
     priority: "medium",
     definition: "Any issue with Calls & SMS while customer in roaming status",
-    solution: `TT TASK NAME: Roaming Technical- Calls & SMS
+    solution: `STEP 1 — شنو بالضبط المشكلة اللي يواجهها العميل؟
+[OPTIONS: 📞 ما يقدر يسوي مكالمات | 💬 ما يقدر يسوي رسائل SMS | ❌ الاثنين | ⚠️ مشكلة أخرى]
 
-الأساسيات أول — تحقق من هالنقاط قبل أي خطوة:
+STEP 2 — اطلب من العميل يختار الشبكة يدوياً:
+• آيفون: إعدادات ← Cellular ← Network Selection ← أطفي Automatic ← ابحث عن الشبكة واختارها يدوياً
+• أندرويد: إعدادات ← اتصالات ← شبكات الجوال ← مشغلو الشبكة ← ابحث عن الشبكة واختارها يدوياً
+[OPTIONS: ✅ اشتغل | ⚠️ ما اشتغل]
 
-🔵 BSS: الخط نشط وما في انقطاع بالفاتورة
-🔵 Smart Care — تحقق:
-  • Roaming Package = YES؟
-  • CS Roam = NOBAR؟
-  • Roaming field = ROAM؟
-  • الخط attached على شبكة تجوال صحيحة؟
-
-[OPTIONS: ✅ تأكدنا، نكمل | ⚠️ في مشكلة]
-
-بعد ما الأساسيات زينة:
-STEP 2 — اطلب من العميل يطفي وضع الطيران ويشغّله مرة ثانية
-  [OPTIONS: ✅ اشتغل | ⚠️ ما اشتغل]
-STEP 3 — وش رسالة الخطأ اللي تطلع عند محاولة المكالمة أو الرسالة؟
-→ سجّل الخطأ → Raise TT
+→ ⚠️ ما اشتغل → STEP 3 — اطلب من العميل يطفي وضع الطيران ويشغّله مرة ثانية
+[OPTIONS: ✅ اشتغل | ⚠️ ما اشتغل → Raise TT]
 
 📋 اسم الطلب: Roaming Technical- Calls & SMS
 متطلبات الطلب:
@@ -1390,43 +1387,88 @@ STEP 7: إذا النتيجة فوق 25ms بعد كل الخطوات → Raise T
     category: "Internet- Baity",
     priority: "medium",
     definition: "Baity or turbonet ODU device - Internet not working",
-    solution: `1. Open Smart Care — check network attachment and data status on the line. This determines the direction of troubleshooting:
+    solution: `STEP 1 — ⚠️ الأساسيات أولاً (إلزامي):
+🔵 BSS: الخط نشط، الباقة نشطة، استخدام العميل ما خلص
+🔵 Smart Care: الخط attached، Data Status نشط، وفي إشارة
+🔵 Site Down: ما في عطل في منطقة العميل
 
-   Scenario A — Smart Care shows NO attach and NO data:
-   a. Ask customer to confirm the main power adapter is switched ON.
-   b. Ask customer to confirm the cable between the ODU and the main power adapter WAN/Power port is properly connected.
-   c. If power is ON and cable is connected but Smart Care still shows no attach → Raise TT to Resolution team.
+[OPTIONS: ✅ كل شي زين، نكمل | ⚠️ في مشكلة بالأساسيات]
 
-   Scenario B — Smart Care shows attach and data, but customer reports no internet and main mesh shows red light:
-   a. Ask customer to check the cable between the power adapter LAN port and the main mesh — confirm it is properly connected.
-   b. If cable is properly connected → guide customer to restart the mesh (power off and back on). ⚠️ Restart only — do NOT ask customer to RESET the ODU or the mesh.
-   c. If issue persists after restart → Raise TT to Resolution team.
+STEP 2 — افتح Smart Care وشوف حالة الخط:
+[OPTIONS: ❌ ما في Attach ولا Data | ✅ في Attach وData بس ما في نت]
+
+→ ❌ سيناريو A — ما في Attach ولا Data:
+1. تأكد الـ Power Adapter مشغّل
+2. تأكد الكيبل بين الـ ODU والـ Power Adapter (WAN/Power port) متصل صح
+[OPTIONS: ✅ كل شي متصل | ❌ في مشكلة بالتوصيل]
+• كل شي متصل بس لسه ما في attach → Raise TT فوراً
+
+→ ✅ سيناريو B — في Attach وData بس ما في نت:
+1. شوف إضاءة الـ Mesh الرئيسي — حمراء؟
+2. تأكد الكيبل بين Power Adapter (LAN port) والـ Mesh الرئيسي متصل صح
+[OPTIONS: ✅ الكيبل متصل | ❌ الكيبل مو متصل]
+• الكيبل متصل → Restart الـ Mesh بس (أطفيه وشغّله)
+  ⚠️ تنبيه للأجنت: Restart الـ Mesh فقط — لا تطلب Reset للـ ODU أو الـ Mesh
+[OPTIONS: ✅ رجع النت | ❌ ما رجع → Raise TT]
 
 📋 Ticket Requirements:
-• Issue description  
-• Troubleshooting confirmation  
-• Customer address or PACI #  
-• Master device serial number  
+• Issue description
+• Troubleshooting confirmation
+• Customer address or PACI #
+• Master device serial number
 • Callback`
   },
   {
     keywords: ["baity", "turbonet", "odu", "mesh", "بيتي", "باتي", "baity 5g"],
-    category: "Internet- Baity (Baity or turbonet ODU device -)",
+    category: "Internet- Baity Low Speed",
     priority: "medium",
     definition: "Baity or turbonet ODU device - Low speed issue",
-    solution: `TT TASK NAME: Internet- Baity
+    solution: `STEP 1 — ⚠️ الأساسيات أولاً (إلزامي):
+🔵 BSS: الخط نشط، الباقة نشطة، استخدام العميل ما خلص
 
-STEP 1 — BSS: تحقق الخط نشط، الباقة نشطة، واستخدام العميل ما خلص — قبل أي شي.
-STEP 2 — Smart Care: تحقق الخط attached وData Status نشط.
-STEP 3 — Scope: هل المشكلة على كل أجهزة الـ Mesh ولا جهاز محدد؟ هل المشكلة طول الوقت ولا أحياناً؟
-STEP 4 — Band: تأكد العميل واصل على 5GHz مو 2.4GHz.
-STEP 5 — Speed Test: شغّل Ookla أو speedtest.net على جهاز واصل بـ WiFi.
+[OPTIONS: ✅ كل شي زين، نكمل | ⚠️ في مشكلة بالأساسيات]
 
-العتبة: Baity 5G = 100Mbps كحد أدنى مقبول.
+STEP 2 — شبكة الـ WiFi اللي واصل عليها العميل؟
+[OPTIONS: ✅ 5GHz | 📶 2.4GHz | 🤔 ما أعرف | 💡 طريقة التغيير عبر الـ Mesh]
+• لو 2.4GHz أو ما يعرف → وجّهه يشبك على الـ 5GHz
 
-إذا السرعة دون 100Mbps بعد كل الخطوات → Raise TT.
+→ 💡 طريقة تغيير التردد عبر الـ Mesh:
+1. افتح تطبيق Baity / My stc أو ادخل على 192.168.1.1
+2. روح إعدادات الـ WiFi
+3. غيّر الـ Band من 2.4GHz لـ 5GHz
+4. احفظ وأعد التشغيل
 
-📋 اسم الطلب: Internet- Baity
+STEP 3 — المشكلة على كل الـ Mesh nodes ولا جهاز معين؟
+[OPTIONS: 🌐 كل الـ Mesh nodes | 📱 جهاز معين بس]
+
+→ 🌐 لو كل الـ Mesh nodes:
+1. 💡 قوله يكون قريب من الـ Mesh الرئيسي وقت الـ Speed Test
+2. سوّي Speed Test على Ookla وشاركنا النتيجة
+[OPTIONS: ✅ فوق 100 Mbps | ⚠️ دون 100 Mbps]
+• دون 100 Mbps → أطفي الـ Mesh الرئيسي وشغّله — انتظر دقيقتين وجرّب ثاني
+  ⚠️ تنبيه للأجنت: Restart الـ Mesh فقط — لا تطلب Reset
+[OPTIONS: ✅ تحسنت السرعة | ❌ ما تحسنت → Raise TT]
+
+→ 📱 لو جهاز معين:
+1. الـ Mesh هذا واصل بكيبل أو WiFi؟
+[OPTIONS: 🔌 كيبل | 📶 WiFi]
+
+• 📶 WiFi → قرّب الجهاز من الـ Mesh الرئيسي أو وصّله بكيبل وجرّب
+💡 قوله يكون قريب من الـ Mesh وقت الـ Speed Test
+سوّي Speed Test على Ookla
+[OPTIONS: ✅ فوق 100 Mbps | ⚠️ دون 100 Mbps]
+• دون 100 Mbps → أطفي الـ Mesh الرئيسي وشغّله — انتظر دقيقتين وجرّب ثاني
+  ⚠️ تنبيه للأجنت: Restart الـ Mesh فقط — لا تطلب Reset
+[OPTIONS: ✅ تحسنت السرعة | ❌ ما تحسنت → Raise TT]
+
+• 🔌 كيبل → تأكد الكيبل متصل صح بين الـ Mesh والـ Switch أو الـ Mesh الرئيسي
+سوّي Speed Test على Ookla
+[OPTIONS: ✅ فوق 100 Mbps | ⚠️ دون 100 Mbps]
+• دون 100 Mbps → أطفي الـ Mesh الرئيسي وشغّله — انتظر دقيقتين وجرّب ثاني
+  ⚠️ تنبيه للأجنت: Restart الـ Mesh فقط — لا تطلب Reset
+[OPTIONS: ✅ تحسنت السرعة | ❌ ما تحسنت → Raise TT]
+
+📋 اسم الطلب: Internet issue- Internet- Baity
 متطلبات الطلب:
 • وصف المشكلة
 • تأكيد خطوات التشخيص
@@ -2575,7 +2617,7 @@ function filterHistory() {
 function exportHistoryExcel() {
   var data = window._historyData;
   if (!data || !data.length) { alert('اضغط تحديث أولاً'); return; }
-  var SUBCAT = {'Roaming Techincal- Internet':'Roaming Complaint','Internet- not working':'Internet issue','Speed Issue –4G':'Internet issue','Speed Issue –5G':'Internet issue','Calls- not working':'Call & SMS issues','Outage- Network':'General Issue'};
+  var SUBCAT = {'Roaming Techincal- Internet':'','Internet- not working':'Internet issue','Speed Issue –4G':'Internet issue','Speed Issue –5G':'Internet issue','Calls- not working':'Call & SMS issues','Outage- Network':'General Issue'};
   var rows = [['Time','Agent','Question','Answer','Task Name','Sub Category']];
   data.forEach(function(l) {
     var d = new Date(l.time || l.created_at);
@@ -2639,8 +2681,8 @@ async function loadHistory() {
       const _scMap1 = {
         'CITRA':'Special Resolution request','Staff/Friends & Family':'Special Resolution request',
         'Follow Up TT':'Special Resolution request','HQ Complaint':'Special Resolution request',
-        'Roaming Techincal- Internet':'Roaming Complaint','Roaming Technical- Calls & SMS':'Roaming Complaint',
-        'Roaming Billing- Charges':'Roaming Complaint','Internet- not working':'Internet issue',
+        'Roaming Techincal- Internet':'','Roaming Technical- Calls & SMS':'',
+        'Roaming Billing- Charges':'','Internet- not working':'Internet issue',
         'Internet- Ping Issue':'Internet issue','Internet- Site Down':'Internet issue',
         'Internet- Baity':'Internet issue','Internet- Baity Low Speed':'Internet issue',
         'Speed Issue – 4G':'Internet issue','Speed Issue – 5G':'Internet issue',
@@ -2709,8 +2751,8 @@ async function loadHistory() {
         const _scMap2 = {
         'CITRA':'Special Resolution request','Staff/Friends & Family':'Special Resolution request',
         'Follow Up TT':'Special Resolution request','HQ Complaint':'Special Resolution request',
-        'Roaming Techincal- Internet':'Roaming Complaint','Roaming Technical- Calls & SMS':'Roaming Complaint',
-        'Roaming Billing- Charges':'Roaming Complaint','Internet- not working':'Internet issue',
+        'Roaming Techincal- Internet':'','Roaming Technical- Calls & SMS':'',
+        'Roaming Billing- Charges':'','Internet- not working':'Internet issue',
         'Internet- Ping Issue':'Internet issue','Internet- Site Down':'Internet issue',
         'Internet- Baity':'Internet issue','Internet- Baity Low Speed':'Internet issue',
         'Speed Issue – 4G':'Internet issue','Speed Issue – 5G':'Internet issue',
@@ -2923,9 +2965,43 @@ function selectDiagOption(btn, groupId, value, label) {
   if (groupId.startsWith('basics-')) {
     if (value.includes('كل شي زين')) {
       issueContext.basicsShown = true;
+      // For roaming calls: show STEP 1 as buttons directly
+      if (issueContext.subIssue === 'Roaming Technical- Calls & SMS') {
+        var msgs2 = document.getElementById('chatMessages');
+        var d2 = document.createElement('div');
+        d2.className = 'msg bot';
+        d2.innerHTML = '<div class="msg-avatar">🤖</div><div class="msg-bubble">شنو بالضبط المشكلة اللي يواجهها العميل؟</div>';
+        msgs2.appendChild(d2);
+        msgs2.scrollTop = msgs2.scrollHeight;
+        setTimeout(function() {
+          addButtonGroup([
+            {icon:'1️⃣', label:'📞 ما يقدر يسوي مكالمات', value:'مكالمات'},
+            {icon:'2️⃣', label:'💬 ما يقدر يسوي رسائل SMS', value:'رسائل sms'},
+            {icon:'3️⃣', label:'❌ الاثنين', value:'مكالمات ورسائل'},
+            {icon:'4️⃣', label:'⚠️ مشكلة أخرى', value:'مشكلة اخرى'}
+          ], 'roam-step1-' + Date.now());
+        }, 300);
+        return;
+      }
       sendMessageText(label);
     } else {
-      // في مشكلة بالأساسيات — send to AI for guidance
+      // في مشكلة بالأساسيات
+      // For roaming: no site down option
+      if (issueContext.subIssue && issueContext.subIssue.includes('Roaming')) {
+        var msgs3 = document.getElementById('chatMessages');
+        var d3 = document.createElement('div');
+        d3.className = 'msg bot';
+        d3.innerHTML = '<div class="msg-avatar">🤖</div><div class="msg-bubble">وين المشكلة بالأساسيات؟</div>';
+        msgs3.appendChild(d3);
+        msgs3.scrollTop = msgs3.scrollHeight;
+        setTimeout(function() {
+          addButtonGroup([
+            {icon:'1️⃣', label:'🔴 مشكلة BSS', value:'bss مشكلة'},
+            {icon:'2️⃣', label:'🔴 Smart Care مو زين', value:'smart care مشكلة'}
+          ], 'roam-basics-err-' + Date.now());
+        }, 300);
+        return;
+      }
       sendMessageText(label);
     }
     return;
@@ -3020,8 +3096,8 @@ function addMsg(text, role, stepsHtml, priority, category) {
     const CHAT_SUBCAT_MAP = {
       'CITRA':'Special Resolution request','Staff/Friends & Family':'Special Resolution request',
       'Follow Up TT':'Special Resolution request','HQ Complaint':'Special Resolution request',
-      'Roaming Techincal- Internet':'Roaming Complaint','Roaming Technical- Calls & SMS':'Roaming Complaint',
-      'Roaming Billing- Charges':'Roaming Complaint','Internet- not working':'Internet issue',
+      'Roaming Techincal- Internet':'','Roaming Technical- Calls & SMS':'',
+      'Roaming Billing- Charges':'','Internet- not working':'Internet issue',
       'Internet- Ping Issue':'Internet issue','Internet- Site Down':'Internet issue',
       'Internet- Baity':'Internet issue','Internet- Baity Low Speed':'Internet issue',
       'Speed Issue – 4G':'Internet issue','Speed Issue – 5G':'Internet issue',
@@ -3037,9 +3113,9 @@ function addMsg(text, role, stepsHtml, priority, category) {
       'Apple Watch':'stc services','Qitaf points':'stc services',
       'Outage- Global Service/App':'General Issue','Outage- Network':'General Issue'
     };
-    const subCatLabel = CHAT_SUBCAT_MAP[category] || category || '';
+    const subCatLabel = CHAT_SUBCAT_MAP[category] !== undefined ? CHAT_SUBCAT_MAP[category] : (category || '');
     const pClass = priority === 'high' ? 'high' : priority === 'medium' ? 'medium' : 'low';
-    bubbleContent = `<div class="priority-badge ${pClass}">📂 ${subCatLabel}</div>` + bubbleContent;
+    if (subCatLabel) bubbleContent = `<div class="priority-badge ${pClass}">📂 ${subCatLabel}</div>` + bubbleContent;
   }
   if (stepsHtml) bubbleContent += stepsHtml;
 
@@ -3427,6 +3503,7 @@ Your personality: warm, efficient, Kuwaiti — like a sharp colleague helping yo
 ## TWO-PHASE APPROACH:
 
 ⚠️ ROAMING ISSUES = SKIP PHASE 1 ENTIRELY. Follow KB steps directly in order. No site down. No combined message.
+⛔ ROAMING FORBIDDEN — NEVER ask: what country the customer is in, or any question not in the KB steps. Go directly to STEP 1 of the KB. For Roaming Technical- Calls & SMS: ALWAYS start with STEP 1 (problem type question) — NEVER skip to airplane mode.
 
 ### PHASE 1 — LOCAL INTERNET & CALLS ONLY (not roaming):
 ONE combined message — all 3 checks together:
@@ -3445,7 +3522,10 @@ ONE combined message — all 3 checks together:
   - Site Down: Raise TT with tower + area. STOP.
 
 ### PHASE 2 — FIX (after Phase 1 clear):
-⚠️ BAITY/ODU: After Phase 1 clear → skip device question, go directly to Baity steps: scope (all mesh or specific?) → 5GHz band → Ookla → 100Mbps threshold.
+⚠️ BAITY/ODU — After Phase 1 clear, follow KB entry exactly based on issue type:
+- Baity ما في نت → follow "Internet- Baity" KB: Smart Care attach check → Scenario A or B
+- Baity سرعة بطيئة → follow "Internet- Baity (Low speed)" KB: 5GHz band → Mesh nodes scope → Speed Test → Restart → TT
+NEVER mix the two flows. NEVER ask about location or ODU light for speed issues.
 
 **For all MBB issues — ask device first:**
 "شنو جهاز العميل؟"
@@ -3535,7 +3615,7 @@ ONE combined message — all 3 checks together:
 ## Vocabulary — كويتي فقط — ممنوع مصري:
 - "هلا" مو "مرحبا" / "زين" مو "تمام" / "وايد" مو "جداً"
 - "مو" مو "مش" / "شو" مو "إيه" / "ترى" / "انزين" / "خلني"
-- ممنوع مصري: ايه، أيوه، دلوقتي، كده، يسطا، يعم، معلش
+- ممنوع مصري: ايه، أيوه، دلوقتي، كده، يسطا، يعم، معلش، لسه
 ممنوع عراقي/خليجي: هسع، هساع، هسه، گلت، چ، ابد (بمعنى أبداً)
 ممنوع شامي/لبناني: منيح، هيك، كتير، شو (بمعنى ماذا — استخدم "شنو")
 ممنوع كلياً: آه (للموافقة) — استخدم "إي" أو "زين" أو "صح"
@@ -3914,8 +3994,8 @@ async function renderAdmin() {
     const subCategoryMap2 = {
       'CITRA':'Special Resolution request','Staff/Friends & Family':'Special Resolution request',
       'Follow Up TT':'Special Resolution request','HQ Complaint':'Special Resolution request',
-      'Roaming Techincal- Internet':'Roaming Complaint','Roaming Technical- Calls & SMS':'Roaming Complaint',
-      'Roaming Billing- Charges':'Roaming Complaint','Internet- not working':'Internet issue',
+      'Roaming Techincal- Internet':'','Roaming Technical- Calls & SMS':'',
+      'Roaming Billing- Charges':'','Internet- not working':'Internet issue',
       'Internet- Ping Issue':'Internet issue','Internet- Site Down':'Internet issue',
       'Internet- Baity':'Internet issue','Internet- Baity Low Speed':'Internet issue',
       'Speed Issue – 4G':'Internet issue','Speed Issue – 5G':'Internet issue',
@@ -4019,9 +4099,9 @@ function renderLogsTable(data) {
     'Staff/Friends & Family': 'Special Resolution request',
     'Follow Up TT': 'Special Resolution request',
     'HQ Complaint': 'Special Resolution request',
-    'Roaming Techincal- Internet': 'Roaming Complaint',
-    'Roaming Technical- Calls & SMS': 'Roaming Complaint',
-    'Roaming Billing- Charges': 'Roaming Complaint',
+    'Roaming Techincal- Internet': '',
+    'Roaming Technical- Calls & SMS': '',
+    'Roaming Billing- Charges': '',
     'Internet- not working': 'Internet issue',
     'Internet- Ping Issue': 'Internet issue',
     'Internet- Site Down': 'Internet issue',
@@ -4345,15 +4425,22 @@ function triggerIssueWithContext() {
   var serviceLabel = issueContext.service === 'fiber' ? '— Fiber' : issueContext.service === 'baity_odu' ? '— Baity' : '';
 
   // Show basics for internet/speed/calls issues
+  var isRoaming = issueContext.subIssue && issueContext.subIssue.includes('Roaming');
   var needsBasics = issueContext.subIssue && (
     issueContext.subIssue.includes('Speed Issue') ||
     issueContext.subIssue.includes('Internet-') ||
-    issueContext.subIssue.includes('Calls-')
+    issueContext.subIssue.includes('Calls-') ||
+    isRoaming
   );
 
   if (needsBasics && !issueContext.basicsShown) {
     issueContext.basicsShown = true;
-    var basicMsg = 'الأساسيات أولاً — تحقق من كل هالنقاط قبل أي خطوة:\n\n🔵 BSS: الخط نشط، الباقة نشطة، استخدام العميل ما خلص\n🔵 Smart Care: الخط attached، Data Status نشط، وفي إشارة\n🔵 Site Down: ما في عطل في منطقة العميل';
+    var basicMsg = isRoaming
+    var basicMsg = isRoaming
+      ? (issueContext.subIssue === 'Roaming Techincal- Internet'
+          ? 'الأساسيات أولاً — تحقق من هالنقاط قبل أي خطوة:\n\n🔵 BSS: الخط نشط، الباقة فعّالة، ما في إيقاف بالفاتورة، واستخدام الإنترنت ما خلص\n🔵 Smart Care: CS Roam = NOBAR، Roaming Package = YES، الخط attached على شبكة رومينق\n🔵 Data Roaming: مفعّل على جهاز العميل'
+          : 'الأساسيات أولاً — تحقق من هالنقاط قبل أي خطوة:\n\n🔵 BSS: الخط نشط، الباقة فعّالة، ما في إيقاف بالفاتورة\n🔵 Smart Care: الخط attached على شبكة رومينق')
+      : 'الأساسيات أولاً — تحقق من كل هالنقاط قبل أي خطوة:\n\n🔵 BSS: الخط نشط، الباقة نشطة، استخدام العميل ما خلص\n🔵 Smart Care: الخط attached، Data Status نشط، وفي إشارة\n🔵 Site Down: ما في عطل في منطقة العميل';
     var kbCat = issueContext.subIssue;
     addMsg(basicMsg, 'bot', null, 'medium', kbCat);
     setTimeout(function() {
@@ -4672,8 +4759,8 @@ let anChartDailyInst = null, anChartIssuesInst = null, anChartSubcatInst = null;
 const AN_SUBCAT_MAP = {
   'CITRA':'Special Resolution request','Staff/Friends & Family':'Special Resolution request',
   'Follow Up TT':'Special Resolution request','HQ Complaint':'Special Resolution request',
-  'Roaming Techincal- Internet':'Roaming Complaint','Roaming Technical- Calls & SMS':'Roaming Complaint',
-  'Roaming Billing- Charges':'Roaming Complaint','Internet- not working':'Internet issue',
+  'Roaming Techincal- Internet':'','Roaming Technical- Calls & SMS':'',
+  'Roaming Billing- Charges':'','Internet- not working':'Internet issue',
   'Internet- Ping Issue':'Internet issue','Internet- Site Down':'Internet issue',
   'Internet- Baity':'Internet issue','Internet- Baity Low Speed':'Internet issue',
   'Speed Issue – 4G':'Internet issue','Speed Issue – 5G':'Internet issue',
