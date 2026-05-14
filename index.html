@@ -1379,28 +1379,37 @@ STEP 1 — تأكد إن العميل متصل بشبكة رومينق:
     category: "Roaming Billing- Charges",
     priority: "medium",
     definition: "If customer is complaining about Roaming charges",
-    solution: `TT TASK NAME: Roaming Billing- Charges
+    solution: `[V2]
+شنو نوع المشكلة؟
+[OPTIONS: 📵 نزلت رسوم وما استخدم التجوال | 🔁 نفس الرسوم نزلت مرتين | 💸 رسوم غير متوقعة أخرى]
 
-STEP 1 — شنو نوع المشكلة؟
-[OPTIONS: نزلت رسوم وما استخدم التجوال 📵 | نفس الرسوم نزلت مرتين 🔁 | رسوم غير متوقعة أخرى 💸]
+[SECTION: نزلت رسوم وما استخدم التجوال]
+افتح BSS وراجع تاريخ الرسوم على الحساب
+إذا الخصم ثابت في النظام وما يطابق استخدام العميل → مؤهل ✅
+💡 هذي حالة Border Issue: الجهاز اتصل بشبكة أجنبية قرب الحدود بدون قصد
+[OPTIONS: ✅ مؤهل → Raise TT | ❌ غير مؤهل]
+[SECTION: غير مؤهل]
+شرّح للعميل إن الرسوم صحيحة وتعكس استخدام فعلي
+[END_SECTION]
+[END_SECTION]
 
-📵 نزلت رسوم بدون استخدام:
-  → افتح BSS وراجع تاريخ الرسوم على الحساب
-  → إذا الخصم ثابت في النظام وما يطابق استخدام العميل → مؤهل ✅
-  💡 هذي حالة Border Issue: الجهاز اتصل بشبكة أجنبية قرب الحدود بدون قصد
+[SECTION: نفس الرسوم نزلت مرتين]
+افتح BSS وتحقق من تكرار الخصم في نفس التاريخ
+إذا تكرر → مؤهل ✅ (خطأ في النظام — Double Charge)
+[OPTIONS: ✅ مؤهل → Raise TT | ❌ غير مؤهل]
+[SECTION: غير مؤهل]
+شرّح للعميل إن الرسوم صحيحة
+[END_SECTION]
+[END_SECTION]
 
-🔁 نفس الرسوم مرتين:
-  → افتح BSS وتحقق من تكرار الخصم في نفس التاريخ
-  → إذا تكرر → مؤهل ✅ (خطأ في النظام — Double Charge)
-
-💸 رسوم أخرى:
-  → اسأل العميل عن المبلغ والتاريخ والخدمة
-  → راجع BSS وحدد إذا الرسوم تعكس استخدام فعلي
-  → إذا ما في استخدام مقابل الرسوم → مؤهل ✅
-  → إذا في استخدام فعلي → غير مؤهل ❌ — شرّح للعميل
-
-✅ مؤهل → Raise TT مع تفاصيل الخصم وسبب الاسترداد
-❌ غير مؤهل → شرّح للعميل إن الرسوم صحيحة وتعكس استخدام فعلي
+[SECTION: رسوم غير متوقعة أخرى]
+اسأل العميل عن المبلغ والتاريخ والخدمة
+راجع BSS وحدد إذا الرسوم تعكس استخدام فعلي
+[OPTIONS: ✅ مؤهل — ما في استخدام → Raise TT | ❌ غير مؤهل — في استخدام فعلي]
+[SECTION: غير مؤهل — في استخدام فعلي]
+شرّح للعميل إن الرسوم صحيحة وتعكس استخدام فعلي
+[END_SECTION]
+[END_SECTION]
 
 📋 اسم الطلب: Roaming Complaint - Roaming Billing- Charges
 متطلبات الطلب:
@@ -5950,7 +5959,7 @@ function kbFlowV2Advance() {
     var icons = ['1️⃣','2️⃣','3️⃣','4️⃣','5️⃣','6️⃣'];
     var btns = opts.map(function(opt,i){ return {icon:icons[i]||(i+1)+'',label:opt,value:'kbf|'+i+'|'+opt}; });
     setTimeout(function(){ addButtonGroup(btns,'kbf-'+Date.now()); },300);
-  } else if (pos >= lines.length && msgText && (msgText.includes('اسم الطلب')||msgText.includes('متطلبات الطلب'))) {
+  } else if (msgText) {
     var agN = currentUser&&currentUser.name?currentUser.name.split(' ')[0]:'أخوي';
     var cls = ['حياك الله '+agN+'، تامر على شي ثاني؟ 🌟','نورت '+agN+'، في شي ثاني أخدمك؟ 👋','أبشر '+agN+'، شي ثاني؟ ✅'];
     var cl = cls[Math.floor(Math.random()*cls.length)];
@@ -5972,7 +5981,7 @@ function kbFlowV2Select(optLabel) {
     setTimeout(function(){ addButtonGroup(bOpts,'basics-err-'+Date.now()); },300);
     return true;
   }
-  var successWords=['رجع النت','انحلت','تحسنت','ممتاز','فوق 100','فوق 3','السرعة زينة','زينة','وصل للشبكة','استقر','مقبول','فعّل الباقة','شغّلت','شغّل','تم الإلغاء','تم التغيير','تم وشبك','قبل العميل','مقتنع','الرصيد مطابق','تم، أبلغت','أبلغت العميل'];
+  var successWords=['رجع النت','انحلت','تحسنت','ممتاز','فوق 100','فوق 3','السرعة زينة','زينة','وصل للشبكة','استقر','مقبول','فعّل الباقة','شغّلت','شغّل','اشتغل','انلغى','تم الإلغاء','تم التغيير','تم وشبك','قبل العميل','مقتنع','الرصيد مطابق','تم، أبلغت','أبلغت العميل','الطلب نفّذ','مؤهل'];
   var isSuccess=successWords.some(function(w){ return optLabel.includes(w); });
   var sectionPos=v2FindSection(flow.lines,flow.pos,cleanOpt);
   if (isSuccess&&sectionPos===-1) {
