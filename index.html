@@ -634,6 +634,37 @@
   }
 
   .btn-send:hover { opacity: 0.85; }
+  .btn-img-upload {
+    background: var(--surface3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 16px;
+    padding: 0 10px;
+    height: 40px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.2s;
+  }
+  .btn-img-upload:hover { background: var(--surface2); color: var(--primary-light); }
+  .img-preview-bar {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    background: var(--surface2);
+    border-radius: 8px;
+    margin-bottom: 6px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .img-preview-bar img { width: 36px; height: 36px; object-fit: cover; border-radius: 6px; }
+  .img-preview-bar .remove-img { cursor: pointer; color: #ff6b6b; font-size: 14px; margin-right: auto; }
+  /* Image button */
+  .img-preview-bar.active { display: flex; }
 
   /* ADMIN DASHBOARD */
   .admin-panel { display: none; }
@@ -968,7 +999,14 @@
             </div>
           </div>
         </div>
+        <div class="img-preview-bar" id="imgPreviewBar">
+          <img id="imgPreviewThumb" src="" alt="">
+          <span id="imgPreviewName"></span>
+          <span class="remove-img" onclick="removeImage()">✕ إزالة</span>
+        </div>
         <div class="chat-input-area">
+          <input type="file" id="imgUploadInput" accept="image/*" style="display:none" onchange="handleImageSelect(this)">
+          <button class="btn-img-upload" id="imgBtn" onclick="document.getElementById('imgUploadInput').click()" title="إرفاق صورة">🖼️</button>
           <textarea class="chat-input" id="chatInput" placeholder="اكتب المشكلة هنا..." rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
           <button class="btn-send" onclick="sendMessage()">➤</button>
         </div>
@@ -2711,18 +2749,27 @@ async function login() {
     const roleEl = document.getElementById('headerRole');
     roleEl.textContent = currentUser.role === 'admin' ? 'مدير' : 'موظف';
     roleEl.className = 'role-tag ' + currentUser.role;
+    document.body.className = document.body.className.replace(/role-\S+/g,'').trim();
+    document.body.classList.add('role-' + currentUser.role);
+    if (/Android|iPhone|iPad|Mobile/i.test(navigator.userAgent)) document.body.classList.add('is-mobile');
     if (currentUser.role === 'admin') {
       document.getElementById('tabAdmin').classList.remove('hidden');
       document.getElementById('tabAdmin').textContent = '📊 لوحة التحكم';
+      document.getElementById('mnAdmin') && document.getElementById('mnAdmin').classList.remove('hidden');
       document.getElementById('roleSwitcher').style.display = 'flex';
+      showImgBtn(true);
       switchPreview('L2');
     } else if (currentUser.role === 'L1') {
       document.getElementById('tabAdmin').classList.remove('hidden');
       document.getElementById('tabAdmin').textContent = '📊 سجل أسئلتي';
+      document.getElementById('mnAdmin') && document.getElementById('mnAdmin').classList.remove('hidden');
+      showImgBtn(false);
       switchPreview('L1');
     } else {
       document.getElementById('tabAdmin').classList.remove('hidden');
       document.getElementById('tabAdmin').textContent = '📊 سجل أسئلتي';
+      document.getElementById('mnAdmin') && document.getElementById('mnAdmin').classList.remove('hidden');
+      showImgBtn(false);
       switchPreview('L2');
     }
     // Update employee status in Supabase
@@ -3765,10 +3812,41 @@ async function sendMessageText(text, displayLabel) {
   delete input.dataset.displayLabel;
 }
 
+// ── IMAGE UPLOAD HANDLING ──
+var pendingImage = null; // { base64, mediaType, name }
+
+function handleImageSelect(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const dataUrl = e.target.result;
+    const base64 = dataUrl.split(',')[1];
+    const mediaType = file.type || 'image/jpeg';
+    pendingImage = { base64, mediaType, name: file.name };
+    document.getElementById('imgPreviewThumb').src = dataUrl;
+    document.getElementById('imgPreviewName').textContent = file.name;
+    document.getElementById('imgPreviewBar').classList.add('active');
+  };
+  reader.readAsDataURL(file);
+  input.value = '';
+}
+
+function showImgBtn(show) {
+  var btn = document.getElementById('imgBtn');
+  if (btn) btn.style.display = show ? 'flex' : 'none';
+}
+
+function removeImage() {
+  pendingImage = null;
+  document.getElementById('imgPreviewBar').classList.remove('active');
+  document.getElementById('imgPreviewThumb').src = '';
+}
+
 async function sendMessage() {
   const input = document.getElementById('chatInput');
   let q = input.value.trim();
-  if (!q) return;
+  if (!q && !pendingImage) return;
 
   const isL1 = (typeof previewMode !== 'undefined' && previewMode === 'L1') || (currentUser && currentUser.role === 'L1');
 
@@ -3866,7 +3944,7 @@ async function sendMessage() {
   }
 
   const originalMsg = input.dataset.displayLabel || input.value.trim();
-  addMsg(originalMsg, 'user');
+  if (!pendingImage) addMsg(originalMsg, 'user');
   input.value = '';
   input.style.height = 'auto';
   document.querySelector('.btn-send').disabled = true;
@@ -4255,10 +4333,32 @@ Do NOT add [OPTIONS] when giving final troubleshooting steps or answers.
 ALWAYS use [OPTIONS] for any question requiring a choice.`;
 
   try {
-    // Add user message to history
-    chatHistory.push({ role: "user", content: q });
-    // Keep last 12 messages — enough context to not repeat confirmed steps
-    if (chatHistory.length > 8) chatHistory = chatHistory.slice(-8);
+    // Build user message — include image if attached
+    var userMsgContent;
+    if (pendingImage) {
+      userMsgContent = [
+        { type: "image", source: { type: "base64", media_type: pendingImage.mediaType, data: pendingImage.base64 } },
+        { type: "text", text: q || "شنو في الصورة؟" }
+      ];
+      var imgDiv = document.createElement('div');
+      imgDiv.className = 'msg user';
+      imgDiv.innerHTML = '<div class="msg-avatar" style="font-size:11px;font-weight:700;letter-spacing:-0.5px">stc</div><div class="msg-bubble"><img src="data:' + pendingImage.mediaType + ';base64,' + pendingImage.base64 + '" style="max-width:200px;border-radius:8px;display:block;margin-bottom:6px"><span>' + (q || '') + '</span></div>';
+      document.getElementById('chatMessages').appendChild(imgDiv);
+      document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight;
+      removeImage();
+    } else {
+      userMsgContent = q;
+    }
+    chatHistory.push({ role: "user", content: userMsgContent });
+    // Keep last 6 messages to avoid large payloads
+    if (chatHistory.length > 6) chatHistory = chatHistory.slice(-6);
+    // Remove image content from older history to avoid large requests
+    chatHistory = chatHistory.map(function(m, idx) {
+      if (idx < chatHistory.length - 1 && Array.isArray(m.content)) {
+        return { role: m.role, content: m.content.filter(function(c){ return c.type === 'text'; }).map(function(c){ return c.text; }).join(' ') || '[image]' };
+      }
+      return m;
+    });
 
     const fetchPromise = fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
@@ -5468,6 +5568,8 @@ window.addEventListener('load', function() {
         return;
       }
       currentUser = session;
+      document.body.classList.add('role-' + session.role);
+      if (/Android|iPhone|iPad|Mobile/i.test(navigator.userAgent)) document.body.classList.add('is-mobile');
       document.getElementById('loginPage').style.display = 'none';
       document.getElementById('mainApp').style.display = 'flex';
       document.getElementById('headerEmail').textContent = session.email;
@@ -5482,15 +5584,18 @@ window.addEventListener('load', function() {
         document.getElementById('tabAdmin').classList.remove('hidden');
         document.getElementById('tabAdmin').textContent = '📊 لوحة التحكم';
         document.getElementById('roleSwitcher').style.display = 'flex';
+        showImgBtn(true);
         switchPreview('L2');
       } else if (session.role === 'L1') {
         document.getElementById('tabAdmin').classList.remove('hidden');
         document.getElementById('tabAdmin').textContent = '📊 سجل أسئلتي';
         document.getElementById('mnAdmin') && document.getElementById('mnAdmin').classList.remove('hidden');
+        showImgBtn(false);
         switchPreview('L1');
       } else {
         document.getElementById('tabAdmin').classList.remove('hidden');
         document.getElementById('tabAdmin').textContent = '📊 سجل أسئلتي';
+        showImgBtn(false);
         switchPreview('L2');
       }
       upsertEmployee(session.email, session.name, session.role);
@@ -5819,8 +5924,8 @@ const I18N = {
     secLogs: 'Questions Log',
     secAudit: '🔐 Admin Audit Log',
     // Chat header
-    chatTitleL1: 'Call Center Assistant (L1)',
-    chatSubL1: 'Describe the customer issue and I will guide you',
+    chatTitleL1: '🤖 stc Smart Assistant',
+    chatSubL1: 'Type the issue or choose from the menu 👇',
     chatTitleL2: 'Resolutions Assistant',
     chatSubL2: 'Support agent assistant — describe the customer issue',
     // Welcome
