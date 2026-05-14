@@ -1273,67 +1273,106 @@ const KB = [
     category: "Roaming Techincal- Internet",
     priority: "medium",
     definition: "Any issue with internet while customer in roaming status",
-    solution: `STEP 1 — تأكد إن العميل متصل بشبكة رومينق:
+    solution: `[V2]
+⚠️ الأساسيات أولاً (إلزامي):
+🔵 BSS: الخط نشط، الباقة فعّالة، ما في إيقاف بالفاتورة، واستخدام الإنترنت ما خلص
+🔵 Smart Care: CS Roam = NOBAR، Roaming Package = YES، الخط attached على شبكة رومينق
+🔵 Data Roaming: مفعّل على جهاز العميل
+
+[OPTIONS: ✅ تأكدنا، نكمل ✅ | ⚠️ في مشكلة بالأساسيات]
+
+STEP 1 — تأكد إن العميل متصل بشبكة رومينق:
 📶 شريط الحالة — هل يظهر اسم شبكة تجوال؟
 📦 عنده باقة رومينق نشطة؟
 
 [OPTIONS: ✅ متصل وعنده باقة، نكمل | 📵 ما عنده باقة رومينق | ❌ ما متصل بأي شبكة]
 
-→ 📵 ما عنده باقة → اطلب منه يفعّلها أول
-→ ❌ ما متصل → وجّهه يختار الشبكة يدوياً
+[SECTION: متصل وعنده باقة، نكمل]
+تحقق من Smart Care:
+• CS Roam = NOBAR؟
+• Roaming Package = YES؟
+• الخط attached على شبكة رومينق؟
+[OPTIONS: ✅ كل شي زين في Smart Care | ❌ في مشكلة → Raise TT]
+[SECTION: كل شي زين في Smart Care]
+اطلب من العميل يسوي البحث اليدوي للشبكة:
+🍎 آيفون: إعدادات ← Cellular ← Network Selection ← أطفي Automatic ← ابحث واختار يدوياً
+🤖 أندرويد: إعدادات ← اتصالات ← شبكات الجوال ← مشغلو الشبكة ← ابحث يدوياً
+[OPTIONS: ✅ وصل للشبكة ورجع النت | ❌ ما وصل → Raise TT]
+[END_SECTION]
+[END_SECTION]
 
-STEP 2 — شنو نوع جهاز العميل؟
-[OPTIONS: 🍎 آيفون | 🤖 أندرويد]
+[SECTION: ما عنده باقة رومينق]
+وجّه العميل يفعّل باقة رومينق:
+• من تطبيق My stc ← الباقات ← إضافة باقة تجوال
+• أو يتصل على 1515 من الكويت قبل السفر
+[OPTIONS: ✅ فعّل الباقة ورجع النت | ❌ في مشكلة → Raise TT]
+[END_SECTION]
 
-→ 🍎 آيفون:
-1. إعدادات ← Cellular ← Data Roaming = ON
-2. أعد تشغيل الجهاز
-[OPTIONS: ✅ رجع النت | ❌ ما رجع]
-• ❌ ما رجع → Reset Network Settings:
-  إعدادات ← General ← Transfer or Reset iPhone ← Reset ← Reset Network Settings
-  ⚠️ تنبيه للأجنت: راح تنمسح كلمات مرور الـ WiFi المحفوظة
+[SECTION: ما متصل بأي شبكة]
+اطلب من العميل يسوي البحث اليدوي للشبكة:
+🍎 آيفون: إعدادات ← Cellular ← Network Selection ← أطفي Automatic ← ابحث واختار يدوياً
+🤖 أندرويد: إعدادات ← اتصالات ← شبكات الجوال ← مشغلو الشبكة ← ابحث يدوياً
+[OPTIONS: ✅ وصل للشبكة | ❌ ما وصل → Raise TT]
+[SECTION: وصل للشبكة]
+هل رجع النت؟
 [OPTIONS: ✅ رجع النت | ❌ ما رجع → Raise TT]
-
-→ 🤖 أندرويد:
-1. إعدادات ← اتصالات ← Data Roaming = ON
-2. أعد تشغيل الجهاز
-[OPTIONS: ✅ رجع النت | ❌ ما رجع]
-• ❌ ما رجع → Reset Network Settings:
-  إعدادات ← الإدارة العامة ← إعادة تعيين ← إعادة تعيين إعدادات الشبكة
-  ⚠️ تنبيه للأجنت: راح تنمسح كلمات مرور الـ WiFi المحفوظة
-[OPTIONS: ✅ رجع النت | ❌ ما رجع → Raise TT]
+[END_SECTION]
+[END_SECTION]
 
 📋 اسم الطلب: Roaming Complaint - Roaming Techincal- Internet
 متطلبات الطلب:
 • وصف المشكلة
-• رسالة الخطأ على الجهاز (إن وجدت)
+• البلد والشبكة المتصل عليها
 • تأكيد خطوات التشخيص
-• رقم للتواصل + WhatsApp نشط`
+• رقم للتواصل`
   },
   {
     keywords: ["roaming calls", "roaming sms", "تجوال مكالمات", "تجوال رسائل"],
     category: "Roaming Technical- Calls & SMS",
     priority: "medium",
     definition: "Any issue with Calls & SMS while customer in roaming status",
-    solution: `STEP 1 — شنو بالضبط المشكلة اللي يواجهها العميل؟
+    solution: `[V2]
+⚠️ الأساسيات أولاً (إلزامي):
+🔵 BSS: الخط نشط، ما في إيقاف بالفاتورة
+🔵 Smart Care: CS Roam = NOBAR، الخط attached على شبكة رومينق
+
+[OPTIONS: ✅ تأكدنا، نكمل ✅ | ⚠️ في مشكلة بالأساسيات]
+
+شنو بالضبط المشكلة اللي يواجهها العميل؟
 [OPTIONS: 📞 ما يقدر يسوي مكالمات | 💬 ما يقدر يسوي رسائل SMS | ❌ الاثنين | ⚠️ مشكلة أخرى]
 
-STEP 2 — اطلب من العميل يختار الشبكة يدوياً:
-• آيفون: إعدادات ← Cellular ← Network Selection ← أطفي Automatic ← ابحث عن الشبكة واختارها يدوياً
-• أندرويد: إعدادات ← اتصالات ← شبكات الجوال ← مشغلو الشبكة ← ابحث عن الشبكة واختارها يدوياً
-[OPTIONS: ✅ اشتغل | ⚠️ ما اشتغل]
+[SECTION: ما يقدر يسوي مكالمات]
+اطلب من العميل يختار الشبكة يدوياً:
+🍎 آيفون: إعدادات ← Cellular ← Network Selection ← أطفي Automatic ← ابحث عن الشبكة واختارها يدوياً
+🤖 أندرويد: إعدادات ← اتصالات ← شبكات الجوال ← مشغلو الشبكة ← ابحث يدوياً
+[OPTIONS: ✅ شغّلت المكالمات | ❌ ما شغّلت → Raise TT]
+[END_SECTION]
 
-→ ⚠️ ما اشتغل → STEP 3 — اطلب من العميل يطفي وضع الطيران ويشغّله مرة ثانية
-[OPTIONS: ✅ اشتغل | ⚠️ ما اشتغل → Raise TT]
+[SECTION: ما يقدر يسوي رسائل SMS]
+تحقق من Smart Care — CS Bar = NOBAR؟
+[OPTIONS: ✅ NOBAR | ❌ في Bar → Raise TT]
+[SECTION: NOBAR]
+اطلب من العميل يعيد تشغيل الجهاز ويجرب
+[OPTIONS: ✅ شغّلت الرسائل | ❌ ما شغّلت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+
+[SECTION: الاثنين]
+اطلب من العميل يختار الشبكة يدوياً ويعيد تشغيل الجهاز
+[OPTIONS: ✅ شغّل الاثنين | ❌ ما شغّل → Raise TT]
+[END_SECTION]
+
+[SECTION: مشكلة أخرى]
+اشرح المشكلة بالتفصيل حتى نقدر نساعدك أكثر
+[OPTIONS: ✅ انحلت | ❌ ما انحلت → Raise TT]
+[END_SECTION]
 
 📋 اسم الطلب: Roaming Complaint - Roaming Technical- Calls & SMS
 متطلبات الطلب:
 • وصف المشكلة
-• رسالة الخطأ على الجهاز
+• البلد والشبكة المتصل عليها
 • تأكيد خطوات التشخيص
-• وقت وتاريخ المكالمة أو الرسالة
-• رقم المتصل (A-party) ورقم المستقبل (B-party)
-• رقم للتواصل + WhatsApp فعال`
+• رقم للتواصل`
   },
   {
     keywords: ["roaming charges", "رسوم تجوال", "roaming bill"],
@@ -1375,24 +1414,18 @@ STEP 1 — شنو نوع المشكلة؟
     category: "Internet- not working",
     priority: "medium",
     definition: "If customer is facing internet disconnection issue",
-    solution: `STEP 1 — ⚠️ الأساسيات أولاً (إلزامي):
+    solution: `[V2]
+⚠️ الأساسيات أولاً (إلزامي):
 🔵 BSS: الخط نشط، الباقة نشطة، استخدام العميل ما خلص
 🔵 Smart Care: الخط attached، Data Status نشط، وفي إشارة
 🔵 Site Down: ما في عطل في منطقة العميل
 
 [OPTIONS: ✅ تأكدنا، نكمل ✅ | ⚠️ في مشكلة بالأساسيات]
 
-→ ⚠️ لو في مشكلة بالأساسيات:
-[OPTIONS: 🔴 مشكلة BSS | 🔴 Smart Care مو زين | 📡 في سايت داون]
-
-• مشكلة BSS → عالج المشكلة (فاتورة، باقة، استخدام)
-• Smart Care مو زين → Raise TT فوراً — Smart Care للقراءة فقط، ما نعدّل فيه
-• في سايت داون → Raise TT فوراً بالتاور ورقم الموقع
-
-→ ✅ لو كل شي زين → شنو جهاز العميل؟
+شنو جهاز العميل؟
 [OPTIONS: 🍎 آيفون | 🤖 أندرويد | 📡 راوتر MBB | 🏠 راوتر CPE/Indoor]
 
-→ 🍎 آيفون:
+[SECTION: آيفون]
 اطلب من العميل يسوي كل الخطوات مع بعض:
 1. وضع الطيران OFF ثم ON
 2. إعدادات ← Cellular ← تأكد البيانات الخلوية ON
@@ -1400,46 +1433,69 @@ STEP 1 — شنو نوع المشكلة؟
 4. Dual SIM؟ → تأكد الشريحة الصحيحة مختارة لـ Cellular Data
 5. أعد تشغيل الجهاز
 [OPTIONS: ✅ رجع النت | ❌ ما رجع]
-• ❌ ما رجع → Reset Network Settings:
-  إعدادات ← General ← Transfer or Reset iPhone ← Reset ← Reset Network Settings
-  ⚠️ تنبيه للأجنت: راح تنمسح كلمات مرور الـ WiFi المحفوظة
+[SECTION: ما رجع]
+Reset Network Settings:
+إعدادات ← General ← Transfer or Reset iPhone ← Reset ← Reset Network Settings
+⚠️ تنبيه للأجنت: راح تنمسح كلمات مرور الـ WiFi المحفوظة
 [OPTIONS: ✅ رجع النت | ❌ ما رجع → Raise TT]
+[END_SECTION]
+[END_SECTION]
 
-→ 🤖 أندرويد:
+[SECTION: أندرويد]
 اطلب من العميل يسوي كل الخطوات مع بعض:
 1. وضع الطيران OFF ثم ON
 2. إعدادات ← اتصالات ← تأكد البيانات الجوالة ON
 3. إعدادات ← اتصالات ← شبكات الجوال ← نوع الشبكة ← 5G
 4. أعد تشغيل الجهاز
 [OPTIONS: ✅ رجع النت | ❌ ما رجع]
-• ❌ ما رجع → إعادة تعيين إعدادات الشبكة:
-  إعدادات ← الإدارة العامة ← إعادة تعيين ← إعادة تعيين إعدادات الشبكة
-  ⚠️ تنبيه للأجنت: راح تنمسح كلمات مرور الـ WiFi المحفوظة
+[SECTION: ما رجع]
+إعادة تعيين إعدادات الشبكة:
+إعدادات ← الإدارة العامة ← إعادة تعيين ← إعادة تعيين إعدادات الشبكة
+⚠️ تنبيه للأجنت: راح تنمسح كلمات مرور الـ WiFi المحفوظة
 [OPTIONS: ✅ رجع النت | ❌ ما رجع → Raise TT]
+[END_SECTION]
+[END_SECTION]
 
-→ 📡 راوتر MBB:
+[SECTION: راوتر MBB]
 1. تحقق من BSS — رقم الـ IMSI مطابق للشريحة اللي بالراوتر؟
-[OPTIONS: ✅ مطابق | ❌ مو مطابق]
-• ❌ مو مطابق → الشريحة غلط أو مشكلة بالـ provisioning → Raise TT فوراً
-• ✅ مطابق → أطفي الراوتر 30 ثانية وشغّله
+[OPTIONS: ✅ مطابق | ❌ مو مطابق → Raise TT]
+[SECTION: مطابق]
+أطفي الراوتر 30 ثانية وشغّله
 [OPTIONS: ✅ رجع النت | ❌ ما رجع]
-• ❌ ما رجع → Reset:
-  اضغط زر الـ Reset خلف الجهاز 10 ثواني
-  ⚠️ تنبيه للأجنت: الريسيت يمسح كل الإعدادات — تأكد العميل موافق
+[SECTION: ما رجع]
+Reset: اضغط زر الـ Reset خلف الجهاز 10 ثواني
+⚠️ تنبيه للأجنت: الريسيت يمسح كل الإعدادات — تأكد العميل موافق
 [OPTIONS: ✅ رجع النت | ❌ ما رجع → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
 
-→ 🏠 راوتر CPE/Indoor:
+[SECTION: راوتر CPE/Indoor]
 1. تحقق من BSS — رقم الـ IMSI مطابق للشريحة اللي بالراوتر؟
-[OPTIONS: ✅ مطابق | ❌ مو مطابق]
-• ❌ مو مطابق → الشريحة غلط أو مشكلة بالـ provisioning → Raise TT فوراً
-• ✅ مطابق → تحقق من شاشة الراوتر — في إشارة حمراء؟
+[OPTIONS: ✅ مطابق | ❌ مو مطابق → Raise TT]
+[SECTION: مطابق]
+تحقق من شاشة الراوتر — في إشارة حمراء؟
 [OPTIONS: ✅ طبيعي | 🔴 في إشارة حمراء]
-• وثّق الإشارة الحمراء ثم أطفي الراوتر 30 ثانية وشغّله
+[SECTION: في إشارة حمراء]
+وثّق الإشارة الحمراء ثم أطفي الراوتر 30 ثانية وشغّله
 [OPTIONS: ✅ رجع النت | ❌ ما رجع]
-• ❌ ما رجع → Reset:
-  اضغط زر الـ Reset خلف الجهاز 10 ثواني
-  ⚠️ تنبيه للأجنت: الريسيت يمسح كل الإعدادات — تأكد العميل موافق
+[SECTION: ما رجع]
+Reset: اضغط زر الـ Reset خلف الجهاز 10 ثواني
+⚠️ تنبيه للأجنت: الريسيت يمسح كل الإعدادات — تأكد العميل موافق
 [OPTIONS: ✅ رجع النت | ❌ ما رجع → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: طبيعي]
+أطفي الراوتر 30 ثانية وشغّله
+[OPTIONS: ✅ رجع النت | ❌ ما رجع]
+[SECTION: ما رجع]
+Reset: اضغط زر الـ Reset خلف الجهاز 10 ثواني
+⚠️ تنبيه للأجنت: الريسيت يمسح كل الإعدادات — تأكد العميل موافق
+[OPTIONS: ✅ رجع النت | ❌ ما رجع → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
 
 📋 اسم الطلب: Internet issue - Internet- not working
 متطلبات الطلب:
@@ -1488,93 +1544,286 @@ STEP 7: إذا النتيجة فوق 25ms بعد كل الخطوات → Raise T
     category: "Internet- Baity",
     priority: "medium",
     definition: "Baity or turbonet ODU device - Internet not working",
-    solution: `STEP 1 — ⚠️ الأساسيات أولاً (إلزامي):
+    solution: `[V2]
+⚠️ الأساسيات أولاً (إلزامي):
 🔵 BSS: الخط نشط، الباقة نشطة، استخدام العميل ما خلص
 🔵 Smart Care: الخط attached، Data Status نشط، وفي إشارة
 🔵 Site Down: ما في عطل في منطقة العميل
 
 [OPTIONS: ✅ تأكدنا، نكمل ✅ | ⚠️ في مشكلة بالأساسيات]
 
-STEP 2 — افتح Smart Care وشوف حالة الخط:
-[OPTIONS: ❌ ما في Attach ولا Data | ✅ في Attach وData بس ما في نت]
-
-→ ❌ سيناريو A — ما في Attach ولا Data:
-1. تأكد الـ Power Adapter مشغّل
-2. تأكد الكيبل بين الـ ODU والـ Power Adapter (WAN/Power port) متصل صح
-[OPTIONS: ✅ كل شي متصل | ❌ في مشكلة بالتوصيل]
-• كل شي متصل بس لسه ما في attach → Raise TT فوراً
-
-→ ✅ سيناريو B — في Attach وData بس ما في نت:
-1. شوف إضاءة الـ Mesh الرئيسي — حمراء؟
-2. تأكد الكيبل بين Power Adapter (LAN port) والـ Mesh الرئيسي متصل صح
-[OPTIONS: ✅ الكيبل متصل | ❌ الكيبل مو متصل]
-• الكيبل متصل → Restart الـ Mesh بس (أطفيه وشغّله)
-  ⚠️ تنبيه للأجنت: Restart الـ Mesh فقط — لا تطلب Reset للـ ODU أو الـ Mesh
+تحقق من BSS — رقم الـ IMSI مطابق للشريحة اللي بالراوتر؟
+[OPTIONS: ✅ مطابق | ❌ مو مطابق]
+[SECTION: مو مطابق]
+ممكن الشريحة مو مطابقة للرقم:
+1️⃣ اطلب من العميل يشوفلك الرقم التسلسلي المطبوع على الشريحة
+2️⃣ تحقق من BSS — هل هذا الرقم مسجّل لرقم العميل أو رقم ثاني؟
+✅ نفس الرقم → تابع مع Smart Care:
+Quality Complaint Handling ← Network Registration ← Query
+❌ رقم ثاني → الشريحة مسجّلة على رقم ثاني
+أبلغ العميل إن الشريحة اللي عنده مو تبعه — يراجع الفرع لاستبدالها
+[OPTIONS: ✅ تم، أبلغت العميل]
+[END_SECTION]
+[SECTION: مطابق]
+تحقق من شاشة الراوتر — في إشارة حمراء؟
+[OPTIONS: ✅ طبيعي | 🔴 في إشارة حمراء]
+[SECTION: في إشارة حمراء]
+وثّق الإشارة الحمراء ثم أطفي الراوتر 30 ثانية وشغّله
+[OPTIONS: ✅ رجع النت | ❌ ما رجع]
+[SECTION: ما رجع]
+اضغط زر الـ Reset خلف الجهاز 10 ثواني
+⚠️ تنبيه للأجنت: الريسيت يمسح كل الإعدادات — تأكد العميل موافق
 [OPTIONS: ✅ رجع النت | ❌ ما رجع → Raise TT]
-
-📋 Ticket Requirements:
-• Issue description
-• Troubleshooting confirmation
-• Customer address or PACI #
-• Master device serial number
-• Callback
+[END_SECTION]
+[END_SECTION]
+[SECTION: طبيعي]
+أطفي الراوتر 30 ثانية وشغّله
+[OPTIONS: ✅ رجع النت | ❌ ما رجع]
+[SECTION: ما رجع]
+اضغط زر الـ Reset خلف الجهاز 10 ثواني
+⚠️ تنبيه للأجنت: الريسيت يمسح كل الإعدادات — تأكد العميل موافق
+[OPTIONS: ✅ رجع النت | ❌ ما رجع → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
 
 📋 اسم الطلب: Internet issue - Internet- Baity
 متطلبات الطلب:
 • وصف المشكلة
 • تأكيد خطوات التشخيص
-• رقم للتواصل
-`
+• العنوان الكامل أو رقم PACI
+• رقم للتواصل`
   },
   {
     keywords: ["baity", "turbonet", "odu", "mesh", "بيتي", "باتي", "baity 5g"],
     category: "Internet- Baity Low Speed",
     priority: "medium",
     definition: "Baity or turbonet ODU device - Low speed issue",
-    solution: `STEP 1 — ⚠️ الأساسيات أولاً (إلزامي):
+    solution: `[V2]
+⚠️ الأساسيات أولاً (إلزامي):
 🔵 BSS: الخط نشط، الباقة نشطة، استخدام العميل ما خلص
+🔵 Smart Care: الخط attached، Data Status نشط، وفي إشارة
+🔵 Site Down: ما في عطل في منطقة العميل
 
 [OPTIONS: ✅ تأكدنا، نكمل ✅ | ⚠️ في مشكلة بالأساسيات]
 
-STEP 2 — شبكة الـ WiFi اللي واصل عليها العميل؟
+شبكة الـ WiFi اللي واصل عليها العميل؟
 [OPTIONS: ✅ 5GHz | 📶 2.4GHz | 🤔 ما أعرف | 🔧 تغيير الـ 5GHz/2.4GHz عبر Mesh]
-• لو 2.4GHz أو ما يعرف → وجّهه يشبك على الـ 5GHz
 
-→ 💡 طريقة تغيير التردد عبر الـ Mesh:
+[SECTION: 2.4GHz]
+وجّهه يشبك على الـ 5GHz
+[OPTIONS: ✅ تحسنت | ❌ ما تحسنت]
+[SECTION: ما تحسنت]
+المشكلة على كل الـ Mesh nodes أو جهاز معين؟
+[OPTIONS: 🌐 كل الـ Mesh nodes | 📱 جهاز معين بس]
+[SECTION: كل الـ Mesh nodes]
+قوله يكون قريب من الـ Mesh الرئيسي وقت الـ Speed Test
+سوّي Speed Test على Ookla وشاركنا النتيجة
+[OPTIONS: ✅ فوق 100 Mbps | ⚠️ دون 100 Mbps]
+[SECTION: فوق 100 Mbps]
+السرعة زينة ✅
+[OPTIONS: ✅ انحلت | 📱 المشكلة ببرنامج واحد بس | 🌐 المشكلة بكل البرامج]
+[SECTION: المشكلة ببرنامج واحد بس]
+الخلل من البرنامج نفسه مو من الشبكة
+[END_SECTION]
+[SECTION: المشكلة بكل البرامج]
+1. أطفي VPN إذا شغّال
+2. أعد تشغيل الجهاز
+3. إذا ما نفع → Raise TT
+[OPTIONS: ✅ انحلت | ❌ ما انحلت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: دون 100 Mbps]
+أطفي الـ Mesh الرئيسي وشغّله — انتظر دقيقتين وجرّب ثاني
+⚠️ تنبيه للأجنت: Restart الـ Mesh فقط — لا تطلب Reset
+[OPTIONS: ✅ تحسنت السرعة | ❌ ما تحسنت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: جهاز معين بس]
+الـ Mesh هذا واصل بكيبل أو WiFi؟
+[OPTIONS: 🔌 كيبل | 📶 WiFi]
+[SECTION: WiFi]
+قرّب الجهاز من الـ Mesh الرئيسي أو وصّله بكيبل وجرّب
+سوّي Speed Test على Ookla
+[OPTIONS: ✅ فوق 100 Mbps | ⚠️ دون 100 Mbps]
+[SECTION: فوق 100 Mbps]
+السرعة زينة ✅
+[OPTIONS: ✅ انحلت | 📱 المشكلة ببرنامج واحد بس | 🌐 المشكلة بكل البرامج]
+[SECTION: المشكلة ببرنامج واحد بس]
+الخلل من البرنامج نفسه مو من الشبكة
+[END_SECTION]
+[SECTION: المشكلة بكل البرامج]
+1. أطفي VPN إذا شغّال
+2. أعد تشغيل الجهاز
+3. إذا ما نفع → Raise TT
+[OPTIONS: ✅ انحلت | ❌ ما انحلت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: دون 100 Mbps]
+أطفي الـ Mesh الرئيسي وشغّله — انتظر دقيقتين
+⚠️ Restart فقط — لا تطلب Reset
+[OPTIONS: ✅ تحسنت السرعة | ❌ ما تحسنت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: كيبل]
+تأكد الكيبل متصل صح بين الـ Mesh والـ Switch أو الـ Mesh الرئيسي
+سوّي Speed Test على Ookla
+[OPTIONS: ✅ فوق 100 Mbps | ⚠️ دون 100 Mbps]
+[SECTION: فوق 100 Mbps]
+السرعة زينة ✅
+[OPTIONS: ✅ انحلت | 📱 المشكلة ببرنامج واحد بس | 🌐 المشكلة بكل البرامج]
+[SECTION: المشكلة ببرنامج واحد بس]
+الخلل من البرنامج نفسه مو من الشبكة
+[END_SECTION]
+[SECTION: المشكلة بكل البرامج]
+1. أطفي VPN إذا شغّال
+2. أعد تشغيل الجهاز
+3. إذا ما نفع → Raise TT
+[OPTIONS: ✅ انحلت | ❌ ما انحلت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: دون 100 Mbps]
+أطفي الـ Mesh الرئيسي وشغّله — انتظر دقيقتين
+[OPTIONS: ✅ تحسنت السرعة | ❌ ما تحسنت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
+
+[SECTION: 5GHz]
+المشكلة على كل الـ Mesh nodes أو جهاز معين؟
+[OPTIONS: 🌐 كل الـ Mesh nodes | 📱 جهاز معين بس]
+[SECTION: كل الـ Mesh nodes]
+قوله يكون قريب من الـ Mesh الرئيسي وقت الـ Speed Test
+سوّي Speed Test على Ookla وشاركنا النتيجة
+[OPTIONS: ✅ فوق 100 Mbps | ⚠️ دون 100 Mbps]
+[SECTION: فوق 100 Mbps]
+السرعة زينة ✅
+[OPTIONS: ✅ انحلت | 📱 المشكلة ببرنامج واحد بس | 🌐 المشكلة بكل البرامج]
+[SECTION: المشكلة ببرنامج واحد بس]
+الخلل من البرنامج نفسه مو من الشبكة
+[END_SECTION]
+[SECTION: المشكلة بكل البرامج]
+1. أطفي VPN إذا شغّال
+2. أعد تشغيل الجهاز
+3. إذا ما نفع → Raise TT
+[OPTIONS: ✅ انحلت | ❌ ما انحلت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: دون 100 Mbps]
+أطفي الـ Mesh الرئيسي وشغّله — انتظر دقيقتين وجرّب ثاني
+⚠️ Restart الـ Mesh فقط — لا تطلب Reset
+[OPTIONS: ✅ تحسنت السرعة | ❌ ما تحسنت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: جهاز معين بس]
+الـ Mesh هذا واصل بكيبل أو WiFi؟
+[OPTIONS: 🔌 كيبل | 📶 WiFi]
+[SECTION: WiFi]
+قرّب الجهاز من الـ Mesh الرئيسي — سوّي Speed Test
+[OPTIONS: ✅ فوق 100 Mbps | ⚠️ دون 100 Mbps]
+[SECTION: فوق 100 Mbps]
+السرعة زينة ✅
+[OPTIONS: ✅ انحلت | 📱 المشكلة ببرنامج واحد بس | 🌐 المشكلة بكل البرامج]
+[SECTION: المشكلة ببرنامج واحد بس]
+الخلل من البرنامج نفسه مو من الشبكة
+[END_SECTION]
+[SECTION: المشكلة بكل البرامج]
+1. أطفي VPN إذا شغّال
+2. أعد تشغيل الجهاز
+3. إذا ما نفع → Raise TT
+[OPTIONS: ✅ انحلت | ❌ ما انحلت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: دون 100 Mbps]
+أطفي الـ Mesh الرئيسي وشغّله ⚠️ Restart فقط
+[OPTIONS: ✅ تحسنت السرعة | ❌ ما تحسنت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: كيبل]
+تأكد الكيبل متصل صح — سوّي Speed Test
+[OPTIONS: ✅ فوق 100 Mbps | ⚠️ دون 100 Mbps]
+[SECTION: فوق 100 Mbps]
+السرعة زينة ✅
+[OPTIONS: ✅ انحلت | 📱 المشكلة ببرنامج واحد بس | 🌐 المشكلة بكل البرامج]
+[SECTION: المشكلة ببرنامج واحد بس]
+الخلل من البرنامج نفسه مو من الشبكة
+[END_SECTION]
+[SECTION: المشكلة بكل البرامج]
+1. أطفي VPN إذا شغّال
+2. أعد تشغيل الجهاز
+3. إذا ما نفع → Raise TT
+[OPTIONS: ✅ انحلت | ❌ ما انحلت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: دون 100 Mbps]
+أطفي الـ Mesh الرئيسي وشغّله
+[OPTIONS: ✅ تحسنت السرعة | ❌ ما تحسنت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
+
+[SECTION: ما أعرف]
+طريقة تغيير التردد عبر الـ Mesh:
 1. افتح تطبيق Baity / My stc أو ادخل على 192.168.1.1
 2. روح إعدادات الـ WiFi
 3. غيّر الـ Band من 2.4GHz لـ 5GHz
 4. احفظ وأعد التشغيل
-
-STEP 3 — المشكلة على كل الـ Mesh nodes ولا جهاز معين؟
-[OPTIONS: 🌐 كل الـ Mesh nodes | 📱 جهاز معين بس]
-
-→ 🌐 لو كل الـ Mesh nodes:
-1. 💡 قوله يكون قريب من الـ Mesh الرئيسي وقت الـ Speed Test
-2. سوّي Speed Test على Ookla وشاركنا النتيجة
-[OPTIONS: ✅ فوق 100 Mbps | ⚠️ دون 100 Mbps]
-• دون 100 Mbps → أطفي الـ Mesh الرئيسي وشغّله — انتظر دقيقتين وجرّب ثاني
-  ⚠️ تنبيه للأجنت: Restart الـ Mesh فقط — لا تطلب Reset
-[OPTIONS: ✅ تحسنت السرعة | ❌ ما تحسنت → Raise TT]
-
-→ 📱 لو جهاز معين:
-1. الـ Mesh هذا واصل بكيبل أو WiFi؟
-[OPTIONS: 🔌 كيبل | 📶 WiFi]
-
-• 📶 WiFi → قرّب الجهاز من الـ Mesh الرئيسي أو وصّله بكيبل وجرّب
-💡 قوله يكون قريب من الـ Mesh وقت الـ Speed Test
+[OPTIONS: ✅ تم التغيير وشبك على 5GHz | ❌ ما قدر → Raise TT]
+[SECTION: تم التغيير وشبك على 5GHz]
 سوّي Speed Test على Ookla
 [OPTIONS: ✅ فوق 100 Mbps | ⚠️ دون 100 Mbps]
-• دون 100 Mbps → أطفي الـ Mesh الرئيسي وشغّله — انتظر دقيقتين وجرّب ثاني
-  ⚠️ تنبيه للأجنت: Restart الـ Mesh فقط — لا تطلب Reset
+[SECTION: فوق 100 Mbps]
+السرعة زينة ✅
+[OPTIONS: ✅ انحلت | 📱 المشكلة ببرنامج واحد بس | 🌐 المشكلة بكل البرامج]
+[SECTION: المشكلة ببرنامج واحد بس]
+الخلل من البرنامج نفسه مو من الشبكة
+[END_SECTION]
+[SECTION: المشكلة بكل البرامج]
+1. أطفي VPN إذا شغّال
+2. أعد تشغيل الجهاز
+3. إذا ما نفع → Raise TT
+[OPTIONS: ✅ انحلت | ❌ ما انحلت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: دون 100 Mbps]
+أطفي الـ Mesh الرئيسي وشغّله ⚠️ Restart فقط
 [OPTIONS: ✅ تحسنت السرعة | ❌ ما تحسنت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
 
-• 🔌 كيبل → تأكد الكيبل متصل صح بين الـ Mesh والـ Switch أو الـ Mesh الرئيسي
+[SECTION: تغيير الـ 5GHz/2.4GHz عبر Mesh]
+طريقة تغيير التردد عبر الـ Mesh:
+1. افتح تطبيق Baity / My stc أو ادخل على 192.168.1.1
+2. روح إعدادات الـ WiFi
+3. غيّر الـ Band من 2.4GHz لـ 5GHz
+4. احفظ وأعد التشغيل
+[OPTIONS: ✅ تم التغيير وشبك على 5GHz | ❌ ما قدر → Raise TT]
+[SECTION: تم التغيير وشبك على 5GHz]
 سوّي Speed Test على Ookla
 [OPTIONS: ✅ فوق 100 Mbps | ⚠️ دون 100 Mbps]
-• دون 100 Mbps → أطفي الـ Mesh الرئيسي وشغّله — انتظر دقيقتين وجرّب ثاني
-  ⚠️ تنبيه للأجنت: Restart الـ Mesh فقط — لا تطلب Reset
+[SECTION: فوق 100 Mbps]
+السرعة زينة ✅
+[OPTIONS: ✅ انحلت | 📱 المشكلة ببرنامج واحد بس | 🌐 المشكلة بكل البرامج]
+[SECTION: المشكلة ببرنامج واحد بس]
+الخلل من البرنامج نفسه مو من الشبكة
+[END_SECTION]
+[SECTION: المشكلة بكل البرامج]
+1. أطفي VPN إذا شغّال
+2. أعد تشغيل الجهاز
+3. إذا ما نفع → Raise TT
+[OPTIONS: ✅ انحلت | ❌ ما انحلت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: دون 100 Mbps]
+أطفي الـ Mesh الرئيسي وشغّله
 [OPTIONS: ✅ تحسنت السرعة | ❌ ما تحسنت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
 
 📋 اسم الطلب: Internet issue - Internet- Baity
 متطلبات الطلب:
@@ -1590,7 +1839,8 @@ STEP 3 — المشكلة على كل الـ Mesh nodes ولا جهاز معين
     category: "Speed Issue – 4G",
     priority: "medium",
     definition: "Mobile: Any issue related to 4G internet speed users (LTE)",
-    solution: `STEP 1 — ⚠️ الأساسيات أولاً (إلزامي):
+    solution: `[V2]
+⚠️ الأساسيات أولاً (إلزامي):
 🔵 BSS: الخط نشط، الباقة نشطة، استخدام العميل ما خلص
 🔵 Smart Care: الخط attached، Data Status نشط، وفي إشارة
 🔵 Site Down: ما في عطل في منطقة العميل
@@ -1600,76 +1850,146 @@ STEP 3 — المشكلة على كل الـ Mesh nodes ولا جهاز معين
 شنو جهاز العميل؟
 [OPTIONS: 📱 جوال | 📡 راوتر MBB أو CPE]
 
-→ 📱 لو جوال:
+[SECTION: جوال]
 اسأل: المشكلة بكل مكان أو منطقة معينة؟
 [OPTIONS: 🌍 كل مكان | 📍 منطقة معينة]
-• منطقة معينة → افتح Smart Care وتحقق من Site Down في منطقة العميل
-[OPTIONS: ✅ فيه Site Down | ❌ ما في Site Down — كمّل]
-• فيه Site Down → أبلغ العميل إن المشكلة معروفة وجاري الحل — ارفع TT بالتاور والمنطقة
-• فيه Site Down → Raise TT
-• ما في Site Down — كمّل → كمّل
-• كل مكان → كمّل
+[SECTION: منطقة معينة]
+افتح Smart Care وتحقق من Site Down في منطقة العميل
+[OPTIONS: ✅ فيه Site Down | ❌ ما في Site Down]
+[SECTION: فيه Site Down]
+أبلغ العميل إن المشكلة معروفة وجاري الحل — ارفع TT بالتاور والمنطقة
+[OPTIONS: ✅ تم → Raise TT]
+[END_SECTION]
+[SECTION: ما في Site Down]
+شنو جهازه بالضبط؟
 [OPTIONS: 🍎 آيفون | 🤖 أندرويد]
-• آيفون: إعدادات ← Cellular ← Voice & Data ← اختار LTE/4G
-  💡 لو عنده Low Power Mode: إعدادات ← Battery ← طفّيه
-• أندرويد: إعدادات ← اتصالات ← شبكات الجوال ← نوع الشبكة ← LTE/4G
-
-اطلب من العميل يسوي Speed Test (Ookla) ويشاركك النتيجة
+[SECTION: آيفون]
+إعدادات ← Cellular ← Voice & Data ← اختار LTE/4G
+💡 لو عنده Low Power Mode: إعدادات ← Battery ← طفّيه
+اطلب Speed Test (Ookla) وشارك النتيجة
 [OPTIONS: ✅ فوق 3 Mbps | ⚠️ دون 3 Mbps]
-• فوق 3 Mbps → السرعة زينة ✅
+[SECTION: فوق 3 Mbps]
+السرعة زينة ✅
 [OPTIONS: ✅ انحلت | 📱 المشكلة ببرنامج واحد بس | 🌐 المشكلة بكل البرامج]
-- لو انحلت → ممتاز، وثّق الحل
-- لو المشكلة ببرنامج واحد بس → الخلل من البرنامج نفسه مو من الشبكة
-- لو المشكلة بكل البرامج → أطفي VPN، أعد تشغيل الجهاز، إذا ما نفع → Raise TT
-
-• دون 3 Mbps → جرّب قبل TT — أعد تعيين إعدادات الشبكة:
-🍎 آيفون: إعدادات ← General ← Transfer or Reset iPhone ← Reset ← Reset Network Settings
-🤖 أندرويد: إعدادات ← الإدارة العامة ← إعادة تعيين ← إعادة تعيين إعدادات الشبكة
+[SECTION: المشكلة ببرنامج واحد بس]
+الخلل من البرنامج نفسه مو من الشبكة
+[END_SECTION]
+[SECTION: المشكلة بكل البرامج]
+1. اطلب منه يطفي VPN إذا كان شغّال
+2. إعادة تشغيل الجهاز
+3. إذا ما نفع → Raise TT
+[OPTIONS: ✅ انحلت | ❌ ما انحلت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: دون 3 Mbps]
+جرّب قبل TT — أعد تعيين إعدادات الشبكة:
+إعدادات ← General ← Transfer or Reset iPhone ← Reset ← Reset Network Settings
 ⚠️ تنبيه للأجنت: راح تنمسح كلمات مرور الـ WiFi المحفوظة
 [OPTIONS: ✅ تحسنت السرعة | ❌ ما تحسنت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: أندرويد]
+إعدادات ← اتصالات ← شبكات الجوال ← نوع الشبكة ← LTE/4G
+اطلب Speed Test (Ookla) وشارك النتيجة
+[OPTIONS: ✅ فوق 3 Mbps | ⚠️ دون 3 Mbps]
+[SECTION: فوق 3 Mbps]
+السرعة زينة ✅
+[OPTIONS: ✅ انحلت | 📱 المشكلة ببرنامج واحد بس | 🌐 المشكلة بكل البرامج]
+[SECTION: المشكلة ببرنامج واحد بس]
+الخلل من البرنامج نفسه مو من الشبكة
+[END_SECTION]
+[SECTION: المشكلة بكل البرامج]
+1. اطلب منه يطفي VPN
+2. إعادة تشغيل الجهاز
+3. إذا ما نفع → Raise TT
+[OPTIONS: ✅ انحلت | ❌ ما انحلت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: دون 3 Mbps]
+جرّب قبل TT — أعد تعيين إعدادات الشبكة:
+إعدادات ← الإدارة العامة ← إعادة تعيين ← إعادة تعيين إعدادات الشبكة
+⚠️ تنبيه للأجنت: راح تنمسح كلمات مرور الـ WiFi المحفوظة
+[OPTIONS: ✅ تحسنت السرعة | ❌ ما تحسنت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
+[SECTION: كل مكان]
+شنو جهازه بالضبط؟
+[OPTIONS: 🍎 آيفون | 🤖 أندرويد]
+[SECTION: آيفون]
+إعدادات ← Cellular ← Voice & Data ← اختار LTE/4G
+اطلب Speed Test (Ookla) وشارك النتيجة
+[OPTIONS: ✅ فوق 3 Mbps | ⚠️ دون 3 Mbps]
+[SECTION: فوق 3 Mbps]
+السرعة زينة ✅
+[OPTIONS: ✅ انحلت | 📱 المشكلة ببرنامج واحد بس | 🌐 المشكلة بكل البرامج]
+[SECTION: المشكلة ببرنامج واحد بس]
+الخلل من البرنامج نفسه مو من الشبكة
+[END_SECTION]
+[SECTION: المشكلة بكل البرامج]
+أطفي VPN — أعد تشغيل الجهاز — إذا ما نفع → Raise TT
+[OPTIONS: ✅ انحلت | ❌ ما انحلت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: دون 3 Mbps]
+أعد تعيين إعدادات الشبكة
+[OPTIONS: ✅ تحسنت السرعة | ❌ ما تحسنت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: أندرويد]
+إعدادات ← اتصالات ← شبكات الجوال ← نوع الشبكة ← LTE/4G
+اطلب Speed Test (Ookla) وشارك النتيجة
+[OPTIONS: ✅ فوق 3 Mbps | ⚠️ دون 3 Mbps]
+[SECTION: فوق 3 Mbps]
+السرعة زينة ✅
+[OPTIONS: ✅ انحلت | 📱 المشكلة ببرنامج واحد بس | 🌐 المشكلة بكل البرامج]
+[SECTION: المشكلة ببرنامج واحد بس]
+الخلل من البرنامج نفسه مو من الشبكة
+[END_SECTION]
+[SECTION: المشكلة بكل البرامج]
+أطفي VPN — أعد تشغيل الجهاز — إذا ما نفع → Raise TT
+[OPTIONS: ✅ انحلت | ❌ ما انحلت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: دون 3 Mbps]
+أعد تعيين إعدادات الشبكة
+[OPTIONS: ✅ تحسنت السرعة | ❌ ما تحسنت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
 
-→ 📡 راوتر MBB أو CPE:
-
-[OPTIONS: 📡 راوتر متنقل MBB | 🏠 راوتر ثابت 4G (CPE/Indoor)]
-
-→ 📡 راوتر متنقل MBB:
+[SECTION: راوتر MBB أو CPE]
 اسأل: المشكلة بكل مكان أو منطقة معينة؟
 [OPTIONS: 🌍 كل مكان | 📍 منطقة معينة]
-• منطقة معينة → افتح Smart Care وتحقق من Site Down في منطقة العميل
-[OPTIONS: ✅ فيه Site Down | ❌ ما في Site Down — كمّل]
-• فيه Site Down → أبلغ العميل إن المشكلة معروفة وجاري الحل — ارفع TT بالتاور والمنطقة
-• فيه Site Down → Raise TT
-• ما في Site Down — كمّل → كمّل
-• كل مكان → كمّل
-
-→ 🏠 راوتر ثابت CPE/Indoor → كمّل
-
-STEP A — كم جهاز شابك على الراوتر؟
-[OPTIONS: 📱 جهاز واحد بس | 👥 أكثر من جهاز]
-• لو أكثر من جهاز → اطلب منه يفصل كل الأجهزة ويجرب بجهازه بوحده
-
-4. اطلب من العميل يسوي Speed Test من تطبيق Ookla أو speedtest.net ويشاركك النتيجة 📊
-
+[SECTION: منطقة معينة]
+افتح Smart Care وتحقق من Site Down في منطقة العميل
+[OPTIONS: ✅ فيه Site Down | ❌ ما في Site Down]
+[SECTION: فيه Site Down]
+أبلغ العميل — ارفع TT بالتاور والمنطقة
+[OPTIONS: ✅ تم → Raise TT]
+[END_SECTION]
+[SECTION: ما في Site Down]
+أطفي الراوتر 30 ثانية وشغّله — اطلب Speed Test
 [OPTIONS: ✅ فوق 3 Mbps | ⚠️ دون 3 Mbps]
-
-→ ✅ فوق 3 Mbps:
-ممتاز! 🎉 السرعة زينة.
-
-[OPTIONS: ✅ انحلت | 📱 المشكلة ببرنامج واحد بس | 🌐 المشكلة بكل البرامج]
-
-- لو انحلت → ممتاز، وثّق الحل
-- لو المشكلة ببرنامج واحد بس → الخلل من البرنامج نفسه مو من الشبكة
-- لو المشكلة بكل البرامج →
-  1. اطلب منه يطفي VPN إذا كان شغّال
-  2. إعادة تشغيل الجهاز
-  3. إذا ما نفع → Raise TT
-
-→ ⚠️ دون 3 Mbps:
-
-💡 إعادة تشغيل الراوتر:
-- أطفي الراوتر 30 ثانية وشغّله — انتظر دقيقتين وجرّب السرعة ثاني
-
+[SECTION: دون 3 Mbps]
+💡 إعادة تشغيل الراوتر مرة ثانية:
+أطفي الراوتر 30 ثانية وشغّله — انتظر دقيقتين وجرّب السرعة ثاني
 [OPTIONS: ✅ تحسنت السرعة | ❌ ما تحسنت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
+[SECTION: كل مكان]
+أطفي الراوتر 30 ثانية وشغّله — اطلب Speed Test
+[OPTIONS: ✅ فوق 3 Mbps | ⚠️ دون 3 Mbps]
+[SECTION: دون 3 Mbps]
+💡 إعادة تشغيل الراوتر مرة ثانية:
+أطفي الراوتر 30 ثانية وشغّله — انتظر دقيقتين
+[OPTIONS: ✅ تحسنت السرعة | ❌ ما تحسنت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
 
 📋 اسم الطلب: Internet issue - Speed Issue – 4G
 متطلبات الطلب:
@@ -1692,7 +2012,7 @@ STEP A — كم جهاز شابك على الراوتر؟
 [OPTIONS: ✅ تأكدنا، نكمل ✅ | ⚠️ في مشكلة بالأساسيات]
 
 STEP 2 — نوع الراوتر:
-[OPTIONS: 📡 راوتر متنقل MBB | 🏠 راوتر ثابت CPE/Indoor]
+[OPTIONS: 📡 راوتر MBB أو CPE]
 
 → 📡 راوتر متنقل MBB:
 اسأل: المشكلة بكل مكان أو منطقة معينة؟
@@ -1735,7 +2055,8 @@ STEP 5 — Speed Test على Ookla 📊
     category: "Speed Issue – 5G",
     priority: "medium",
     definition: "Mobile: Any issue related to 5G internet speed users",
-    solution: `STEP 1 — ⚠️ الأساسيات أولاً (إلزامي):
+    solution: `[V2]
+⚠️ الأساسيات أولاً (إلزامي):
 🔵 BSS: الخط نشط، الباقة نشطة، استخدام العميل ما خلص
 🔵 Smart Care: الخط attached، Data Status نشط، وفي إشارة
 🔵 Site Down: ما في عطل في منطقة العميل
@@ -1745,106 +2066,246 @@ STEP 5 — Speed Test على Ookla 📊
 شنو جهاز العميل؟
 [OPTIONS: 📱 جوال | 📡 راوتر MBB أو CPE]
 
-→ 📱 لو جوال:
+[SECTION: جوال]
 اسأل: المشكلة بكل مكان أو منطقة معينة؟
 [OPTIONS: 🌍 كل مكان | 📍 منطقة معينة]
-• منطقة معينة → افتح Smart Care وتحقق من Site Down في منطقة العميل
-[OPTIONS: ✅ فيه Site Down | ❌ ما في Site Down — كمّل]
-• فيه Site Down → أبلغ العميل إن المشكلة معروفة وجاري الحل — ارفع TT بالتاور والمنطقة
-• فيه Site Down → Raise TT
-• ما في Site Down — كمّل → كمّل
-• كل مكان → كمّل
+[SECTION: منطقة معينة]
+افتح Smart Care وتحقق من Site Down في منطقة العميل
+[OPTIONS: ✅ فيه Site Down | ❌ ما في Site Down]
+[SECTION: فيه Site Down]
+أبلغ العميل إن المشكلة معروفة وجاري الحل — ارفع TT بالتاور والمنطقة
+[OPTIONS: ✅ تم → Raise TT]
+[END_SECTION]
+[SECTION: ما في Site Down]
+شنو جهازه بالضبط؟
 [OPTIONS: 🍎 آيفون | 🤖 أندرويد]
-• آيفون: إعدادات ← Cellular ← Voice & Data ← اختار 5G On
-  💡 لو عنده Low Power Mode: إعدادات ← Battery ← طفّيه
-• أندرويد: إعدادات ← اتصالات ← شبكات الجوال ← نوع الشبكة ← 5G (مو Auto)
-
-اطلب من العميل يسوي Speed Test (Ookla) ويشاركك النتيجة
+[SECTION: آيفون]
+إعدادات ← Cellular ← Voice & Data ← اختار 5G On
+💡 لو عنده Low Power Mode: إعدادات ← Battery ← طفّيه
+اطلب Speed Test (Ookla) وشارك النتيجة
 [OPTIONS: ✅ فوق 100 Mbps | ⚠️ دون 100 Mbps]
-• فوق 100 Mbps → السرعة زينة ✅
+[SECTION: فوق 100 Mbps]
+السرعة زينة ✅
 [OPTIONS: ✅ انحلت | 📱 المشكلة ببرنامج واحد بس | 🌐 المشكلة بكل البرامج]
-- لو انحلت → ممتاز، وثّق الحل
-- لو المشكلة ببرنامج واحد بس → الخلل من البرنامج نفسه مو من الشبكة
-- لو المشكلة بكل البرامج → أطفي VPN، أعد تشغيل الجهاز، إذا ما نفع → Raise TT
-
-• دون 100 Mbps → جرّب قبل TT — أعد تعيين إعدادات الشبكة:
-🍎 آيفون: إعدادات ← General ← Transfer or Reset iPhone ← Reset ← Reset Network Settings
-🤖 أندرويد: إعدادات ← الإدارة العامة ← إعادة تعيين ← إعادة تعيين إعدادات الشبكة
+[SECTION: المشكلة ببرنامج واحد بس]
+الخلل من البرنامج نفسه مو من الشبكة
+[END_SECTION]
+[SECTION: المشكلة بكل البرامج]
+1. اطلب منه يطفي VPN إذا كان شغّال
+2. إعادة تشغيل الجهاز
+3. إذا ما نفع → Raise TT
+[OPTIONS: ✅ انحلت | ❌ ما انحلت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: دون 100 Mbps]
+جرّب قبل TT — أعد تعيين إعدادات الشبكة:
+إعدادات ← General ← Transfer or Reset iPhone ← Reset ← Reset Network Settings
 ⚠️ تنبيه للأجنت: راح تنمسح كلمات مرور الـ WiFi المحفوظة
 [OPTIONS: ✅ تحسنت السرعة | ❌ ما تحسنت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: أندرويد]
+إعدادات ← اتصالات ← شبكات الجوال ← نوع الشبكة ← 5G (مو Auto)
+اطلب Speed Test (Ookla) وشارك النتيجة
+[OPTIONS: ✅ فوق 100 Mbps | ⚠️ دون 100 Mbps]
+[SECTION: فوق 100 Mbps]
+السرعة زينة ✅
+[OPTIONS: ✅ انحلت | 📱 المشكلة ببرنامج واحد بس | 🌐 المشكلة بكل البرامج]
+[SECTION: المشكلة ببرنامج واحد بس]
+الخلل من البرنامج نفسه مو من الشبكة
+[END_SECTION]
+[SECTION: المشكلة بكل البرامج]
+1. اطلب منه يطفي VPN
+2. إعادة تشغيل الجهاز
+3. إذا ما نفع → Raise TT
+[OPTIONS: ✅ انحلت | ❌ ما انحلت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: دون 100 Mbps]
+جرّب قبل TT — أعد تعيين إعدادات الشبكة:
+إعدادات ← الإدارة العامة ← إعادة تعيين ← إعادة تعيين إعدادات الشبكة
+⚠️ تنبيه للأجنت: راح تنمسح كلمات مرور الـ WiFi المحفوظة
+[OPTIONS: ✅ تحسنت السرعة | ❌ ما تحسنت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
+[SECTION: كل مكان]
+شنو جهازه بالضبط؟
+[OPTIONS: 🍎 آيفون | 🤖 أندرويد]
+[SECTION: آيفون]
+إعدادات ← Cellular ← Voice & Data ← اختار 5G On
+اطلب Speed Test (Ookla) وشارك النتيجة
+[OPTIONS: ✅ فوق 100 Mbps | ⚠️ دون 100 Mbps]
+[SECTION: فوق 100 Mbps]
+السرعة زينة ✅
+[OPTIONS: ✅ انحلت | 📱 المشكلة ببرنامج واحد بس | 🌐 المشكلة بكل البرامج]
+[SECTION: المشكلة ببرنامج واحد بس]
+الخلل من البرنامج نفسه مو من الشبكة
+[END_SECTION]
+[SECTION: المشكلة بكل البرامج]
+أطفي VPN — أعد تشغيل الجهاز — إذا ما نفع → Raise TT
+[OPTIONS: ✅ انحلت | ❌ ما انحلت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: دون 100 Mbps]
+أعد تعيين إعدادات الشبكة
+[OPTIONS: ✅ تحسنت السرعة | ❌ ما تحسنت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: أندرويد]
+إعدادات ← اتصالات ← شبكات الجوال ← نوع الشبكة ← 5G
+اطلب Speed Test (Ookla) وشارك النتيجة
+[OPTIONS: ✅ فوق 100 Mbps | ⚠️ دون 100 Mbps]
+[SECTION: فوق 100 Mbps]
+السرعة زينة ✅
+[OPTIONS: ✅ انحلت | 📱 المشكلة ببرنامج واحد بس | 🌐 المشكلة بكل البرامج]
+[SECTION: المشكلة ببرنامج واحد بس]
+الخلل من البرنامج نفسه مو من الشبكة
+[END_SECTION]
+[SECTION: المشكلة بكل البرامج]
+أطفي VPN — أعد تشغيل الجهاز — إذا ما نفع → Raise TT
+[OPTIONS: ✅ انحلت | ❌ ما انحلت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: دون 100 Mbps]
+أعد تعيين إعدادات الشبكة
+[OPTIONS: ✅ تحسنت السرعة | ❌ ما تحسنت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
 
-→ 📡 راوتر MBB أو CPE:
+[SECTION: راوتر MBB أو CPE]
 اسأل: المشكلة بكل مكان أو منطقة معينة؟
 [OPTIONS: 🌍 كل مكان | 📍 منطقة معينة]
-• منطقة معينة → افتح Smart Care وتحقق من Site Down في منطقة العميل
-[OPTIONS: ✅ فيه Site Down | ❌ ما في Site Down — كمّل]
-• فيه Site Down → أبلغ العميل إن المشكلة معروفة وجاري الحل — ارفع TT بالتاور والمنطقة
-• فيه Site Down → Raise TT
-• ما في Site Down — كمّل → كمّل
-• كل مكان → كمّل
-
-STEP A — التردد:
-اسأل العميل: شبكة الـ WiFi اللي شابك عليها 5GHz أو 2.4GHz؟
-[OPTIONS: ✅ 5GHz | 📶 2.4GHz | 🤔 ما أعرف | 💡 طريقة التغيير]
-• لو 2.4GHz أو ما يعرف → وجّهه يشبك على الـ 5GHz
-
-→ 💡 لو طلب طريقة التغيير:
-
-📡 راوتر متنقل MBB:
-1. افتح المتصفح واكتب: 192.168.8.1
-2. ادخل بكلمة المرور (مكتوبة خلف الجهاز)
-3. روح WiFi Settings → Band → غيّر بين 2.4GHz و 5GHz
-4. احفظ وأعد التشغيل
-
-🏠 راوتر ثابت CPE/Indoor:
-1. افتح المتصفح واكتب: 192.168.1.1
-2. ادخل بكلمة المرور (مكتوبة خلف الجهاز)
-3. روح WiFi Settings → Band → غيّر بين 2.4GHz و 5GHz
-4. احفظ وأعد التشغيل
-
-STEP B — كم جهاز شابك على الراوتر؟
-[OPTIONS: 📱 جهاز واحد بس | 👥 أكثر من جهاز]
-• لو أكثر من جهاز → اطلب منه يفصل كل الأجهزة ويجرب بجهازه بوحده
-
-4. اطلب من العميل يسوي Speed Test من تطبيق Ookla أو speedtest.net ويشاركك النتيجة 📊
-
-💡 بنفس الوقت: روح Smart Care ← Quality Complaint Handling ← Overall Quality ← Speed Test
-قارن نتيجة DL Throughput وSpeed Experience مع نتيجة Ookla 📊
-
+[SECTION: منطقة معينة]
+افتح Smart Care وتحقق من Site Down في منطقة العميل
+[OPTIONS: ✅ فيه Site Down | ❌ ما في Site Down]
+[SECTION: فيه Site Down]
+أبلغ العميل — ارفع TT بالتاور والمنطقة
+[OPTIONS: ✅ تم → Raise TT]
+[END_SECTION]
+[SECTION: ما في Site Down]
+شبكة الـ WiFi — 5GHz أو 2.4GHz؟
+[OPTIONS: ✅ 5GHz | 📶 2.4GHz | 🤔 ما أعرف | 🔧 طريقة التغيير]
+[SECTION: 2.4GHz]
+وجّهه يشبك على شبكة 5GHz
+[OPTIONS: ✅ تحسنت | ❌ ما تحسنت]
+[SECTION: ما تحسنت]
+كم جهاز شابك على الراوتر؟
+[OPTIONS: 📱 جهاز واحد | 👥 أكثر من جهاز]
+[SECTION: أكثر من جهاز]
+يفصل كل الأجهزة ويجرب بجهازه بس — اطلب Speed Test
 [OPTIONS: ✅ فوق 100 Mbps | ⚠️ دون 100 Mbps]
-
-→ ✅ فوق 100 Mbps:
-ممتاز! 🎉 السرعة زينة.
-
-[OPTIONS: ✅ انحلت | 📱 المشكلة ببرنامج واحد بس | 🌐 المشكلة بكل البرامج]
-
-- لو انحلت → ممتاز، وثّق الحل
-- لو المشكلة ببرنامج واحد بس → الخلل من البرنامج نفسه مو من الشبكة
-- لو المشكلة بكل البرامج →
-  1. اطلب منه يطفي VPN إذا كان شغّال
-  2. إعادة تشغيل الجهاز
-  3. إذا ما نفع → Raise TT
-
-→ ⚠️ دون 100 Mbps:
-
-💡 إعادة تشغيل الراوتر:
-- أطفي الراوتر 30 ثانية وشغّله — انتظر دقيقتين وجرّب السرعة ثاني
-
+[SECTION: دون 100 Mbps]
+أطفي الراوتر 30 ثانية وشغّله — انتظر دقيقتين
 [OPTIONS: ✅ تحسنت السرعة | ❌ ما تحسنت → Raise TT]
-
-📋 Ticket Requirements:
-• Issue description  
-• Troubleshooting confirmation  
-• Customer address or PACI #  
-• Speed test results  
-• Callback
+[END_SECTION]
+[END_SECTION]
+[SECTION: جهاز واحد]
+أطفي الراوتر 30 ثانية — اطلب Speed Test
+[OPTIONS: ✅ فوق 100 Mbps | ⚠️ دون 100 Mbps]
+[SECTION: دون 100 Mbps]
+أطفي الراوتر مرة ثانية — انتظر دقيقتين
+[OPTIONS: ✅ تحسنت السرعة | ❌ ما تحسنت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
+[SECTION: 5GHz]
+كم جهاز شابك على الراوتر؟
+[OPTIONS: 📱 جهاز واحد | 👥 أكثر من جهاز]
+[SECTION: أكثر من جهاز]
+يفصل كل الأجهزة ويجرب بجهازه بس — اطلب Speed Test
+[OPTIONS: ✅ فوق 100 Mbps | ⚠️ دون 100 Mbps]
+[SECTION: دون 100 Mbps]
+أطفي الراوتر 30 ثانية وشغّله — انتظر دقيقتين
+[OPTIONS: ✅ تحسنت السرعة | ❌ ما تحسنت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: جهاز واحد]
+أطفي الراوتر 30 ثانية — اطلب Speed Test
+[OPTIONS: ✅ فوق 100 Mbps | ⚠️ دون 100 Mbps]
+[SECTION: دون 100 Mbps]
+أطفي الراوتر مرة ثانية
+[OPTIONS: ✅ تحسنت السرعة | ❌ ما تحسنت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
+[SECTION: ما أعرف]
+طريقة تغيير التردد:
+📡 MBB: افتح 192.168.8.1 ← WiFi Settings ← Band ← 5GHz ← احفظ
+🏠 CPE: افتح 192.168.1.1 ← WiFi Settings ← Band ← 5GHz ← احفظ
+[OPTIONS: ✅ تم التغيير وشبك | ❌ ما قدر → Raise TT]
+[SECTION: تم التغيير وشبك]
+اطلب Speed Test (Ookla)
+[OPTIONS: ✅ فوق 100 Mbps | ⚠️ دون 100 Mbps → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: طريقة التغيير]
+طريقة تغيير التردد:
+📡 MBB: افتح 192.168.8.1 ← WiFi Settings ← Band ← 5GHz ← احفظ وأعد التشغيل
+🏠 CPE: افتح 192.168.1.1 ← WiFi Settings ← Band ← 5GHz ← احفظ وأعد التشغيل
+[OPTIONS: ✅ تم وشبك على 5GHz | ❌ ما قدر → Raise TT]
+[SECTION: تم وشبك على 5GHz]
+اطلب Speed Test (Ookla)
+[OPTIONS: ✅ فوق 100 Mbps | ⚠️ دون 100 Mbps → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
+[SECTION: كل مكان]
+شبكة الـ WiFi — 5GHz أو 2.4GHz؟
+[OPTIONS: ✅ 5GHz | 📶 2.4GHz | 🤔 ما أعرف | 🔧 طريقة التغيير]
+[SECTION: 2.4GHz]
+وجّهه يشبك على 5GHz — جرّب السرعة
+[OPTIONS: ✅ تحسنت | ❌ ما تحسنت]
+[SECTION: ما تحسنت]
+أطفي الراوتر 30 ثانية — اطلب Speed Test
+[OPTIONS: ✅ فوق 100 Mbps | ⚠️ دون 100 Mbps]
+[SECTION: دون 100 Mbps]
+أطفي الراوتر مرة ثانية
+[OPTIONS: ✅ تحسنت السرعة | ❌ ما تحسنت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
+[SECTION: 5GHz]
+أطفي الراوتر 30 ثانية — اطلب Speed Test
+[OPTIONS: ✅ فوق 100 Mbps | ⚠️ دون 100 Mbps]
+[SECTION: دون 100 Mbps]
+أطفي الراوتر مرة ثانية — انتظر دقيقتين
+[OPTIONS: ✅ تحسنت السرعة | ❌ ما تحسنت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: ما أعرف]
+MBB: 192.168.8.1 ← WiFi Settings ← Band ← 5GHz
+CPE: 192.168.1.1 ← WiFi Settings ← Band ← 5GHz
+[OPTIONS: ✅ تم وشبك | ❌ ما قدر → Raise TT]
+[SECTION: تم وشبك]
+اطلب Speed Test
+[OPTIONS: ✅ فوق 100 Mbps | ⚠️ دون 100 Mbps → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: طريقة التغيير]
+MBB: 192.168.8.1 ← WiFi Settings ← Band ← 5GHz ← احفظ
+CPE: 192.168.1.1 ← WiFi Settings ← Band ← 5GHz ← احفظ
+[OPTIONS: ✅ تم وشبك | ❌ ما قدر → Raise TT]
+[SECTION: تم وشبك]
+اطلب Speed Test
+[OPTIONS: ✅ فوق 100 Mbps | ⚠️ دون 100 Mbps → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
 
 📋 اسم الطلب: Internet issue - Speed Issue – 5G
 متطلبات الطلب:
 • وصف المشكلة
 • تأكيد خطوات التشخيص
-• رقم للتواصل
-`
+• العنوان الكامل أو رقم PACI
+• نتيجة Speed Test
+• رقم للتواصل`
   },
   {
     keywords: ["speed 5g", "سرعة 5g", "5g slow", "بطيء 5g"],
@@ -1915,76 +2376,188 @@ STEP 5 — Speed Test:
     category: "Calls- not working",
     priority: "medium",
     definition: "If customer is facing outgoing or incoming calls disconnection issue",
-    solution: `STEP 1 — ⚠️ الأساسيات أولاً (إلزامي):
+    solution: `[V2]
+⚠️ الأساسيات أولاً (إلزامي):
 🔵 BSS: الخط نشط، ما في إيقاف بالفاتورة، الباقة تشمل المكالمات أو في رصيد كافي
 🔵 Smart Care: CS Bar = NOBAR، الخط attached
 🔵 Site Down: ما في عطل في منطقة العميل
 
 [OPTIONS: ✅ تأكدنا، نكمل ✅ | ⚠️ في مشكلة بالأساسيات]
 
-→ ⚠️ لو في مشكلة بالأساسيات:
-[OPTIONS: 🔴 مشكلة BSS | 🔴 CS Bar موجود | 📡 في سايت داون]
-• مشكلة BSS → عالج (فاتورة، باقة، رصيد)
-• CS Bar موجود → Raise TT فوراً
-• في سايت داون → Raise TT فوراً بالتاور والمنطقة
+شنو المشكلة بالمكالمات؟
+[OPTIONS: 📵 ما يقدر يتصل | 📞 ما يستقبل مكالمات | ✂️ المكالمة تنقطع أو جودة رديئة]
 
-→ ✅ كل شي زين → شنو المشكلة بالضبط؟
-[OPTIONS: 📞 ما يقدر يتصل | 📵 ما يوصله اتصال | ❌ الاثنين]
+[SECTION: ما يقدر يتصل]
+تحقق من Smart Care — CS Bar = NOBAR؟
+[OPTIONS: ✅ NOBAR | ❌ في Bar مفعّل]
+[SECTION: في Bar مفعّل]
+شيل الـ Bar من Smart Care — اطلب من العميل يحاول
+[OPTIONS: ✅ شغّلت المكالمة | ❌ ما شغّلت → Raise TT]
+[END_SECTION]
+[SECTION: NOBAR]
+اطلب من العميل:
+1. وضع الطيران OFF ثم ON
+2. أعد تشغيل الجهاز
+[OPTIONS: ✅ شغّلت المكالمة | ❌ ما شغّلت → Raise TT]
+[END_SECTION]
+[END_SECTION]
 
-→ 📞 ما يقدر يتصل (Outgoing):
-اطلب من العميل يطفي وضع الطيران ويشغّله
-المشكلة مع كل الأرقام أو رقم معين؟
-[OPTIONS: 📋 كل الأرقام | 🔢 رقم معين بس]
-• رقم معين → جمّع التفاصيل (وقت، تاريخ، A-party، B-party) → Raise TT
-• كل الأرقام → Raise TT
+[SECTION: ما يستقبل مكالمات]
+تحقق من Smart Care — في Call Forwarding مفعّل؟
+[OPTIONS: ✅ مو مفعّل | ❌ مفعّل]
+[SECTION: مفعّل]
+وجّه العميل يلغي التحويل من إعدادات الهاتف — جرّب ثاني
+[OPTIONS: ✅ شغّلت | ❌ ما شغّلت → Raise TT]
+[END_SECTION]
+[SECTION: مو مفعّل]
+اطلب من العميل يعيد تشغيل الجهاز — جرّب ثاني
+[OPTIONS: ✅ شغّلت | ❌ ما شغّلت → Raise TT]
+[END_SECTION]
+[END_SECTION]
 
-→ 📵 ما يوصله اتصال (Incoming):
-تحقق إذا في تحويل مكالمات شغّال → اطلب منه يكتب ‎##002# لإلغاء الكل
-[OPTIONS: ✅ ما في تحويل | 🔀 كان في تحويل وانلغى]
-• انلغى → جرّب مكالمة وشوف
-• ما في تحويل → المشكلة مع كل الأرقام أو رقم معين؟
-[OPTIONS: 📋 كل الأرقام | 🔢 رقم معين بس]
-• رقم معين → احتمال المشكلة من الطرف الثاني
-• كل الأرقام → Raise TT
+[SECTION: المكالمة تنقطع أو جودة رديئة]
+اسأل: المشكلة بكل مكان أو منطقة معينة؟
+[OPTIONS: 🌍 كل مكان | 📍 منطقة معينة]
+[SECTION: منطقة معينة]
+افتح Smart Care وتحقق من Site Down في منطقة العميل
+[OPTIONS: ✅ فيه Site Down | ❌ ما في Site Down]
+[SECTION: فيه Site Down]
+أبلغ العميل إن المشكلة معروفة وجاري الحل
+[OPTIONS: ✅ تم → Raise TT]
+[END_SECTION]
+[SECTION: ما في Site Down]
+اطلب من العميل يجرب من منطقة ثانية
+[OPTIONS: ✅ شغّل في مكان ثاني | ❌ نفس المشكلة → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: كل مكان]
+تحقق VoLTE في Smart Care — مفعّل؟
+[OPTIONS: ✅ مفعّل | ❌ مو مفعّل]
+[SECTION: مو مفعّل]
+فعّل VoLTE — اطلب من العميل يجرب
+[OPTIONS: ✅ انحلت | ❌ ما انحلت → Raise TT]
+[END_SECTION]
+[SECTION: مفعّل]
+اطلب من العميل يعيد تشغيل الجهاز ويجرب
+[OPTIONS: ✅ انحلت | ❌ ما انحلت → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
 
-→ ❌ الاثنين → طبّق خطوات Outgoing وIncoming مع بعض → Raise TT
-
-📋 اسم الطلب: Call & SMS issues - Calls- not working
+📋 اسم الطلب: Calls issue - Calls- not working
 متطلبات الطلب:
-• وصف المشكلة (Outgoing / Incoming / الاثنين)
+• وصف المشكلة (ما يتصل / ما يستقبل / تنقطع)
 • تأكيد خطوات التشخيص
-• وقت وتاريخ آخر مكالمة
-• رقم المتصل (A-party) ورقم المستقبل (B-party)
-• رقم للتواصل + WhatsApp نشط`
+• رقم للتواصل`
   },
   {
     keywords: ["call quality", "جودة مكالمة", "تقطيع", "صوت مقطوع", "call drops"],
     category: "Calls- Quality",
     priority: "medium",
     definition: "Any issue related to voice call coverage such as incoming calls issue or interruption in calls due to bad coverage in specific place",
-    solution: `STEP 1 — كم إشارة ظاهرة على جهاز العميل؟
+    solution: `[V2]
+كم إشارة ظاهرة على جهاز العميل؟
 [OPTIONS: 📵 لا إشارة | 📶 ضعيفة (1-2) | 📶📶 متوسطة (3) | 📶📶📶 قوية (4-5)]
 
-• 📵 لا إشارة → اسأله هل هو داخل مبنى؟
-  - داخل مبنى → اطلب منه يروح مكان مفتوح ويجرب
-  [OPTIONS: ✅ تحسنت الإشارة | ❌ ما تحسنت → Raise TT]
+[SECTION: لا إشارة]
+اسأله هل هو داخل مبنى؟
+[OPTIONS: 🏠 داخل مبنى | 🌳 مكان مفتوح]
+[SECTION: داخل مبنى]
+اطلب منه يروح مكان مفتوح ويجرب
+[OPTIONS: ✅ تحسنت الإشارة | ❌ ما تحسنت → Raise TT]
+[END_SECTION]
+[SECTION: مكان مفتوح]
+إشارة ضعيفة في مكان مفتوح → Raise TT
+[OPTIONS: ✅ تم → Raise TT]
+[END_SECTION]
+[END_SECTION]
 
-• 📶 ضعيفة (1-2) → اسأله هل هو داخل مبنى؟
-  - داخل مبنى → اطلب منه يروح مكان مفتوح ويجرب
-  [OPTIONS: ✅ تحسنت الإشارة | ❌ ما تحسنت → Raise TT]
+[SECTION: ضعيفة (1-2)]
+اسأله هل هو داخل مبنى؟
+[OPTIONS: 🏠 داخل مبنى | 🌳 مكان مفتوح]
+[SECTION: داخل مبنى]
+اطلب منه يروح مكان مفتوح ويجرب
+[OPTIONS: ✅ تحسنت الإشارة | ❌ ما تحسنت → Raise TT]
+[END_SECTION]
+[SECTION: مكان مفتوح]
+إشارة ضعيفة في مكان مفتوح → Raise TT
+[OPTIONS: ✅ تم → Raise TT]
+[END_SECTION]
+[END_SECTION]
 
-• 📶📶 متوسطة (3) أو 📶📶📶 قوية (4-5) → الإشارة مقبولة، كمّل
-
-STEP 2 — شنو بالضبط نوع مشكلة الصوت؟
+[SECTION: متوسطة (3)]
+الإشارة مقبولة — شنو بالضبط نوع مشكلة الصوت؟
 [OPTIONS: 🔊 صدى (Echo) | 📉 صوت ضعيف | ✂️ صوت مقطوع/متقطع | 🎙️ ضوضاء خلفية | 🔇 كل الأعلى]
-
-STEP 3 — المشكلة بكل المكالمات أو رقم معين؟
+[SECTION: صدى (Echo)]
+المشكلة بكل المكالمات أو رقم معين؟
 [OPTIONS: 📞 كل المكالمات | 🔢 رقم معين بس]
-• رقم معين → اطلب منه يجرب مع رقم ثاني — لو اشتغل المشكلة من الطرف الثاني مو من الشبكة
-• كل المكالمات → كمّل
-
-STEP 4 — اطلب من العميل يطفي وضع الطيران ويشغّله
+[SECTION: رقم معين بس]
+اطلب منه يجرب مع رقم ثاني — لو اشتغل المشكلة من الطرف الثاني مو من الشبكة
+[OPTIONS: ✅ اشتغل مع رقم ثاني | ❌ نفس المشكلة مع كل الأرقام]
+[SECTION: نفس المشكلة مع كل الأرقام]
+اطلب من العميل يطفي وضع الطيران ويشغّله
 [OPTIONS: ✅ تحسن | ❌ ما تحسن → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: كل المكالمات]
+اطلب من العميل يطفي وضع الطيران ويشغّله
+[OPTIONS: ✅ تحسن | ❌ ما تحسن → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: صوت ضعيف]
+اطلب من العميل يطفي وضع الطيران ويشغّله
+[OPTIONS: ✅ تحسن | ❌ ما تحسن → Raise TT]
+[END_SECTION]
+[SECTION: صوت مقطوع/متقطع]
+اطلب من العميل يطفي وضع الطيران ويشغّله
+[OPTIONS: ✅ تحسن | ❌ ما تحسن → Raise TT]
+[END_SECTION]
+[SECTION: ضوضاء خلفية]
+اطلب من العميل يطفي وضع الطيران ويشغّله
+[OPTIONS: ✅ تحسن | ❌ ما تحسن → Raise TT]
+[END_SECTION]
+[SECTION: كل الأعلى]
+اطلب من العميل يطفي وضع الطيران ويشغّله
+[OPTIONS: ✅ تحسن | ❌ ما تحسن → Raise TT]
+[END_SECTION]
+[END_SECTION]
+
+[SECTION: قوية (4-5)]
+الإشارة مقبولة — شنو بالضبط نوع مشكلة الصوت؟
+[OPTIONS: 🔊 صدى (Echo) | 📉 صوت ضعيف | ✂️ صوت مقطوع/متقطع | 🎙️ ضوضاء خلفية | 🔇 كل الأعلى]
+[SECTION: صدى (Echo)]
+المشكلة بكل المكالمات أو رقم معين؟
+[OPTIONS: 📞 كل المكالمات | 🔢 رقم معين بس]
+[SECTION: رقم معين بس]
+اطلب منه يجرب مع رقم ثاني — لو اشتغل المشكلة من الطرف الثاني مو من الشبكة
+[OPTIONS: ✅ اشتغل مع رقم ثاني | ❌ نفس المشكلة مع كل الأرقام]
+[SECTION: نفس المشكلة مع كل الأرقام]
+اطلب من العميل يطفي وضع الطيران ويشغّله
+[OPTIONS: ✅ تحسن | ❌ ما تحسن → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: كل المكالمات]
+اطلب من العميل يطفي وضع الطيران ويشغّله
+[OPTIONS: ✅ تحسن | ❌ ما تحسن → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: صوت ضعيف]
+اطلب من العميل يطفي وضع الطيران ويشغّله
+[OPTIONS: ✅ تحسن | ❌ ما تحسن → Raise TT]
+[END_SECTION]
+[SECTION: صوت مقطوع/متقطع]
+اطلب من العميل يطفي وضع الطيران ويشغّله
+[OPTIONS: ✅ تحسن | ❌ ما تحسن → Raise TT]
+[END_SECTION]
+[SECTION: ضوضاء خلفية]
+اطلب من العميل يطفي وضع الطيران ويشغّله
+[OPTIONS: ✅ تحسن | ❌ ما تحسن → Raise TT]
+[END_SECTION]
+[SECTION: كل الأعلى]
+اطلب من العميل يطفي وضع الطيران ويشغّله
+[OPTIONS: ✅ تحسن | ❌ ما تحسن → Raise TT]
+[END_SECTION]
+[END_SECTION]
 
 📋 اسم الطلب: Call & SMS issues - Calls Quality
 متطلبات الطلب:
@@ -1999,24 +2572,47 @@ STEP 4 — اطلب من العميل يطفي وضع الطيران ويشغّ�
     category: "Calls- International",
     priority: "medium",
     definition: "If customer is facing outgoing or incoming international calls issue",
-    solution: `STEP 1 — تحقق من BSS — عنده باقة مكالمات دولية نشطة؟
+    solution: `[V2]
+تحقق من BSS — عنده باقة مكالمات دولية نشطة؟
 [OPTIONS: ✅ عنده باقة | ❌ ما عنده باقة]
-• ❌ ما عنده باقة → وجّهه يشترك بباقة دولية أولاً
-
-STEP 2 — تأكد من صيغة الاتصال الصحيحة:
+[SECTION: ما عنده باقة]
+وجّهه يشترك بباقة دولية أولاً
+[OPTIONS: ✅ اشترك وشغّلت | ❌ ما قدر → Raise TT]
+[END_SECTION]
+[SECTION: عنده باقة]
+تأكد من صيغة الاتصال الصحيحة:
 الصيغة: + كود الدولة + رقم المستقبل (بدون صفر في البداية)
 مثال: +966 5XXXXXXXX
 [OPTIONS: ✅ الصيغة صحيحة | ❌ كان يتصل بصيغة غلط]
-• صيغة غلط → جرّب بالصيغة الصحيحة وشوف
-
-STEP 3 — عنده Dual SIM؟
+[SECTION: كان يتصل بصيغة غلط]
+جرّب بالصيغة الصحيحة وشوف
+[OPTIONS: ✅ شغّلت | ❌ ما شغّلت]
+[SECTION: ما شغّلت]
+عنده Dual SIM؟
 [OPTIONS: ✅ إي، دول سيم | ❌ لا]
-• دول سيم → تأكد السيم الصحيحة مختارة للمكالمات
-
-STEP 4 — في رسالة خطأ تطلع؟
-[OPTIONS: ✅ عنده رسالة خطأ | ❌ ما في رسالة بس ما تكمل]
-• عنده رسالة → وثّق نص الرسالة بالضبط → Raise TT
-• ما في رسالة → Raise TT
+[SECTION: إي، دول سيم]
+تأكد السيم الصحيحة مختارة للمكالمات — جرّب ثاني
+[OPTIONS: ✅ شغّلت | ❌ ما شغّلت → Raise TT]
+[END_SECTION]
+[SECTION: لا]
+في رسالة خطأ تطلع؟
+[OPTIONS: ✅ عنده رسالة خطأ → Raise TT | ❌ ما في رسالة → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
+[SECTION: الصيغة صحيحة]
+عنده Dual SIM؟
+[OPTIONS: ✅ إي، دول سيم | ❌ لا]
+[SECTION: إي، دول سيم]
+تأكد السيم الصحيحة مختارة للمكالمات — جرّب ثاني
+[OPTIONS: ✅ شغّلت | ❌ ما شغّلت → Raise TT]
+[END_SECTION]
+[SECTION: لا]
+في رسالة خطأ تطلع؟
+[OPTIONS: ✅ عنده رسالة خطأ → Raise TT | ❌ ما في رسالة → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
 
 📋 اسم الطلب: Call & SMS issues - Calls International
 متطلبات الطلب:
@@ -2032,30 +2628,36 @@ STEP 4 — في رسالة خطأ تطلع؟
     category: "Calls- Diverts",
     priority: "medium",
     definition: "Any issues related to call diverts",
-    solution: `STEP 1 — شنو مشكلة العميل بالتحويلات؟
+    solution: `[V2]
+شنو مشكلة العميل بالتحويلات؟
 [OPTIONS: 📵 ما يقدر يفعّل التحويل | 🚫 ما يقدر يلغي التحويل | 📨 ما توصله رسائل من Mawjod Extra]
 
-→ 📵 تفعيل التحويل — كودات التفعيل:
+[SECTION: ما يقدر يفعّل التحويل]
+كودات التفعيل:
 • كل المكالمات: ‎✱✱21✱[رقم]#
 • عند مشغول: ‎✱✱67✱[رقم]#
 • عند ما في رد: ‎✱✱61✱[رقم]#
 • عند خارج التغطية: ‎✱✱62✱[رقم]#
 [OPTIONS: ✅ اشتغل | ❌ ما اشتغل → Raise TT]
+[END_SECTION]
 
-→ 🚫 إلغاء التحويل — كودات الإلغاء:
+[SECTION: ما يقدر يلغي التحويل]
+كودات الإلغاء:
 • إلغاء كل المكالمات: ‎##21#
 • إلغاء عند مشغول: ‎##67#
 • إلغاء عند ما في رد: ‎##61#
 • إلغاء عند خارج التغطية: ‎##62#
 • إلغاء جميع التحويلات: ‎##002#
 [OPTIONS: ✅ انلغى | ❌ ما انلغى → Raise TT]
+[END_SECTION]
 
-→ 📨 ما توصله رسائل من Mawjod Extra:
+[SECTION: ما توصله رسائل من Mawjod Extra]
 تحقق من BSS — خدمة Mawjod Extra مفعّلة على الخط؟
 [OPTIONS: ✅ مفعّلة | ❌ مو مفعّلة]
-• مو مفعّلة → أضف الخدمة على الخط من BSS أولاً، بعدين كمّل
-• مفعّلة → كمّل
-
+[SECTION: مو مفعّلة]
+أضف الخدمة على الخط من BSS أولاً — بعدين كمّل
+[OPTIONS: ✅ تمت الإضافة، كمّل]
+[SECTION: تمت الإضافة، كمّل]
 اطلب من العميل يسوي الخطوات بالترتيب:
 
 1️⃣ يلغي جميع التحويلات أولاً: ‎##002#
@@ -2065,8 +2667,22 @@ STEP 4 — في رسالة خطأ تطلع؟
    📵 عند مشغول → ‎✱✱67✱234#
    🔕 عند ما في رد → ‎✱✱61✱234#
    📡 عند خارج التغطية → ‎✱✱62✱234#
-
 [OPTIONS: ✅ اشتغل | ❌ ما اشتغل → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: مفعّلة]
+اطلب من العميل يسوي الخطوات بالترتيب:
+
+1️⃣ يلغي جميع التحويلات أولاً: ‎##002#
+
+2️⃣ يعيد يفعّل التحويل على 234 — حسب اللي يبيه:
+   📞 كل المكالمات → ‎✱✱21✱234#
+   📵 عند مشغول → ‎✱✱67✱234#
+   🔕 عند ما في رد → ‎✱✱61✱234#
+   📡 عند خارج التغطية → ‎✱✱62✱234#
+[OPTIONS: ✅ اشتغل | ❌ ما اشتغل → Raise TT]
+[END_SECTION]
+[END_SECTION]
 
 📋 اسم الطلب: Call & SMS issues - Calls Diverts
 متطلبات الطلب:
@@ -2151,8 +2767,8 @@ STEP 4 — في رسالة خطأ تطلع؟
     category: "App & Web-  Payment issue",
     priority: "medium",
     definition: "If there is missing digital payment App/Web",
-    solution: `خطوات التحقق:
-
+    solution: `[V2]
+خطوات التحقق:
 1️⃣ BSS → Financials → Receipt
 تأكد إن الدفعة موجودة بالـ Receipt
 
@@ -2160,25 +2776,49 @@ STEP 4 — في رسالة خطأ تطلع؟
 • افتح برنامج ePayment وادخل رقم العميل
 • شوف الـ Request ID — هو رقم الطلب (اللي طالب السداد)
 • شوف الـ Subscriber ID — هو رقم المستفيد من الطلب
-
 شنو النتيجة؟
 [OPTIONS: ✅ Fulfillment Successful | ❌ Fulfillment Rejected | ⏳ Pending | 👤 العميل غير موجود]
 
-• ✅ Fulfillment Successful → انحلت ✅ — أبلغ العميل إن المعاملة ناجحة
+[SECTION: Fulfillment Successful]
+انحلت ✅ — أبلغ العميل إن المعاملة ناجحة
+[END_SECTION]
 
-• ❌ Fulfillment Rejected → كم وقت مضى على عملية السداد؟
+[SECTION: Fulfillment Rejected]
+كم وقت مضى على عملية السداد؟
 [OPTIONS: ⏰ أقل من 24 ساعة | ⏳ بين 24-48 ساعة | ⌛ أكثر من 48 ساعة]
-• أقل من 24 ساعة → تنحل تلقائياً — أبلغ العميل ينتظر ولا يعيد المحاولة
-• بين 24-48 ساعة → Raise TT — الطلب تجاوز الوقت المعتاد
-• أكثر من 48 ساعة → Raise TT عاجل — الطلب متأخر بشكل غير طبيعي
+[SECTION: أقل من 24 ساعة]
+تنحل تلقائياً — أبلغ العميل ينتظر ولا يعيد المحاولة
+[END_SECTION]
+[SECTION: بين 24-48 ساعة]
+الطلب تجاوز الوقت المعتاد — Raise TT
+[OPTIONS: ✅ تم → Raise TT]
+[END_SECTION]
+[SECTION: أكثر من 48 ساعة]
+الطلب متأخر بشكل غير طبيعي — Raise TT عاجل
+[OPTIONS: ✅ تم → Raise TT]
+[END_SECTION]
+[END_SECTION]
 
-• ⏳ Pending → كم وقت مضى على عملية السداد؟
+[SECTION: Pending]
+كم وقت مضى على عملية السداد؟
 [OPTIONS: ⏰ أقل من 24 ساعة | ⏳ بين 24-48 ساعة | ⌛ أكثر من 48 ساعة]
-• أقل من 24 ساعة → الدفعة قيد المعالجة — أبلغ العميل ينتظر
-• بين 24-48 ساعة → تحقق من ePayment وارفع TT إذا ما تحرك الطلب
-• أكثر من 48 ساعة → تم استرجاع المبلغ للحساب البنكي — Raise TT
+[SECTION: أقل من 24 ساعة]
+الدفعة قيد المعالجة — أبلغ العميل ينتظر
+[END_SECTION]
+[SECTION: بين 24-48 ساعة]
+تحقق من ePayment — لو ما تحرك → Raise TT
+[OPTIONS: ✅ تحرك ← انتظر | ❌ ما تحرك → Raise TT]
+[END_SECTION]
+[SECTION: أكثر من 48 ساعة]
+تم استرجاع المبلغ للحساب البنكي — Raise TT
+[OPTIONS: ✅ تم → Raise TT]
+[END_SECTION]
+[END_SECTION]
 
-• 👤 العميل غير موجود → Raise TT
+[SECTION: العميل غير موجود]
+الرقم مو مسجّل في النظام — Raise TT
+[OPTIONS: ✅ تم → Raise TT]
+[END_SECTION]
 
 📋 اسم الطلب: Digital and self service - App & Web- Payment issue
 متطلبات الطلب:
@@ -2190,29 +2830,51 @@ STEP 4 — في رسالة خطأ تطلع؟
     category: "App & Web- Technical Issues",
     priority: "medium",
     definition: "Any issue with stc application or web site",
-    solution: `TT TASK NAME: App & Web- Technical Issues
+    solution: `[V2]
+شنو المشكلة في التطبيق أو الموقع؟
+[OPTIONS: 🔐 ما يقدر يسجّل دخول | ❌ خطأ في التطبيق | 🐌 التطبيق بطيء أو يتعلق | 📲 ما يقدر يحمّل التطبيق]
 
-STEP 1 — المشكلة على التطبيق ولا الموقع؟
-[OPTIONS: تطبيق stc 📱 | الموقع 🌐]
+[SECTION: ما يقدر يسجّل دخول]
+اطلب من العميل:
+1. يتأكد من اسم المستخدم وكلمة المرور
+2. يجرب "نسيت كلمة المرور"
+[OPTIONS: ✅ انحلت | ❌ ما انحلت]
+[SECTION: ما انحلت]
+اطلب رسالة الخطأ الظاهرة بالضبط
+[OPTIONS: ✅ عنده رسالة خطأ → Raise TT | ❌ ما في رسالة بس ما تكمل → Raise TT]
+[END_SECTION]
+[END_SECTION]
 
-📱 إذا التطبيق:
-  STEP 2 — اطلب من العميل يسجّل خروج ويتسجّل دخول مرة ثانية
-  [OPTIONS: ✅ اشتغل | ⚠️ ما اشتغل]
-  ⚠️ ما اشتغل → اطلب منه يحذف التطبيق ويعيد تحميله من المتجر ويحاول مرة ثانية
-  [OPTIONS: ✅ اشتغل | ⚠️ ما اشتغل]
-  ⚠️ ما اشتغل → سجّل رسالة الخطأ → Raise TT
+[SECTION: خطأ في التطبيق]
+اطلب من العميل:
+1. يسجّل خروج ويدخل ثاني
+2. يمسح كاش التطبيق
+3. يحدّث التطبيق لآخر إصدار
+[OPTIONS: ✅ انحلت | ❌ ما انحلت]
+[SECTION: ما انحلت]
+اطلب رسالة الخطأ بالضبط → Raise TT
+[OPTIONS: ✅ تم → Raise TT]
+[END_SECTION]
+[END_SECTION]
 
-🌐 إذا الموقع:
-  STEP 2 — اطلب من العميل يجرب متصفح ثاني ويمسح الـ Cache والـ Cookies
-  [OPTIONS: ✅ اشتغل | ⚠️ ما اشتغل]
-  ⚠️ ما اشتغل → سجّل رسالة الخطأ → Raise TT
+[SECTION: التطبيق بطيء أو يتعلق]
+اطلب من العميل:
+1. يغلق التطبيق كلياً ويفتحه ثاني
+2. يتأكد من سرعة الإنترنت
+3. يعيد تشغيل الجهاز
+[OPTIONS: ✅ انحلت | ❌ ما انحلت → Raise TT]
+[END_SECTION]
+
+[SECTION: ما يقدر يحمّل التطبيق]
+اطلب رقم الجهاز ونوعه — تأكد إن المتجر (App Store/Play Store) شغّال
+[OPTIONS: ✅ انحلت | ❌ ما انحلت → Raise TT]
+[END_SECTION]
 
 📋 اسم الطلب: Digital and self service - App & Web- Technical Issues
 متطلبات الطلب:
 • وصف المشكلة
-• رسالة الخطأ (سكرين شوت)
-• نوع الجهاز والمتصفح
-• تأكيد خطوات التشخيص
+• رسالة الخطأ (إذا موجودة)
+• نوع الجهاز والإصدار
 • رقم للتواصل`
   },
   {
@@ -2358,23 +3020,50 @@ Step 2B — Charged to stc line (stc customers only):
     category: "E-SIM-  issues",
     priority: "medium",
     definition: "Code not received",
-    solution: `TT TASK NAME: E-SIM-  issues
+    solution: `[V2]
+شنو المشكلة بالـ eSIM؟
+[OPTIONS: 📲 تحويل شريحة عادية لـ eSIM | 🆕 إصدار eSIM جديد | ❌ مشكلة تقنية بعد التفعيل]
 
-STEP 1 — BSS: دور على معاملة تغيير SIM أو eSIM تتطابق مع تاريخ طلب العميل، وشوف حالتها.
-[OPTIONS: ✅ Completed | ⚠️ غير Completed | ❌ ما في معاملة]
+[SECTION: تحويل شريحة عادية لـ eSIM]
+تحقق من BSS — الجهاز يدعم eSIM؟
+[OPTIONS: ✅ يدعم | ❌ ما يدعم]
+[SECTION: يدعم]
+ارفع الطلب على رقم العميل ✅
+[OPTIONS: ✅ تم → Raise TT]
+[END_SECTION]
+[SECTION: ما يدعم]
+أبلغ العميل إن جهازه ما يدعم eSIM
+[END_SECTION]
+[END_SECTION]
 
-✅ Completed → الطلب نفّذ — بلّغ العميل إن الـ eSIM جاهز
-⚠️ غير Completed → Raise TT على فريق Resolutions
-❌ ما في معاملة → تحقق هل تم خصم المبلغ من حساب العميل عبر برنامج ePayment؟
-  [OPTIONS: ✅ تم الخصم | ❌ ما تم الخصم]
-  ✅ تم الخصم → Raise TT على فريق Resolutions
-  ❌ ما تم الخصم → اطلب من العميل يحاول مرة ثانية
+[SECTION: إصدار eSIM جديد]
+تحقق من BSS — الجهاز يدعم eSIM وما عنده eSIM نشطة؟
+[OPTIONS: ✅ مؤهل | ❌ غير مؤهل]
+[SECTION: مؤهل]
+ارفع الطلب على رقم العميل ✅
+[OPTIONS: ✅ تم → Raise TT]
+[END_SECTION]
+[SECTION: غير مؤهل]
+أبلغ العميل بسبب عدم الأهلية
+[END_SECTION]
+[END_SECTION]
+
+[SECTION: مشكلة تقنية بعد التفعيل]
+اطلب رسالة الخطأ الظاهرة بالضبط
+[OPTIONS: ✅ عنده رسالة → Raise TT | ❌ ما في رسالة]
+[SECTION: ما في رسالة]
+اطلب من العميل:
+1. يعيد تشغيل الجهاز
+2. يتحقق من إعدادات eSIM في الجهاز
+[OPTIONS: ✅ انحلت | ❌ ما انحلت → Raise TT]
+[END_SECTION]
+[END_SECTION]
 
 📋 اسم الطلب: Digital and self service - E-SIM- issues
 متطلبات الطلب:
 • وصف المشكلة
+• نوع الجهاز ورقم IMEI
 • تأكيد خطوات التشخيص
-• رقم المعاملة (إذا موجود في BSS)
 • رقم للتواصل`
   },
   {
@@ -2403,31 +3092,37 @@ STEP 3 — إذا ما في معاملة، تحقق هل تم خصم المبل�
     category: "Prepaid – Balance & validity",
     priority: "medium",
     definition: "Any issue with prepaid lines balance or validity",
-    solution: `STEP 1 — تحقق من BSS:
-تأكد إن الخط نشط وما هو موقوف أو منتهي الصلاحية
-
-STEP 2 — شنو المشكلة بالضبط؟
+    solution: `[V2]
+تحقق من BSS — الخط نشط وما هو موقوف أو منتهي الصلاحية
+شنو المشكلة بالضبط؟
 [OPTIONS: 📅 مشكلة بالصلاحية | 💰 مشكلة بالرصيد]
 
-→ 📅 مشكلة بالصلاحية:
+[SECTION: مشكلة بالصلاحية]
 افتح BSS وتحقق من:
 أ. سجل الشحنات — متى آخر شحنة وشنو الصلاحية اللي اتطبقت
-ب. تحويل الرصيد — تحويل الرصيد يشمل صلاحية، ممكن يكون سبب التغيير
-ج. E-payment — تحقق إذا العميل اشترى باقة صلاحية بنجاح
-د. طابق تاريخ انتهاء الصلاحية الحالي مع سجل الشحنات والتحويلات
-[OPTIONS: ✅ الصلاحية مطابقة | ❌ الصلاحية مو مطابقة → Raise TT | 🔍 ما في شحنة → اطلب إيصال]
-• ✅ الصلاحية مطابقة → أبلغ العميل بالتفاصيل
-• ❌ الصلاحية مو مطابقة → Raise TT فوراً
-• 🔍 ما في شحنة → اطلب من العميل يجيب الإيصال أو رقم المرجع وتحقق من E-payment
+ب. تحويل الرصيد — يشمل صلاحية، ممكن يكون سبب التغيير
+ج. E-payment — تحقق إذا العميل اشترى باقة صلاحية
+د. طابق تاريخ انتهاء الصلاحية مع سجل الشحنات
+[OPTIONS: ✅ الصلاحية مطابقة | ❌ الصلاحية مو مطابقة → Raise TT | 🔍 ما في شحنة]
+[SECTION: الصلاحية مطابقة]
+أبلغ العميل بالتفاصيل
+[END_SECTION]
+[SECTION: ما في شحنة]
+اطلب من العميل يجيب الإيصال أو رقم المرجع وتحقق من E-payment
+[OPTIONS: ✅ وجدنا المعاملة | ❌ ما وجدنا → Raise TT]
+[END_SECTION]
+[END_SECTION]
 
-→ 💰 مشكلة بالرصيد:
-افتح BSS — تبويب Usage وراجع حركات الرصيد الأخيرة
+[SECTION: مشكلة بالرصيد]
+افتح BSS — تبويب Usage وراجع حركات الرصيد
 تحقق من نوع الرصيد:
 • الرصيد العادي: الرصيد الأساسي القابل للشحن
 • الرصيد الإضافي (Bonus): رصيد ترويجي بشروط استخدام خاصة
-[OPTIONS: ✅ الرصيد مطابق | ❌ رصيد ما اتحط بعد شحنة مؤكدة → Raise TT | ❌ رصيد اختصم بدون استخدام → Raise TT]
-• ✅ الرصيد مطابق → وضّح للعميل الفرق بين الرصيد العادي والإضافي
-• ❌ رصيد ما اتحط أو اختصم بشكل غير طبيعي → Raise TT فوراً
+[OPTIONS: ✅ الرصيد مطابق | ❌ رصيد ما اتحط أو اختصم بشكل غير طبيعي → Raise TT]
+[SECTION: الرصيد مطابق]
+وضّح للعميل الفرق بين الرصيد العادي والإضافي
+[END_SECTION]
+[END_SECTION]
 
 📋 اسم الطلب: stc services - Prepaid – Balance & validity
 متطلبات الطلب:
@@ -2442,24 +3137,20 @@ STEP 2 — شنو المشكلة بالضبط؟
     category: "Plan/Add on services- Charge issues",
     priority: "medium",
     definition: "Any issue with services activated extra over the main plan or bundle (Boosters)",
-    solution: `STEP 1 — تحقق من BSS:
-تأكد إن الخط نشط وما هو موقوف أو مقطوع
-
-STEP 2 — تحقق من مصدر تفعيل الخدمة المتنازع عليها:
-افتح BSS وشوف كيف اتفعّلت الباقة أو الإضافة
+    solution: `[V2]
+تحقق من BSS — الخط نشط وما هو موقوف
+تحقق من مصدر تفعيل الخدمة المتنازع عليها
 [OPTIONS: 📱 العميل فعّلها بنفسه | 🔄 اتفعّلت تلقائياً من النظام | ❓ مصدر التفعيل مجهول → Raise TT]
 
-→ 📱 العميل فعّلها بنفسه (عبر تطبيق أو USSD أو SMS أو موقع):
+[SECTION: العميل فعّلها بنفسه]
 أبلغ العميل إن الخدمة فُعّلت منه والرسوم صحيحة
 [OPTIONS: ✅ قبل العميل التوضيح | ❌ العميل مصر ما فعّلها → Raise TT]
-• ✅ قبل العميل → أغلق الطلب
-• ❌ العميل مصر → Raise TT فوراً
+[END_SECTION]
 
-→ 🔄 اتفعّلت تلقائياً من النظام:
+[SECTION: اتفعّلت تلقائياً من النظام]
 وضّح للعميل إنها تجديد تلقائي أو Booster منبثق
 [OPTIONS: ✅ قبل العميل التوضيح | ❌ العميل يعترض على التفعيل التلقائي → Raise TT]
-• ✅ قبل العميل → أغلق الطلب
-• ❌ العميل يعترض → Raise TT فوراً
+[END_SECTION]
 
 📋 اسم الطلب: stc services - Plan/Add on services- Charge issues
 متطلبات الطلب:
@@ -2474,21 +3165,51 @@ STEP 2 — تحقق من مصدر تفعيل الخدمة المتنازع عل�
     category: "Plan/Add on services- Technical issues",
     priority: "medium",
     definition: "Any issue with line main plan ( Go/Allo/international/Extreme)",
-    solution: `STEP 1 — تحقق من BSS:
-تأكد إن الخط نشط وما هو موقوف أو مقطوع
+    solution: `[V2]
+تحقق من BSS — الخط نشط وما هو موقوف
+تحقق من حالة الباقة أو الإضافة
+[OPTIONS: ✅ الباقة نشطة في BSS | ❌ الباقة مو نشطة]
 
-STEP 2 — تحقق من حالة الباقة أو الإضافة في BSS:
-[OPTIONS: ✅ الباقة نشطة في BSS | ❌ الباقة مو نشطة في BSS]
-
-→ ❌ الباقة مو نشطة:
+[SECTION: الباقة مو نشطة]
 [OPTIONS: 💳 خط مسبق (Prepaid) | 💼 خط آجل (Postpaid)]
-• 💳 مسبق → تحقق من الرصيد — هل كافي للتجديد أو التفعيل؟ إذا لا → أبلغ العميل يشحن
-• 💼 آجل → تحقق من الحد الائتماني — هل اكتمل؟ إذا نعم → أبلغ العميل يسدد أو يطلب رفع الحد
+[SECTION: خط مسبق (Prepaid)]
+تحقق من الرصيد — هل كافي للتجديد؟
+[OPTIONS: ✅ كافي | ❌ مو كافي]
+[SECTION: مو كافي]
+أبلغ العميل يشحن ويجرب ثاني
+[OPTIONS: ✅ انحلت | ❌ ما انحلت → Raise TT]
+[END_SECTION]
+[SECTION: كافي]
+Raise TT — مشكلة في التجديد التلقائي
+[OPTIONS: ✅ تم → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: خط آجل (Postpaid)]
+تحقق من الحد الائتماني — هل اكتمل؟
+[OPTIONS: ✅ اكتمل | ❌ ما اكتمل]
+[SECTION: اكتمل]
+أبلغ العميل يسدد أو يطلب رفع الحد
+[OPTIONS: ✅ انحلت | ❌ ما انحلت → Raise TT]
+[END_SECTION]
+[SECTION: ما اكتمل]
+Raise TT — مشكلة في تفعيل الباقة
+[OPTIONS: ✅ تم → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
 
-→ ✅ الباقة نشطة في BSS بس الخدمة مو شغّالة:
-اطلب من العميل رسالة الخطأ اللي تطلع عليه بالضبط
-[OPTIONS: ✅ فيه رسالة خطأ → Raise TT | ❌ ما في رسالة → Raise TT]
-• في كلتا الحالتين → Raise TT مع تفاصيل الخطأ
+[SECTION: الباقة نشطة في BSS]
+تحقق من BSS — في خطأ على الخط؟
+[OPTIONS: ✅ فيه رسالة خطأ | ❌ ما في خطأ ظاهر]
+[SECTION: فيه رسالة خطأ]
+سجّل كود الخطأ → Raise TT
+[OPTIONS: ✅ تم → Raise TT]
+[END_SECTION]
+[SECTION: ما في خطأ ظاهر]
+اطلب من العميل رسالة الخطأ على الجهاز أو التطبيق → Raise TT
+[OPTIONS: ✅ تم → Raise TT]
+[END_SECTION]
+[END_SECTION]
 
 📋 اسم الطلب: stc services - Plan/Add on services- Technical issues
 متطلبات الطلب:
@@ -2503,19 +3224,22 @@ STEP 2 — تحقق من حالة الباقة أو الإضافة في BSS:
     category: "3rd party- charge issues",
     priority: "medium",
     definition: "Any issue with 3rd party services charges",
-    solution: `STEP 1 — افتح BSS وتعرّف على الخدمة:
-حدد اسم خدمة الطرف الثالث، مبلغ الرسوم، والتاريخ
-[OPTIONS: ✅ الخدمة موجودة في BSS | ❌ الخدمة مو موجودة في BSS → Raise TT]
+    solution: `[V2]
+افتح BSS وتعرّف على الخدمة وحدد: اسم الخدمة، المبلغ، والتاريخ
+[OPTIONS: ✅ الخدمة موجودة في BSS | ❌ الخدمة مو موجودة → Raise TT]
 
-→ ✅ الخدمة موجودة — تحقق من طريقة التفعيل:
-هل العميل اشترك عبر SMS keyword أو OTP؟
+[SECTION: الخدمة موجودة في BSS]
+تحقق من طريقة التفعيل — هل العميل اشترك عبر SMS keyword أو OTP؟
 [OPTIONS: ✅ التفعيل مؤكد عبر SMS أو OTP | ❓ طريقة التفعيل مجهولة → Raise TT]
-
-→ ✅ التفعيل مؤكد:
+[SECTION: التفعيل مؤكد عبر SMS أو OTP]
 وضّح للعميل إن رده على الـ SMS أو OTP يُعدّ موافقة على الاشتراك
-[OPTIONS: ✅ قبل العميل وأبي إلغاء الاشتراك | ❌ العميل مو مقتنع → Raise TT]
-• ✅ قبل → أرشده لطريقة إلغاء الاشتراك
-• ❌ مو مقتنع → Raise TT فوراً
+[OPTIONS: ✅ قبل العميل وأبي إلغاء الاشتراك | ❌ العميل غير مقتنع → Raise TT]
+[SECTION: قبل العميل وأبي إلغاء الاشتراك]
+أرشده لطريقة إلغاء الاشتراك من الخدمة
+[OPTIONS: ✅ تم الإلغاء | ❌ ما قدر → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
 
 📋 اسم الطلب: stc services - 3rd party- charge issues
 متطلبات الطلب:
@@ -2530,27 +3254,53 @@ STEP 2 — تحقق من حالة الباقة أو الإضافة في BSS:
     category: "Apple Watch",
     priority: "medium",
     definition: "Any issue related to Apple watch (New watch Registartion or incoming calls in the watch)",
-    solution: `شنو المشكلة بالضبط؟
+    solution: `[V2]
+شنو المشكلة مع Apple Watch؟
 [OPTIONS: 📞 ما يستقبل مكالمات على الساعة | 🔗 مشكلة إقران الساعة بالآيفون]
 
-→ 📞 ما يستقبل مكالمات:
-افتح BSS وتحقق من:
-[OPTIONS: ✅ Multi-SIM نشط | ❌ Multi-SIM مو نشط → أبلغ العميل يفعّله]
-• ✅ Multi-SIM نشط → تحقق من VoLTE
-[OPTIONS: ✅ VoLTE نشط | ❌ VoLTE مو نشط → أبلغ العميل يفعّله]
-• ✅ كلهم نشطين والمشكلة مستمرة → Raise TT فوراً
+[SECTION: ما يستقبل مكالمات على الساعة]
+تحقق من BSS:
+[OPTIONS: ✅ Multi-SIM نشط | ❌ Multi-SIM مو نشط]
+[SECTION: Multi-SIM مو نشط]
+أبلغ العميل يفعّل خدمة Multi-SIM أولاً
+[OPTIONS: ✅ فعّل ورجع | ❌ ما قدر → Raise TT]
+[END_SECTION]
+[SECTION: Multi-SIM نشط]
+تحقق VoLTE في BSS:
+[OPTIONS: ✅ VoLTE نشط | ❌ VoLTE مو نشط]
+[SECTION: VoLTE مو نشط]
+فعّل VoLTE — اطلب من العميل يجرب
+[OPTIONS: ✅ انحلت | ❌ ما انحلت → Raise TT]
+[END_SECTION]
+[SECTION: VoLTE نشط]
+كلا الخدمتين نشطتين والمشكلة مستمرة → Raise TT
+[OPTIONS: ✅ تم → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
 
-→ 🔗 مشكلة الإقران:
+[SECTION: مشكلة إقران الساعة بالآيفون]
 تأكد إن Bluetooth مفعّل على الآيفون والساعة قريبة
-اطلب من العميل رسالة الخطأ اللي تطلع
-[OPTIONS: ⚠️ Max profile limit reached → Raise TT | ⚠️ Something went wrong call 102 → Raise TT | ❓ خطأ ثاني → Raise TT]
-• جميع الأخطاء → Raise TT مع توثيق رسالة الخطأ
+اطلب من العميل رسالة الخطأ الظاهرة
+[OPTIONS: ⚠️ Max profile limit reached | ⚠️ Something went wrong call 102 | ❓ خطأ ثاني]
+[SECTION: Max profile limit reached]
+Raise TT فوراً
+[OPTIONS: ✅ تم → Raise TT]
+[END_SECTION]
+[SECTION: Something went wrong call 102]
+Raise TT فوراً
+[OPTIONS: ✅ تم → Raise TT]
+[END_SECTION]
+[SECTION: خطأ ثاني]
+وثّق رسالة الخطأ بالضبط → Raise TT
+[OPTIONS: ✅ تم → Raise TT]
+[END_SECTION]
+[END_SECTION]
 
 📋 اسم الطلب: stc services - Apple Watch
 متطلبات الطلب:
-• وصف المشكلة
-• نوع المشكلة (مكالمات أو إقران)
-• حالة Multi-SIM و VoLTE من BSS
+• وصف المشكلة (مكالمات أو إقران)
+• حالة Multi-SIM وVoLTE من BSS
 • رسالة الخطأ الظاهرة (إذا موجودة)
 • تأكيد خطوات التشخيص
 • رقم للتواصل`
@@ -2560,24 +3310,29 @@ STEP 2 — تحقق من حالة الباقة أو الإضافة في BSS:
     category: "Qitaf points",
     priority: "medium",
     definition: "Any issue with loyalty program Qitaf (Missing points - Redemptions - Registration)",
-    solution: `شنو المشكلة بنقاط Qitaf؟
+    solution: `[V2]
+شنو المشكلة بنقاط Qitaf؟
 [OPTIONS: ⭐ نقاط ناقصة | 🎁 مشكلة استبدال النقاط | 📝 مشكلة التسجيل في Qitaf]
 
-→ ⭐ نقاط ناقصة:
+[SECTION: نقاط ناقصة]
 اطلب من العميل تفاصيل المعاملة اللي توقع يكسب منها نقاط:
 • المبلغ
 • التاريخ
 • القناة المستخدمة (تطبيق، موقع، فرع)
+تأكد إن المعاملة مؤهلة لكسب نقاط Qitaf
 [OPTIONS: ✅ عندي التفاصيل → Raise TT]
+[END_SECTION]
 
-→ 🎁 مشكلة استبدال النقاط:
+[SECTION: مشكلة استبدال النقاط]
 اطلب رسالة الخطأ الظاهرة بالضبط
 سجّل المبلغ واللي يبي يستبدل بيه
 [OPTIONS: ✅ عندي التفاصيل → Raise TT]
+[END_SECTION]
 
-→ 📝 مشكلة التسجيل في Qitaf:
+[SECTION: مشكلة التسجيل في Qitaf]
 اطلب رسالة الخطأ الظاهرة بالضبط
 [OPTIONS: ✅ عندي التفاصيل → Raise TT]
+[END_SECTION]
 
 📋 اسم الطلب: stc services - Qitaf points
 متطلبات الطلب:
@@ -3390,7 +4145,8 @@ function selectDiagOption(btn, groupId, value, label) {
       kbFlowShowTT();
       return;
     }
-    kbFlowSelect(idx, lbl);
+    if (issueContext.kbFlow&&issueContext.kbFlow.v2) kbFlowV2Select(lbl);
+    else kbFlowSelect(idx, lbl);
     return;
   }
 
@@ -3420,11 +4176,18 @@ function selectDiagOption(btn, groupId, value, label) {
       } else {
         addBasicsErrMsg('ممكن الشريحة مو مطابقة للرقم:<br><br>1️⃣ اطلب من العميل يشوفلك الرقم التسلسلي المطبوع على الشريحة<br>2️⃣ تحقق من BSS — هل هذا الرقم مسجّل لرقم العميل أو رقم ثاني؟<br><br>✅ نفس الرقم → تابع مع Smart Care:<br>Quality Complaint Handling ← Network Registration ← Query<br><br>❌ رقم ثاني → الشريحة مسجّلة على رقم ثاني<br>أبلغ العميل إن الشريحة اللي عنده مو تبعه — يراجع الفرع لاستبدالها');
       }
+      var isBaityCtx2 = issueContext.subIssue && issueContext.subIssue.includes('Baity');
       setTimeout(function() {
-        addButtonGroup([
-          {icon:'✅', label:'✅ انحلت، نكمل', value:'basics fixed'},
-          {icon:'❌', label:'❌ ما انحلت → Raise TT', value:'basics smartcare tt'}
-        ], 'basics-sc-' + Date.now());
+        if (isBaityCtx2) {
+          addButtonGroup([
+            {icon:'✅', label:'✅ انحلت، نكمل', value:'basics fixed'}
+          ], 'basics-sc-' + Date.now());
+        } else {
+          addButtonGroup([
+            {icon:'✅', label:'✅ انحلت، نكمل', value:'basics fixed'},
+            {icon:'❌', label:'❌ ما انحلت → Raise TT', value:'basics smartcare tt'}
+          ], 'basics-sc-' + Date.now());
+        }
       }, 300);
       return;
     }
@@ -3569,6 +4332,7 @@ function selectDiagOption(btn, groupId, value, label) {
       // Skip values already handled in basics-err handler
       if (value === 'basics smartcare tt') { kbFlowShowTT(); return; }
       if (value === 'basics fixed') {
+        if (issueContext.kbFlow&&issueContext.kbFlow.v2) { kbFlowV2Advance(); return; }
         // Jump past the basics section before advancing (same logic as basics-err handler)
         if (issueContext.kbFlow) {
           var linesF2 = issueContext.kbFlow.lines;
@@ -3658,7 +4422,8 @@ function selectDiagOption(btn, groupId, value, label) {
   if (value === 'إي عندي شي ثاني') {
     issueContext = {};
     chatHistory = [];
-    sendMessageText('عندي سؤال ثاني');
+    var isL1N=(typeof previewMode!=='undefined'&&previewMode==='L1')||(currentUser&&(currentUser.role==='L1'||currentUser.role==='admin'));
+    if (isL1N) showSymptomPicker(); else addMsg('تفضل، شنو المشكلة الثانية؟','bot',null,'low',null);
     return;
   }
 
@@ -5140,6 +5905,117 @@ function stripForMatch(str) {
   return str.replace(/[\u{1F300}-\u{1FFFF}✅❌⚠️🔴📱🤖🍎📡🏠💬📞🌍📍🌐💸🚫⏰⏳⌛⌚⏱⏲→•:]/gu, '').replace(/\s+/g,' ').trim().toLowerCase();
 }
 
+
+// ══════════════════════════════════════════════════════
+// KB FLOW V2 ENGINE — Section-based isolated branches
+// ══════════════════════════════════════════════════════
+
+function v2FindSection(lines, fromPos, cleanOpt) {
+  var depth = 0;
+  for (var i = fromPos; i < lines.length; i++) {
+    var t = lines[i].trim();
+    if (t === '[END_SECTION]') {
+      if (depth === 0) return -1;
+      depth--;
+    } else if (t.match(/^\[SECTION:/)) {
+      if (depth === 0) {
+        var m = t.match(/^\[SECTION:\s*(.+)\]$/);
+        if (m) {
+          var sName = stripForMatch(m[1]);
+          // Strict matching
+          var useLen = Math.min(sName.length, cleanOpt.length);
+          var minLen = Math.min(useLen, 15);
+          // Exact prefix match (longer = more accurate)
+          var exactMatch = minLen >= 4 && sName.substring(0, minLen) === cleanOpt.substring(0, minLen) && (useLen <= 15 || sName === cleanOpt);
+          // Full match or one contains the other completely
+          var fullMatch = sName === cleanOpt;
+          // containsMatch: option contains section name (section is short label)
+          var containsMatch = sName.length <= 10 && sName.length >= 4 && cleanOpt.includes(sName) && cleanOpt.indexOf(sName) === 0;
+          // containsMatch2: section STARTS WITH option (not just contains it anywhere)
+          var containsMatch2 = cleanOpt.length <= 10 && cleanOpt.length >= 4 && sName.startsWith(cleanOpt);
+          if (fullMatch || (exactMatch && minLen >= useLen - 2) || containsMatch || containsMatch2) { return i; }
+        }
+        depth++;
+      } else { depth++; }
+    }
+  }
+  return -1;
+}
+
+function v2SkipSection(lines, fromPos) {
+  var depth = 1, pos = fromPos + 1;
+  while (pos < lines.length && depth > 0) {
+    var t = lines[pos].trim();
+    if (t === '[END_SECTION]') depth--;
+    else if (t.match(/^\[SECTION:/)) depth++;
+    pos++;
+  }
+  return pos;
+}
+
+function kbFlowV2Advance() {
+  var flow = issueContext.kbFlow;
+  if (!flow) return;
+  var lines = flow.lines, pos = flow.pos, msgLines = [], opts = null;
+  while (pos < lines.length) {
+    var line = lines[pos], t = line.trim();
+    if (t === '[END_SECTION]') { pos++; break; }
+    if (t.match(/^\[SECTION:/)) { pos = v2SkipSection(lines, pos); continue; }
+    var m = t.match(/^\[OPTIONS:\s*(.+)\]$/);
+    if (m) { opts = m[1].split('|').map(function(o){ return o.trim(); }); pos++; break; }
+    if (t === '[V2]') { pos++; continue; }
+    if (t) msgLines.push(line);
+    pos++;
+  }
+  flow.pos = pos;
+  var msgText = msgLines.filter(function(l){ return l.trim(); }).map(function(l){ return l.replace(/^STEP\s+\d+\s*[—\-–]\s*/i,''); }).join('\n').trim();
+  if (msgText) { addMsg(msgText,'bot',null,flow.priority||'medium',flow.category); savLog(msgText,flow.category,flow.priority||'medium',msgText); }
+  if (opts) {
+    var icons = ['1️⃣','2️⃣','3️⃣','4️⃣','5️⃣','6️⃣'];
+    var btns = opts.map(function(opt,i){ return {icon:icons[i]||(i+1)+'',label:opt,value:'kbf|'+i+'|'+opt}; });
+    setTimeout(function(){ addButtonGroup(btns,'kbf-'+Date.now()); },300);
+  } else if (pos >= lines.length && msgText && (msgText.includes('اسم الطلب')||msgText.includes('متطلبات الطلب'))) {
+    var agN = currentUser&&currentUser.name?currentUser.name.split(' ')[0]:'أخوي';
+    var cls = ['حياك الله '+agN+'، تامر على شي ثاني؟ 🌟','نورت '+agN+'، في شي ثاني أخدمك؟ 👋','أبشر '+agN+'، شي ثاني؟ ✅'];
+    var cl = cls[Math.floor(Math.random()*cls.length)];
+    setTimeout(function(){ addMsg('📞 بلّغ العميل إنه سيتم التواصل معه من فريق Resolutions بأقرب وقت ✅\n\n'+cl,'bot',null,'low',null); setTimeout(function(){ addButtonGroup([{icon:'1️⃣',label:'✅ إي، عندي شي ثاني',value:'إي عندي شي ثاني'},{icon:'2️⃣',label:'🏁 لا، يكفي — شكراً',value:'لا يكفي شكرا'}],'closing-'+Date.now()); },300); },600);
+  }
+}
+
+function kbFlowV2Select(optLabel) {
+  var flow = issueContext.kbFlow;
+  if (!flow) return false;
+  var cleanOpt = stripForMatch(optLabel);
+  if (optLabel.match(/Raise TT|اسم الطلب/i)) { kbFlowShowTT(); return true; }
+  if (optLabel.includes('في مشكلة بالأساسيات')) {
+    var isRoamV = issueContext.subIssue&&issueContext.subIssue.includes('Roaming');
+    var bOpts = isRoamV?[{icon:'1️⃣',label:'🔴 مشكلة BSS',value:'basics bss'}]:[{icon:'1️⃣',label:'🔴 مشكلة BSS',value:'basics bss'},{icon:'2️⃣',label:'🔴 Smart Care مو زين',value:'basics smartcare'},{icon:'3️⃣',label:'📡 في سايت داون',value:'basics sitedown'}];
+    var mV=document.getElementById('chatMessages'),dV=document.createElement('div');
+    dV.className='msg bot';dV.innerHTML='<div class="msg-avatar">🤖</div><div class="msg-bubble">وين المشكلة بالأساسيات؟</div>';
+    mV.appendChild(dV);mV.scrollTop=mV.scrollHeight;
+    setTimeout(function(){ addButtonGroup(bOpts,'basics-err-'+Date.now()); },300);
+    return true;
+  }
+  var successWords=['رجع النت','انحلت','تحسنت','ممتاز','فوق 100','فوق 3','السرعة زينة','زينة','وصل للشبكة','استقر','مقبول','فعّل الباقة','شغّلت','شغّل','تم الإلغاء','تم التغيير','تم وشبك','قبل العميل','مقتنع','الرصيد مطابق','تم، أبلغت','أبلغت العميل'];
+  var isSuccess=successWords.some(function(w){ return optLabel.includes(w); });
+  var sectionPos=v2FindSection(flow.lines,flow.pos,cleanOpt);
+  if (isSuccess&&sectionPos===-1) {
+    var agS=currentUser&&currentUser.name?currentUser.name.split(' ')[0]:'أخوي';
+    var clsS=['حياك الله '+agS+'، تامر على شي ثاني؟ 🌟','نورت '+agS+'، في شي ثاني أخدمك؟ 👋'];
+    addMsg('ممتاز! 🎉 المشكلة انحلت ✅\n\n'+clsS[Math.floor(Math.random()*clsS.length)],'bot',null,'low',null);
+    setTimeout(function(){ addButtonGroup([{icon:'1️⃣',label:'✅ إي، عندي شي ثاني',value:'إي عندي شي ثاني'},{icon:'2️⃣',label:'🏁 لا، يكفي — شكراً',value:'لا يكفي شكرا'}],'closing-'+Date.now()); },300);
+    return true;
+  }
+  if (sectionPos!==-1) { flow.pos=sectionPos+1; kbFlowV2Advance(); return true; }
+  kbFlowV2Advance();
+  return true;
+}
+
+function kbFlowAdvanceAuto() {
+  if (issueContext.kbFlow&&issueContext.kbFlow.v2) kbFlowV2Advance();
+  else kbFlowAdvance();
+}
+
 function kbFlowAdvance() {
   var flow = issueContext.kbFlow;
   if (!flow) return;
@@ -5339,8 +6215,9 @@ function triggerIssueWithContext() {
   if (!issueContext.kbFlow) {
     var kbEntryEarly = KB.find(function(k) { return k.category === issueContext.subIssue; });
     if (kbEntryEarly) {
-      var kbLines = kbEntryEarly.solution.split('\n');
-      issueContext.kbFlow = { lines: kbLines, pos: 0, category: kbEntryEarly.category, priority: kbEntryEarly.priority };
+      var kbLinesE = kbEntryEarly.solution.split('\n');
+      var isV2E = kbLinesE[0]&&kbLinesE[0].trim()==='[V2]';
+      issueContext.kbFlow = { lines: kbLinesE, pos: 0, category: kbEntryEarly.category, priority: kbEntryEarly.priority, v2: isV2E };
     }
   }
 
@@ -5353,7 +6230,7 @@ function triggerIssueWithContext() {
     isRoaming
   );
 
-  if (needsBasics && !issueContext.basicsShown) {
+  if (needsBasics && !issueContext.basicsShown && !(issueContext.kbFlow&&issueContext.kbFlow.v2)) {
     issueContext.basicsShown = true;
     var basicMsg = isRoaming
       ? (issueContext.subIssue === 'Roaming Techincal- Internet'
@@ -5394,8 +6271,10 @@ function triggerIssueWithContext() {
   // ── KB FLOW ENGINE: use for all other entries ──
   var kbEntry = KB.find(function(k) { return k.category === issueContext.subIssue; });
   if (kbEntry) {
-    issueContext.kbFlow = { lines: kbEntry.solution.split('\n'), pos: 0, category: kbEntry.category, priority: kbEntry.priority };
-    kbFlowAdvance();
+    var kbLines = kbEntry.solution.split('\n');
+    var isV2 = kbLines[0]&&kbLines[0].trim()==='[V2]';
+    issueContext.kbFlow = { lines: kbLines, pos: 0, category: kbEntry.category, priority: kbEntry.priority, v2: isV2 };
+    if (isV2) kbFlowV2Advance(); else kbFlowAdvance();
     return;
   }
 
