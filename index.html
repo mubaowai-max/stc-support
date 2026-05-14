@@ -1342,7 +1342,7 @@ STEP 1 — شنو نوع المشكلة؟
 🔵 Smart Care: الخط attached، Data Status نشط، وفي إشارة
 🔵 Site Down: ما في عطل في منطقة العميل
 
-[OPTIONS: ✅ كل شي زين، نكمل | ⚠️ في مشكلة بالأساسيات]
+[OPTIONS: ✅ تأكدنا، نكمل ✅ | ⚠️ في مشكلة بالأساسيات]
 
 → ⚠️ لو في مشكلة بالأساسيات:
 [OPTIONS: 🔴 مشكلة BSS | 🔴 Smart Care مو زين | 📡 في سايت داون]
@@ -1455,7 +1455,7 @@ STEP 7: إذا النتيجة فوق 25ms بعد كل الخطوات → Raise T
 🔵 Smart Care: الخط attached، Data Status نشط، وفي إشارة
 🔵 Site Down: ما في عطل في منطقة العميل
 
-[OPTIONS: ✅ كل شي زين، نكمل | ⚠️ في مشكلة بالأساسيات]
+[OPTIONS: ✅ تأكدنا، نكمل ✅ | ⚠️ في مشكلة بالأساسيات]
 
 STEP 2 — افتح Smart Care وشوف حالة الخط:
 [OPTIONS: ❌ ما في Attach ولا Data | ✅ في Attach وData بس ما في نت]
@@ -1496,7 +1496,7 @@ STEP 2 — افتح Smart Care وشوف حالة الخط:
     solution: `STEP 1 — ⚠️ الأساسيات أولاً (إلزامي):
 🔵 BSS: الخط نشط، الباقة نشطة، استخدام العميل ما خلص
 
-[OPTIONS: ✅ كل شي زين، نكمل | ⚠️ في مشكلة بالأساسيات]
+[OPTIONS: ✅ تأكدنا، نكمل ✅ | ⚠️ في مشكلة بالأساسيات]
 
 STEP 2 — شبكة الـ WiFi اللي واصل عليها العميل؟
 [OPTIONS: ✅ 5GHz | 📶 2.4GHz | 🤔 ما أعرف | 💡 طريقة التغيير عبر الـ Mesh]
@@ -1557,7 +1557,7 @@ STEP 3 — المشكلة على كل الـ Mesh nodes ولا جهاز معين
 🔵 Smart Care: الخط attached، Data Status نشط، وفي إشارة
 🔵 Site Down: ما في عطل في منطقة العميل
 
-[OPTIONS: ✅ كل شي زين، نكمل | ⚠️ في مشكلة بالأساسيات]
+[OPTIONS: ✅ تأكدنا، نكمل ✅ | ⚠️ في مشكلة بالأساسيات]
 
 شنو جهاز العميل؟
 [OPTIONS: 📱 جوال | 📡 راوتر MBB | 🏠 راوتر CPE/Indoor]
@@ -1629,7 +1629,7 @@ STEP A — كم جهاز شابك على الراوتر؟
 🔵 Smart Care: الخط attached، Data Status نشط، وفي إشارة
 🔵 Site Down: ما في عطل في منطقة العميل
 
-[OPTIONS: ✅ كل شي زين، نكمل | ⚠️ في مشكلة بالأساسيات]
+[OPTIONS: ✅ تأكدنا، نكمل ✅ | ⚠️ في مشكلة بالأساسيات]
 
 STEP 2 — نوع الراوتر:
 [OPTIONS: 📡 راوتر متنقل MBB | 🏠 راوتر ثابت CPE/Indoor]
@@ -1676,7 +1676,7 @@ STEP 5 — Speed Test على Ookla 📊
 🔵 Smart Care: الخط attached، Data Status نشط، وفي إشارة
 🔵 Site Down: ما في عطل في منطقة العميل
 
-[OPTIONS: ✅ كل شي زين، نكمل | ⚠️ في مشكلة بالأساسيات]
+[OPTIONS: ✅ تأكدنا، نكمل ✅ | ⚠️ في مشكلة بالأساسيات]
 
 شنو جهاز العميل؟
 [OPTIONS: 📱 جوال | 📡 راوتر MBB | 🏠 راوتر CPE/Indoor]
@@ -1776,7 +1776,7 @@ STEP B — كم جهاز شابك على الراوتر؟
 🔵 Smart Care: الخط attached، Data Status نشط، وفي إشارة
 🔵 Site Down: ما في عطل في منطقة العميل
 
-[OPTIONS: ✅ كل شي زين، نكمل | ⚠️ في مشكلة بالأساسيات]
+[OPTIONS: ✅ تأكدنا، نكمل ✅ | ⚠️ في مشكلة بالأساسيات]
 
 STEP 2 — نوع الراوتر:
 [OPTIONS: 📡 راوتر متنقل MBB | 🏠 راوتر ثابت 5G (CPE/Indoor)]
@@ -1840,7 +1840,7 @@ STEP 5 — Speed Test:
 🔵 Smart Care: CS Bar = NOBAR، الخط attached
 🔵 Site Down: ما في عطل في منطقة العميل
 
-[OPTIONS: ✅ كل شي زين، نكمل | ⚠️ في مشكلة بالأساسيات]
+[OPTIONS: ✅ تأكدنا، نكمل ✅ | ⚠️ في مشكلة بالأساسيات]
 
 → ⚠️ لو في مشكلة بالأساسيات:
 [OPTIONS: 🔴 مشكلة BSS | 🔴 CS Bar موجود | 📡 في سايت داون]
@@ -3272,10 +3272,23 @@ function selectDiagOption(btn, groupId, value, label) {
     }
 
     if (value === 'basics smartcare') {
-      addBasicsErrMsg('افتح Smart Care وتحقق من حالة الخط:<br><br>Quality Complaint Handling ← اختر <b>Network Registration</b> من Complaint Scene ← اضغط <b>Query</b><br><br>تحقق من:<br>• FUP Status<br>• CS Roam / LTE Roam (للرومينق)<br>• Roaming Package<br>• 5G: NSA/SA');
+      var isRoamingSC = issueContext.subIssue && issueContext.subIssue.includes('Roaming');
+      if (isRoamingSC) {
+        addBasicsErrMsg('افتح Smart Care وتحقق من حالة التجوال:<br><br>Quality Complaint Handling ← اختر <b>Network Registration</b> من Complaint Scene ← اضغط <b>Query</b><br><br>تحقق من:<br>• CS Roam = NOBAR<br>• Roaming Package = YES<br>• الخط attached على شبكة رومينق<br><br>💡 بحث يدوي للشبكة على جهاز العميل:<br><b>🍎 آيفون:</b> إعدادات ← Cellular ← Network Selection ← أطفي Automatic ← ابحث واختار الشبكة يدوياً<br><b>🤖 أندرويد:</b> إعدادات ← اتصالات ← شبكات الجوال ← مشغلو الشبكة ← ابحث واختار يدوياً');
+      } else {
+        addBasicsErrMsg('ممكن الشريحة مو مطابقة للرقم:<br><br>1️⃣ اطلب من العميل يشوفلك الرقم التسلسلي المطبوع على الشريحة<br>2️⃣ تحقق من BSS — هل هذا الرقم مسجّل لرقم العميل أو رقم ثاني؟<br><br>✅ نفس الرقم → تابع مع Smart Care:<br>Quality Complaint Handling ← Network Registration ← Query<br><br>❌ رقم ثاني → الشريحة مسجّلة على رقم ثاني<br>أبلغ العميل إن الشريحة اللي عنده مو تبعه — يراجع الفرع لاستبدالها');
+      }
       setTimeout(function() {
-        addButtonGroup([{icon:'✅', label:'✅ كل شي زين، نكمل', value:'basics fixed'}], 'basics-sc-' + Date.now());
+        addButtonGroup([
+          {icon:'✅', label:'✅ انحلت، نكمل', value:'basics fixed'},
+          {icon:'❌', label:'❌ ما انحلت → Raise TT', value:'basics smartcare tt'}
+        ], 'basics-sc-' + Date.now());
       }, 300);
+      return;
+    }
+
+    if (value === 'basics smartcare tt') {
+      kbFlowShowTT();
       return;
     }
 
@@ -3296,8 +3309,28 @@ function selectDiagOption(btn, groupId, value, label) {
     }
 
     if (value === 'basics fixed') {
-      // Continue KB flow from where we left off
+      // Continue KB flow from correct position (past basics section)
       if (issueContext.kbFlow) {
+        var linesF = issueContext.kbFlow.lines;
+        var newPosF = issueContext.kbFlow.pos;
+        // If still at beginning, jump past basics
+        if (newPosF === 0) {
+          for (var iF = 0; iF < linesF.length; iF++) {
+            if (linesF[iF].match(/\[OPTIONS:.*تأكدنا|في مشكلة بالأساسيات/)) {
+              newPosF = iF + 1;
+              // Find next success branch or real content
+              for (var jF = newPosF; jF < linesF.length; jF++) {
+                var lF = linesF[jF].trim();
+                if (lF.match(/^→\s*✅/) || (!lF.startsWith('→') && !lF.startsWith('•') && !lF.match(/^\[OPTIONS/) && lF.length > 5)) {
+                  newPosF = jF;
+                  break;
+                }
+              }
+              break;
+            }
+          }
+          issueContext.kbFlow.pos = newPosF;
+        }
         kbFlowAdvance();
       } else {
         sendMessageText('انحلت مشكلة الأساسيات، نكمل التشخيص', label);
@@ -3364,23 +3397,60 @@ function selectDiagOption(btn, groupId, value, label) {
       issueContext.basicsShown = true;
       // After basics confirmed → start KB flow engine (no AI)
       if (issueContext.kbFlow) {
-        // Skip first [OPTIONS] ONLY if it contains 'كل شي زين' (basics confirmation)
-        if (issueContext.kbFlow.pos === 0) {
-          var lines0 = issueContext.kbFlow.lines;
-          for (var i0 = 0; i0 < lines0.length; i0++) {
-            if (lines0[i0].match(/\[OPTIONS:/)) {
-              if (lines0[i0].includes('كل شي زين')) {
-                issueContext.kbFlow.pos = i0 + 1; // skip basics OPTIONS
+        var lines0 = issueContext.kbFlow.lines;
+        // Find the "كل شي زين" success branch or skip past basics section
+        var newPos = 0;
+        for (var i0 = 0; i0 < lines0.length; i0++) {
+          // Skip the basics OPTIONS line
+          if (lines0[i0].match(/\[OPTIONS:.*تأكدنا|في مشكلة بالأساسيات/)) {
+            newPos = i0 + 1;
+            // Now skip the "في مشكلة" branch and find success branch or next content
+            for (var j0 = newPos; j0 < lines0.length; j0++) {
+              var l0 = lines0[j0].trim();
+              // Look for → ✅ (success branch) or next STEP or شنو
+              if (l0.match(/^→\s*✅/) || l0.match(/^شنو\s/) || l0.match(/^اطلب/) || l0.match(/^تأكد/) || l0.match(/^افتح/)) {
+                newPos = j0;
+                // If it's a → ✅ branch header, skip past it to the content
+                if (l0.match(/^→\s*✅.*→\s*\S/)) newPos = j0 + 1;
+                break;
               }
-              break;
             }
+            break;
           }
         }
+        issueContext.kbFlow.pos = newPos || issueContext.kbFlow.pos;
         kbFlowAdvance();
       } else {
         sendMessageText(label);
       }
     } else {
+      // Skip values already handled in basics-err handler
+      if (value === 'basics smartcare tt') { kbFlowShowTT(); return; }
+      if (value === 'basics fixed') {
+        // Jump past the basics section before advancing (same logic as basics-err handler)
+        if (issueContext.kbFlow) {
+          var linesF2 = issueContext.kbFlow.lines;
+          var newPosF2 = issueContext.kbFlow.pos;
+          if (newPosF2 === 0) {
+            for (var iF2 = 0; iF2 < linesF2.length; iF2++) {
+              if (linesF2[iF2].match(/\[OPTIONS:.*تأكدنا|في مشكلة بالأساسيات/)) {
+                newPosF2 = iF2 + 1;
+                for (var jF2 = newPosF2; jF2 < linesF2.length; jF2++) {
+                  var lF2 = linesF2[jF2].trim();
+                  if (lF2.match(/^→\s*✅/) || (!lF2.startsWith('→') && !lF2.startsWith('•') && !lF2.match(/^\[OPTIONS/) && lF2.length > 5)) {
+                    newPosF2 = jF2;
+                    break;
+                  }
+                }
+                break;
+              }
+            }
+            issueContext.kbFlow.pos = newPosF2;
+          }
+          kbFlowAdvance();
+        }
+        return;
+      }
       // في مشكلة بالأساسيات - hardcoded handling for all issues
       var msgs4 = document.getElementById('chatMessages');
       function addBasicsMsg(text) {
@@ -3859,7 +3929,7 @@ async function sendMessage() {
       addMsg(basicLines, 'bot', null, kbResult.priority, kbResult.category);
       setTimeout(() => {
         addButtonGroup([
-          {icon:'1️⃣', label:'✅ كل شي زين، نكمل', value:'كل شي زين'},
+          {icon:'1️⃣', label:'✅ تأكدنا، نكمل ✅', value:'كل شي زين'},
           {icon:'2️⃣', label:'⚠️ في مشكلة بالأساسيات', value:'في مشكلة'}
         ], 'basics-' + Date.now());
       }, 300);
@@ -5067,7 +5137,7 @@ function triggerIssueWithContext() {
     addMsg(basicMsg, 'bot', null, 'medium', kbCat);
     setTimeout(function() {
       addButtonGroup([
-        {icon:'1️⃣', label:'✅ كل شي زين، نكمل', value:'كل شي زين'},
+        {icon:'1️⃣', label:'✅ تأكدنا، نكمل ✅', value:'كل شي زين'},
         {icon:'2️⃣', label:'⚠️ في مشكلة بالأساسيات', value:'في مشكلة'}
       ], 'basics-' + Date.now());
     }, 300);
