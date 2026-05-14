@@ -4925,8 +4925,8 @@ function switchPreview(mode) {
   // Update chat header based on mode (using translations)
   const _t = (typeof I18N !== 'undefined' && typeof currentLang !== 'undefined') ? I18N[currentLang] : null;
   if (mode === 'L1') {
-    document.querySelector('.chat-header h3').textContent = _t ? _t.chatTitleL1 : 'مساعد Call Center (L1)';
-    document.querySelector('.chat-header p').textContent  = _t ? _t.chatSubL1   : 'اكتب مشكلة العميل وسأساعدك في التصعيد';
+    document.querySelector('.chat-header h3').textContent = _t ? _t.chatTitleL1 : '🤖 مساعد stc الذكي';
+    document.querySelector('.chat-header p').textContent  = _t ? _t.chatSubL1   : 'اكتب المشكلة أو اختار من القائمة 👇';
   } else {
     document.querySelector('.chat-header h3').textContent = _t ? _t.chatTitleL2 : 'مساعد Resolutions';
     document.querySelector('.chat-header p').textContent  = _t ? _t.chatSubL2   : 'مساعد موظفي الدعم الفني — اكتب مشكلة العميل وسأساعدك';
@@ -5766,8 +5766,8 @@ const I18N = {
     secLogs: 'سجل الأسئلة',
     secAudit: '🔐 سجل تعديلات الأدمن',
     // Chat header
-    chatTitleL1: 'مساعد Call Center (L1)',
-    chatSubL1: 'اكتب مشكلة العميل وسأساعدك في التصعيد',
+    chatTitleL1: '🤖 مساعد stc الذكي',
+    chatSubL1: 'اكتب المشكلة أو اختار من القائمة 👇',
     chatTitleL2: 'مساعد Resolutions',
     chatSubL2: 'مساعد موظفي الدعم الفني — اكتب مشكلة العميل وسأساعدك',
     // Welcome
