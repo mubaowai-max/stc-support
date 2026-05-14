@@ -1438,7 +1438,7 @@ STEP 7: إذا النتيجة فوق 25ms بعد كل الخطوات → Raise T
     category: "Internet- Site Down",
     priority: "medium",
     definition: "Site down issue",
-    solution: `We Raise TT with tower number and area name
+    solution: `ارفع الطلب على رقم العميل ✅
 
 📋 اسم الطلب: Internet issue - Internet- Site Down
 متطلبات الطلب::
@@ -1499,7 +1499,7 @@ STEP 2 — افتح Smart Care وشوف حالة الخط:
 [OPTIONS: ✅ تأكدنا، نكمل ✅ | ⚠️ في مشكلة بالأساسيات]
 
 STEP 2 — شبكة الـ WiFi اللي واصل عليها العميل؟
-[OPTIONS: ✅ 5GHz | 📶 2.4GHz | 🤔 ما أعرف | 💡 طريقة التغيير عبر الـ Mesh]
+[OPTIONS: ✅ 5GHz | 📶 2.4GHz | 🤔 ما أعرف | 🔧 تغيير الـ 5GHz/2.4GHz عبر Mesh]
 • لو 2.4GHz أو ما يعرف → وجّهه يشبك على الـ 5GHz
 
 → 💡 طريقة تغيير التردد عبر الـ Mesh:
@@ -2086,14 +2086,17 @@ STEP 4 — في رسالة خطأ تطلع؟
 
 • ✅ Fulfillment Successful → انحلت ✅ — أبلغ العميل إن المعاملة ناجحة
 
-• ❌ Fulfillment Rejected → كم مضى؟
-[OPTIONS: ⏰ أقل من 24 ساعة | ⌛ أكثر من 24 ساعة → Raise TT]
-• أقل من 24 ساعة → تنحل تلقائياً — أبلغ العميل ينتظر
+• ❌ Fulfillment Rejected → كم وقت مضى على عملية السداد؟
+[OPTIONS: ⏰ أقل من 24 ساعة | ⏳ بين 24-48 ساعة | ⌛ أكثر من 48 ساعة]
+• أقل من 24 ساعة → تنحل تلقائياً — أبلغ العميل ينتظر ولا يعيد المحاولة
+• بين 24-48 ساعة → Raise TT — الطلب تجاوز الوقت المعتاد
+• أكثر من 48 ساعة → Raise TT عاجل — الطلب متأخر بشكل غير طبيعي
 
-• ⏳ Pending → كم مضى؟
-[OPTIONS: ⏰ أقل من 24 ساعة | ⌛ أكثر من 24 ساعة → Raise TT]
-• أقل من 24 ساعة → انتظر — الدفعة قيد المعالجة
-• أكثر من 24 ساعة → تم استرجاع المبلغ للحساب البنكي — Raise TT
+• ⏳ Pending → كم وقت مضى على عملية السداد؟
+[OPTIONS: ⏰ أقل من 24 ساعة | ⏳ بين 24-48 ساعة | ⌛ أكثر من 48 ساعة]
+• أقل من 24 ساعة → الدفعة قيد المعالجة — أبلغ العميل ينتظر
+• بين 24-48 ساعة → تحقق من ePayment وارفع TT إذا ما تحرك الطلب
+• أكثر من 48 ساعة → تم استرجاع المبلغ للحساب البنكي — Raise TT
 
 • 👤 العميل غير موجود → Raise TT
 
@@ -2320,168 +2323,190 @@ STEP 3 — إذا ما في معاملة، تحقق هل تم خصم المبل�
     category: "Prepaid – Balance & validity",
     priority: "medium",
     definition: "Any issue with prepaid lines balance or validity",
-    solution: `1. Check BSS — confirm line cycle status is active and not expired or suspended.
-2. Ask customer whether the issue is with validity or balance:
+    solution: `STEP 1 — تحقق من BSS:
+تأكد إن الخط نشط وما هو موقوف أو منتهي الصلاحية
 
-   If validity issue:
-   a. Review customer's recharge transactions in BSS — confirm when last recharge was made and what validity was applied.
-   b. Check BSS — verify whether customer performed a balance transfer recently. Balance transfer also carries validity — this may explain a validity change the customer did not expect.
-   c. Check E-payment — verify whether customer completed a validity service purchase transaction successfully.
-   d. Match the current validity expiry date in BSS against the recharge history, balance transfer history and any validity service purchases.
-      - If validity does not match expected extension after confirmed recharge → Raise TT to Resolution team.
-      - If no recharge transaction found but customer insists they recharged → ask customer to provide recharge receipt or reference and check E-payment using Order Sequence.
+STEP 2 — شنو المشكلة بالضبط؟
+[OPTIONS: 📅 مشكلة بالصلاحية | 💰 مشكلة بالرصيد]
 
-   If balance issue:
-   a. Check balance history in BSS Usage tab — review recent balance movements.
-   b. Identify whether the missing or incorrect balance is from normal credit or bonus credit — both are tracked separately in BSS.
-      - Normal credit: main rechargeable balance.
-      - Bonus credit: promotional balance with specific usage conditions.
-   c. If balance was not added after confirmed recharge, or was deducted without matching usage → Raise TT to Resolution team.
+→ 📅 مشكلة بالصلاحية:
+افتح BSS وتحقق من:
+أ. سجل الشحنات — متى آخر شحنة وشنو الصلاحية اللي اتطبقت
+ب. تحويل الرصيد — تحويل الرصيد يشمل صلاحية، ممكن يكون سبب التغيير
+ج. E-payment — تحقق إذا العميل اشترى باقة صلاحية بنجاح
+د. طابق تاريخ انتهاء الصلاحية الحالي مع سجل الشحنات والتحويلات
+[OPTIONS: ✅ الصلاحية مطابقة | ❌ الصلاحية مو مطابقة → Raise TT | 🔍 ما في شحنة → اطلب إيصال]
+• ✅ الصلاحية مطابقة → أبلغ العميل بالتفاصيل
+• ❌ الصلاحية مو مطابقة → Raise TT فوراً
+• 🔍 ما في شحنة → اطلب من العميل يجيب الإيصال أو رقم المرجع وتحقق من E-payment
+
+→ 💰 مشكلة بالرصيد:
+افتح BSS — تبويب Usage وراجع حركات الرصيد الأخيرة
+تحقق من نوع الرصيد:
+• الرصيد العادي: الرصيد الأساسي القابل للشحن
+• الرصيد الإضافي (Bonus): رصيد ترويجي بشروط استخدام خاصة
+[OPTIONS: ✅ الرصيد مطابق | ❌ رصيد ما اتحط بعد شحنة مؤكدة → Raise TT | ❌ رصيد اختصم بدون استخدام → Raise TT]
+• ✅ الرصيد مطابق → وضّح للعميل الفرق بين الرصيد العادي والإضافي
+• ❌ رصيد ما اتحط أو اختصم بشكل غير طبيعي → Raise TT فوراً
 
 📋 اسم الطلب: stc services - Prepaid – Balance & validity
-متطلبات الطلب::
-• Issue description  
-• Whether issue is with validity or balance  
-• Troubleshooting confirmation  
-• Recharge or transaction details (if available)  
-• Callback`
+متطلبات الطلب:
+• وصف المشكلة
+• نوع المشكلة (صلاحية أو رصيد)
+• تأكيد خطوات التشخيص
+• تفاصيل الشحنة أو المعاملة (إذا موجودة)
+• رقم للتواصل`
   },
   {
     keywords: ["add-on charge", "booster charge", "رسوم إضافة", "booster"],
     category: "Plan/Add on services- Charge issues",
     priority: "medium",
     definition: "Any issue with services activated extra over the main plan or bundle (Boosters)",
-    solution: `1. Check BSS — confirm line is active and not suspended or disconnected.
-2. Check BSS — verify the source of activation for the disputed booster or add-on service:
+    solution: `STEP 1 — تحقق من BSS:
+تأكد إن الخط نشط وما هو موقوف أو مقطوع
 
-   If customer self-activated (via app, USSD, SMS or web):
-   → Inform customer the service was activated by them. Charge is valid.
-   → If customer insists they did not activate → Raise TT to Resolution team.
+STEP 2 — تحقق من مصدر تفعيل الخدمة المتنازع عليها:
+افتح BSS وشوف كيف اتفعّلت الباقة أو الإضافة
+[OPTIONS: 📱 العميل فعّلها بنفسه | 🔄 اتفعّلت تلقائياً من النظام | ❓ مصدر التفعيل مجهول → Raise TT]
 
-   If activated by system automatically:
-   → This may be an auto-renewal or a triggered booster. Explain to customer.
-   → If customer disputes the auto-activation → Raise TT to Resolution team.
+→ 📱 العميل فعّلها بنفسه (عبر تطبيق أو USSD أو SMS أو موقع):
+أبلغ العميل إن الخدمة فُعّلت منه والرسوم صحيحة
+[OPTIONS: ✅ قبل العميل التوضيح | ❌ العميل مصر ما فعّلها → Raise TT]
+• ✅ قبل العميل → أغلق الطلب
+• ❌ العميل مصر → Raise TT فوراً
 
-   If source of activation is unknown or cannot be identified:
-   → Raise TT to Resolution team.
+→ 🔄 اتفعّلت تلقائياً من النظام:
+وضّح للعميل إنها تجديد تلقائي أو Booster منبثق
+[OPTIONS: ✅ قبل العميل التوضيح | ❌ العميل يعترض على التفعيل التلقائي → Raise TT]
+• ✅ قبل العميل → أغلق الطلب
+• ❌ العميل يعترض → Raise TT فوراً
 
 📋 اسم الطلب: stc services - Plan/Add on services- Charge issues
-متطلبات الطلب::
-• Issue description  
-• Disputed service or booster name  
-• Source of activation (if identified)  
-• Troubleshooting confirmation  
-• Callback`
+متطلبات الطلب:
+• وصف المشكلة
+• اسم الخدمة أو الإضافة المتنازع عليها
+• مصدر التفعيل (إذا تأكد)
+• تأكيد خطوات التشخيص
+• رقم للتواصل`
   },
   {
     keywords: ["plan issue", "add-on issue", "مشكلة خطة", "خطة ما تشتغل"],
     category: "Plan/Add on services- Technical issues",
     priority: "medium",
     definition: "Any issue with line main plan ( Go/Allo/international/Extreme)",
-    solution: `1. Check BSS — confirm line is active and not suspended or disconnected.
-2. Check BSS — verify the status of the main plan or add-on service:
-   - Confirm whether the plan or add-on is showing as active or inactive.
-   - If prepaid → check if sufficient balance is available for activation or renewal. If balance insufficient: inform customer and advise recharge.
-   - If postpaid → check if credit limit has been reached. If limit reached: inform customer and advise settlement or limit increase request.
-3. Check BSS for any error on the line or plan — document the error code or description shown.
-   If no error visible in BSS → ask customer to provide the exact error message shown on their device or app.
-4. If plan or add-on is active in BSS but service is not functioning → Raise TT to Resolution team with error details.
-5. If issue cannot be identified or resolved from BSS → Raise TT to Resolution team.
+    solution: `STEP 1 — تحقق من BSS:
+تأكد إن الخط نشط وما هو موقوف أو مقطوع
+
+STEP 2 — تحقق من حالة الباقة أو الإضافة في BSS:
+[OPTIONS: ✅ الباقة نشطة في BSS | ❌ الباقة مو نشطة في BSS]
+
+→ ❌ الباقة مو نشطة:
+[OPTIONS: 💳 خط مسبق (Prepaid) | 💼 خط آجل (Postpaid)]
+• 💳 مسبق → تحقق من الرصيد — هل كافي للتجديد أو التفعيل؟ إذا لا → أبلغ العميل يشحن
+• 💼 آجل → تحقق من الحد الائتماني — هل اكتمل؟ إذا نعم → أبلغ العميل يسدد أو يطلب رفع الحد
+
+→ ✅ الباقة نشطة في BSS بس الخدمة مو شغّالة:
+اطلب من العميل رسالة الخطأ اللي تطلع عليه بالضبط
+[OPTIONS: ✅ فيه رسالة خطأ → Raise TT | ❌ ما في رسالة → Raise TT]
+• في كلتا الحالتين → Raise TT مع تفاصيل الخطأ
 
 📋 اسم الطلب: stc services - Plan/Add on services- Technical issues
-متطلبات الطلب::
-• Issue description  
-• Plan or add-on service name  
-• Error code or message (if available)  
-• Troubleshooting confirmation  
-• Callback`
+متطلبات الطلب:
+• وصف المشكلة
+• اسم الباقة أو الإضافة
+• رسالة الخطأ أو الكود (إذا موجود)
+• تأكيد خطوات التشخيص
+• رقم للتواصل`
   },
   {
     keywords: ["3rd party", "third party", "طرف ثالث"],
     category: "3rd party- charge issues",
     priority: "medium",
     definition: "Any issue with 3rd party services charges",
-    solution: `1. Check BSS — identify the 3rd party service that generated the charge. Note the service name, charge amount and date.
-2. Check BSS — verify the activation method for the service:
-   - Confirm whether customer subscribed via SMS keyword or OTP confirmation.
-   - This shows the customer actively responded to an activation request.
+    solution: `STEP 1 — افتح BSS وتعرّف على الخدمة:
+حدد اسم خدمة الطرف الثالث، مبلغ الرسوم، والتاريخ
+[OPTIONS: ✅ الخدمة موجودة في BSS | ❌ الخدمة مو موجودة في BSS → Raise TT]
 
-   If service is identified and activation is confirmed via SMS or OTP:
-   → Explain to customer how the service was activated and that their response to the SMS or OTP constituted a subscription confirmation.
-   → If customer accepts explanation → advise on how to unsubscribe if they no longer want the service.
-   → If customer remains unconvinced and insists on filing a complaint → Raise TT to Resolution team.
+→ ✅ الخدمة موجودة — تحقق من طريقة التفعيل:
+هل العميل اشترك عبر SMS keyword أو OTP؟
+[OPTIONS: ✅ التفعيل مؤكد عبر SMS أو OTP | ❓ طريقة التفعيل مجهولة → Raise TT]
 
-   If service cannot be identified in BSS:
-   → Raise TT to Resolution team.
+→ ✅ التفعيل مؤكد:
+وضّح للعميل إن رده على الـ SMS أو OTP يُعدّ موافقة على الاشتراك
+[OPTIONS: ✅ قبل العميل وأبي إلغاء الاشتراك | ❌ العميل مو مقتنع → Raise TT]
+• ✅ قبل → أرشده لطريقة إلغاء الاشتراك
+• ❌ مو مقتنع → Raise TT فوراً
 
 📋 اسم الطلب: stc services - 3rd party- charge issues
-متطلبات الطلب::
-• Issue description  
-• 3rd party service name (if identified)  
-• Activation method confirmed in BSS  
-• Troubleshooting confirmation  
-• Callback`
+متطلبات الطلب:
+• وصف المشكلة
+• اسم خدمة الطرف الثالث (إذا تحددت)
+• طريقة التفعيل المؤكدة في BSS
+• تأكيد خطوات التشخيص
+• رقم للتواصل`
   },
   {
     keywords: ["apple watch", "ساعة", "watch"],
     category: "Apple Watch",
     priority: "medium",
     definition: "Any issue related to Apple watch (New watch Registartion or incoming calls in the watch)",
-    solution: `1. Ask customer whether the issue is with receiving calls on the watch or pairing the watch.
+    solution: `شنو المشكلة بالضبط؟
+[OPTIONS: 📞 ما يستقبل مكالمات على الساعة | 🔗 مشكلة إقران الساعة بالآيفون]
 
-   If issue is receiving calls on Apple Watch:
-   a. Check BSS — confirm line is active and not suspended.
-   b. Check BSS — verify Multi-SIM service status on the line.
-      - If not active → inform customer and advise activation before proceeding.
-   c. Check BSS — verify VoLTE service status on the line.
-      - If not active → inform customer and advise activation before proceeding.
-   d. If both services are active and issue persists → Raise TT to Resolution team.
+→ 📞 ما يستقبل مكالمات:
+افتح BSS وتحقق من:
+[OPTIONS: ✅ Multi-SIM نشط | ❌ Multi-SIM مو نشط → أبلغ العميل يفعّله]
+• ✅ Multi-SIM نشط → تحقق من VoLTE
+[OPTIONS: ✅ VoLTE نشط | ❌ VoLTE مو نشط → أبلغ العميل يفعّله]
+• ✅ كلهم نشطين والمشكلة مستمرة → Raise TT فوراً
 
-   If issue is Apple Watch pairing:
-   a. Ask customer to confirm Bluetooth is enabled on their iPhone and the watch is nearby.
-   b. Ask customer for the exact error message shown during pairing attempt.
-      - "Max profile limit reached" → Raise TT to Resolution team.
-      - "Something went wrong, call 102" → Raise TT to Resolution team.
-      - Any other error → document it and Raise TT to Resolution team.
+→ 🔗 مشكلة الإقران:
+تأكد إن Bluetooth مفعّل على الآيفون والساعة قريبة
+اطلب من العميل رسالة الخطأ اللي تطلع
+[OPTIONS: ⚠️ Max profile limit reached → Raise TT | ⚠️ Something went wrong call 102 → Raise TT | ❓ خطأ ثاني → Raise TT]
+• جميع الأخطاء → Raise TT مع توثيق رسالة الخطأ
 
 📋 اسم الطلب: stc services - Apple Watch
-متطلبات الطلب::
-• Issue description  
-• Whether issue is receiving calls or pairing  
-• Multi-SIM and VoLTE status from BSS  
-• Exact error message shown during pairing (if applicable)  
-• Troubleshooting confirmation  
-• Callback`
+متطلبات الطلب:
+• وصف المشكلة
+• نوع المشكلة (مكالمات أو إقران)
+• حالة Multi-SIM و VoLTE من BSS
+• رسالة الخطأ الظاهرة (إذا موجودة)
+• تأكيد خطوات التشخيص
+• رقم للتواصل`
   },
   {
     keywords: ["qitaf", "نقاط", "قطاف", "loyalty"],
     category: "Qitaf points",
     priority: "medium",
     definition: "Any issue with loyalty program Qitaf (Missing points - Redemptions - Registration)",
-    solution: `1. Ask customer to specify their issue:
+    solution: `شنو المشكلة بنقاط Qitaf؟
+[OPTIONS: ⭐ نقاط ناقصة | 🎁 مشكلة استبدال النقاط | 📝 مشكلة التسجيل في Qitaf]
 
-   If missing points:
-   a. Ask customer to provide details of the transaction or payment they expected points from — amount, date and channel used.
-   b. Confirm the transaction was eligible for Qitaf points accumulation.
-   c. Raise TT to Resolution team with full transaction details.
+→ ⭐ نقاط ناقصة:
+اطلب من العميل تفاصيل المعاملة اللي توقع يكسب منها نقاط:
+• المبلغ
+• التاريخ
+• القناة المستخدمة (تطبيق، موقع، فرع)
+[OPTIONS: ✅ عندي التفاصيل → Raise TT]
 
-   If redemption issue:
-   a. Ask customer for the exact error message shown during redemption attempt.
-   b. Note the redemption amount and what the customer was trying to redeem for.
-   c. Raise TT to Resolution team with full details.
+→ 🎁 مشكلة استبدال النقاط:
+اطلب رسالة الخطأ الظاهرة بالضبط
+سجّل المبلغ واللي يبي يستبدل بيه
+[OPTIONS: ✅ عندي التفاصيل → Raise TT]
 
-   If registration issue:
-   a. Ask customer for the exact error message shown during registration attempt.
-   b. Raise TT to Resolution team with full details.
+→ 📝 مشكلة التسجيل في Qitaf:
+اطلب رسالة الخطأ الظاهرة بالضبط
+[OPTIONS: ✅ عندي التفاصيل → Raise TT]
 
 📋 اسم الطلب: stc services - Qitaf points
-متطلبات الطلب::
-• Issue description  
-• Whether issue is missing points, redemption or registration  
-• Transaction details (if missing points), amount, date and channel  
-• Exact error message (if redemption or registration issue)  
-• Troubleshooting confirmation  
-• Callback`
+متطلبات الطلب:
+• وصف المشكلة
+• نوع المشكلة (نقاط ناقصة / استبدال / تسجيل)
+• تفاصيل المعاملة — المبلغ والتاريخ والقناة (للنقاط الناقصة)
+• رسالة الخطأ (للاستبدال أو التسجيل)
+• تأكيد خطوات التشخيص
+• رقم للتواصل`
   },
   {
     keywords: ["outage", "global outage", "app down", "عطل عام"],
@@ -2750,6 +2775,31 @@ async function login() {
           });
         } catch(e) {}
         window._sessionStart = Date.now();
+        window._lastSavedMins = currentUser.total_minutes || 0;
+        // Periodic save every 5 minutes
+        window._sessionSaveInterval = setInterval(async function() {
+          if (!currentUser || !window._sessionStart) return;
+          const mins = Math.round((Date.now() - window._sessionStart) / 60000);
+          if (mins > 0) {
+            try {
+              await fetch(SUPABASE_URL + '/rest/v1/employees?email=eq.' + encodeURIComponent(currentUser.email), {
+                method: 'PATCH',
+                headers: { 'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY },
+                body: JSON.stringify({ total_minutes: (window._lastSavedMins) + mins })
+              });
+            } catch(e) {}
+          }
+        }, 5 * 60 * 1000);
+        // Save on tab close
+        window._beforeUnloadHandler = function() {
+          if (!currentUser || !window._sessionStart) return;
+          const mins = Math.round((Date.now() - window._sessionStart) / 60000);
+          if (mins > 0) {
+            navigator.sendBeacon(SUPABASE_URL + '/rest/v1/employees?email=eq.' + encodeURIComponent(currentUser.email),
+              new Blob([JSON.stringify({ total_minutes: (window._lastSavedMins) + mins })], {type:'application/json'}));
+          }
+        };
+        window.addEventListener('beforeunload', window._beforeUnloadHandler);
         startIdleTimer();
       } else if (data.length > 0 && data[0].disabled) {
         errEl.textContent = 'حسابك موقوف. تواصل مع المدير.';
@@ -2775,16 +2825,19 @@ function logout() {
     updateEmployeeStatus(currentUser.email, 'idle');
     saveAuditLog('logout', currentUser.email, 'User logged out');
     // Save session duration
+    if (window._sessionSaveInterval) { clearInterval(window._sessionSaveInterval); window._sessionSaveInterval = null; }
+    if (window._beforeUnloadHandler) { window.removeEventListener('beforeunload', window._beforeUnloadHandler); window._beforeUnloadHandler = null; }
     if (window._sessionStart) {
       const mins = Math.round((Date.now() - window._sessionStart) / 60000);
       if (mins > 0) {
         fetch(SUPABASE_URL + '/rest/v1/employees?email=eq.' + encodeURIComponent(currentUser.email), {
           method: 'PATCH',
           headers: { 'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY },
-          body: JSON.stringify({ total_minutes: (currentUser.total_minutes||0) + mins })
+          body: JSON.stringify({ total_minutes: (window._lastSavedMins||0) + mins })
         }).catch(()=>{});
       }
       window._sessionStart = null;
+      window._lastSavedMins = null;
     }
   }
   currentUser = null;
@@ -3297,7 +3350,7 @@ function selectDiagOption(btn, groupId, value, label) {
       var agentName2 = currentUser && currentUser.name ? currentUser.name.split(' ')[0] : 'أخوي';
       var closings2 = ['حياك الله ' + agentName2 + '، تامر على شي ثاني؟ 🌟','نورت ' + agentName2 + '، في شي ثاني أخدمك؟ 👋'];
       setTimeout(function() {
-        addMsg('📞 بلّغ العميل إنه سيتم التواصل معه من فريق Resolutions بأقرب وقت ✅\n\n' + closings2[Math.floor(Math.random()*closings2.length)], 'bot', null, 'low', null);
+        addMsg('📞 بلّغ العميل إن المشكلة تم رصدها وجاري العمل على حلها بأقرب وقت ✅\n\n' + closings2[Math.floor(Math.random()*closings2.length)], 'bot', null, 'low', null);
         setTimeout(function() {
           addButtonGroup([
             {icon:'1️⃣', label:'✅ إي، عندي شي ثاني', value:'إي عندي شي ثاني'},
@@ -3493,6 +3546,30 @@ function selectDiagOption(btn, groupId, value, label) {
         {icon:'2️⃣', label:'💸 يعترض على رسوم غير متوقعة', value:'يعترض على رسوم غير متوقعة'}
       ], 'apple-step1-' + Date.now());
     }, 300);
+    return;
+  }
+
+  // Handle closing buttons directly
+  if (value === 'لا يكفي شكرا') {
+    var agentN = currentUser && currentUser.name ? currentUser.name.trim().split(' ')[0] : 'أخوي';
+    var farewells = ['حياك الله ' + agentN + '! 👋 إذا احتجت أنا هنا','نورت ' + agentN + '! ✅ في أي وقت أنا هنا','أبشر ' + agentN + ' 🌟 متى احتجت'];
+    var fw = farewells[Math.floor(Math.random()*farewells.length)];
+    addMsg(fw, 'bot', null, 'low', null);
+    setTimeout(function() {
+      var msgs = document.getElementById('chatMessages');
+      var d = document.createElement('div');
+      d.style.cssText = 'text-align:center;padding:16px 0';
+      d.innerHTML = '<button onclick="resetDiagnostic()" style="background:var(--primary);color:white;border:none;border-radius:10px;padding:10px 24px;font-size:14px;font-family:inherit;cursor:pointer;font-weight:600">👤 عميل جديد</button>';
+      msgs.appendChild(d);
+      msgs.scrollTop = msgs.scrollHeight;
+    }, 400);
+    return;
+  }
+
+  if (value === 'إي عندي شي ثاني') {
+    issueContext = {};
+    chatHistory = [];
+    sendMessageText('عندي سؤال ثاني');
     return;
   }
 
@@ -4918,7 +4995,7 @@ function showBillingPicker() {
 // KB FLOW ENGINE — converts KB solution text to hardcoded buttons
 // ══════════════════════════════════════════════════════════════
 function stripForMatch(str) {
-  return str.replace(/[\u{1F300}-\u{1FFFF}✅❌⚠️🔴📱🤖🍎📡🏠💬📞🌍📍🌐💸🚫→•:]/gu, '').replace(/\s+/g,' ').trim().toLowerCase();
+  return str.replace(/[\u{1F300}-\u{1FFFF}✅❌⚠️🔴📱🤖🍎📡🏠💬📞🌍📍🌐💸🚫⏰⏳⌛⌚⏱⏲→•:]/gu, '').replace(/\s+/g,' ').trim().toLowerCase();
 }
 
 function kbFlowAdvance() {
@@ -4966,6 +5043,16 @@ function kbFlowAdvance() {
     setTimeout(function() {
       addButtonGroup(btns, 'kbf-' + Date.now());
     }, 300);
+  } else if (pos >= lines.length && msgText && (msgText.includes('اسم الطلب') || msgText.includes('متطلبات الطلب'))) {
+    var agentNameEnd = currentUser && currentUser.name ? currentUser.name.split(' ')[0] : 'أخوي';
+    var closingsEnd = ['حياك الله ' + agentNameEnd + '، تامر على شي ثاني؟ 🌟','نورت ' + agentNameEnd + '، في شي ثاني أخدمك؟ 👋','أبشر ' + agentNameEnd + '، شي ثاني؟ ✅'];
+    var closingEnd = closingsEnd[Math.floor(Math.random() * closingsEnd.length)];
+    setTimeout(function() {
+      addMsg('📞 بلّغ العميل إن المشكلة تم رصدها وجاري العمل على حلها بأقرب وقت ✅\n\n' + closingEnd, 'bot', null, 'low', null);
+      setTimeout(function() {
+        addButtonGroup([{icon:'1️⃣', label:'✅ إي، عندي شي ثاني', value:'إي عندي شي ثاني'},{icon:'2️⃣', label:'🏁 لا، يكفي — شكراً', value:'لا يكفي شكرا'}], 'closing-' + Date.now());
+      }, 300);
+    }, 600);
   }
 }
 
@@ -5119,7 +5206,7 @@ function triggerIssueWithContext() {
   var isRoaming = issueContext.subIssue && issueContext.subIssue.includes('Roaming') && !issueContext.subIssue.includes('Billing');
   var needsBasics = issueContext.subIssue && (
     issueContext.subIssue.includes('Speed Issue') ||
-    issueContext.subIssue.includes('Internet-') ||
+    (issueContext.subIssue.includes('Internet-') && issueContext.subIssue !== 'Internet- Site Down') ||
     (issueContext.subIssue.includes('Calls-') && issueContext.subIssue !== 'Calls- Quality' && issueContext.subIssue !== 'Calls- Diverts') ||
     isRoaming
   );
