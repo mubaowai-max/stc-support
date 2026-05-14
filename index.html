@@ -1598,26 +1598,48 @@ STEP 3 — المشكلة على كل الـ Mesh nodes ولا جهاز معين
 [OPTIONS: ✅ تأكدنا، نكمل ✅ | ⚠️ في مشكلة بالأساسيات]
 
 شنو جهاز العميل؟
-[OPTIONS: 📱 جوال | 📡 راوتر MBB | 🏠 راوتر CPE/Indoor]
+[OPTIONS: 📱 جوال | 📡 راوتر MBB أو CPE]
 
 → 📱 لو جوال:
 اسأل: المشكلة بكل مكان أو منطقة معينة؟
 [OPTIONS: 🌍 كل مكان | 📍 منطقة معينة]
-• منطقة معينة → راجع الأساسيات (Site Down) ✅
+• منطقة معينة → افتح Smart Care وتحقق من Site Down في منطقة العميل
+[OPTIONS: ✅ فيه Site Down | ❌ ما في Site Down — كمّل]
+• فيه Site Down → أبلغ العميل إن المشكلة معروفة وجاري الحل — ارفع TT بالتاور والمنطقة
+• فيه Site Down → Raise TT
+• ما في Site Down — كمّل → كمّل
 • كل مكان → كمّل
 [OPTIONS: 🍎 آيفون | 🤖 أندرويد]
 • آيفون: إعدادات ← Cellular ← Voice & Data ← اختار LTE/4G
   💡 لو عنده Low Power Mode: إعدادات ← Battery ← طفّيه
 • أندرويد: إعدادات ← اتصالات ← شبكات الجوال ← نوع الشبكة ← LTE/4G
 
-→ 📡 لو راوتر MBB أو CPE/Indoor:
+اطلب من العميل يسوي Speed Test (Ookla) ويشاركك النتيجة
+[OPTIONS: ✅ فوق 3 Mbps | ⚠️ دون 3 Mbps]
+• فوق 3 Mbps → السرعة زينة ✅
+[OPTIONS: ✅ انحلت | 📱 المشكلة ببرنامج واحد بس | 🌐 المشكلة بكل البرامج]
+- لو انحلت → ممتاز، وثّق الحل
+- لو المشكلة ببرنامج واحد بس → الخلل من البرنامج نفسه مو من الشبكة
+- لو المشكلة بكل البرامج → أطفي VPN، أعد تشغيل الجهاز، إذا ما نفع → Raise TT
+
+• دون 3 Mbps → جرّب قبل TT — أعد تعيين إعدادات الشبكة:
+🍎 آيفون: إعدادات ← General ← Transfer or Reset iPhone ← Reset ← Reset Network Settings
+🤖 أندرويد: إعدادات ← الإدارة العامة ← إعادة تعيين ← إعادة تعيين إعدادات الشبكة
+⚠️ تنبيه للأجنت: راح تنمسح كلمات مرور الـ WiFi المحفوظة
+[OPTIONS: ✅ تحسنت السرعة | ❌ ما تحسنت → Raise TT]
+
+→ 📡 راوتر MBB أو CPE:
 
 [OPTIONS: 📡 راوتر متنقل MBB | 🏠 راوتر ثابت 4G (CPE/Indoor)]
 
 → 📡 راوتر متنقل MBB:
 اسأل: المشكلة بكل مكان أو منطقة معينة؟
 [OPTIONS: 🌍 كل مكان | 📍 منطقة معينة]
-• منطقة معينة → راجع الأساسيات (Site Down) ✅
+• منطقة معينة → افتح Smart Care وتحقق من Site Down في منطقة العميل
+[OPTIONS: ✅ فيه Site Down | ❌ ما في Site Down — كمّل]
+• فيه Site Down → أبلغ العميل إن المشكلة معروفة وجاري الحل — ارفع TT بالتاور والمنطقة
+• فيه Site Down → Raise TT
+• ما في Site Down — كمّل → كمّل
 • كل مكان → كمّل
 
 → 🏠 راوتر ثابت CPE/Indoor → كمّل
@@ -1675,7 +1697,11 @@ STEP 2 — نوع الراوتر:
 → 📡 راوتر متنقل MBB:
 اسأل: المشكلة بكل مكان أو منطقة معينة؟
 [OPTIONS: 🌍 كل مكان | 📍 منطقة معينة]
-• منطقة معينة → راجع الأساسيات (Site Down) ✅
+• منطقة معينة → افتح Smart Care وتحقق من Site Down في منطقة العميل
+[OPTIONS: ✅ فيه Site Down | ❌ ما في Site Down — كمّل]
+• فيه Site Down → أبلغ العميل إن المشكلة معروفة وجاري الحل — ارفع TT بالتاور والمنطقة
+• فيه Site Down → Raise TT
+• ما في Site Down — كمّل → كمّل
 • كل مكان → كمّل
 
 → 🏠 راوتر ثابت CPE/Indoor → كمّل
@@ -1717,29 +1743,45 @@ STEP 5 — Speed Test على Ookla 📊
 [OPTIONS: ✅ تأكدنا، نكمل ✅ | ⚠️ في مشكلة بالأساسيات]
 
 شنو جهاز العميل؟
-[OPTIONS: 📱 جوال | 📡 راوتر MBB | 🏠 راوتر CPE/Indoor]
+[OPTIONS: 📱 جوال | 📡 راوتر MBB أو CPE]
 
 → 📱 لو جوال:
 اسأل: المشكلة بكل مكان أو منطقة معينة؟
 [OPTIONS: 🌍 كل مكان | 📍 منطقة معينة]
-• منطقة معينة → راجع الأساسيات (Site Down) ✅
+• منطقة معينة → افتح Smart Care وتحقق من Site Down في منطقة العميل
+[OPTIONS: ✅ فيه Site Down | ❌ ما في Site Down — كمّل]
+• فيه Site Down → أبلغ العميل إن المشكلة معروفة وجاري الحل — ارفع TT بالتاور والمنطقة
+• فيه Site Down → Raise TT
+• ما في Site Down — كمّل → كمّل
 • كل مكان → كمّل
 [OPTIONS: 🍎 آيفون | 🤖 أندرويد]
 • آيفون: إعدادات ← Cellular ← Voice & Data ← اختار 5G On
   💡 لو عنده Low Power Mode: إعدادات ← Battery ← طفّيه
 • أندرويد: إعدادات ← اتصالات ← شبكات الجوال ← نوع الشبكة ← 5G (مو Auto)
 
-→ 📡 لو راوتر MBB أو CPE/Indoor:
+اطلب من العميل يسوي Speed Test (Ookla) ويشاركك النتيجة
+[OPTIONS: ✅ فوق 100 Mbps | ⚠️ دون 100 Mbps]
+• فوق 100 Mbps → السرعة زينة ✅
+[OPTIONS: ✅ انحلت | 📱 المشكلة ببرنامج واحد بس | 🌐 المشكلة بكل البرامج]
+- لو انحلت → ممتاز، وثّق الحل
+- لو المشكلة ببرنامج واحد بس → الخلل من البرنامج نفسه مو من الشبكة
+- لو المشكلة بكل البرامج → أطفي VPN، أعد تشغيل الجهاز، إذا ما نفع → Raise TT
 
-[OPTIONS: 📡 راوتر متنقل MBB | 🏠 راوتر ثابت 5G (CPE/Indoor)]
+• دون 100 Mbps → جرّب قبل TT — أعد تعيين إعدادات الشبكة:
+🍎 آيفون: إعدادات ← General ← Transfer or Reset iPhone ← Reset ← Reset Network Settings
+🤖 أندرويد: إعدادات ← الإدارة العامة ← إعادة تعيين ← إعادة تعيين إعدادات الشبكة
+⚠️ تنبيه للأجنت: راح تنمسح كلمات مرور الـ WiFi المحفوظة
+[OPTIONS: ✅ تحسنت السرعة | ❌ ما تحسنت → Raise TT]
 
-→ 📡 راوتر متنقل MBB:
+→ 📡 راوتر MBB أو CPE:
 اسأل: المشكلة بكل مكان أو منطقة معينة؟
 [OPTIONS: 🌍 كل مكان | 📍 منطقة معينة]
-• منطقة معينة → راجع الأساسيات (Site Down) ✅
+• منطقة معينة → افتح Smart Care وتحقق من Site Down في منطقة العميل
+[OPTIONS: ✅ فيه Site Down | ❌ ما في Site Down — كمّل]
+• فيه Site Down → أبلغ العميل إن المشكلة معروفة وجاري الحل — ارفع TT بالتاور والمنطقة
+• فيه Site Down → Raise TT
+• ما في Site Down — كمّل → كمّل
 • كل مكان → كمّل
-
-→ 🏠 راوتر ثابت CPE/Indoor → كمّل
 
 STEP A — التردد:
 اسأل العميل: شبكة الـ WiFi اللي شابك عليها 5GHz أو 2.4GHz؟
@@ -5171,7 +5213,7 @@ function kbFlowSelect(optIndex, optLabel) {
     var bulletText = line.replace(/^[•\-]\s*/, '');
     var cleanBullet = stripForMatch(bulletText.split('→')[0]);
     var bulletMatchLen = Math.min(cleanBullet.length, 15);
-    if (cleanBullet && cleanOpt.length >= 8 && cleanBullet.length >= 8 &&
+    if (cleanBullet && cleanOpt.length >= 4 && cleanBullet.length >= 4 &&
         (cleanOpt.substring(0, matchLen) === cleanBullet.substring(0, Math.min(matchLen, bulletMatchLen)) ||
          cleanBullet.substring(0, bulletMatchLen) === cleanOpt.substring(0, Math.min(bulletMatchLen, matchLen)))) {
       var result = bulletText.includes('→') ? bulletText.split('→').slice(1).join('→').trim() : bulletText;
@@ -5213,7 +5255,7 @@ function kbFlowSelect(optIndex, optLabel) {
     var branchText = ln.replace(/^→\s*/, '');
     var cleanBranch = stripForMatch(branchText.split(':')[0].split('→')[0]);
     var branchMatchLen = Math.min(cleanBranch.length, 15);
-    if (cleanBranch && cleanOpt.length >= 8 && cleanBranch.length >= 8 &&
+    if (cleanBranch && cleanOpt.length >= 4 && cleanBranch.length >= 4 &&
         (cleanOpt.substring(0, matchLen2) === cleanBranch.substring(0, Math.min(matchLen2, branchMatchLen)) ||
          cleanBranch.substring(0, branchMatchLen) === cleanOpt.substring(0, Math.min(branchMatchLen, matchLen2)))) {
       flow.pos = j + 1;
