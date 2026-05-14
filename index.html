@@ -4677,8 +4677,9 @@ function renderEmployeesTable(employees) {
     const loginCount = e.login_count || 0;
     const totalMins = e.total_minutes || 0;
     const totalHours = totalMins >= 60
-      ? (Math.floor(totalMins/60) + 'س ' + (totalMins%60) + 'د')
-      : (totalMins + 'د');
+      ? (Math.floor(totalMins/60) + 'h ' + (totalMins%60) + 'm')
+      : (totalMins + 'm');
+    const totalDisplay = totalMins === 0 ? '—' : totalHours;
 
     const safeEmail = e.email.replace(/'/g, "\'");
     const toggleBtn = e.disabled
@@ -4692,7 +4693,7 @@ function renderEmployeesTable(employees) {
     const safeName = (e.name||'').replace(/'/g,'&#39;');
     const editBtn = '<button onclick="openEditEmp(\''+safeEmail+'\',\''+safeName+'\',\''+( e.role||'')+'\')" style="background:var(--surface3);border:1px solid var(--border);border-radius:6px;padding:4px 10px;color:var(--text);font-size:11px;cursor:pointer;font-family:inherit">✏️ تعديل</button>';
     const roleLabel = e.role === 'admin' ? 'مدير' : e.role === 'L1' ? 'L1' : e.role === 'employee' ? 'L2' : (e.role||'-');
-    return '<tr><td class="td-email">' + e.email + '</td><td>' + (e.name||'-') + '</td><td><span style="color:#C77DFF">' + roleLabel + '</span></td><td>' + statusBadge + '</td><td class="td-time">' + lastSeen + '</td><td style="text-align:center;color:#C77DFF;font-weight:600">' + loginCount + '</td><td style="text-align:center;color:var(--text-muted)">' + totalHours + '</td><td style="display:flex;gap:4px;flex-wrap:wrap">' + editBtn + toggleBtn + forceLogoutBtn + '</td></tr>';
+    return '<tr><td class="td-email">' + e.email + '</td><td>' + (e.name||'-') + '</td><td><span style="color:#C77DFF">' + roleLabel + '</span></td><td>' + statusBadge + '</td><td class="td-time">' + lastSeen + '</td><td style="text-align:center;color:#C77DFF;font-weight:600">' + loginCount + '</td><td style="text-align:center;color:var(--text-muted);direction:ltr">' + totalDisplay + '</td><td style="display:flex;gap:4px;flex-wrap:wrap">' + editBtn + toggleBtn + forceLogoutBtn + '</td></tr>';
   }).join('');
 
   body.innerHTML = '<table><thead><tr><th>الإيميل</th><th>الاسم</th><th>الدور</th><th>الحالة</th><th>آخر دخول</th><th>مرات الدخول</th><th>الوقت الكلي</th><th>إجراء</th></tr></thead><tbody>' + rows + '</tbody></table>';
