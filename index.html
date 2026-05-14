@@ -2071,23 +2071,35 @@ STEP 4 — في رسالة خطأ تطلع؟
     category: "App & Web-  Payment issue",
     priority: "medium",
     definition: "If there is missing digital payment App/Web",
-    solution: `TT TASK NAME: App & Web-  Payment issue
+    solution: `خطوات التحقق:
 
-STEP 1 — افتح موقع ePayment وادخل رقم العميل 🔍
-→ العميل موجود في النظام؟
+1️⃣ BSS → Financials → Receipt
+تأكد إن الدفعة موجودة بالـ Receipt
 
-✅ موجود → تحقق من تفاصيل المعاملة (Order Sequence)
-  - Completed ✅ → الطلب نفّذ، بلّغ العميل
-  - غير Completed ⚠️ → اطلب من العميل يشاركك رقم المرجع (Reference Number) من SMS أو السكرين شوت → Raise TT
+2️⃣ برنامج ePayment
+• افتح برنامج ePayment وادخل رقم العميل
+• شوف الـ Request ID — هو رقم الطلب (اللي طالب السداد)
+• شوف الـ Subscriber ID — هو رقم المستفيد من الطلب
 
-❌ ما موجود → 💡 تنبيه للأجنت: ممكن العميل دفع بالخطأ أو المعاملة ما اكتملت
-  → اطلب منه يروح أقرب فرع stc معه إثبات المعاملة من البنك 🏦
+شنو النتيجة؟
+[OPTIONS: ✅ Fulfillment Successful | ❌ Fulfillment Rejected | ⏳ Pending | 👤 العميل غير موجود]
+
+• ✅ Fulfillment Successful → انحلت ✅ — أبلغ العميل إن المعاملة ناجحة
+
+• ❌ Fulfillment Rejected → كم مضى؟
+[OPTIONS: ⏰ أقل من 24 ساعة | ⌛ أكثر من 24 ساعة → Raise TT]
+• أقل من 24 ساعة → تنحل تلقائياً — أبلغ العميل ينتظر
+
+• ⏳ Pending → كم مضى؟
+[OPTIONS: ⏰ أقل من 24 ساعة | ⌛ أكثر من 24 ساعة → Raise TT]
+• أقل من 24 ساعة → انتظر — الدفعة قيد المعالجة
+• أكثر من 24 ساعة → تم استرجاع المبلغ للحساب البنكي — Raise TT
+
+• 👤 العميل غير موجود → Raise TT
 
 📋 اسم الطلب: Digital and self service - App & Web- Payment issue
 متطلبات الطلب:
 • وصف المشكلة
-• رقم المرجع (Reference Number)
-• سكرين شوت المعاملة
 • رقم للتواصل`
   },
   {
@@ -3350,24 +3362,6 @@ function selectDiagOption(btn, groupId, value, label) {
   if (groupId.startsWith('basics-')) {
     if (value.includes('كل شي زين')) {
       issueContext.basicsShown = true;
-      // For roaming calls: show STEP 1 as buttons directly
-      if (issueContext.subIssue === 'Roaming Technical- Calls & SMS') {
-        var msgs2 = document.getElementById('chatMessages');
-        var d2 = document.createElement('div');
-        d2.className = 'msg bot';
-        d2.innerHTML = '<div class="msg-avatar">🤖</div><div class="msg-bubble">شنو بالضبط المشكلة اللي يواجهها العميل؟</div>';
-        msgs2.appendChild(d2);
-        msgs2.scrollTop = msgs2.scrollHeight;
-        setTimeout(function() {
-          addButtonGroup([
-            {icon:'1️⃣', label:'📞 ما يقدر يسوي مكالمات', value:'مكالمات'},
-            {icon:'2️⃣', label:'💬 ما يقدر يسوي رسائل SMS', value:'رسائل sms'},
-            {icon:'3️⃣', label:'❌ الاثنين', value:'مكالمات ورسائل'},
-            {icon:'4️⃣', label:'⚠️ مشكلة أخرى', value:'مشكلة اخرى'}
-          ], 'roam-step1-' + Date.now());
-        }, 300);
-        return;
-      }
       // After basics confirmed → start KB flow engine (no AI)
       if (issueContext.kbFlow) {
         // Skip first [OPTIONS] ONLY if it contains 'كل شي زين' (basics confirmation)
@@ -4912,19 +4906,40 @@ function kbFlowSelect(optIndex, optLabel) {
   var pos = flow.pos;
   var cleanOpt = stripForMatch(optLabel);
 
-  // 1. Look for inline bullet: • optLabel → result (near current pos)
-  for (var i = Math.max(0, pos - 20); i < Math.min(lines.length, pos + 5); i++) {
+  // 1. Look for inline bullet: • optLabel → result (search from current pos forward)
+  var matchLen = Math.min(cleanOpt.length, 15);
+  for (var i = pos; i < lines.length; i++) {
     var line = lines[i].trim();
     if (!line.startsWith('•') && !line.startsWith('-')) continue;
     var bulletText = line.replace(/^[•\-]\s*/, '');
     var cleanBullet = stripForMatch(bulletText.split('→')[0]);
-    if (cleanBullet && (cleanOpt.includes(cleanBullet.substring(0,8)) || cleanBullet.includes(cleanOpt.substring(0,8)))) {
+    var bulletMatchLen = Math.min(cleanBullet.length, 15);
+    if (cleanBullet && cleanOpt.length >= 8 && cleanBullet.length >= 8 &&
+        (cleanOpt.substring(0, matchLen) === cleanBullet.substring(0, Math.min(matchLen, bulletMatchLen)) ||
+         cleanBullet.substring(0, bulletMatchLen) === cleanOpt.substring(0, Math.min(bulletMatchLen, matchLen)))) {
       var result = bulletText.includes('→') ? bulletText.split('→').slice(1).join('→').trim() : bulletText;
       flow.pos = i + 1;
-      // Check if result ends the flow or continues
+      // Skip empty or just arrow results
+      if (!result || result === '→') {
+        setTimeout(kbFlowAdvance, 400);
+        return true;
+      }
+      // Check if result ends the flow
       if (result.includes('Raise TT') || result.includes('اسم الطلب') || result.includes('متطلبات')) {
-        // Find and show TT section
         kbFlowShowTT();
+      } else if (result.includes('انحلت') || result.includes('ناجحة') || result.includes('وصلت') || result.includes('اكتملت') || result.includes('ينتظر') || result.includes('ينتظر') || result.includes('يتحقق')) {
+        // Terminal or wait state - show message + closing
+        addMsg(result, 'bot', null, flow.priority || 'medium', flow.category);
+        if (result.includes('انحلت') || result.includes('ناجحة') || result.includes('وصلت') || result.includes('يتواصل')) {
+          var agentNameT = currentUser && currentUser.name ? currentUser.name.split(' ')[0] : 'أخوي';
+          var closingsT = ['حياك الله ' + agentNameT + '، تامر على شي ثاني؟ 🌟','نورت ' + agentNameT + '، في شي ثاني أخدمك؟ 👋','أبشر ' + agentNameT + '، شي ثاني؟ ✅'];
+          setTimeout(function() {
+            addMsg(closingsT[Math.floor(Math.random()*closingsT.length)], 'bot', null, 'low', null);
+            setTimeout(function() {
+              addButtonGroup([{icon:'1️⃣', label:'✅ إي، عندي شي ثاني', value:'إي عندي شي ثاني'},{icon:'2️⃣', label:'🏁 لا، يكفي — شكراً', value:'لا يكفي شكرا'}], 'closing-' + Date.now());
+            }, 300);
+          }, 600);
+        }
       } else {
         addMsg(result, 'bot', null, flow.priority || 'medium', flow.category);
         setTimeout(kbFlowAdvance, 400);
@@ -4934,12 +4949,16 @@ function kbFlowSelect(optIndex, optLabel) {
   }
 
   // 2. Look for → block matching option (from current pos forward)
+  var matchLen2 = Math.min(cleanOpt.length, 15);
   for (var j = pos; j < lines.length; j++) {
     var ln = lines[j].trim();
     if (!ln.startsWith('→')) continue;
     var branchText = ln.replace(/^→\s*/, '');
     var cleanBranch = stripForMatch(branchText.split(':')[0].split('→')[0]);
-    if (cleanBranch && (cleanOpt.includes(cleanBranch.substring(0,8)) || cleanBranch.includes(cleanOpt.substring(0,8)))) {
+    var branchMatchLen = Math.min(cleanBranch.length, 15);
+    if (cleanBranch && cleanOpt.length >= 8 && cleanBranch.length >= 8 &&
+        (cleanOpt.substring(0, matchLen2) === cleanBranch.substring(0, Math.min(matchLen2, branchMatchLen)) ||
+         cleanBranch.substring(0, branchMatchLen) === cleanOpt.substring(0, Math.min(branchMatchLen, matchLen2)))) {
       flow.pos = j + 1;
       kbFlowAdvance();
       return true;
