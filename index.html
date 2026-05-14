@@ -2831,50 +2831,37 @@ STEP 5 — Speed Test:
     priority: "medium",
     definition: "Any issue with stc application or web site",
     solution: `[V2]
-شنو المشكلة في التطبيق أو الموقع؟
-[OPTIONS: 🔐 ما يقدر يسجّل دخول | ❌ خطأ في التطبيق | 🐌 التطبيق بطيء أو يتعلق | 📲 ما يقدر يحمّل التطبيق]
+المشكلة على التطبيق ولا الموقع؟
+[OPTIONS: 📱 تطبيق stc | 🌐 الموقع]
 
-[SECTION: ما يقدر يسجّل دخول]
-اطلب من العميل:
-1. يتأكد من اسم المستخدم وكلمة المرور
-2. يجرب "نسيت كلمة المرور"
-[OPTIONS: ✅ انحلت | ❌ ما انحلت]
-[SECTION: ما انحلت]
-اطلب رسالة الخطأ الظاهرة بالضبط
-[OPTIONS: ✅ عنده رسالة خطأ → Raise TT | ❌ ما في رسالة بس ما تكمل → Raise TT]
-[END_SECTION]
-[END_SECTION]
-
-[SECTION: خطأ في التطبيق]
-اطلب من العميل:
-1. يسجّل خروج ويدخل ثاني
-2. يمسح كاش التطبيق
-3. يحدّث التطبيق لآخر إصدار
-[OPTIONS: ✅ انحلت | ❌ ما انحلت]
-[SECTION: ما انحلت]
-اطلب رسالة الخطأ بالضبط → Raise TT
+[SECTION: تطبيق stc]
+اطلب من العميل يسجّل خروج ويتسجّل دخول مرة ثانية
+[OPTIONS: ✅ اشتغل | ⚠️ ما اشتغل]
+[SECTION: ما اشتغل]
+اطلب منه يحذف التطبيق ويعيد تحميله من المتجر ويحاول مرة ثانية
+[OPTIONS: ✅ اشتغل | ⚠️ ما اشتغل]
+[SECTION: ما اشتغل]
+سجّل رسالة الخطأ → Raise TT
 [OPTIONS: ✅ تم → Raise TT]
 [END_SECTION]
 [END_SECTION]
-
-[SECTION: التطبيق بطيء أو يتعلق]
-اطلب من العميل:
-1. يغلق التطبيق كلياً ويفتحه ثاني
-2. يتأكد من سرعة الإنترنت
-3. يعيد تشغيل الجهاز
-[OPTIONS: ✅ انحلت | ❌ ما انحلت → Raise TT]
 [END_SECTION]
 
-[SECTION: ما يقدر يحمّل التطبيق]
-اطلب رقم الجهاز ونوعه — تأكد إن المتجر (App Store/Play Store) شغّال
-[OPTIONS: ✅ انحلت | ❌ ما انحلت → Raise TT]
+[SECTION: الموقع]
+اطلب من العميل يجرب متصفح ثاني ويمسح الـ Cache والـ Cookies
+[OPTIONS: ✅ اشتغل | ⚠️ ما اشتغل]
+[SECTION: ما اشتغل]
+سجّل رسالة الخطأ → Raise TT
+[OPTIONS: ✅ تم → Raise TT]
+[END_SECTION]
 [END_SECTION]
 
 📋 اسم الطلب: Digital and self service - App & Web- Technical Issues
 متطلبات الطلب:
 • وصف المشكلة
-• رسالة الخطأ (إذا موجودة)
-• نوع الجهاز والإصدار
+• رسالة الخطأ (سكرين شوت)
+• نوع الجهاز والمتصفح
+• تأكيد خطوات التشخيص
 • رقم للتواصل`
   },
   {
@@ -3021,49 +3008,36 @@ Step 2B — Charged to stc line (stc customers only):
     priority: "medium",
     definition: "Code not received",
     solution: `[V2]
-شنو المشكلة بالـ eSIM؟
-[OPTIONS: 📲 تحويل شريحة عادية لـ eSIM | 🆕 إصدار eSIM جديد | ❌ مشكلة تقنية بعد التفعيل]
+BSS: دور على معاملة تغيير SIM أو eSIM تتطابق مع تاريخ طلب العميل، وشوف حالتها.
+[OPTIONS: ✅ Completed | ⚠️ غير Completed | ❌ ما في معاملة]
 
-[SECTION: تحويل شريحة عادية لـ eSIM]
-تحقق من BSS — الجهاز يدعم eSIM؟
-[OPTIONS: ✅ يدعم | ❌ ما يدعم]
-[SECTION: يدعم]
-ارفع الطلب على رقم العميل ✅
+[SECTION: Completed]
+الطلب نفّذ — بلّغ العميل إن الـ eSIM جاهز
+[END_SECTION]
+
+[SECTION: غير Completed]
+Raise TT على فريق Resolutions
 [OPTIONS: ✅ تم → Raise TT]
 [END_SECTION]
-[SECTION: ما يدعم]
-أبلغ العميل إن جهازه ما يدعم eSIM
-[END_SECTION]
-[END_SECTION]
 
-[SECTION: إصدار eSIM جديد]
-تحقق من BSS — الجهاز يدعم eSIM وما عنده eSIM نشطة؟
-[OPTIONS: ✅ مؤهل | ❌ غير مؤهل]
-[SECTION: مؤهل]
-ارفع الطلب على رقم العميل ✅
+[SECTION: ما في معاملة]
+تحقق هل تم خصم المبلغ من حساب العميل عبر برنامج ePayment؟
+[OPTIONS: ✅ تم الخصم | ❌ ما تم الخصم]
+[SECTION: تم الخصم]
+Raise TT على فريق Resolutions
 [OPTIONS: ✅ تم → Raise TT]
 [END_SECTION]
-[SECTION: غير مؤهل]
-أبلغ العميل بسبب عدم الأهلية
-[END_SECTION]
-[END_SECTION]
-
-[SECTION: مشكلة تقنية بعد التفعيل]
-اطلب رسالة الخطأ الظاهرة بالضبط
-[OPTIONS: ✅ عنده رسالة → Raise TT | ❌ ما في رسالة]
-[SECTION: ما في رسالة]
-اطلب من العميل:
-1. يعيد تشغيل الجهاز
-2. يتحقق من إعدادات eSIM في الجهاز
-[OPTIONS: ✅ انحلت | ❌ ما انحلت → Raise TT]
+[SECTION: ما تم الخصم]
+اطلب من العميل يحاول مرة ثانية
+[OPTIONS: ✅ اشتغل | ❌ ما اشتغل → Raise TT]
 [END_SECTION]
 [END_SECTION]
 
 📋 اسم الطلب: Digital and self service - E-SIM- issues
 متطلبات الطلب:
 • وصف المشكلة
-• نوع الجهاز ورقم IMEI
 • تأكيد خطوات التشخيص
+• رقم المعاملة (إذا موجود في BSS)
 • رقم للتواصل`
   },
   {
@@ -3092,37 +3066,31 @@ STEP 3 — إذا ما في معاملة، تحقق هل تم خصم المبل�
     category: "Prepaid – Balance & validity",
     priority: "medium",
     definition: "Any issue with prepaid lines balance or validity",
-    solution: `[V2]
-تحقق من BSS — الخط نشط وما هو موقوف أو منتهي الصلاحية
+    solution: `تحقق من BSS:
+تأكد إن الخط نشط وما هو موقوف أو منتهي الصلاحية
+
 شنو المشكلة بالضبط؟
 [OPTIONS: 📅 مشكلة بالصلاحية | 💰 مشكلة بالرصيد]
 
-[SECTION: مشكلة بالصلاحية]
+مشكلة بالصلاحية:
 افتح BSS وتحقق من:
 أ. سجل الشحنات — متى آخر شحنة وشنو الصلاحية اللي اتطبقت
-ب. تحويل الرصيد — يشمل صلاحية، ممكن يكون سبب التغيير
-ج. E-payment — تحقق إذا العميل اشترى باقة صلاحية
-د. طابق تاريخ انتهاء الصلاحية مع سجل الشحنات
-[OPTIONS: ✅ الصلاحية مطابقة | ❌ الصلاحية مو مطابقة → Raise TT | 🔍 ما في شحنة]
-[SECTION: الصلاحية مطابقة]
-أبلغ العميل بالتفاصيل
-[END_SECTION]
-[SECTION: ما في شحنة]
-اطلب من العميل يجيب الإيصال أو رقم المرجع وتحقق من E-payment
-[OPTIONS: ✅ وجدنا المعاملة | ❌ ما وجدنا → Raise TT]
-[END_SECTION]
-[END_SECTION]
+ب. تحويل الرصيد — تحويل الرصيد يشمل صلاحية، ممكن يكون سبب التغيير
+ج. E-payment — تحقق إذا العميل اشترى باقة صلاحية بنجاح
+د. طابق تاريخ انتهاء الصلاحية الحالي مع سجل الشحنات والتحويلات
+[OPTIONS: ✅ الصلاحية مطابقة | ❌ الصلاحية مو مطابقة → Raise TT | 🔍 ما في شحنة → اطلب إيصال]
+• ✅ الصلاحية مطابقة → أبلغ العميل بالتفاصيل
+• ❌ الصلاحية مو مطابقة → Raise TT فوراً
+• 🔍 ما في شحنة → اطلب من العميل يجيب الإيصال أو رقم المرجع وتحقق من E-payment
 
-[SECTION: مشكلة بالرصيد]
-افتح BSS — تبويب Usage وراجع حركات الرصيد
+مشكلة بالرصيد:
+افتح BSS — تبويب Usage وراجع حركات الرصيد الأخيرة
 تحقق من نوع الرصيد:
 • الرصيد العادي: الرصيد الأساسي القابل للشحن
 • الرصيد الإضافي (Bonus): رصيد ترويجي بشروط استخدام خاصة
-[OPTIONS: ✅ الرصيد مطابق | ❌ رصيد ما اتحط أو اختصم بشكل غير طبيعي → Raise TT]
-[SECTION: الرصيد مطابق]
-وضّح للعميل الفرق بين الرصيد العادي والإضافي
-[END_SECTION]
-[END_SECTION]
+[OPTIONS: ✅ الرصيد مطابق | ❌ رصيد ما اتحط بعد شحنة مؤكدة → Raise TT | ❌ رصيد اختصم بدون استخدام → Raise TT]
+• ✅ الرصيد مطابق → وضّح للعميل الفرق بين الرصيد العادي والإضافي
+• ❌ رصيد ما اتحط أو اختصم بشكل غير طبيعي → Raise TT فوراً
 
 📋 اسم الطلب: stc services - Prepaid – Balance & validity
 متطلبات الطلب:
@@ -3138,17 +3106,21 @@ STEP 3 — إذا ما في معاملة، تحقق هل تم خصم المبل�
     priority: "medium",
     definition: "Any issue with services activated extra over the main plan or bundle (Boosters)",
     solution: `[V2]
-تحقق من BSS — الخط نشط وما هو موقوف
-تحقق من مصدر تفعيل الخدمة المتنازع عليها
+تحقق من BSS:
+تأكد إن الخط نشط وما هو موقوف أو مقطوع
+
+تحقق من مصدر تفعيل الخدمة المتنازع عليها:
+افتح BSS وشوف كيف اتفعّلت الباقة أو الإضافة
 [OPTIONS: 📱 العميل فعّلها بنفسه | 🔄 اتفعّلت تلقائياً من النظام | ❓ مصدر التفعيل مجهول → Raise TT]
 
 [SECTION: العميل فعّلها بنفسه]
-أبلغ العميل إن الخدمة فُعّلت منه والرسوم صحيحة
-[OPTIONS: ✅ قبل العميل التوضيح | ❌ العميل مصر ما فعّلها → Raise TT]
+العميل فعّلها بنفسه عبر تطبيق أو USSD أو SMS أو موقع
+أبلغ العميل إن الرسوم صحيحة وتعكس طلبه
+[OPTIONS: ✅ قبل العميل | ❌ العميل مصرّ ما فعّلها → Raise TT]
 [END_SECTION]
 
 [SECTION: اتفعّلت تلقائياً من النظام]
-وضّح للعميل إنها تجديد تلقائي أو Booster منبثق
+وضّح للعميل إنها تجديد تلقائي أو Booster منبثق حسب شروط الباقة
 [OPTIONS: ✅ قبل العميل التوضيح | ❌ العميل يعترض على التفعيل التلقائي → Raise TT]
 [END_SECTION]
 
@@ -3166,29 +3138,31 @@ STEP 3 — إذا ما في معاملة، تحقق هل تم خصم المبل�
     priority: "medium",
     definition: "Any issue with line main plan ( Go/Allo/international/Extreme)",
     solution: `[V2]
-تحقق من BSS — الخط نشط وما هو موقوف
-تحقق من حالة الباقة أو الإضافة
-[OPTIONS: ✅ الباقة نشطة في BSS | ❌ الباقة مو نشطة]
+تحقق من BSS:
+تأكد إن الخط نشط وما هو موقوف أو مقطوع
 
-[SECTION: الباقة مو نشطة]
+تحقق من حالة الباقة أو الإضافة في BSS:
+[OPTIONS: ✅ الباقة نشطة في BSS | ❌ الباقة مو نشطة في BSS]
+
+[SECTION: الباقة مو نشطة في BSS]
 [OPTIONS: 💳 خط مسبق (Prepaid) | 💼 خط آجل (Postpaid)]
 [SECTION: خط مسبق (Prepaid)]
-تحقق من الرصيد — هل كافي للتجديد؟
+تحقق من الرصيد — كافي للتجديد؟
 [OPTIONS: ✅ كافي | ❌ مو كافي]
 [SECTION: مو كافي]
-أبلغ العميل يشحن ويجرب ثاني
+أبلغ العميل يشحن الرصيد ويجرب ثاني
 [OPTIONS: ✅ انحلت | ❌ ما انحلت → Raise TT]
 [END_SECTION]
 [SECTION: كافي]
-Raise TT — مشكلة في التجديد التلقائي
+الرصيد كافي والباقة ما اتجددت → Raise TT
 [OPTIONS: ✅ تم → Raise TT]
 [END_SECTION]
 [END_SECTION]
 [SECTION: خط آجل (Postpaid)]
-تحقق من الحد الائتماني — هل اكتمل؟
+تحقق من الحد الائتماني — اكتمل؟
 [OPTIONS: ✅ اكتمل | ❌ ما اكتمل]
 [SECTION: اكتمل]
-أبلغ العميل يسدد أو يطلب رفع الحد
+أبلغ العميل يسدد الفاتورة أو يطلب رفع الحد
 [OPTIONS: ✅ انحلت | ❌ ما انحلت → Raise TT]
 [END_SECTION]
 [SECTION: ما اكتمل]
@@ -3199,12 +3173,8 @@ Raise TT — مشكلة في تفعيل الباقة
 [END_SECTION]
 
 [SECTION: الباقة نشطة في BSS]
-تحقق من BSS — في خطأ على الخط؟
-[OPTIONS: ✅ فيه رسالة خطأ | ❌ ما في خطأ ظاهر]
-[SECTION: فيه رسالة خطأ]
-سجّل كود الخطأ → Raise TT
-[OPTIONS: ✅ تم → Raise TT]
-[END_SECTION]
+تحقق من BSS — في رسالة خطأ على الخط؟
+[OPTIONS: ✅ فيه رسالة خطأ → Raise TT | ❌ ما في خطأ ظاهر]
 [SECTION: ما في خطأ ظاهر]
 اطلب من العميل رسالة الخطأ على الجهاز أو التطبيق → Raise TT
 [OPTIONS: ✅ تم → Raise TT]
@@ -3225,18 +3195,20 @@ Raise TT — مشكلة في تفعيل الباقة
     priority: "medium",
     definition: "Any issue with 3rd party services charges",
     solution: `[V2]
-افتح BSS وتعرّف على الخدمة وحدد: اسم الخدمة، المبلغ، والتاريخ
-[OPTIONS: ✅ الخدمة موجودة في BSS | ❌ الخدمة مو موجودة → Raise TT]
+افتح BSS وتعرّف على الخدمة:
+حدد اسم خدمة الطرف الثالث، مبلغ الرسوم، والتاريخ
+[OPTIONS: ✅ الخدمة موجودة في BSS | ❌ الخدمة مو موجودة في BSS → Raise TT]
 
 [SECTION: الخدمة موجودة في BSS]
-تحقق من طريقة التفعيل — هل العميل اشترك عبر SMS keyword أو OTP؟
+تحقق من طريقة التفعيل:
+هل العميل اشترك عبر SMS keyword أو OTP؟
 [OPTIONS: ✅ التفعيل مؤكد عبر SMS أو OTP | ❓ طريقة التفعيل مجهولة → Raise TT]
 [SECTION: التفعيل مؤكد عبر SMS أو OTP]
-وضّح للعميل إن رده على الـ SMS أو OTP يُعدّ موافقة على الاشتراك
+وضّح للعميل إن رده على الـ SMS أو إدخاله الـ OTP يُعدّ موافقة على الاشتراك
 [OPTIONS: ✅ قبل العميل وأبي إلغاء الاشتراك | ❌ العميل غير مقتنع → Raise TT]
 [SECTION: قبل العميل وأبي إلغاء الاشتراك]
 أرشده لطريقة إلغاء الاشتراك من الخدمة
-[OPTIONS: ✅ تم الإلغاء | ❌ ما قدر → Raise TT]
+[OPTIONS: ✅ تم الإلغاء | ❌ ما قدر يلغي → Raise TT]
 [END_SECTION]
 [END_SECTION]
 [END_SECTION]
@@ -3255,25 +3227,25 @@ Raise TT — مشكلة في تفعيل الباقة
     priority: "medium",
     definition: "Any issue related to Apple watch (New watch Registartion or incoming calls in the watch)",
     solution: `[V2]
-شنو المشكلة مع Apple Watch؟
+شنو المشكلة بالضبط؟
 [OPTIONS: 📞 ما يستقبل مكالمات على الساعة | 🔗 مشكلة إقران الساعة بالآيفون]
 
 [SECTION: ما يستقبل مكالمات على الساعة]
-تحقق من BSS:
+افتح BSS وتحقق من:
 [OPTIONS: ✅ Multi-SIM نشط | ❌ Multi-SIM مو نشط]
 [SECTION: Multi-SIM مو نشط]
-أبلغ العميل يفعّل خدمة Multi-SIM أولاً
-[OPTIONS: ✅ فعّل ورجع | ❌ ما قدر → Raise TT]
+أبلغ العميل يفعّله — جرّب ثاني
+[OPTIONS: ✅ انحلت | ❌ ما انحلت → Raise TT]
 [END_SECTION]
 [SECTION: Multi-SIM نشط]
-تحقق VoLTE في BSS:
+تحقق من VoLTE في BSS
 [OPTIONS: ✅ VoLTE نشط | ❌ VoLTE مو نشط]
 [SECTION: VoLTE مو نشط]
-فعّل VoLTE — اطلب من العميل يجرب
+أبلغ العميل يفعّله — جرّب ثاني
 [OPTIONS: ✅ انحلت | ❌ ما انحلت → Raise TT]
 [END_SECTION]
 [SECTION: VoLTE نشط]
-كلا الخدمتين نشطتين والمشكلة مستمرة → Raise TT
+كلهم نشطين والمشكلة مستمرة → Raise TT فوراً
 [OPTIONS: ✅ تم → Raise TT]
 [END_SECTION]
 [END_SECTION]
@@ -3281,26 +3253,27 @@ Raise TT — مشكلة في تفعيل الباقة
 
 [SECTION: مشكلة إقران الساعة بالآيفون]
 تأكد إن Bluetooth مفعّل على الآيفون والساعة قريبة
-اطلب من العميل رسالة الخطأ الظاهرة
+اطلب من العميل رسالة الخطأ اللي تطلع
 [OPTIONS: ⚠️ Max profile limit reached | ⚠️ Something went wrong call 102 | ❓ خطأ ثاني]
 [SECTION: Max profile limit reached]
-Raise TT فوراً
+Raise TT مع توثيق رسالة الخطأ
 [OPTIONS: ✅ تم → Raise TT]
 [END_SECTION]
 [SECTION: Something went wrong call 102]
-Raise TT فوراً
+Raise TT مع توثيق رسالة الخطأ
 [OPTIONS: ✅ تم → Raise TT]
 [END_SECTION]
 [SECTION: خطأ ثاني]
-وثّق رسالة الخطأ بالضبط → Raise TT
+Raise TT مع توثيق رسالة الخطأ بالضبط
 [OPTIONS: ✅ تم → Raise TT]
 [END_SECTION]
 [END_SECTION]
 
 📋 اسم الطلب: stc services - Apple Watch
 متطلبات الطلب:
-• وصف المشكلة (مكالمات أو إقران)
-• حالة Multi-SIM وVoLTE من BSS
+• وصف المشكلة
+• نوع المشكلة (مكالمات أو إقران)
+• حالة Multi-SIM و VoLTE من BSS
 • رسالة الخطأ الظاهرة (إذا موجودة)
 • تأكيد خطوات التشخيص
 • رقم للتواصل`
@@ -3320,7 +3293,10 @@ Raise TT فوراً
 • التاريخ
 • القناة المستخدمة (تطبيق، موقع، فرع)
 تأكد إن المعاملة مؤهلة لكسب نقاط Qitaf
-[OPTIONS: ✅ عندي التفاصيل → Raise TT]
+[OPTIONS: ✅ المعاملة مؤهلة → Raise TT | ❌ المعاملة مو مؤهلة]
+[SECTION: المعاملة مو مؤهلة]
+وضّح للعميل إن هذه المعاملة لا تكسب نقاط
+[END_SECTION]
 [END_SECTION]
 
 [SECTION: مشكلة استبدال النقاط]
