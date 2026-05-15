@@ -452,6 +452,107 @@
     color: #FFD93D;
   }
 
+  .basics-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(243,156,18,0.08);
+    border: 1px solid rgba(243,156,18,0.25);
+    border-radius: 10px;
+    padding: 9px 14px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #FFD93D;
+  }
+
+  .basics-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin: 4px 0;
+  }
+  .basics-card-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .basics-card-body { flex: 1; }
+  .basics-card-title { font-size: 12px; font-weight: 700; margin-bottom: 3px; }
+  .basics-card-desc  { font-size: 11.5px; color: var(--text-muted); line-height: 1.55; }
+  .basics-card-check { font-size: 15px; opacity: 0.35; flex-shrink: 0; margin-top: 1px; }
+  .basics-card.bss { background:rgba(52,152,219,0.08);  border:1px solid rgba(52,152,219,0.22);  }
+  .basics-card.sc  { background:rgba(139,47,160,0.08);  border:1px solid rgba(139,47,160,0.22);  }
+  .basics-card.dr  { background:rgba(46,204,113,0.08);  border:1px solid rgba(46,204,113,0.22);  }
+  .basics-card.sd  { background:rgba(243,156,18,0.08);  border:1px solid rgba(243,156,18,0.22);  }
+  .basics-card.bss .basics-card-title { color: #74B9FF; }
+  .basics-card.sc  .basics-card-title { color: #C77DFF; }
+  .basics-card.dr  .basics-card-title { color: #2ECC71; }
+  .basics-card.sd  .basics-card-title { color: #F39C12; }
+
+  /* STEP header badge */
+  .step-header {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(107,30,120,0.18);
+    border: 1px solid rgba(107,30,120,0.4);
+    border-radius: 8px;
+    padding: 5px 12px;
+    margin: 8px 0 4px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #C77DFF;
+    direction: ltr;
+  }
+  .step-header-num {
+    background: var(--primary);
+    color: white;
+    border-radius: 5px;
+    padding: 1px 7px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  /* Arrow path chips */
+  .arrow-path {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    margin: 4px 0;
+    direction: rtl;
+  }
+  .arrow-chip {
+    background: var(--surface3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 3px 9px;
+    font-size: 11.5px;
+    color: var(--text);
+    white-space: nowrap;
+  }
+  .arrow-chip.device-ios   { border-color: rgba(52,152,219,0.5); color: #74B9FF; background: rgba(52,152,219,0.08); }
+  .arrow-chip.device-and   { border-color: rgba(46,204,113,0.5); color: #2ECC71; background: rgba(46,204,113,0.08); }
+  .arrow-sep { font-size: 11px; color: var(--text-dim); }
+
+  /* Bullet requirement items */
+  .req-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 5px 0;
+    font-size: 12px;
+    color: var(--text-muted);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .req-item:last-child { border-bottom: none; }
+  .req-dot {
+    width: 6px; height: 6px;
+    background: var(--primary-light);
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 5px;
+  }
+
   .msg.bot .msg-bubble .answer-success {
     background: rgba(46,204,113,0.1);
     border: 1px solid rgba(46,204,113,0.3);
@@ -1279,7 +1380,7 @@ const KB = [
 🔵 Smart Care: CS Roam = NOBAR، Roaming Package = YES، الخط attached على شبكة رومينق
 🔵 Data Roaming: مفعّل على جهاز العميل
 
-[OPTIONS: ✅ تأكدنا، نكمل ✅ | ⚠️ في مشكلة بالأساسيات]
+[OPTIONS: ✅ تأكدنا، نكمل ✅ | 🎉 انحلت بعد التأكد من الأساسيات]
 
 STEP 1 — تأكد إن العميل متصل بشبكة رومينق:
 📶 شريط الحالة — هل يظهر اسم شبكة تجوال؟
@@ -1294,12 +1395,19 @@ STEP 1 — تأكد إن العميل متصل بشبكة رومينق:
 • الخط attached على شبكة رومينق؟
 [OPTIONS: ✅ كل شي زين في Smart Care | ❌ في مشكلة → Raise TT]
 [SECTION: كل شي زين في Smart Care]
+STEP A — تأكد تفعيل Data Roaming على جهاز العميل:
+🍎 آيفون: إعدادات ← Cellular ← Cellular Data Options ← شغّل Data Roaming
+🤖 أندرويد: إعدادات ← اتصالات ← شبكات الجوال ← شغّل Data Roaming
+
+[OPTIONS: ✅ فعّلنا الداتا ورجع النت | ❌ ما رجع، نكمل التشخيص]
+[SECTION: ما رجع، نكمل التشخيص]
 📌 البحث اليدوي يخلي الجهاز يختار الشبكة الأقوى في البلد بدل ما يبقى شابك على شبكة ضعيفة
 📌 لما الجهاز مو شابك على أي شبكة — البحث اليدوي يخليه يشوف الشبكات المتاحة في المنطقة
 اطلب من العميل يسوي البحث اليدوي للشبكة:
 🍎 آيفون: إعدادات ← Cellular ← Network Selection ← أطفي Automatic ← ابحث واختار يدوياً
 🤖 أندرويد: إعدادات ← اتصالات ← شبكات الجوال ← مشغلو الشبكة ← ابحث يدوياً
 [OPTIONS: ✅ وصل للشبكة ورجع النت | ❌ ما وصل → Raise TT]
+[END_SECTION]
 [END_SECTION]
 [END_SECTION]
 
@@ -1339,7 +1447,7 @@ STEP 1 — تأكد إن العميل متصل بشبكة رومينق:
 🔵 BSS: الخط نشط، ما في إيقاف بالفاتورة
 🔵 Smart Care: CS Roam = NOBAR، الخط attached على شبكة رومينق
 
-[OPTIONS: ✅ تأكدنا، نكمل ✅ | ⚠️ في مشكلة بالأساسيات]
+[OPTIONS: ✅ تأكدنا، نكمل ✅ | 🎉 انحلت بعد التأكد من الأساسيات]
 
 شنو بالضبط المشكلة اللي يواجهها العميل؟
 [OPTIONS: 📞 ما يقدر يسوي مكالمات | 💬 ما يقدر يسوي رسائل SMS | ❌ الاثنين | ⚠️ مشكلة أخرى]
@@ -1432,7 +1540,7 @@ STEP 1 — تأكد إن العميل متصل بشبكة رومينق:
 🔵 Smart Care: الخط attached، Data Status نشط، وفي إشارة
 🔵 Site Down: ما في عطل في منطقة العميل
 
-[OPTIONS: ✅ تأكدنا، نكمل ✅ | ⚠️ في مشكلة بالأساسيات]
+[OPTIONS: ✅ تأكدنا، نكمل ✅ | 🎉 انحلت بعد التأكد من الأساسيات]
 
 📌 نوع الجهاز يحدد الخطوات الصحيحة للإعدادات
 شنو جهاز العميل؟
@@ -1581,7 +1689,7 @@ STEP 7: إذا النتيجة فوق 25ms بعد كل الخطوات → Raise T
 🔵 Smart Care: الخط attached، Data Status نشط، وفي إشارة
 🔵 Site Down: ما في عطل في منطقة العميل
 
-[OPTIONS: ✅ تأكدنا، نكمل ✅ | ⚠️ في مشكلة بالأساسيات]
+[OPTIONS: ✅ تأكدنا، نكمل ✅ | 🎉 انحلت بعد التأكد من الأساسيات]
 
 📌 لو الـ IMSI مو مطابق — الشريحة اللي بالراوتر مو مسجّلة على هذا الرقم
 تحقق من BSS — رقم الـ IMSI مطابق للشريحة اللي بالراوتر؟
@@ -1642,7 +1750,7 @@ Quality Complaint Handling ← Network Registration ← Query
 🔵 Smart Care: الخط attached، Data Status نشط، وفي إشارة
 🔵 Site Down: ما في عطل في منطقة العميل
 
-[OPTIONS: ✅ تأكدنا، نكمل ✅ | ⚠️ في مشكلة بالأساسيات]
+[OPTIONS: ✅ تأكدنا، نكمل ✅ | 🎉 انحلت بعد التأكد من الأساسيات]
 
 📌 الـ 5GHz أسرع لكن نطاقها أقصر — الـ 2.4GHz أبطأ لكن وصولها أبعد
 اسأل العميل: شبكة الـ WiFi اللي واصل عليها — 5GHz أو 2.4GHz؟
@@ -1930,7 +2038,7 @@ Quality Complaint Handling ← Network Registration ← Query
 🔵 Smart Care: الخط attached، Data Status نشط، وفي إشارة
 🔵 Site Down: ما في عطل في منطقة العميل
 
-[OPTIONS: ✅ تأكدنا، نكمل ✅ | ⚠️ في مشكلة بالأساسيات]
+[OPTIONS: ✅ تأكدنا، نكمل ✅ | 🎉 انحلت بعد التأكد من الأساسيات]
 
 📌 نوع الجهاز يحدد الخطوات الصحيحة للإعدادات
 شنو جهاز العميل؟
@@ -2121,7 +2229,7 @@ Quality Complaint Handling ← Network Registration ← Query
 🔵 Smart Care: الخط attached، Data Status نشط، وفي إشارة
 🔵 Site Down: ما في عطل في منطقة العميل
 
-[OPTIONS: ✅ تأكدنا، نكمل ✅ | ⚠️ في مشكلة بالأساسيات]
+[OPTIONS: ✅ تأكدنا، نكمل ✅ | 🎉 انحلت بعد التأكد من الأساسيات]
 
 STEP 2 — نوع الراوتر:
 [OPTIONS: 📡 راوتر MBB أو CPE]
@@ -2174,7 +2282,7 @@ STEP 5 — Speed Test على Ookla 📊
 🔵 Smart Care: الخط attached، Data Status نشط، وفي إشارة
 🔵 Site Down: ما في عطل في منطقة العميل
 
-[OPTIONS: ✅ تأكدنا، نكمل ✅ | ⚠️ في مشكلة بالأساسيات]
+[OPTIONS: ✅ تأكدنا، نكمل ✅ | 🎉 انحلت بعد التأكد من الأساسيات]
 
 📌 نوع الجهاز يحدد الخطوات الصحيحة للإعدادات
 شنو جهاز العميل؟
@@ -2469,7 +2577,7 @@ CPE: 192.168.1.1 ← WiFi Settings ← Band ← 5GHz ← احفظ
 🔵 Smart Care: الخط attached، Data Status نشط، وفي إشارة
 🔵 Site Down: ما في عطل في منطقة العميل
 
-[OPTIONS: ✅ تأكدنا، نكمل ✅ | ⚠️ في مشكلة بالأساسيات]
+[OPTIONS: ✅ تأكدنا، نكمل ✅ | 🎉 انحلت بعد التأكد من الأساسيات]
 
 STEP 2 — نوع الراوتر:
 [OPTIONS: 📡 راوتر متنقل MBB | 🏠 راوتر ثابت 5G (CPE/Indoor)]
@@ -2535,7 +2643,7 @@ STEP 5 — Speed Test:
 🔵 Smart Care: CS Bar = NOBAR، الخط attached
 🔵 Site Down: ما في عطل في منطقة العميل
 
-[OPTIONS: ✅ تأكدنا، نكمل ✅ | ⚠️ في مشكلة بالأساسيات]
+[OPTIONS: ✅ تأكدنا، نكمل ✅ | 🎉 انحلت بعد التأكد من الأساسيات]
 
 شنو المشكلة بالمكالمات؟
 [OPTIONS: 📵 ما يقدر يتصل | 📞 ما يستقبل مكالمات | ✂️ المكالمة تنقطع أو جودة رديئة]
@@ -3073,97 +3181,178 @@ STEP 5 — Speed Test:
     category: "Kiosk- Payment issue",
     priority: "medium",
     definition: "If customer is complaining about extra wrong local charges",
-    solution: `Ask customer what their issue is:
+    solution: `[V2]
+شنو مشكلة العميل بالكيوسك؟
+[OPTIONS: 💰 دفع ما انضاف على الرقم | 💸 خصم خاطئ أو خصم مرتين | 🏧 كيوسك ثاني (OG Money, E-Ent, إلخ)]
 
-   If missing payment — paid at kiosk but number not credited:
-   a. Ask customer if they have a printed receipt or received an SMS confirmation from the kiosk.
+[SECTION: دفع ما انضاف على الرقم]
+عنده إيصال مطبوع أو رسالة SMS تأكيد من الكيوسك؟
+[OPTIONS: ✅ عنده إيصال أو SMS | ❌ ما عنده إيصال]
+[SECTION: عنده إيصال أو SMS]
+📌 الـ Reference Number يخلينا نتحقق من المعاملة بالضبط في ePayment
+اطلب من العميل رقم المرجع (Reference Number) من الإيصال أو الـ SMS
+افتح ePayment ← Order Sequence search ← أدخل رقم المرجع
+تحقق من:
+• Status و Fulfillment Status — ناجح أو فاشل؟
+• Subscriber ID — على أي رقم انضاف الدفع؟
+[OPTIONS: ✅ الـ Subscriber ID مطابق ومدفوع بنجاح | ❌ الـ Subscriber ID على رقم ثاني | ❌ Status = Failed]
+[SECTION: الـ Subscriber ID مطابق ومدفوع بنجاح]
+📌 الدفع صح والمبلغ انضاف للرقم الصح
+أبلغ العميل إن الدفع تم بنجاح وانضاف على رقمه
+[END_SECTION]
+[SECTION: الـ Subscriber ID على رقم ثاني]
+📌 المبلغ انضاف على رقم ثاني خطأ
+أبلغ العميل يراجع أقرب فرع stc بالإيصال أو الـ SMS لتقديم شكوى رسمية
+[END_SECTION]
+[SECTION: Status = Failed]
+📌 الدفع ما تم — المبلغ ما انخصم فعلياً
+أبلغ العميل يحاول مرة ثانية
+[OPTIONS: ✅ نجح في المرة الثانية | ❌ ما نجح → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: ما عنده إيصال]
+📌 بدون إيصال أو SMS ما نقدر نتتبع المعاملة في النظام — لازم نرفع طلب
+اطلب من العميل:
+• رقم جهاز الكيوسك
+• اسم الفرع والموقع
+• تاريخ ووقت العملية
+[OPTIONS: ✅ عنده التفاصيل → Raise TT]
+[END_SECTION]
+[END_SECTION]
 
-      If yes — has receipt or SMS confirmation:
-      - Ask customer to provide the reference number from the receipt or SMS.
-      - In E-payment — enter the reference number in the Order Sequence search field.
-      - Transaction details will appear. Check the following:
-        Status and Fulfillment Status — confirm if payment was successful or failed.
-        Under Order Details section — check Subscriber Id. This shows which number the payment was applied to.
-      - If Subscriber Id matches customer's number and status is successful → payment was applied correctly. Advise customer accordingly.
-      - If Subscriber Id does not match customer's number → payment was credited to wrong number. Advise customer to visit the nearest stc branch with their receipt or SMS proof to file a complaint.
-      - If status shows failed → payment did not go through. Advise customer to retry.
-      - If issue persists → Raise TT to Resolution team.
+[SECTION: خصم خاطئ أو خصم مرتين]
+📌 نحتاج نتحقق من المعاملة قبل ما نرفع طلب
+اطلب رقم المرجع من الإيصال أو الـ SMS (إذا متوفر)
+افتح ePayment ← Order Sequence ← تحقق من: المبلغ، الحالة، الـ Subscriber ID
+[OPTIONS: ✅ تأكد الخصم الخاطئ أو المكرر → Raise TT]
+[END_SECTION]
 
-      If no — no receipt and no SMS confirmation:
-      - Ask customer to provide kiosk machine number, branch name and location.
-      - Raise TT to Resolution team with all available details.
-
-   If wrong charge — incorrect amount or charged twice:
-   a. Ask customer to provide the reference number from receipt or SMS if available.
-   b. In E-payment — enter the reference number in the Order Sequence search field.
-   c. Verify the transaction amount, status and Subscriber Id.
-   d. If charge confirmed incorrect or duplicate → Raise TT to Resolution team with full transaction details including machine number, branch name and location.
-
-If customer used an alternative kiosk (OG Money, E-Ent, etc.) → advise customer to contact their support directly.
+[SECTION: كيوسك ثاني (OG Money, E-Ent, إلخ)]
+📌 هالكيوسكات مو تبعنا — ما عندنا صلاحية نتحقق من معاملاتها
+أبلغ العميل يتواصل مع دعم الجهة المشغّلة للكيوسك مباشرة
+[END_SECTION]
 
 📋 اسم الطلب: Digital and self service - Kiosk- Payment issue
-متطلبات الطلب::
-• Issue description  
-• Troubleshooting confirmation  
-• Transaction details, amount, time, date, kiosk number and location  
-• Callback`
+متطلبات الطلب:
+• وصف المشكلة
+• رقم المرجع من الإيصال أو الـ SMS (إذا متوفر)
+• تفاصيل المعاملة: المبلغ، التاريخ، الوقت، رقم الكيوسك والموقع
+• رقم للتواصل + WhatsApp`
   },
   {
     keywords: ["voucher", "قسيمة", "e-voucher"],
     category: "Voucher- issues",
     priority: "medium",
     definition: "Any issue with E-Vouchers",
-    solution: `Step 1 — Identify customer type:
+    solution: `[V2]
+📌 نوع العميل يحدد قناة الشراء المتاحة
+شنو نوع العميل؟
+[OPTIONS: 📱 عميل stc | 👤 غير عميل stc]
 
-   Non-stc customer:
-   → Purchase channel can only be app or web. Proceed to Step 2A.
+[SECTION: غير عميل stc]
+📌 غير عملاء stc يشترون فقط عبر التطبيق أو الموقع
+اطلب رقم المرجع من الإيصال أو الـ SMS
+افتح ePayment ← Order Sequence ← أدخل رقم المرجع
+شنو المشكلة؟
+[OPTIONS: 📭 الكوبون ما وصل | ♻️ يقول ما استخدمه وظهر مستخدم | ❌ الكوبون مو صالح | 🔄 نوع أو قيمة خاطئة | 💸 ما استلم الاسترجاع | ❗ الدفع فشل أو ما في معاملة]
+[SECTION: الكوبون ما وصل]
+تحقق من Fulfillment Status في ePayment
+[OPTIONS: ✅ Fulfillment Successful | ❌ مو Successful → Raise TT]
+[SECTION: Fulfillment Successful]
+📌 الكوبون أُرسل — ممكن يكون في Spam أو SMS
+أبلغ العميل يتحقق من:
+• صندوق الوارد و Spam/Junk في إيميله
+• رسائل الـ SMS
+[OPTIONS: ✅ لاقاه | ❌ ما لاقاه → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: يقول ما استخدمه وظهر مستخدم]
+📌 يحتاج تحقيق من فريق Resolutions
+[OPTIONS: ✅ تم → Raise TT]
+[END_SECTION]
+[SECTION: الكوبون مو صالح]
+[OPTIONS: ✅ تم → Raise TT]
+[END_SECTION]
+[SECTION: نوع أو قيمة خاطئة]
+📌 تحقق من ePayment شنو اللي اتطلب مقابل اللي اتسلّم
+تحقق من Order Details — شنو اللي طُلب وشنو اللي صدر
+[OPTIONS: ✅ تأكدت الفرق → Raise TT]
+[END_SECTION]
+[SECTION: ما استلم الاسترجاع]
+تحقق من Refund Status في المعاملة
+[OPTIONS: ✅ الاسترجاع قيد المعالجة | ❌ ما في سجل استرجاع → Raise TT]
+[SECTION: الاسترجاع قيد المعالجة]
+📌 الاسترجاع بيد البنك — مدته تعتمد على سياسة البنك
+أبلغ العميل يتواصل مع بنكه للاستفسار عن الموعد
+[END_SECTION]
+[END_SECTION]
+[SECTION: الدفع فشل أو ما في معاملة]
+📌 الدفع ما تم — المبلغ ما انخصم فعلياً
+أبلغ العميل يحاول مرة ثانية
+[OPTIONS: ✅ نجح | ❌ ما نجح → Raise TT]
+[END_SECTION]
+[END_SECTION]
 
-   stc customer:
-   → Ask how the voucher was purchased — app/web or charged to stc line.
-   → If app or web → proceed to Step 2A.
-   → If charged to stc line → proceed to Step 2B.
-
-Step 2A — App or Web purchase (stc and non-stc customers):
-   Ask customer for reference number from receipt or SMS confirmation.
-   In E-payment — enter reference number in Order Sequence search field.
-   Identify the scenario:
-
-   → Voucher not received:
-      Check Fulfillment Status.
-      If Fulfillment Successful → ask customer to check SMS inbox and spam folder.
-      If still not found → Raise TT to Resolution team.
-
-   → Voucher shows redeemed but customer did not use it:
-      Raise TT to Resolution team with full transaction details.
-
-   → Voucher not valid:
-      Raise TT to Resolution team with full transaction details.
-
-   → Wrong voucher type or denomination:
-      Confirm what was ordered vs what was issued in E-payment.
-      Raise TT to Resolution team with full transaction details.
-
-   → Refund not received:
-      Check Refund Status on the transaction.
-      If refund in progress → advise customer to check with bank for timeline.
-      If no refund record → Raise TT to Resolution team.
-
-   → Payment failed or transaction not found:
-      Advise customer payment did not go through. Advise customer to retry.
-
-Step 2B — Charged to stc line (stc customers only):
-   Check BSS — confirm charge exists on the customer's bill. Note amount and date.
-   If charge confirmed but issue persists → Raise TT to Resolution team.
+[SECTION: عميل stc]
+الكوبون اشتراه عبر إيش؟
+[OPTIONS: 📱 التطبيق أو الموقع | 📋 خُصم على خط stc]
+[SECTION: التطبيق أو الموقع]
+اطلب رقم المرجع من الإيصال أو الـ SMS
+افتح ePayment ← Order Sequence ← أدخل رقم المرجع
+شنو المشكلة؟
+[OPTIONS: 📭 الكوبون ما وصل | ♻️ يقول ما استخدمه وظهر مستخدم | ❌ الكوبون مو صالح | 🔄 نوع أو قيمة خاطئة | 💸 ما استلم الاسترجاع | ❗ الدفع فشل أو ما في معاملة]
+[SECTION: الكوبون ما وصل]
+تحقق من Fulfillment Status في ePayment
+[OPTIONS: ✅ Fulfillment Successful | ❌ مو Successful → Raise TT]
+[SECTION: Fulfillment Successful]
+📌 الكوبون أُرسل — ممكن يكون في Spam أو SMS
+أبلغ العميل يتحقق من إيميله (Inbox + Spam) ورسائل الـ SMS
+[OPTIONS: ✅ لاقاه | ❌ ما لاقاه → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: يقول ما استخدمه وظهر مستخدم]
+[OPTIONS: ✅ تم → Raise TT]
+[END_SECTION]
+[SECTION: الكوبون مو صالح]
+[OPTIONS: ✅ تم → Raise TT]
+[END_SECTION]
+[SECTION: نوع أو قيمة خاطئة]
+تحقق من Order Details — شنو اللي طُلب وشنو اللي صدر
+[OPTIONS: ✅ تأكدت الفرق → Raise TT]
+[END_SECTION]
+[SECTION: ما استلم الاسترجاع]
+تحقق من Refund Status في المعاملة
+[OPTIONS: ✅ الاسترجاع قيد المعالجة | ❌ ما في سجل استرجاع → Raise TT]
+[SECTION: الاسترجاع قيد المعالجة]
+أبلغ العميل يتواصل مع بنكه للاستفسار عن الموعد
+[END_SECTION]
+[END_SECTION]
+[SECTION: الدفع فشل أو ما في معاملة]
+أبلغ العميل يحاول مرة ثانية
+[OPTIONS: ✅ نجح | ❌ ما نجح → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[SECTION: خُصم على خط stc]
+📌 الخصم على الخط — نتحقق من BSS
+افتح BSS وتحقق من وجود الخصم على فاتورة العميل
+[OPTIONS: ✅ الخصم موجود في BSS → Raise TT | ❌ ما في خصم في BSS]
+[SECTION: ما في خصم في BSS]
+📌 ما في خصم في النظام — الدفع ما تم فعلياً
+أبلغ العميل يحاول الشراء مرة ثانية
+[OPTIONS: ✅ نجح | ❌ ما نجح → Raise TT]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
 
 📋 اسم الطلب: Digital and self service - Voucher- issues
-متطلبات الطلب::
-• Issue description  
-• Whether customer is stc or non-stc  
-• Purchase channel, app, website, or charged to line  
-• Issue type, not received, redeemed, not valid, wrong type, or refund  
-• Order sequence reference number (if available)  
-• Transaction details, voucher type, amount, date and time  
-• Callback`
+متطلبات الطلب:
+• وصف المشكلة
+• نوع العميل (stc أو غير stc)
+• قناة الشراء (تطبيق / موقع / خط)
+• نوع المشكلة
+• رقم المرجع (إذا متوفر)
+• تفاصيل المعاملة: نوع الكوبون، المبلغ، التاريخ والوقت
+• رقم للتواصل + WhatsApp`
   },
   {
     keywords: ["esim", "e-sim", "ايسيم", "شريحة رقمية", "qr code esim"],
@@ -4495,6 +4684,12 @@ function selectDiagOption(btn, groupId, value, label) {
 
   // Handle basics confirmation buttons
   if (groupId.startsWith('basics-')) {
+    if (value === 'انحلت من الاساسيات') {
+      var agR = currentUser && currentUser.name ? currentUser.name.split(' ')[0] : 'أخوي';
+      addMsg('🎉 ممتاز! المشكلة انحلت بعد التأكد من الأساسيات ✅\n\nنورت ' + agR + '، في شي ثاني أخدمك؟ 👋', 'bot', null, 'low', null);
+      setTimeout(function(){ addButtonGroup([{icon:'1️⃣',label:'✅ إي، عندي شي ثاني',value:'إي عندي شي ثاني'},{icon:'2️⃣',label:'🏁 لا، يكفي — شكراً',value:'لا يكفي شكرا'}],'closing-'+Date.now()); },300);
+      return;
+    }
     if (value.includes('كل شي زين')) {
       issueContext.basicsShown = true;
       // After basics confirmed → start KB flow engine (no AI)
@@ -4676,7 +4871,35 @@ function formatBotMessage(text) {
   html = html.split('\n').map(function(line) {
     if (line.startsWith('🔧')) return '<div class="answer-header">' + line + '</div>';
     if (line.includes('━')) return '<hr class="answer-divider">';
-    if (line.startsWith('⚠️')) return '<div class="answer-note">' + line + '</div>';
+    if (line.startsWith('⚠️')) {
+      if (line.includes('الأساسيات أولاً')) {
+        return '<div class="basics-header">⚠️ الأساسيات أولاً — تحقق من كل النقاط قبل المتابعة</div>';
+      }
+      return '<div class="answer-note">' + line + '</div>';
+    }
+    if (line.startsWith('🔵')) {
+      var colonIdx = line.indexOf(':');
+      if (colonIdx > -1) {
+        var bTitle = line.substring(2, colonIdx).trim();
+        var bDesc  = line.substring(colonIdx + 1).trim();
+        var bType  = 'bss';
+        var bIcon  = '🗄️';
+        if (bTitle.includes('Smart Care'))  { bType = 'sc';  bIcon = '🔍'; }
+        else if (bTitle.includes('Data Roaming') || bTitle.includes('Roaming')) { bType = 'dr'; bIcon = '📡'; }
+        else if (bTitle.includes('Site') || bTitle.includes('سايت')) { bType = 'sd'; bIcon = '📶'; }
+        window._bci = (window._bci || 0) + 1;
+        var cid = 'bc-' + window._bci;
+        return '<div class="basics-card ' + bType + '" id="' + cid + '">' +
+          '<span class="basics-card-icon">' + bIcon + '</span>' +
+          '<div class="basics-card-body">' +
+            '<div class="basics-card-title">' + bTitle + '</div>' +
+            '<div class="basics-card-desc">' + bDesc + '</div>' +
+            '<div id="' + cid + '-exp" style="display:none;margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.07)"></div>' +
+          '</div>' +
+          '<button onclick="toggleBasicsCard(\'' + cid + '\',\'' + bType + '\')" id="' + cid + '-btn" style="background:none;border:none;font-size:16px;cursor:pointer;padding:0;opacity:0.4;flex-shrink:0;margin-top:2px;transition:all 0.2s;color:inherit" title="اضغط لمعرفة التفاصيل">☐</button>' +
+        '</div>';
+      }
+    }
     if (line.includes('[NEW_CUSTOMER]')) return '<div style="margin-top:12px"><button onclick="resetForNewCustomer()" style="background:var(--primary);border:none;border-radius:10px;padding:10px 20px;color:white;font-size:13px;font-family:inherit;cursor:pointer;font-weight:600">👤 عميل جديد</button></div>';
     if (line.startsWith('✅')) return '<div class="answer-success">' + line + '</div>';
     if (line.startsWith('📞')) return '<div class="answer-escalate">' + line + '</div>';
@@ -4690,6 +4913,33 @@ function formatBotMessage(text) {
     if (stepMatch) {
       return '<div class="msg-step"><div class="step-num">' + stepMatch[1] + '</div><span>' + stepMatch[2] + '</span></div>';
     }
+    // STEP header badge (STEP 1 —, STEP A —, etc.)
+    var stepHdrMatch = line.match(/^STEP\s+(\w+)\s*[—\-–]\s*(.*)/);
+    if (stepHdrMatch) {
+      var stepNum  = stepHdrMatch[1];
+      var stepDesc = stepHdrMatch[2].trim();
+      return '<div class="step-header"><span class="step-header-num">STEP ' + stepNum + '</span>' + (stepDesc ? '<span>' + stepDesc + '</span>' : '') + '</div>';
+    }
+    // Arrow path lines (lines with ← separating steps)
+    if ((line.match(/←/g) || []).length >= 2) {
+      var isIOS = line.startsWith('🍎');
+      var isAnd = line.startsWith('🤖');
+      var deviceClass = isIOS ? 'device-ios' : isAnd ? 'device-and' : '';
+      var devicePrefix = '';
+      var cleanLine = line;
+      if (isIOS) { devicePrefix = '<span class="arrow-chip device-ios">🍎 آيفون</span><span class="arrow-sep">←</span>'; cleanLine = line.replace(/^🍎\s*آيفون\s*[:,]\s*/,''); }
+      else if (isAnd) { devicePrefix = '<span class="arrow-chip device-and">🤖 أندرويد</span><span class="arrow-sep">←</span>'; cleanLine = line.replace(/^🤖\s*أندرويد\s*[:,]\s*/,''); }
+      var parts = cleanLine.split('←').map(function(p){ return p.trim(); }).filter(Boolean);
+      var chipsHtml = parts.map(function(p,i){
+        return '<span class="arrow-chip' + (deviceClass && i===0 ? ' '+deviceClass : '') + '">' + p + '</span>' +
+               (i < parts.length-1 ? '<span class="arrow-sep">←</span>' : '');
+      }).join('');
+      return '<div class="arrow-path">' + devicePrefix + chipsHtml + '</div>';
+    }
+    // Bullet requirement items (• )
+    if (line.startsWith('• ')) {
+      return '<div class="req-item"><span class="req-dot"></span><span>' + line.substring(2) + '</span></div>';
+    }
     return line;
   }).join('\n');
   
@@ -4698,6 +4948,76 @@ function formatBotMessage(text) {
   html = html.replace(/(<br>){3,}/g, '<br><br>');
   
   return html;
+}
+
+function toggleBasicsCard(cid, cardType) {
+  var btn = document.getElementById(cid + '-btn');
+  var exp = document.getElementById(cid + '-exp');
+  if (!btn || !exp) return;
+  var isOpen = exp.style.display !== 'none';
+  if (isOpen) {
+    exp.style.display = 'none';
+    btn.innerHTML = '☐'; btn.style.opacity = '0.4'; btn.style.color = 'inherit';
+    return;
+  }
+  var sub = issueContext && issueContext.subIssue ? issueContext.subIssue : '';
+  var isRoaming = sub.includes('Roaming');
+  var isCalls   = sub.includes('Calls-') || sub.includes('MNP') || sub.includes('SMS');
+  var html = '';
+  var whyHtml   = function(t){ return '<div style="font-size:11px;color:#F39C12;font-weight:700;margin-bottom:4px">📌 ليش مهم؟</div><div style="font-size:11px;color:var(--text-muted);margin-bottom:8px;line-height:1.5">'+t+'</div>'; };
+  var listHtml  = function(title, items, color){ return '<div style="font-size:11px;font-weight:700;color:'+color+';margin-bottom:4px">'+title+'</div>'+items.map(function(s){return '<div style="font-size:11px;color:var(--text-muted);padding:2px 0">• '+s+'</div>';}).join(''); };
+  var pathChips = function(steps){ return '<div style="display:flex;flex-wrap:wrap;gap:3px;align-items:center;margin:4px 0">'+steps.map(function(s,i){return '<span style="background:var(--surface3);border:1px solid var(--border);border-radius:5px;padding:2px 7px;font-size:10.5px;color:var(--text)">'+s+'</span>'+(i<steps.length-1?'<span style="font-size:10px;color:var(--text-dim)">←</span>':'');}).join('')+'</div>'; };
+  var scPath    = function(checks){ return '<div style="font-size:11px;font-weight:700;color:#C77DFF;margin-bottom:4px">🛤 الطريق في Smart Care</div>'+pathChips(['Quality Complaint Handling','Network Registration','Query'])+'<div style="margin-top:6px">'+listHtml('✔ تتحقق من:',checks,'#C77DFF')+'</div>'; };
+
+  // ── BSS ──
+  if (cardType === 'bss') {
+    if (isCalls) {
+      html = whyHtml('بدون خط نشط أو رصيد كافٍ، ما راح تشتغل المكالمات') +
+             listHtml('🔍 شنو تتحقق في BSS؟',['الخط نشط','ما في إيقاف بالفاتورة','الباقة تشمل المكالمات أو في رصيد كافي'],'#74B9FF');
+    } else {
+      html = whyHtml('بدون خط نشط أو باقة فعّالة، ما راح يشتغل أي شي حتى لو الشبكة تمام') +
+             listHtml('🔍 شنو تتحقق في BSS؟',['الخط نشط','الباقة ما انتهت','ما في إيقاف بالفاتورة','استخدام الإنترنت ما خلص'],'#74B9FF');
+    }
+  }
+
+  // ── SMART CARE ──
+  else if (cardType === 'sc') {
+    if (sub === 'Roaming Techincal- Internet') {
+      html = whyHtml('يكشف لو الخط ممنوع من التجوال أو مو مربوط على شبكة رومينق') +
+             scPath(['CS Roam = NOBAR','Roaming Package = YES','الخط attached على شبكة رومينق']);
+    } else if (sub === 'Roaming Technical- Calls & SMS') {
+      html = whyHtml('يكشف لو في حجب على مكالمات التجوال أو الخط مو attached') +
+             scPath(['CS Roam = NOBAR','الخط attached على شبكة رومينق']);
+    } else if (isCalls) {
+      html = whyHtml('يكشف لو في حجب على المكالمات أو الخط مو attached بالشبكة') +
+             scPath(['CS Bar = NOBAR','الخط attached على شبكة stc']);
+    } else {
+      html = whyHtml('يكشف لو في مشكلة في حالة الخط أو Data Status على الشبكة') +
+             scPath(['الخط attached على شبكة stc','Data Status = نشط','وفي إشارة في المنطقة']);
+    }
+  }
+
+  // ── DATA ROAMING ──
+  else if (cardType === 'dr') {
+    html = whyHtml('حتى لو الباقة نشطة، لو Data Roaming مطفي على الجهاز النت ما يشتغل أبد') +
+           '<div style="font-size:11px;font-weight:700;color:#2ECC71;margin-bottom:6px">📱 طريقة التفعيل</div>' +
+           '<div style="font-size:11px;color:#74B9FF;font-weight:600;margin-bottom:3px">🍎 آيفون</div>' +
+           pathChips(['إعدادات','Cellular','Cellular Data Options','شغّل Data Roaming']) +
+           '<div style="font-size:11px;color:#2ECC71;font-weight:600;margin:6px 0 3px">🤖 أندرويد</div>' +
+           pathChips(['إعدادات','اتصالات','شبكات الجوال','شغّل Data Roaming']);
+  }
+
+  // ── SITE DOWN ──
+  else if (cardType === 'sd') {
+    html = whyHtml('لو في عطل في منطقة العميل، ما راح تنحل المشكلة قبل ما يصلحون الشبكة') +
+           '<div style="font-size:11px;font-weight:700;color:#F39C12;margin-bottom:4px">🔍 كيف تتحقق؟</div>' +
+           '<div style="font-size:11px;color:var(--text-muted);line-height:1.6">• افتح نظام العطل من الداشبورد<br>• تحقق من منطقة العميل<br>• لو في عطل — أبلغ العميل وارفع TT</div>';
+  }
+
+  if (!html) html = '<div style="font-size:11px;color:var(--text-muted)">تحقق من هذه النقطة قبل المتابعة</div>';
+  exp.innerHTML = html;
+  exp.style.display = 'block';
+  btn.innerHTML = '✅'; btn.style.opacity = '1'; btn.style.color = '#2ECC71';
 }
 
 function addMsg(text, role, stepsHtml, priority, category) {
@@ -5089,7 +5409,7 @@ async function sendMessage() {
       setTimeout(() => {
         addButtonGroup([
           {icon:'1️⃣', label:'✅ تأكدنا، نكمل ✅', value:'كل شي زين'},
-          {icon:'2️⃣', label:'⚠️ في مشكلة بالأساسيات', value:'في مشكلة'}
+          {icon:'2️⃣', label:'🎉 انحلت بعد التأكد من الأساسيات', value:'انحلت من الاساسيات'}
         ], 'basics-' + Date.now());
       }, 300);
       savLog(q, kbResult.category, kbResult.priority, basicLines);
@@ -6446,7 +6766,7 @@ function triggerIssueWithContext() {
     setTimeout(function() {
       addButtonGroup([
         {icon:'1️⃣', label:'✅ تأكدنا، نكمل ✅', value:'كل شي زين'},
-        {icon:'2️⃣', label:'⚠️ في مشكلة بالأساسيات', value:'في مشكلة'}
+        {icon:'2️⃣', label:'🎉 انحلت بعد التأكد من الأساسيات', value:'انحلت من الاساسيات'}
       ], 'basics-' + Date.now());
     }, 300);
     savLog(aiParts.join(' | '), kbCat, 'medium', basicMsg);
