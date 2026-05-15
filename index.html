@@ -6604,9 +6604,17 @@ function renderLogsTable(data) {
            <button onclick="showAnswerModal(this)" data-answer=\'${(l.answer||'').replace(/'/g,'\'\'')}\' style="flex-shrink:0;background:rgba(107,30,120,0.25);border:1px solid rgba(107,30,120,0.5);border-radius:6px;padding:3px 10px;color:#C77DFF;font-size:11px;font-family:inherit;cursor:pointer;white-space:nowrap">View</button>
          </div>`
       : '<span style="color:var(--text-dim);font-size:12px">-</span>';
+    const questionPreview = l.question ? l.question.substring(0, 25) + (l.question.length > 25 ? '...' : '') : '-';
+    const safeQuestion = (l.question || '').replace(/'/g, "''");
+    const questionCell = l.question
+      ? `<div style="display:flex;align-items:center;gap:8px">
+           <span style="font-size:12px;color:var(--text-muted);line-height:1.4;flex:1">${questionPreview}</span>
+           <button onclick="showAnswerModal(this)" data-answer=\'${safeQuestion}\' style="flex-shrink:0;background:rgba(107,30,120,0.25);border:1px solid rgba(107,30,120,0.5);border-radius:6px;padding:3px 10px;color:#C77DFF;font-size:11px;font-family:inherit;cursor:pointer;white-space:nowrap">View</button>
+         </div>`
+      : '<span style="color:var(--text-dim);font-size:12px">-</span>';
     return `<tr>
       <td class="td-email">${l.email}</td>
-      <td class="td-question">${l.question}</td>
+      <td class="td-question">${questionCell}</td>
       <td style="max-width:260px">${answerCell}</td>
       <td>${l.category}</td>
       <td><span style="font-size:12px;color:#C77DFF;background:rgba(107,30,120,0.15);padding:3px 10px;border-radius:20px;white-space:nowrap">${subCat}</span></td>
