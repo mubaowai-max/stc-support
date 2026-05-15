@@ -1165,6 +1165,8 @@
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px;padding:14px 18px;background:var(--surface);border:1px solid var(--border);border-radius:12px">
           <span style="font-size:13px;color:var(--text-muted);font-weight:500">📅 الفترة:</span>
           <select id="analyticsPeriod" onchange="renderAnalytics()" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 12px;color:var(--text);font-size:13px;font-family:inherit;outline:none">
+            <option value="1">اليوم</option>
+            <option value="2">أمس</option>
             <option value="7">آخر 7 أيام</option>
             <option value="30">آخر 30 يوم</option>
             <option value="90">آخر 3 أشهر</option>
@@ -7581,8 +7583,18 @@ function getAnalyticsData() {
     filtered = filtered.filter(l => { const d = new Date(l.time); return d >= from && d <= to; });
   } else if (periodSel && periodSel.value !== 'all') {
     const days = parseInt(periodSel.value);
-    const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
-    filtered = filtered.filter(l => new Date(l.time) >= since);
+    if (days === 1) {
+      // Today only
+      const today = new Date().toDateString();
+      filtered = filtered.filter(l => new Date(l.time).toDateString() === today);
+    } else if (days === 2) {
+      // Yesterday only
+      const yesterday = new Date(Date.now() - 24*60*60*1000).toDateString();
+      filtered = filtered.filter(l => new Date(l.time).toDateString() === yesterday);
+    } else {
+      const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+      filtered = filtered.filter(l => new Date(l.time) >= since);
+    }
   }
   return filtered;
 }
@@ -7598,12 +7610,39 @@ function renderAnalytics() {
   const data = getAnalyticsData();
   const today = new Date().toDateString();
   const weekAgo = new Date(Date.now() - 7*24*60*60*1000);
+  const periodSel = document.getElementById('analyticsPeriod');
+  const fromEl = document.getElementById('analyticsFrom');
+  const toEl = document.getElementById('analyticsTo');
+  const isAllTime = (!fromEl || !fromEl.value) && (!toEl || !toEl.value) && periodSel && periodSel.value === 'all';
+  const isWeekFilter = periodSel && periodSel.value === '7' && (!fromEl || !fromEl.value);
 
-  // Metric cards
-  document.getElementById('anTotal').textContent = data.length;
-  document.getElementById('anWeek').textContent = data.filter(l => new Date(l.time) >= weekAgo).length;
   document.getElementById('anToday').textContent = data.filter(l => new Date(l.time).toDateString() === today).length;
   document.getElementById('anAgents').textContent = [...new Set(data.map(l => l.email))].length;
+
+  if (isAllTime) {
+    // Use Supabase count API for accurate all-time totals
+    document.getElementById('anTotal').textContent = '...';
+    document.getElementById('anWeek').textContent = '...';
+    const weekStart = weekAgo.toISOString();
+    Promise.all([
+      fetch(SUPABASE_URL + "/rest/v1/logs?select=*", { method:"HEAD", headers:{"apikey":SUPABASE_KEY,"Authorization":"Bearer "+SUPABASE_KEY,"Prefer":"count=exact"} }),
+      fetch(SUPABASE_URL + "/rest/v1/logs?select=*&created_at=gte." + weekStart, { method:"HEAD", headers:{"apikey":SUPABASE_KEY,"Authorization":"Bearer "+SUPABASE_KEY,"Prefer":"count=exact"} })
+    ]).then(([tRes, wRes]) => {
+      const tcr = tRes.headers.get('content-range');
+      const wcr = wRes.headers.get('content-range');
+      const total = tcr ? parseInt(tcr.split('/')[1]) : data.length;
+      const week  = wcr ? parseInt(wcr.split('/')[1]) : data.filter(l => new Date(l.time) >= weekAgo).length;
+      document.getElementById('anTotal').textContent = (!isNaN(total) ? total : data.length).toLocaleString();
+      document.getElementById('anWeek').textContent  = (!isNaN(week)  ? week  : data.filter(l => new Date(l.time) >= weekAgo).length).toLocaleString();
+    }).catch(() => {
+      document.getElementById('anTotal').textContent = data.length.toLocaleString();
+      document.getElementById('anWeek').textContent  = data.filter(l => new Date(l.time) >= weekAgo).length.toLocaleString();
+    });
+  } else {
+    // Filtered period — use filtered data directly
+    document.getElementById('anTotal').textContent = data.length.toLocaleString();
+    document.getElementById('anWeek').textContent  = data.filter(l => new Date(l.time) >= weekAgo).length.toLocaleString();
+  }
 
   // ── Daily chart (last 7 days) ──
   const last7 = [];
