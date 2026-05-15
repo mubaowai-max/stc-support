@@ -6395,26 +6395,29 @@ async function renderAdmin() {
   try {
     const countRes = await fetch(SUPABASE_URL + "/rest/v1/logs?select=*", {
       method: "HEAD",
-      headers: {
-        "apikey": SUPABASE_KEY,
-        "Authorization": "Bearer " + SUPABASE_KEY,
-        "Prefer": "count=exact"
-      }
+      headers: { "apikey": SUPABASE_KEY, "Authorization": "Bearer " + SUPABASE_KEY, "Prefer": "count=exact" }
     });
-    const contentRange = countRes.headers.get('content-range');
-    if (contentRange) {
-      const realTotal = contentRange.split('/')[1];
-      if (realTotal && !isNaN(realTotal)) {
-        document.getElementById('statTotal').textContent = parseInt(realTotal).toLocaleString();
-      } else {
-        document.getElementById('statTotal').textContent = allLogsCache.length;
-      }
-    } else {
-      document.getElementById('statTotal').textContent = allLogsCache.length;
+    const cr = countRes.headers.get('content-range');
+    if (cr) {
+      const realTotal = parseInt(cr.split('/')[1]);
+      if (!isNaN(realTotal)) document.getElementById('statTotal').textContent = realTotal.toLocaleString();
+      else document.getElementById('statTotal').textContent = allLogsCache.length;
+    } else { document.getElementById('statTotal').textContent = allLogsCache.length; }
+  } catch(e) { document.getElementById('statTotal').textContent = allLogsCache.length; }
+
+  // Get real week count from Supabase
+  try {
+    const weekStart = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+    const weekRes = await fetch(SUPABASE_URL + "/rest/v1/logs?select=*&created_at=gte." + weekStart, {
+      method: "HEAD",
+      headers: { "apikey": SUPABASE_KEY, "Authorization": "Bearer " + SUPABASE_KEY, "Prefer": "count=exact" }
+    });
+    const wcr = weekRes.headers.get('content-range');
+    if (wcr) {
+      const realWeek = parseInt(wcr.split('/')[1]);
+      if (!isNaN(realWeek)) window._realWeekCount = realWeek;
     }
-  } catch(e) {
-    document.getElementById('statTotal').textContent = allLogsCache.length;
-  }
+  } catch(e) {}
 
   if (isAdmin) {
     document.getElementById('statUsers').textContent = uniqueUsers.length;
@@ -6424,7 +6427,7 @@ async function renderAdmin() {
     const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
     const weekLogs = allLogsCache.filter(l => new Date(l.time) >= weekAgo);
     document.getElementById('statUsers').textContent = todayLogs.length;
-    document.getElementById('statToday').textContent = weekLogs.length;
+    document.getElementById('statToday').textContent = window._realWeekCount !== undefined ? window._realWeekCount.toLocaleString() : weekLogs.length;
 
     // Top Task Name
     const taskCount = {};
@@ -6505,7 +6508,13 @@ function startLiveRefresh() {
         }));
         currentLogsPage = 1;
         renderLogsTable(allLogsCache);
-        document.getElementById('statTotal').textContent = allLogsCache.length;
+        // Use count API for accurate total
+        try {
+          const lcRes = await fetch(SUPABASE_URL + '/rest/v1/logs?select=*', { method:'HEAD', headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'count=exact'} });
+          const lcr = lcRes.headers.get('content-range');
+          const lct = lcr ? parseInt(lcr.split('/')[1]) : allLogsCache.length;
+          document.getElementById('statTotal').textContent = (!isNaN(lct) ? lct : allLogsCache.length).toLocaleString();
+        } catch(e) { document.getElementById('statTotal').textContent = allLogsCache.length; }
         const today = new Date().toDateString();
         document.getElementById('statToday').textContent = allLogsCache.filter(l => new Date(l.time).toDateString() === today).length;
         // Flash indicator green
