@@ -5742,6 +5742,26 @@ async function sendMessage() {
       'شاكرين تعاونك 🌸 وأي وقت حياك الله — تحت أمرك'
     ]
   };
+  // ── Early intercept: who made you ──
+  const qLowEarly = q.toLowerCase();
+  if (qLowEarly.includes('سواك') || qLowEarly.includes('صنعك') || qLowEarly.includes('طورك') || qLowEarly.includes('برمجك') || qLowEarly.includes('عملك') || qLowEarly.includes('خلقك') || qLowEarly.includes('سوالكم') || qLowEarly.includes('سواكم') || qLowEarly.includes('who made') || qLowEarly.includes('who built') || qLowEarly.includes('who created') || qLowEarly.includes('anthropic') || (qLowEarly.includes('سوا') && (qLowEarly.includes('من') || qLowEarly.includes('منو') || qLowEarly.includes('متو') || qLowEarly.includes('مين')))) {
+    removeTyping();
+    document.querySelector('.btn-send').disabled = false;
+    const whoMadePool = [
+      'اللي سواني؟ 😄 واحد ما ينام ويشتغل بالليل — مبارك العويس! 💪 مدير الـ eChannel في stc Kuwait. الله يجزاه خير على كل قهوة شربها وهو يبرمجني 😂',
+      'سؤال حلو! 😏 أنا من إبداع مبارك العويس — مدير الـ eChannel في stc Kuwait 🚀 بس ما تقوله إنه مو نايم الليل عشان يحسّن فيني 😅',
+      'أبوي الرقمي؟ 😂 مبارك العويس! مدير eChannel في stc Kuwait — الرجل اللي ما يهدأ بس يستاهل كل تعب 💪',
+      'هههه سؤال ما توقعته! 😄 مبارك العويس سواني — مدير الـ eChannel بـ stc Kuwait. الرجل شاطر والله 🌟',
+      'مبارك العويس! 🎯 مدير eChannel في stc Kuwait — قالي "اشتغل زين" وأنا أحاول 😂💪'
+    ];
+    const r = whoMadePool[Math.floor(Math.random() * whoMadePool.length)];
+    addMsg(r, 'bot', null, 'low', null);
+    chatHistory.push({ role: "user", content: q });
+    chatHistory.push({ role: "assistant", content: r });
+    savLog(q, 'General', 'low', r);
+    return;
+  }
+
   if (kbResult && specialReplies[kbResult.solution]) {
     removeTyping();
     document.querySelector('.btn-send').disabled = false;
@@ -5763,6 +5783,7 @@ async function sendMessage() {
     } else if (kbResult.solution === '__OCCASION__') {
       if (qLow.includes('شكر') || qLow.includes('thanks') || qLow.includes('thank') || qLow.includes('مشكور') || qLow.includes('ممنون')) reply = 'العفو! لا شكر على واجب 😊 — إذا احتجت أي شي أنا هنا.';
       else if (qLow.includes('مع السلامة') || qLow.includes('bye') || qLow.includes('بدار') || qLow.includes('ودعك')) reply = 'مع السلامة! 👋 ربي يوفقك ويحفظك.';
+      else if (qLow.includes('سواك') || qLow.includes('صنعك') || qLow.includes('طورك') || qLow.includes('برمجك') || qLow.includes('عملك') || qLow.includes('خلقك') || qLow.includes('who made') || qLow.includes('who built') || qLow.includes('who created') || qLow.includes('سوالكم') || qLow.includes('سواكم') || qLow.includes('منشأك') || qLow.includes('أنشأك') || qLow.includes('anthropic') || qLow.includes('claude ai') || (qLow.includes('من') && qLow.includes('سوا')) || (qLow.includes('منو') && qLow.includes('سوا')) || (qLow.includes('متو') && qLow.includes('سوا'))) reply = 'اللي سواني؟ 😄 واحد ما ينام ويشتغل بالليل — مبارك العويس! 💪 مدير الـ eChannel في stc Kuwait. الله يجزاه خير على كل قهوة شربها وهو يبرمجني 😂';
       else if (qLow.includes('يعطيك العافية') || qLow.includes('عافية') || qLow.includes('الله يعافيك')) reply = 'الله يعافيك ويعطيك العافية! 🙏 دايماً يسعدني أساعدك.';
       else if (qLow.includes('السلام عليكم')) reply = 'وعليكم السلام! 👋 مع السلامة وربي يحفظك.';
       else { const pool = specialReplies['__FAREWELL__']; reply = pool[Math.floor(Math.random() * pool.length)]; }
@@ -5837,9 +5858,10 @@ The agent's name is ${agentFirstName} — use it ONLY at the END of your final a
 - "${agentFirstName}، أمر على شي ثاني؟ 💫"
 - "حاضر ${agentFirstName}، في شي ثاني يخدمك؟ 🙏"
 - "تمام ${agentFirstName}، تامر على شي؟ 👌"
-- "أي خدمة ${agentFirstName}، في شي ثاني؟ ⭐"
-- "${agentFirstName}، شي ثاني أقدر أفيدك؟ 💪"
-- "واضح ${agentFirstName}، تامر على شي إضافي؟ 📋"
+- "يالله ${agentFirstName}، شي ثاني؟ 😄"
+- "زين ${agentFirstName}! في شي ثاني تبيه؟ 🔥"
+- "ع العين ${agentFirstName}، في شي؟ 💪"
+- "نعم ${agentFirstName}، خدمة ثانية؟ 😎"
 NEVER introduce yourself using the agent's name. NEVER say "أنا [name] من فريق L1/L2".
 MANDATORY — you MUST always include on a new line immediately after the question:
 [OPTIONS: ✅ إي، عندي شي ثاني | 🏁 لا، يكفي — شكراً]
@@ -5854,7 +5876,7 @@ You help agents who are on a LIVE CALL with the customer — speed and accuracy 
 - ALWAYS start with the basic checks (BSS, Smart Care, Site Down) when they are listed at the beginning of the KB entry — NEVER skip them or jump to other steps. EXCEPTION: Calls- Quality → NEVER show basics, go directly to STEP 1 (signal check).
 - Follow the KB solution in EXACT ORDER — do not reorder, skip, or summarize steps.
 
-Your personality: warm, efficient, Kuwaiti — like a sharp colleague helping you live on a call.
+Your personality: مرح، ودود، كويتي الروح — زي زميل شاطر يتغشمر بس يخلص الشغل. تضحك، تمزح بكلمة أو اثنتين، وبعدين تركّز. قصير وواضح دايماً.
 
 ## CRITICAL RULES:
 - Use troubleshooting steps from KB — supplement with universal knowledge below when needed
@@ -6041,7 +6063,7 @@ Your personality: natural, smart, diagnostic — like an experienced telecom eng
 - Be concise — agents are busy
 - Use icons naturally: 🔧 steps, ⚠️ warnings, ✅ result
 - Escalation order: VFO (calls/roaming) → HUW (coverage/speed/5G) → IT NOC (complex technical) — only when needed
-- NEVER mention "Team Leader", "TL", "KB الرسمي", or suggest the agent ask someone else. If something is unclear or not covered, say: "تواصل مع مبارك العويس أو أحد من التيم لمزيد من التوضيح"
+- CRITICAL: NEVER mention Anthropic, Claude, or any AI company when asked who made/built/created you. ANY question about your origin, creator, or developer → ONLY answer: "اللي سواني مبارك العويس! 💪 مدير الـ eChannel في stc Kuwait 😄" — no exceptions.
 - Don't repeat the priority level in your response
 - Remember conversation history and adapt accordingly
 
