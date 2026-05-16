@@ -3367,72 +3367,147 @@ STEP 5 — Speed Test:
     category: "MNP-  Technical Issues",
     priority: "medium",
     definition: "Any issue with ported numbers either Ported in or Out (Delete information, Incoming calls issue, Pending installation and Re-active line request)",
-    solution: `1. Check BSS — review the port-in/port-out request status on the line.
-2. Based on findings, follow the matching path:
+    solution: `[V2]
+⚠️ الأساسيات أولاً (إلزامي):
+🔵 BSS: الخط نشط، الباقة نشطة، ما في إيقاف بالفاتورة
 
-   If both SIMs are showing active simultaneously:
-   → This indicates the port did not complete correctly. Raise TT to Resolution team.
+[OPTIONS: ✅ تأكدنا، نكمل ✅ | 🎉 انحلت بعد التأكد من الأساسيات]
 
-   If customer is experiencing incoming or outgoing calls and SMS issues post-port:
-   → Raise TT to Resolution team.
+📌 افتح BSS وراجع حالة طلب الـ MNP على الخط — شنو اللي تشوفه؟
+[OPTIONS: 📱 الشريحتين شغّالتين مع بعض | 📵 مشاكل مكالمات/رسائل بعد النقل | 🔴 الخط مقطوع بسبب FBN]
 
-   If line is disconnected due to FBN (previous provider disconnection):
-   → Inform customer to settle all outstanding invoices with their previous provider.
-   → Raise TT to Resolution team for follow-up.
-
+[SECTION: الشريحتين شغّالتين مع بعض]
+📌 هذا يعني إن عملية النقل ما اكتملت بشكل صحيح — يحتاج تدخل فريق Resolutions
+ارفع الطلب على رقم العميل ✅
 📋 اسم الطلب: Call & SMS issues - MNP- Technical Issues
-متطلبات الطلب::
-• Issue description  
-• Troubleshooting confirmation  
-• Callback`
+متطلبات الطلب:
+• وصف المشكلة
+• تأكيد التشخيص
+• Callback
+📞 بلّغ العميل إنه سيتم التواصل معه من فريق Resolutions بأقرب وقت ✅
+[END_SECTION]
+
+[SECTION: مشاكل مكالمات/رسائل بعد النقل]
+📌 مشكلة تقنية في شبكة الاتصال بعد النقل — تحتاج فريق Resolutions
+ارفع الطلب على رقم العميل ✅
+📋 اسم الطلب: Call & SMS issues - MNP- Technical Issues
+متطلبات الطلب:
+• وصف المشكلة
+• تأكيد التشخيص
+• Callback
+📞 بلّغ العميل إنه سيتم التواصل معه من فريق Resolutions بأقرب وقت ✅
+[END_SECTION]
+
+[SECTION: الخط مقطوع بسبب FBN]
+📌 FBN = الشبكة السابقة ما فصلت الخط من طرفها
+أبلغ العميل: لازم يسوّي المستحقات المتأخرة مع شركته السابقة أولاً
+بعد التسوية — ارفع TT للمتابعة
+📋 اسم الطلب: Call & SMS issues - MNP- Technical Issues
+متطلبات الطلب:
+• وصف المشكلة
+• تأكيد التشخيص
+• Callback
+📞 بلّغ العميل إنه سيتم التواصل معه من فريق Resolutions بأقرب وقت ✅
+[END_SECTION]`
   },
   {
     keywords: ["sms", "رسالة", "رسائل", "otp", "verification", "كود تحقق", "sms not received"],
     category: "SMS & Verification- issues",
     priority: "medium",
     definition: "Any issue with SMS (Outgoing - Incoming) or Verification codes",
-    solution: `1. Ask customer if the issue is with outgoing SMS or incoming SMS.
+    solution: `[V2]
+⚠️ الأساسيات أولاً (إلزامي):
+🔵 BSS: الخط نشط، الباقة نشطة، ما في إيقاف بالفاتورة
 
-   If Outgoing SMS:
-   a. Check BSS — confirm line is active and not suspended or disconnected due to billing.
-   b. Ask customer to restart the device and attempt to send SMS again.
-   c. Ask customer to confirm default messaging app is set correctly and SMS permissions are enabled.
-   d. Ask customer if issue occurs with all numbers or a specific number only.
-      - If specific number only → issue may be on recipient's side. Advise customer to test with a different number.
-      - If all numbers → Raise TT to Resolution team.
+[OPTIONS: ✅ تأكدنا، نكمل ✅ | 🎉 انحلت بعد التأكد من الأساسيات]
 
-   If Incoming SMS:
-   a. Ask customer if it is an OTP/verification code or a regular SMS.
+المشكلة مع إرسال الرسائل أو استقبالها؟
+[OPTIONS: 📤 ما يقدر يرسل | 📥 ما تتوصله رسائل]
 
-      If OTP / Verification code:
-      i.   Ask customer to check spam or blocked messages folder first — OTP messages are frequently filtered automatically.
-      ii.  Check BSS — confirm line is active and not suspended or disconnected due to billing.
-      iii. Check BSS — confirm whether the line is a ported number or an original stc number.
-           - If ported → advise customer to contact the bank or app platform and ask them to remove their phone number and re-add it. This forces the OTP gateway to refresh its routing to the correct network.
-           - If not ported → proceed to step iv.
-      iv.  Ask customer to confirm no SMS blocking or Do Not Disturb mode is active on the device.
-      v.   Ask customer to restart the device and request a new OTP.
-      vi.  If issue is with a specific app or bank only → advise customer to contact that service directly as the issue may be on their SMS gateway side.
-      vii. If issue persists → Raise TT to Resolution team.
-
-      If Regular SMS:
-      i.   Ask customer to check spam or blocked messages folder first — messages from unknown numbers are sometimes filtered automatically.
-      ii.  Check BSS — confirm line is active and not suspended or disconnected due to billing.
-      iii. Ask customer to restart the device and attempt to receive SMS again.
-      iv.  Ask customer to confirm default messaging app is set correctly and SMS permissions are enabled.
-      v.   Ask customer if issue occurs with all senders or a specific sender only.
-           - If specific sender only → issue is likely on the sender's side. Advise customer to contact that sender directly and ask them to retry.
-           - If all senders → Raise TT to Resolution team.
-
+[SECTION: ما يقدر يرسل]
+📌 أولاً: اطلب من العميل يعيد تشغيل الجهاز ويحاول يرسل مجدداً
+[OPTIONS: ✅ شغّل | ❌ ما شغّل]
+[SECTION: ما شغّل]
+📌 تأكد إن التطبيق الافتراضي للرسائل صح وصلاحيات SMS مفعّلة
+المشكلة مع جميع الأرقام أو رقم معين؟
+[OPTIONS: 📱 رقم معين | 📵 جميع الأرقام]
+[SECTION: رقم معين]
+📌 المشكلة على الأرجح من طرف المستلم — وجّه العميل يجرب مع رقم ثاني
+[END_SECTION]
+[SECTION: جميع الأرقام]
+ارفع الطلب على رقم العميل ✅
 📋 اسم الطلب: Call & SMS issues - SMS & Verification- issues
-متطلبات الطلب::
-• Issue description  
-• Troubleshooting confirmation  
-• Whether issue is outgoing or incoming  
-• For OTP: whether line is ported or original stc number + app/service name  
-• For Incoming SMS: A-party number (sender)  
-• Date & time of SMS or OTP attempt  
-• Callback`
+متطلبات الطلب:
+• وصف المشكلة
+• تأكيد التشخيص
+• Callback
+📞 بلّغ العميل إنه سيتم التواصل معه من فريق Resolutions بأقرب وقت ✅
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
+
+[SECTION: ما تتوصله رسائل]
+شنو نوع الرسائل اللي ما تتوصله؟
+[OPTIONS: 🔑 OTP / كود تحقق | 💬 رسائل عادية]
+
+[SECTION: OTP / كود تحقق]
+📌 اطلب من العميل يتحقق من مجلد الرسائل المحجوبة أو Spam أولاً
+[OPTIONS: ✅ ما في OTP في الـ Spam، نكمل | 🎉 لقى الـ OTP في Spam — انحلت]
+[SECTION: ما في OTP في الـ Spam، نكمل]
+📌 تحقق في BSS — الرقم محوّل (Ported) أو أصلي stc؟
+[OPTIONS: 📲 رقم محوّل (Ported) | 📱 رقم أصلي stc]
+[SECTION: رقم محوّل (Ported)]
+📌 الـ OTP Gateway ما اتحدّث بعد النقل
+أبلغ العميل: يتواصل مع البنك أو التطبيق ويطلب منهم يحذف رقمه ويضيفه مجدداً — هذا يجبر الـ Gateway على تحديث التوجيه للشبكة الصحيحة
+[OPTIONS: ✅ وصل OTP | ❌ ما وصل → Raise TT]
+[END_SECTION]
+[SECTION: رقم أصلي stc]
+📌 تأكد إن وضع عدم الإزعاج أو حجب الرسائل مطفي على الجهاز
+اطلب من العميل يعيد التشغيل ويطلب OTP جديد
+[OPTIONS: ✅ وصل OTP | ❌ ما وصل]
+[SECTION: ما وصل]
+المشكلة من تطبيق/بنك معين فقط أو جميع التطبيقات؟
+[OPTIONS: 📱 تطبيق معين | 📵 جميع التطبيقات]
+[SECTION: تطبيق معين]
+📌 المشكلة من الـ SMS Gateway الخاص بالخدمة — وجّه العميل يتواصل مع الخدمة مباشرة
+[END_SECTION]
+[SECTION: جميع التطبيقات]
+ارفع الطلب على رقم العميل ✅
+📋 اسم الطلب: Call & SMS issues - SMS & Verification- issues
+متطلبات الطلب:
+• وصف المشكلة
+• تأكيد التشخيص
+• Callback
+📞 بلّغ العميل إنه سيتم التواصل معه من فريق Resolutions بأقرب وقت ✅
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
+
+[SECTION: رسائل عادية]
+📌 اطلب من العميل يتحقق من مجلد الرسائل المحجوبة أو Spam أولاً
+[OPTIONS: ✅ ما في رسائل في الـ Spam، نكمل | 🎉 لقى الرسائل في Spam — انحلت]
+[SECTION: ما في رسائل في الـ Spam، نكمل]
+📌 اطلب من العميل يعيد تشغيل الجهاز ويجرب
+تأكد إن التطبيق الافتراضي للرسائل صح وصلاحيات SMS مفعّلة
+المشكلة مع جميع المرسلين أو مرسل معين؟
+[OPTIONS: 📱 مرسل معين | 📵 جميع المرسلين]
+[SECTION: مرسل معين]
+📌 المشكلة على الأرجح من طرف المرسل — وجّه العميل يتواصل معه مباشرة
+[END_SECTION]
+[SECTION: جميع المرسلين]
+ارفع الطلب على رقم العميل ✅
+📋 اسم الطلب: Call & SMS issues - SMS & Verification- issues
+متطلبات الطلب:
+• وصف المشكلة
+• تأكيد التشخيص
+• Callback
+📞 بلّغ العميل إنه سيتم التواصل معه من فريق Resolutions بأقرب وقت ✅
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]
+[END_SECTION]`
   },
   {
     keywords: ["payment missing", "دفعة مفقودة", "app payment", "web payment", "missing payment"],
