@@ -969,6 +969,8 @@
     text-align: center;
     margin-top: 4px;
   }
+.hist-card { background:#1c0f2e !important; border:2px solid #9B59B6 !important; border-radius:12px; padding:18px 20px; transition:border-color 0.2s; cursor:pointer; }
+.hist-card:hover { border-color:#C77DFF !important; }
 </style>
 </head>
 <body>
@@ -1116,17 +1118,24 @@
 
     <!-- HISTORY -->
     <div id="historyPanel" style="display:none;padding:20px;max-width:900px;margin:0 auto">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
         <h3 id="historyTitle" style="color:var(--text);margin:0">🕐 سجل المحادثات</h3>
         <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-          <button onclick="loadHistory()" style="background:var(--surface3);border:1px solid var(--border);border-radius:8px;padding:7px 14px;color:var(--text);font-size:13px;font-family:inherit;cursor:pointer">🔄 تحديث</button>
+          <button onclick="loadHistory(1)" style="background:var(--surface3);border:1px solid var(--border);border-radius:8px;padding:7px 14px;color:var(--text);font-size:13px;font-family:inherit;cursor:pointer">🔄 تحديث</button>
           <button onclick="exportHistoryExcel()" style="background:#1D6F42;border:none;border-radius:8px;padding:7px 14px;color:white;font-size:13px;font-family:inherit;cursor:pointer;font-weight:600">⬇️ تنزيل Excel</button>
-          <input id="historySearch" type="text" placeholder="🔍 بحث باسم الموظف أو الموضوع..." oninput="filterHistory()" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 14px;color:var(--text);font-size:13px;font-family:inherit;min-width:220px;outline:none;direction:rtl">
         </div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px">
+        <input id="historySearch" type="text" placeholder="🔍 بحث باسم الموظف أو الموضوع..." oninput="filterHistory()" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 12px;color:var(--text);font-size:13px;font-family:inherit;flex:1;min-width:180px;outline:none;direction:rtl">
+        <input id="histDateFrom" type="date" onchange="loadHistory(1)" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 10px;color:var(--text);font-size:13px;font-family:inherit;outline:none">
+        <span style="color:var(--text-muted);font-size:13px">←</span>
+        <input id="histDateTo" type="date" onchange="loadHistory(1)" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 10px;color:var(--text);font-size:13px;font-family:inherit;outline:none">
+        <button onclick="document.getElementById('histDateFrom').value='';document.getElementById('histDateTo').value='';loadHistory(1)" style="background:var(--surface3);border:1px solid var(--border);border-radius:8px;padding:7px 10px;color:var(--text-muted);font-size:12px;font-family:inherit;cursor:pointer">✕ مسح</button>
       </div>
       <div id="historyBody" style="display:flex;flex-direction:column;gap:12px">
         <div style="color:var(--text-muted);text-align:center;padding:40px">جاري التحميل...</div>
       </div>
+      <div id="historyPager" style="display:flex;justify-content:center;gap:8px;margin-top:20px;align-items:center"></div>
     </div>
 
     <!-- ADMIN -->
@@ -1322,18 +1331,27 @@
 const SUPABASE_URL = "https://wlppisrsxryzzvisboja.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndscHBpc3JzeHJ5enp2aXNib2phIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcwOTQ5NTAsImV4cCI6MjA5MjY3MDk1MH0.wDZkKP_7XSxBqcBi1O9l8cncqSbR2Z9j_9ahFDLX2zk";
 
+function generateSessionId() {
+  return 'sess_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8);
+}
+
 async function saveLogToSupabase(email, question, category, priority, answer) {
   try {
-    await fetch(SUPABASE_URL + "/rest/v1/logs", {
+    const body = { email, question, category, priority, answer: answer || '' };
+    if (window._currentSessionId) body.session_id = window._currentSessionId;
+    const res = await fetch(SUPABASE_URL + "/rest/v1/logs", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "apikey": SUPABASE_KEY,
-        "Authorization": "Bearer " + SUPABASE_KEY,
-        "Prefer": "return=minimal"
-      },
-      body: JSON.stringify({ email, question, category, priority, answer: answer || '' })
+      headers: { "Content-Type": "application/json", "apikey": SUPABASE_KEY, "Authorization": "Bearer " + SUPABASE_KEY, "Prefer": "return=minimal" },
+      body: JSON.stringify(body)
     });
+    if (!res.ok && window._currentSessionId) {
+      delete body.session_id;
+      await fetch(SUPABASE_URL + "/rest/v1/logs", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "apikey": SUPABASE_KEY, "Authorization": "Bearer " + SUPABASE_KEY, "Prefer": "return=minimal" },
+        body: JSON.stringify(body)
+      });
+    }
   } catch(e) {
     console.error("Supabase save error:", e);
   }
@@ -1716,12 +1734,24 @@ STEP 7: إذا النتيجة فوق 25ms بعد كل الخطوات → Raise T
     category: "Internet- Site Down",
     priority: "medium",
     definition: "Site down issue",
-    solution: `ارفع الطلب على رقم العميل ✅
+    solution: `[V2]
+⚠️ تحقق من نظام العطل أولاً (إلزامي):
+• افتح نظام العطل من الداشبورد
+• تحقق من منطقة العميل
+• وضّح للعميل إن في عطل في الشبكة بمنطقته — فريق التقنية على علم وجاري الإصلاح بأسرع وقت
+
+[OPTIONS: ✅ في عطل، نكمل | ❌ ما في عطل → Raise TT]
+
+[SECTION: في عطل، نكمل]
+ارفع الطلب على رقم العميل ✅
 
 📋 اسم الطلب: Internet issue - Internet- Site Down
-متطلبات الطلب::
-• Tower number  
-• Area name`
+متطلبات الطلب:
+• Tower number
+• Area name
+
+[OPTIONS: ✅ تم إبلاغ العميل — بانتظار إصلاح الشبكة ✅]
+[END_SECTION]`
   },
   {
     keywords: ["baity", "turbonet", "odu", "mesh", "بيتي", "باتي", "baity 5g"],
@@ -3033,7 +3063,7 @@ STEP 5 — Speed Test:
 [OPTIONS: ✅ تأكدنا، نكمل ✅ | 🎉 انحلت بعد التأكد من الأساسيات]
 
 شنو المشكلة بالمكالمات؟
-[OPTIONS: 📵 ما يقدر يتصل | 📞 ما يستقبل مكالمات | ✂️ المكالمة تنقطع أو جودة رديئة]
+[OPTIONS: 📵 ما يقدر يتصل | 📞 ما يستقبل مكالمات]
 
 [SECTION: ما يقدر يتصل]
 📌 وضع الطيران يعيد تسجيل الجهاز على الشبكة — وإعادة التشغيل تحل أي تعارض في النظام
@@ -4419,6 +4449,7 @@ async function login() {
   }
   if (USERS[email] && USERS[email].pass === pass) {
     currentUser = { email, ...USERS[email] };
+    window._currentSessionId = generateSessionId();
     errEl.style.display = 'none';
     // Save session
     localStorage.setItem('stc_session', JSON.stringify({email, ...USERS[email]}));
@@ -4465,6 +4496,7 @@ async function login() {
       if (data.length > 0 && data[0].password === pass && !data[0].disabled) {
         const emp = data[0];
         currentUser = { email, name: emp.name, role: emp.role || 'employee', pass };
+        window._currentSessionId = generateSessionId();
         errEl.style.display = 'none';
         localStorage.setItem('stc_session', JSON.stringify(currentUser));
         document.getElementById('loginPage').style.display = 'none';
@@ -4687,10 +4719,14 @@ function exportHistoryExcel() {
 }
 
 
-async function loadHistory() {
+async function loadHistory(page) {
+  page = page || 1;
+  window._historyPage = page;
+  const PAGE_SIZE = 20;
   const body = document.getElementById('historyBody');
-  body.innerHTML = '<div style="color:var(--text-muted);text-align:center;padding:40px">جاري التحميل...</div>';
-  // Load employee names for display
+  const pager = document.getElementById('historyPager');
+  body.innerHTML = '<div style="color:var(--text-muted);text-align:center;padding:40px">⏳ جاري التحميل...</div>';
+  if (pager) pager.innerHTML = '';
   try {
     const empRes = await fetch(SUPABASE_URL + '/rest/v1/employees?select=email,name', {
       headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
@@ -4700,145 +4736,132 @@ async function loadHistory() {
     if (Array.isArray(empData)) empData.forEach(e => { if(e.email && e.name) window._empNames[e.email] = e.name; });
   } catch(e) {}
   try {
-    const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-    const email = encodeURIComponent(currentUser.email);
     const isAdmin = currentUser.role === 'admin';
-    const url = isAdmin
-      ? SUPABASE_URL + "/rest/v1/logs?order=created_at.desc&limit=1000"
-      : SUPABASE_URL + "/rest/v1/logs?order=created_at.desc&created_at=gte." + since + "&email=eq." + email + "&limit=200";
-    const res = await fetch(url, {
-      method: "GET",
-      headers: {
-        "apikey": SUPABASE_KEY,
-        "Authorization": "Bearer " + SUPABASE_KEY,
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      }
-    });
-    if (!res.ok) throw new Error("HTTP " + res.status);
+    const email = encodeURIComponent(currentUser.email);
+    const dateFrom = document.getElementById('histDateFrom') && document.getElementById('histDateFrom').value;
+    const dateTo = document.getElementById('histDateTo') && document.getElementById('histDateTo').value;
+    const offset = (page - 1) * PAGE_SIZE;
+
+    // Build URL with pagination
+    let url = SUPABASE_URL + '/rest/v1/logs?order=created_at.desc&limit=' + PAGE_SIZE + '&offset=' + offset;
+    if (!isAdmin) url += '&email=eq.' + email;
+    if (dateFrom) url += '&created_at=gte.' + dateFrom + 'T00:00:00';
+    if (dateTo) url += '&created_at=lte.' + dateTo + 'T23:59:59';
+
+    // Get total count
+    let countUrl = SUPABASE_URL + '/rest/v1/logs?select=*';
+    if (!isAdmin) countUrl += '&email=eq.' + email;
+    if (dateFrom) countUrl += '&created_at=gte.' + dateFrom + 'T00:00:00';
+    if (dateTo) countUrl += '&created_at=lte.' + dateTo + 'T23:59:59';
+
+    const [res, countRes] = await Promise.all([
+      fetch(url, { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY } }),
+      fetch(countUrl, { method: 'HEAD', headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Prefer': 'count=exact' } })
+    ]);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
+    const cr = countRes.headers.get('content-range');
+    const totalCount = cr ? parseInt(cr.split('/')[1]) : data.length;
+    const totalPages = Math.ceil(totalCount / PAGE_SIZE);
+
+    // Load ALL employees for dropdown separately
+    let allEmployees = [];
+    try {
+      const allEmpRes = await fetch(SUPABASE_URL + '/rest/v1/employees?select=email,name&order=name.asc', {
+        headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+      });
+      allEmployees = await allEmpRes.json();
+      if (!Array.isArray(allEmployees)) allEmployees = [];
+    } catch(e) {}
+
+    const histTitle = document.getElementById('historyTitle');
+    if (histTitle) histTitle.textContent = isAdmin ? '📋 سجل المحادثات — الكل' : '🕐 سجل محادثاتي';
+
     if (!Array.isArray(data) || !data.length) {
-      body.innerHTML = '<div style="color:var(--text-muted);text-align:center;padding:40px">لا توجد محادثات في آخر 24 ساعة</div>';
+      body.innerHTML = '<div style="color:var(--text-muted);text-align:center;padding:40px">لا توجد محادثات</div>';
       return;
     }
-    const histTitle = document.getElementById('historyTitle');
-    if (histTitle) histTitle.textContent = isAdmin ? '📋 سجل المحادثات — الكل' : '🕐 سجل محادثاتي — آخر 24 ساعة';
-    let cards = '<div style="color:var(--text-muted);font-size:13px;margin-bottom:12px">' + data.length + (isAdmin ? ' محادثة إجمالي' : ' محادثة في آخر 24 ساعة') + '</div>';
+
+    // Build agent dropdown
+    let headerHtml = '<div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px">';
+    headerHtml += '<span style="color:var(--text-muted);font-size:13px">إجمالي: ' + totalCount.toLocaleString() + ' — صفحة ' + page + ' من ' + totalPages + '</span>';
+    if (isAdmin) {
+      headerHtml += '<select id="agentFilter" onchange="filterHistoryByAgent()" style="background:var(--surface3);border:1px solid var(--border);border-radius:8px;padding:6px 12px;color:var(--text);font-size:13px;font-family:inherit;outline:none">'
+        + '<option value="">👥 جميع الموظفين</option>'
+        + allEmployees.map(e => '<option value="' + e.email + '">' + (e.name||e.email) + '</option>').join('')
+        + '</select>';
+    }
+    headerHtml += '</div>';
+
+    // Group by session_id where possible
+    const sessions = [];
+    const sessionMap = {};
     data.forEach(function(l) {
+      if (l.session_id) {
+        if (!sessionMap[l.session_id]) {
+          sessionMap[l.session_id] = { session_id: l.session_id, logs: [], first: l };
+          sessions.push(sessionMap[l.session_id]);
+        }
+        sessionMap[l.session_id].logs.push(l);
+      } else {
+        sessions.push({ session_id: null, logs: [l], first: l });
+      }
+    });
+
+    const _scMap1 = {'Roaming Techincal- Internet':'Roaming Complaint','Roaming Technical- Calls & SMS':'Roaming Complaint','Roaming Billing- Charges':'Roaming Complaint','Internet- not working':'Internet issue','Internet- Ping Issue':'Internet issue','Internet- Site Down':'Internet issue','Internet- Baity':'Internet issue','Internet- Baity Low Speed':'Internet issue','Speed Issue – 4G':'Internet issue','Speed Issue – 5G':'Internet issue','Calls- not working':'Call & SMS issues','Calls- Quality':'Call & SMS issues','Calls- International':'Call & SMS issues','Calls- Diverts':'Call & SMS issues','MNP-  Technical Issues':'Call & SMS issues','SMS & Verification- issues':'Call & SMS issues','App & Web-  Payment issue':'Digital and self service','App & Web- Technical Issues':'Digital and self service','E-SIM-  issues':'Digital and self service','Prepaid – Balance & validity':'stc services','Plan/Add on services- Charge issues':'stc services','Plan/Add on services- Technical issues':'stc services','Qitaf points':'stc services','Outage- Network':'General Issue'};
+    const pColor = '#C77DFF';
+
+    let cards = headerHtml;
+    sessions.forEach(function(sess) {
+      const l = sess.first;
       const d = new Date(l.created_at);
       const timeStr = d.toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
       const dateStr = d.toLocaleDateString('ar-KW');
-      const _scMap1 = {
-        'CITRA':'Special Resolution request','Staff/Friends & Family':'Special Resolution request',
-        'Follow Up TT':'Special Resolution request','HQ Complaint':'Special Resolution request',
-        'Roaming Techincal- Internet':'Roaming Complaint','Roaming Technical- Calls & SMS':'Roaming Complaint',
-        'Roaming Billing- Charges':'Roaming Complaint','Internet- not working':'Internet issue',
-        'Internet- Ping Issue':'Internet issue','Internet- Site Down':'Internet issue',
-        'Internet- Baity':'Internet issue','Internet- Baity Low Speed':'Internet issue',
-        'Speed Issue – 4G':'Internet issue','Speed Issue – 5G':'Internet issue',
-        'Calls- not working':'Call & SMS issues','Calls- Quality':'Call & SMS issues',
-        'Calls- International':'Call & SMS issues','Calls- Diverts':'Call & SMS issues',
-        'MNP-  Technical Issues':'Call & SMS issues','SMS & Verification- issues':'Call & SMS issues',
-        'App & Web-  Payment issue':'Digital and self service','App & Web- Technical Issues':'Digital and self service',
-        'Apple and google- Charge issues':'Digital and self service','Kiosk- Payment issue':'Digital and self service',
-        'Voucher- issues':'Digital and self service','E-SIM-  issues':'Digital and self service',
-        'E-SIM-  issues (Code activation issues)':'Digital and self service',
-        'Prepaid – Balance & validity':'stc services','Plan/Add on services- Charge issues':'stc services',
-        'Plan/Add on services- Technical issues':'stc services','3rd party- charge issues':'stc services',
-        'Apple Watch':'stc services','Qitaf points':'stc services',
-        'Outage- Global Service/App':'General Issue','Outage- Network':'General Issue'
-      };
-      const pColor = '#C77DFF';
       const pLabel = _scMap1[l.category] || l.category || '-';
-      const empName = (window._empNames && window._empNames[l.email]) || l.name || l.email;
-      const empLine = isAdmin ? '<div style="color:#C77DFF;font-size:12px;margin-bottom:4px">👤 ' + empName + '</div>' : '';
-      const answerBlock = l.answer ? '<div style="background:var(--surface3);border-radius:8px;padding:10px 14px;margin-top:8px;border-right:3px solid #C77DFF">'
-        + '<div style="color:var(--text-muted);font-size:11px;margin-bottom:4px">🤖 الجواب:</div>'
-        + '<div style="color:var(--text);font-size:13px;line-height:1.6">' + (l.answer || '').split('\n').join('<br>') + '</div>'
-        + '</div>' : '';
-      const _cn = (window._empNames && window._empNames[l.email]) || l.name || l.email;
-      cards += '<div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px 18px" data-email="' + (l.email||'').replace(/"/g,'') + '" data-name="' + _cn.replace(/"/g,'') + '" data-question="' + (l.question||'').replace(/"/g,'') + '" data-cat="' + (l.category||'').replace(/"/g,'') + '">'
-        + empLine
-        + '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap">'
-        + '<div style="display:flex;align-items:center;gap:8px">'
-        + '<span style="color:#7EB2FF;font-size:13px">💬</span>'
-        + '<span style="color:var(--text);font-size:14px;font-weight:500">' + (l.question || '') + '</span>'
+      const empName = (window._empNames && window._empNames[l.email]) || l.email;
+      const empLine = isAdmin ? '<div style="color:#C77DFF;font-size:12px;margin-bottom:6px;font-weight:600">👤 ' + empName + '</div>' : '';
+      const firstBotMsg = sess.logs.find(l => l.answer) ? sess.logs.find(l => l.answer).answer : '';
+      const preview = firstBotMsg ? firstBotMsg.replace(/\n/g,' ').replace(/📌|📋|⚠️|✅|❌|🔵|🔴/g,'').substring(0,80).trim() + (firstBotMsg.length > 80 ? '...' : '') : '';
+      const sessionClick = sess.session_id ? 'onclick="showSessionModal(\'' + sess.session_id + '\')" style="cursor:pointer"' : '';
+      const msgCount = sess.logs.length > 1 ? '<span style="color:#74B9FF;font-size:11px;font-weight:600">💬 ' + sess.logs.length + ' رسائل</span>' : '';
+      const sessionBtn = sess.session_id
+        ? '<button onclick="event.stopPropagation();showSessionModal(\'' + sess.session_id + '\')" style="background:var(--primary);border:none;border-radius:8px;padding:4px 12px;color:white;font-size:11px;font-family:inherit;cursor:pointer;font-weight:600;white-space:nowrap">المحادثة كاملة ←</button>' : '';
+      cards += '<div ' + sessionClick + ' class="hist-card" data-email="' + (l.email||'').replace(/"/g,'') + '" data-cat="' + (l.category||'').replace(/"/g,'') + '" data-session="' + (sess.session_id||'') + '">'
+        + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">'
+        + '<span style="background:#6B1E7833;color:#C77DFF;font-size:11px;font-weight:600;padding:3px 12px;border-radius:20px;border:1px solid #6B1E78">' + pLabel + '</span>'
+        + '<span style="color:#C77DFF;font-size:13px;font-weight:700">👤 ' + empName + '</span>'
         + '</div>'
-        + '<span style="color:' + pColor + ';font-size:11px;font-weight:600;background:' + pColor + '22;padding:3px 10px;border-radius:20px;white-space:nowrap">' + pLabel + '</span>'
+        + '<div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:' + (preview?'10px':'8px') + '">' + (l.question||'-') + '</div>'
+        + (preview ? '<div style="font-size:12px;color:#aaa;line-height:1.6;padding:8px 12px;background:#0d0720;border-radius:8px;border-right:3px solid #C77DFF;margin-bottom:12px">🤖 ' + preview + '</div>' : '')
+        + '<div style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid #2d1545;padding-top:10px">'
+        + '<div style="display:flex;gap:12px;align-items:center">'
+        + '<span style="color:#666;font-size:12px">🕐 ' + timeStr + ' — ' + dateStr + '</span>'
+        + (sess.logs.length > 1 ? '<span style="color:#74B9FF;font-size:12px;font-weight:600">💬 ' + sess.logs.length + '</span>' : '')
         + '</div>'
-        + answerBlock
-        + '<div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:8px">'
-        + '<span style="color:var(--text-muted);font-size:11px">📂 ' + (l.category || 'عام') + '</span>'
-        + '<span style="color:var(--text-muted);font-size:11px">🕐 ' + timeStr + ' — ' + dateStr + '</span>'
+        + sessionBtn
         + '</div></div>';
     });
     body.innerHTML = cards;
     window._historyData = data;
-  } catch(e) {
-    console.error("History load error:", e);
-    // Try without answer column in case it doesn't exist yet
-    try {
-      const since2 = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-      const email2 = encodeURIComponent(currentUser.email);
-      const isAdmin2 = currentUser.role === 'admin';
-      const url2 = isAdmin2
-        ? SUPABASE_URL + "/rest/v1/logs?select=email,question,category,priority,created_at&order=created_at.desc&created_at=gte." + since2 + "&limit=200"
-        : SUPABASE_URL + "/rest/v1/logs?select=email,question,category,priority,created_at&order=created_at.desc&created_at=gte." + since2 + "&email=eq." + email2 + "&limit=200";
-      const res2 = await fetch(url2, {
-        headers: { "apikey": SUPABASE_KEY, "Authorization": "Bearer " + SUPABASE_KEY }
-      });
-      const data2 = await res2.json();
-      if (!Array.isArray(data2) || !data2.length) {
-        body.innerHTML = '<div style="color:var(--text-muted);text-align:center;padding:40px">لا توجد محادثات في آخر 24 ساعة</div>';
-        return;
-      }
-      let cards2 = '<div style="color:var(--text-muted);font-size:13px;margin-bottom:12px">' + data2.length + ' محادثة في آخر 24 ساعة</div>';
-      const isAdmin3 = currentUser.role === 'admin';
-      data2.forEach(function(l) {
-        const d = new Date(l.created_at);
-        const timeStr = d.toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
-        const dateStr = d.toLocaleDateString('ar-KW');
-        const _scMap2 = {
-        'CITRA':'Special Resolution request','Staff/Friends & Family':'Special Resolution request',
-        'Follow Up TT':'Special Resolution request','HQ Complaint':'Special Resolution request',
-        'Roaming Techincal- Internet':'Roaming Complaint','Roaming Technical- Calls & SMS':'Roaming Complaint',
-        'Roaming Billing- Charges':'Roaming Complaint','Internet- not working':'Internet issue',
-        'Internet- Ping Issue':'Internet issue','Internet- Site Down':'Internet issue',
-        'Internet- Baity':'Internet issue','Internet- Baity Low Speed':'Internet issue',
-        'Speed Issue – 4G':'Internet issue','Speed Issue – 5G':'Internet issue',
-        'Calls- not working':'Call & SMS issues','Calls- Quality':'Call & SMS issues',
-        'Calls- International':'Call & SMS issues','Calls- Diverts':'Call & SMS issues',
-        'MNP-  Technical Issues':'Call & SMS issues','SMS & Verification- issues':'Call & SMS issues',
-        'App & Web-  Payment issue':'Digital and self service','App & Web- Technical Issues':'Digital and self service',
-        'Apple and google- Charge issues':'Digital and self service','Kiosk- Payment issue':'Digital and self service',
-        'Voucher- issues':'Digital and self service','E-SIM-  issues':'Digital and self service',
-        'E-SIM-  issues (Code activation issues)':'Digital and self service',
-        'Prepaid – Balance & validity':'stc services','Plan/Add on services- Charge issues':'stc services',
-        'Plan/Add on services- Technical issues':'stc services','3rd party- charge issues':'stc services',
-        'Apple Watch':'stc services','Qitaf points':'stc services',
-        'Outage- Global Service/App':'General Issue','Outage- Network':'General Issue'
-      };
-        const pColor = '#C77DFF';
-        const pLabel = _scMap2[l.category] || l.category || '-';
-        const empLine = isAdmin3 ? '<div style="color:#C77DFF;font-size:12px;margin-bottom:4px">👤 ' + l.email + '</div>' : '';
-        cards2 += '<div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px 18px">'
-          + empLine
-          + '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap">'
-          + '<span style="color:var(--text);font-size:14px;font-weight:500">💬 ' + (l.question || '') + '</span>'
-          + '<span style="color:' + pColor + ';font-size:11px;font-weight:600;background:' + pColor + '22;padding:3px 10px;border-radius:20px">' + pLabel + '</span>'
-          + '</div>'
-          + '<div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:8px">'
-          + '<span style="color:var(--text-muted);font-size:11px">📂 ' + (l.category || 'عام') + '</span>'
-          + '<span style="color:var(--text-muted);font-size:11px">🕐 ' + timeStr + ' — ' + dateStr + '</span>'
-          + '</div></div>';
-      });
-      body.innerHTML = cards2;
-    } catch(e2) {
-      body.innerHTML = '<div style="color:#FF6B6B;text-align:center;padding:40px">⚠️ خطأ في تحميل السجل — ' + (e2.message || '') + '</div>';
+
+    // Build pagination
+    if (pager && totalPages > 1) {
+      const btnStyle = 'background:var(--surface3);border:1px solid var(--border);border-radius:8px;padding:6px 12px;color:var(--text);font-size:13px;font-family:inherit;cursor:pointer';
+      const activeBtnStyle = 'background:var(--primary);border:none;border-radius:8px;padding:6px 12px;color:white;font-size:13px;font-family:inherit;cursor:pointer;font-weight:600';
+      let pHTML = '';
+      if (page > 1) pHTML += '<button onclick="loadHistory(' + (page-1) + ')" style="' + btnStyle + '">← سابق</button>';
+      const start = Math.max(1, page-2), end = Math.min(totalPages, page+2);
+      if (start > 1) pHTML += '<button onclick="loadHistory(1)" style="' + btnStyle + '">1</button><span style="color:var(--text-muted)">...</span>';
+      for (let i=start; i<=end; i++) pHTML += '<button onclick="loadHistory(' + i + ')" style="' + (i===page?activeBtnStyle:btnStyle) + '">' + i + '</button>';
+      if (end < totalPages) pHTML += '<span style="color:var(--text-muted)">...</span><button onclick="loadHistory(' + totalPages + ')" style="' + btnStyle + '">' + totalPages + '</button>';
+      if (page < totalPages) pHTML += '<button onclick="loadHistory(' + (page+1) + ')" style="' + btnStyle + '">تالي →</button>';
+      pager.innerHTML = pHTML;
     }
+  } catch(e) {
+    console.error('History error:', e);
+    body.innerHTML = '<div style="color:var(--text-muted);text-align:center;padding:40px">❌ خطأ في التحميل</div>';
   }
 }
-
 
 function normalizeArabic(text) {
   return text
@@ -5320,11 +5343,10 @@ function selectDiagOption(btn, groupId, value, label) {
 }
 
 function resetDiagnostic() {
-  // Reset diagnostic state but keep chat visible
   diagnosticContext = {};
   diagnosticStep = 0;
-  // Reset AI context
   chatHistory = [];
+  window._currentSessionId = generateSessionId();
   // Re-enable all button groups
   document.querySelectorAll('.diagnostic-buttons').forEach(function(group) {
     group.querySelectorAll('.diag-btn').forEach(function(b) {
@@ -7050,7 +7072,13 @@ function kbFlowV2Advance() {
   }
   flow.pos = pos;
   var msgText = msgLines.filter(function(l){ return l.trim(); }).map(function(l){ return l.replace(/^STEP\s+\d+\s*[—\-–]\s*/i,''); }).join('\n').trim();
-  if (msgText) { addMsg(msgText,'bot',null,flow.priority||'medium',flow.category); savLog(msgText,flow.category,flow.priority||'medium',msgText); }
+  if (msgText) {
+    addMsg(msgText,'bot',null,flow.priority||'medium',flow.category);
+    var logQ = issueContext._pendingLogQ || issueContext._kbInitQuestion || flow.category;
+    delete issueContext._pendingLogQ;
+    delete issueContext._kbInitQuestion;
+    savLog(logQ, flow.category, flow.priority||'medium', msgText);
+  }
   if (opts) {
     var icons = ['1️⃣','2️⃣','3️⃣','4️⃣','5️⃣','6️⃣'];
     var btns = opts.map(function(opt,i){ return {icon:icons[i]||(i+1)+'',label:opt,value:'kbf|'+i+'|'+opt}; });
@@ -7086,11 +7114,12 @@ function kbFlowV2Select(optLabel) {
     var siteDownMsg = optLabel.includes('بانتظار إصلاح الشبكة');
     var closingMsg = siteDownMsg ? ('تم إبلاغ العميل — بانتظار إصلاح الشبكة ✅\n\n'+clsS[Math.floor(Math.random()*clsS.length)]) : ('ممتاز! 🎉 المشكلة انحلت ✅\n\n'+clsS[Math.floor(Math.random()*clsS.length)]);
     addMsg(closingMsg,'bot',null,'low',null);
+    savLog(optLabel, flow.category, 'low', closingMsg);
     setTimeout(function(){ addButtonGroup([{icon:'1️⃣',label:'✅ إي، عندي شي ثاني',value:'إي عندي شي ثاني'},{icon:'2️⃣',label:'🏁 لا، يكفي — شكراً',value:'لا يكفي شكرا'}],'closing-'+Date.now()); },300);
     return true;
   }
-  if (sectionPos!==-1) { flow.pos=sectionPos+1; kbFlowV2Advance(); return true; }
-  kbFlowV2Advance();
+  if (sectionPos!==-1) { flow.pos=sectionPos+1; issueContext._pendingLogQ = optLabel; kbFlowV2Advance(); return true; }
+  issueContext._pendingLogQ = optLabel; kbFlowV2Advance();
   return true;
 }
 
@@ -7133,8 +7162,9 @@ function kbFlowAdvance() {
 
   if (msgText) {
     addMsg(msgText, 'bot', null, flow.priority || 'medium', flow.category);
-    savLog(msgText, flow.category, flow.priority || 'medium', msgText);
+    savLog(optLabel || msgText, flow.category, flow.priority || 'medium', msgText);
   }
+  if (!msgText) savLog(optLabel, flow.category, flow.priority || 'medium', '→ ' + optLabel);
 
   if (opts) {
     var icons = ['1️⃣','2️⃣','3️⃣','4️⃣','5️⃣','6️⃣'];
@@ -7357,6 +7387,7 @@ function triggerIssueWithContext() {
     var kbLines = kbEntry.solution.split('\n');
     var isV2 = kbLines[0]&&kbLines[0].trim()==='[V2]';
     issueContext.kbFlow = { lines: kbLines, pos: 0, category: kbEntry.category, priority: kbEntry.priority, v2: isV2 };
+    issueContext._kbInitQuestion = displayIssue + (serviceLabel ? ' — ' + serviceLabel : '');
     if (isV2) kbFlowV2Advance(); else kbFlowAdvance();
     return;
   }
@@ -7659,6 +7690,70 @@ function showAnswerModal(btn) {
 document.getElementById('answerModal').addEventListener('click', function(e) {
   if (e.target === this) this.style.display = 'none';
 });
+
+function filterHistoryByAgent() {
+  const sel = document.getElementById('agentFilter');
+  if (!sel) return;
+  const email = sel.value;
+  const cards = document.querySelectorAll('#historyBody > div[data-email]');
+  cards.forEach(function(c) {
+    c.style.display = (!email || c.dataset.email === email) ? '' : 'none';
+  });
+}
+
+function showSessionModal(sessionId) {
+  let sm = document.getElementById('sessionModal');
+  if (!sm) {
+    sm = document.createElement('div');
+    sm.id = 'sessionModal';
+    sm.style.cssText = 'display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:9999;align-items:center;justify-content:center;padding:20px';
+    sm.innerHTML = `<div style="background:var(--surface2);border:1px solid var(--border);border-radius:16px;width:min(620px,95vw);max-height:85vh;display:flex;flex-direction:column;overflow:hidden">
+      <div style="padding:14px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+        <span id="sessionModalTitle" style="font-weight:700;font-size:14px">💬 المحادثة الكاملة</span>
+        <button onclick="document.getElementById('sessionModal').style.display='none'" style="background:none;border:none;color:var(--text-muted);font-size:20px;cursor:pointer">✕</button>
+      </div>
+      <div id="sessionMessages" style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;scrollbar-width:thin"></div>
+    </div>`;
+    sm.addEventListener('click', function(e){ if(e.target===sm) sm.style.display='none'; });
+    document.body.appendChild(sm);
+  }
+  const container = document.getElementById('sessionMessages');
+  container.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:20px">⏳ جاري التحميل...</div>';
+  sm.style.display = 'flex';
+  fetch(SUPABASE_URL + '/rest/v1/logs?select=*&session_id=eq.' + encodeURIComponent(sessionId) + '&order=created_at.asc', {
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+  })
+  .then(r => r.json())
+  .then(function(logs) {
+    container.innerHTML = '';
+    if (!logs || !logs.length) {
+      container.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:20px">لا توجد رسائل</div>';
+      return;
+    }
+    const titleEl = document.getElementById('sessionModalTitle');
+    const d0 = new Date(logs[0].created_at);
+    titleEl.textContent = '💬 ' + (logs[0].email||'') + ' — ' + d0.toLocaleDateString('ar-KW') + ' ' + d0.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+    logs.forEach(function(log) {
+      const time = new Date(log.created_at).toLocaleTimeString('ar',{hour:'2-digit',minute:'2-digit'});
+      if (log.question) {
+        const agDiv = document.createElement('div');
+        agDiv.style.cssText = 'align-self:flex-end;max-width:80%;background:var(--primary);color:white;border-radius:12px 12px 2px 12px;padding:8px 14px;font-size:12px;line-height:1.5;direction:rtl;text-align:right';
+        agDiv.innerHTML = '<div style="opacity:0.7;font-size:10px;margin-bottom:3px">' + time + '</div>' + log.question;
+        container.appendChild(agDiv);
+      }
+      if (log.answer) {
+        const botDiv = document.createElement('div');
+        botDiv.style.cssText = 'align-self:flex-start;max-width:80%;background:var(--surface3);border:1px solid var(--border);border-radius:12px 12px 12px 2px;padding:8px 14px;font-size:12px;line-height:1.5;direction:rtl;text-align:right';
+        botDiv.innerHTML = '<div style="opacity:0.7;font-size:10px;margin-bottom:3px;color:#C77DFF">🤖 البوت</div>' + log.answer.replace(/\n/g,'<br>');
+        container.appendChild(botDiv);
+      }
+    });
+    container.scrollTop = container.scrollHeight;
+  })
+  .catch(function() {
+    container.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:20px">❌ خطأ في التحميل</div>';
+  });
+}
 </script>
 
 
