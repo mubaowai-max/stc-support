@@ -141,6 +141,15 @@ button:disabled{cursor:default}
 .stc-tile{flex-shrink:0;width:40px;height:40px;border-radius:10px;background:#fff;color:var(--pur);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:16px;font-weight:700;letter-spacing:-.03em;line-height:1;text-transform:none}
 .stc-tile::after{content:"";width:60%;height:3px;border-radius:2px;background:linear-gradient(90deg,var(--pur),var(--pink))}
 .hdr-id h1 em{font-style:normal;color:var(--gold)}
+.ai-strip{margin:-12px -16px 12px;padding:6px 16px;background:var(--pur3);text-align:center;font-size:12.5px;line-height:1.2}
+.ai-strip b{font-weight:700;color:#fff}
+.ai-strip b em{font-style:normal;color:var(--pink)}
+.is-app .ai-strip{padding-top:calc(6px + env(safe-area-inset-top))}
+.page-foot{text-align:center;font-size:12px;color:var(--dim);padding:18px 0 4px}
+.hdr-ai-m{margin-top:3px;font-size:12px;line-height:1.2}
+.hdr-ai-m b{font-weight:700;color:#fff}
+.hdr-ai-m b em{font-style:normal;color:var(--pink)}
+.hdr-ai-m span{color:var(--gold);font-weight:500}
 .hdr-ai{display:none;margin-left:auto;padding-left:18px;border-left:1px solid rgba(255,255,255,.25);line-height:1.15}
 .hdr-ai b{display:block;font-size:17px;font-weight:700}
 .hdr-ai b em{font-style:normal;color:var(--pink)}
@@ -674,7 +683,7 @@ button:disabled{cursor:default}
 .inst-steps li::before{content:counter(s);flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--soft2);color:var(--pur);
   display:grid;place-items:center;font-weight:700;font-size:13px}
 .inst-steps svg{vertical-align:-4px;margin:0 2px;color:var(--pur)}
-.is-app .hdr{padding-top:calc(12px + env(safe-area-inset-top))}
+.is-app .hdr{padding-top:12px}
 
 /* ── stc wordmark + MubarakAI credit ── */
 .stc-mark{display:inline-block;font-weight:700;letter-spacing:-.06em;line-height:.85;color:#fff;font-family:'Readex Pro',sans-serif}
@@ -746,7 +755,7 @@ button:disabled{cursor:default}
   .hdr{display:flex;flex-wrap:wrap;align-items:center;gap:0 36px;padding:0 32px;height:72px;max-width:none}
   .hdr-row{display:contents}
   .hdr-id{order:1;margin-right:12px}
-  .hdr-id p{display:none}
+  .hdr-id p,.hdr-ai-m,.ai-strip,.page-foot{display:none}
   .htabs{order:2;flex:1;max-width:none;margin:0;align-self:stretch;align-items:stretch;gap:28px;overflow:visible}
   .htab{padding:0;font-size:15px;display:flex;align-items:center}
   .htab[aria-selected="true"]::after{height:3px}
@@ -870,6 +879,7 @@ button:disabled{cursor:default}
 
 <main id="app" class="hide">
   <header class="hdr" id="hdr">
+    <div class="ai-strip" aria-label="MubarakAI"><b>Mubarak<em>AI</em></b></div>
     <div class="vsw hide" id="vsw">
       <span id="vswT">Admin view</span>
       <button type="button" role="switch" aria-checked="false" id="vswB" class="swb">Employee view<i aria-hidden="true"></i></button>
@@ -927,6 +937,7 @@ button:disabled{cursor:default}
     </section>
     <section class="view" id="v-admin" aria-label="Admin"></section>
     </div>
+    <p class="page-foot">Mubarak Al-Owais</p>
     <aside class="side" id="side" aria-label="Your summary"></aside>
   </div>
 
